@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavformat
+END
+avio.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavformat/avio.h
+END
+avformat.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavformat/avformat.h
+END
+version.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavformat/version.h
+END

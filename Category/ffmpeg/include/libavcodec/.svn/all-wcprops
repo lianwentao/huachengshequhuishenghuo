@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavcodec
+END
+dv_profile.h
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavcodec/dv_profile.h
+END
+old_codec_ids.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavcodec/old_codec_ids.h
+END
+vda.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavcodec/vda.h
+END
+xvmc.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavcodec/xvmc.h
+END
+vdpau.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavcodec/vdpau.h
+END
+vaapi.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavcodec/vaapi.h
+END
+avcodec.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavcodec/avcodec.h
+END
+dxva2.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavcodec/dxva2.h
+END
+version.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavcodec/version.h
+END
+avfft.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavcodec/avfft.h
+END

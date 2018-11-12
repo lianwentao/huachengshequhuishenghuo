@@ -1,0 +1,46 @@
+//
+//  PrefixHeader.pch
+//  HuiShengHuo2.0
+//
+//  Created by 晋中华晟 on 2018/1/1.
+//  Copyright © 2018年 晋中华晟. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+//正式
+#define API                @"http://m.hui-shenghuo.cn/apk40/"
+#define API_NOAPK          @"http://m.hui-shenghuo.cn"
+//测试
+//#define API                @"http://test.hui-shenghuo.cn/apk40/"
+//#define API_NOAPK          @"http://test.hui-shenghuo.cn"
+
+
+#define API_img                @"http://img.hui-shenghuo.cn/"
+
+#define Main_width [UIScreen mainScreen].bounds.size.width
+#define Main_Height [UIScreen mainScreen].bounds.size.height
+
+//普通字体
+#define nomalfont    [UIFont systemFontOfSize:16.5]
+#define font18    [UIFont systemFontOfSize:18]
+#define font15    [UIFont systemFontOfSize:15]
+//帖子字体
+#define biaotifont    [UIFont systemFontOfSize:16.5]
+
+#define RECTSTATUS  [[UIApplication sharedApplication] statusBarFrame]
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#define HColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+#define QIColor [UIColor colorWithRed:(252)/255.0 green:(83)/255.0 blue:(29)/255.0 alpha:1.0]
+#define BackColor [UIColor colorWithRed:(244)/255.0 green:(247)/255.0 blue:(248)/255.0 alpha:1.0]
+#define CIrclecolor [UIColor colorWithRed:(204)/255.0 green:(204)/255.0 blue:(204)/255.0 alpha:1.0]
+#define admincolor [UIColor colorWithRed:(255)/255.0 green:(87)/255.0 blue:(34)/255.0 alpha:1.0]
+#import "MD5.h"
+
+#define random(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)/255.0]
+
+#define randomColor random(arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256))
+
+#endif /* PrefixHeader_pch */

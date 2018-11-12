@@ -1,0 +1,377 @@
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil
+END
+frame.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/frame.h
+END
+parseutils.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/parseutils.h
+END
+adler32.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/adler32.h
+END
+avconfig.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/avconfig.h
+END
+imgutils.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/imgutils.h
+END
+avstring.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/avstring.h
+END
+mathematics.h
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/mathematics.h
+END
+pixdesc.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/pixdesc.h
+END
+downmix_info.h
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/downmix_info.h
+END
+ffversion.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/ffversion.h
+END
+audioconvert.h
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/audioconvert.h
+END
+sha512.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/sha512.h
+END
+timestamp.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/timestamp.h
+END
+avutil.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/avutil.h
+END
+display.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/display.h
+END
+pixfmt.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/pixfmt.h
+END
+crc.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/crc.h
+END
+lfg.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/lfg.h
+END
+hmac.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/hmac.h
+END
+sha.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/sha.h
+END
+random_seed.h
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/random_seed.h
+END
+dict.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/dict.h
+END
+hash.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/hash.h
+END
+md5.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/md5.h
+END
+attributes.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/attributes.h
+END
+intfloat_readwrite.h
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/intfloat_readwrite.h
+END
+motion_vector.h
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/motion_vector.h
+END
+cpu.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/cpu.h
+END
+avassert.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/avassert.h
+END
+timecode.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/timecode.h
+END
+error.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/error.h
+END
+replaygain.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/replaygain.h
+END
+bprint.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/bprint.h
+END
+time.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/time.h
+END
+intreadwrite.h
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/intreadwrite.h
+END
+xtea.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/xtea.h
+END
+opt.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/opt.h
+END
+pixelutils.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/pixelutils.h
+END
+audio_fifo.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/audio_fifo.h
+END
+lzo.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/lzo.h
+END
+channel_layout.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/channel_layout.h
+END
+aes.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/aes.h
+END
+buffer.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/buffer.h
+END
+rational.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/rational.h
+END
+murmur3.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/murmur3.h
+END
+bswap.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/bswap.h
+END
+threadmessage.h
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/threadmessage.h
+END
+blowfish.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/blowfish.h
+END
+mem.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/mem.h
+END
+file.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/file.h
+END
+intfloat.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/intfloat.h
+END
+ripemd.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/ripemd.h
+END
+log.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/log.h
+END
+fifo.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/fifo.h
+END
+base64.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/base64.h
+END
+macros.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/macros.h
+END
+version.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/version.h
+END
+eval.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/eval.h
+END
+old_pix_fmts.h
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/old_pix_fmts.h
+END
+common.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/common.h
+END
+samplefmt.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/samplefmt.h
+END
+stereo3d.h
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavutil/stereo3d.h
+END

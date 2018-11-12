@@ -1,0 +1,49 @@
+10
+
+dir
+666
+http://zhangyanqing@192.168.95.1:80/svn/IOS_project/CloudHome/AJBTalk/AudioSrc/ffmpeg/include
+http://zhangyanqing@192.168.95.1:80/svn/IOS_project
+
+
+
+2015-10-26T00:59:20.628892Z
+381
+zhuyuping
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+c9dd2b8c-acd7-9548-b2a8-0923588b31fc
+
+libavfilter
+dir
+
+libavformat
+dir
+
+libswscale
+dir
+
+libswresample
+dir
+
+libavcodec
+dir
+
+libavutil
+dir
+
+libavdevice
+dir
+

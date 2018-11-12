@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavfilter
+END
+avfilter.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavfilter/avfilter.h
+END
+avfiltergraph.h
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavfilter/avfiltergraph.h
+END
+buffersink.h
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavfilter/buffersink.h
+END
+buffersrc.h
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavfilter/buffersrc.h
+END
+asrc_abuffer.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavfilter/asrc_abuffer.h
+END
+avcodec.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavfilter/avcodec.h
+END
+version.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/IOS_project/!svn/ver/381/CloudHome/AJBTalk/AudioSrc/ffmpeg/include/libavfilter/version.h
+END
