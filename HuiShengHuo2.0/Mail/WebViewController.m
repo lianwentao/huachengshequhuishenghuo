@@ -11,7 +11,7 @@
 #import "UIImageView+WebCache.h"
 #import <AFNetworking.h>
 #import "GoodsDetailViewController.h"
-#import "WebViewJavascriptBridge.h"
+#import "WKWebViewJavascriptBridge.h"
 
 #define kScreen_Height   ([UIScreen mainScreen].bounds.size.height)
 #define kScreen_Width    ([UIScreen mainScreen].bounds.size.width)
@@ -25,7 +25,7 @@
     
     WKWebView *wkwebview;
 }
-@property WebViewJavascriptBridge* bridge;
+@property WKWebViewJavascriptBridge* bridge;
 @end
 
 @implementation WebViewController

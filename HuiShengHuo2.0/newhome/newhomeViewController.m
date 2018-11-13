@@ -21,7 +21,6 @@
 #import "XiaoquViewController.h"
 #import "MenuScrollView.h"
 #import "CustomerScrollViewModel.h"
-#import "SMSwipeView.h"
 #import "GSKeyChainDataManager.h"
 #import "GoodsDetailViewController.h"
 #import "circledetailsViewController.h"
@@ -78,7 +77,7 @@
     
     NSDictionary *_dict;
     
-    SMSwipeView *Swipeview;
+
 }
 
 @property (nonatomic, strong) UITableView *tableView;

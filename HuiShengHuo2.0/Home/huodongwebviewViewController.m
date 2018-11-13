@@ -7,7 +7,7 @@
 //
 
 #import "huodongwebviewViewController.h"
-#import "WebViewJavascriptBridge.h"
+#import "WKWebViewJavascriptBridge.h"
 @interface huodongwebviewViewController ()<WKUIDelegate,WKNavigationDelegate>
 {
      WKWebView *wkwebview;

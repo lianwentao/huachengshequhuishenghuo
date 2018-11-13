@@ -14,7 +14,7 @@
 #import "LoginViewController.h"
 #import "MBProgressHUD+TVAssistant.h"
 #import "HalfCircleActivityIndicatorView.h"
-#import "WebViewJavascriptBridge.h"
+#import "WKWebViewJavascriptBridge.h"
 #import "PrefixHeader.pch"
 #define kScreen_Height   ([UIScreen mainScreen].bounds.size.height)
 #define kScreen_Width    ([UIScreen mainScreen].bounds.size.width)

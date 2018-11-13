@@ -49,7 +49,7 @@
 #import "MyhomeViewController.h"
 #import "circledetailsViewController.h"
 #import "jiatingzhangdanViewController.h"
-#import "WebViewJavascriptBridge.h"
+#import "WKWebViewJavascriptBridge.h"
 #import "jujiayanglaoViewController.h"
 #define kScreen_Height   ([UIScreen mainScreen].bounds.size.height)
 #define kScreen_Width    ([UIScreen mainScreen].bounds.size.width)

@@ -7,7 +7,7 @@
 //
 
 #import "xinfangshoucewebViewController.h"
-#import "WebViewJavascriptBridge.h"
+#import "WKWebViewJavascriptBridge.h"
 @interface xinfangshoucewebViewController ()<WKUIDelegate,WKNavigationDelegate>
 {
     WKWebView *wkwebview;
