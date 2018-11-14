@@ -827,33 +827,57 @@ static NSString * LINKEDME_SHORT_URL;
         [MBProgressHUD showToastToView:self.view withText:@"当前时间不在配送时间范围内"];
     }else if ([kucun isEqualToString:@"0"]){
         [MBProgressHUD showToastToView:self.view withText:@"库存不足"];
-    }else if ([_timeout isEqualToString:@"2"]){
-        [MBProgressHUD showToastToView:self.view withText:@"活动已结束"];
-    }else if ([_timeout isEqualToString:@"0"]){
-        [MBProgressHUD showToastToView:self.view withText:@"活动即将开始"];
     }else{
-        GuigeViewController *guige = [[GuigeViewController alloc] init];
-        
-        //赋值Block，并将捕获的值赋值给UILabel
-        guige.returnValueBlock = ^(NSString *passedValue,NSString *num,NSString*tagid,long limmit,NSString *price){
-            Label.text = [NSString stringWithFormat:@"已选 %@ X%@",passedValue,num];
-            blocktagname = passedValue;
-            //blocktagname = [_DataDic objectForKey:@"title"];
-            blocknum = num;
-            blocktagid  = tagid;
-            _limit = limmit;
-            wupinprice = price;
-            NSLog(@"%@--%@--%@--%@",blocktagname,blocktagid,blocknum,price);
-        };
-        
-        guige.tagidstring = [_DataDic objectForKey:@"tagid"];
-        guige.IDstring = _IDstring;
-        guige.cunkunstring = [_DataDic objectForKey:@"inventory"];
-        guige.image = imageview.image;
-        guige.pricestring = [_DataDic objectForKey:@"price"];
-        [self.navigationController pushViewController:guige animated:YES];
+        if ([shaopcate_id isEqualToString:@"1"]) {
+            if ([_timeout isEqualToString:@"2"]){
+                [MBProgressHUD showToastToView:self.view withText:@"活动已结束"];
+            }else if ([_timeout isEqualToString:@"0"]){
+                [MBProgressHUD showToastToView:self.view withText:@"活动即将开始"];
+            }else{
+                GuigeViewController *guige = [[GuigeViewController alloc] init];
+                
+                //赋值Block，并将捕获的值赋值给UILabel
+                guige.returnValueBlock = ^(NSString *passedValue,NSString *num,NSString*tagid,long limmit,NSString *price){
+                    Label.text = [NSString stringWithFormat:@"已选 %@ X%@",passedValue,num];
+                    blocktagname = passedValue;
+                    //blocktagname = [_DataDic objectForKey:@"title"];
+                    blocknum = num;
+                    blocktagid  = tagid;
+                    _limit = limmit;
+                    wupinprice = price;
+                    NSLog(@"%@--%@--%@--%@",blocktagname,blocktagid,blocknum,price);
+                };
+                
+                guige.tagidstring = [_DataDic objectForKey:@"tagid"];
+                guige.IDstring = _IDstring;
+                guige.cunkunstring = [_DataDic objectForKey:@"inventory"];
+                guige.image = imageview.image;
+                guige.pricestring = [_DataDic objectForKey:@"price"];
+                [self.navigationController pushViewController:guige animated:YES];
+            }
+        }else{
+            GuigeViewController *guige = [[GuigeViewController alloc] init];
+            
+            //赋值Block，并将捕获的值赋值给UILabel
+            guige.returnValueBlock = ^(NSString *passedValue,NSString *num,NSString*tagid,long limmit,NSString *price){
+                Label.text = [NSString stringWithFormat:@"已选 %@ X%@",passedValue,num];
+                blocktagname = passedValue;
+                //blocktagname = [_DataDic objectForKey:@"title"];
+                blocknum = num;
+                blocktagid  = tagid;
+                _limit = limmit;
+                wupinprice = price;
+                NSLog(@"%@--%@--%@--%@",blocktagname,blocktagid,blocknum,price);
+            };
+            
+            guige.tagidstring = [_DataDic objectForKey:@"tagid"];
+            guige.IDstring = _IDstring;
+            guige.cunkunstring = [_DataDic objectForKey:@"inventory"];
+            guige.image = imageview.image;
+            guige.pricestring = [_DataDic objectForKey:@"price"];
+            [self.navigationController pushViewController:guige animated:YES];
+        }
     }
-    
 }
 #pragma mark ------联网请求---
 -(void)post{
@@ -922,6 +946,7 @@ static NSString * LINKEDME_SHORT_URL;
                 _timeout = @"2";
             }
         }
+        NSLog(@"timeout--%@",_timeout);
         [self CreateView];
         self.title = [_DataDic objectForKey:@"title"];
         //blocktagname = [_DataDic objectForKey:@"title"];
