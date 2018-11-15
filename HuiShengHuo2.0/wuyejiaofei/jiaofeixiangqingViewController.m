@@ -14,7 +14,7 @@
 {
     UITableView *_TableView;
     
-    NSArray *wuyeArr;
+    NSDictionary *wuyeDic;
     NSDictionary *dianfeiDic;
     NSDictionary *shuifeiDic;
     NSDictionary *roominfodic;
@@ -24,8 +24,11 @@
     UIButton *_tmpBtn;
     UIView *shuiview;
     UIView *dianview;
+    UIView *wuyeview;
     UITextField *shuitextfield;
     UITextField *diantextfield;
+    
+    UILabel *amountlabel;
 }
 
 @end
@@ -51,7 +54,7 @@
 - (void)getData
 {
     
-    wuyeArr = [NSArray array];
+    wuyeDic = [[NSDictionary alloc] init];
     dianfeiDic = [[NSDictionary alloc] init];
     shuifeiDic = [[NSDictionary alloc] init];
     roominfodic = [[NSDictionary alloc] init];
@@ -68,7 +71,7 @@
         
         NSLog(@"--%@--%@---%@--%@",strurl,dict,[responseObject objectForKey:@"msg"],responseObject);
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-            wuyeArr = [[responseObject objectForKey:@"data"] objectForKey:@"wuye"];
+            wuyeDic = [[responseObject objectForKey:@"data"] objectForKey:@"wuye"];
             dianfeiDic = [[responseObject objectForKey:@"data"] objectForKey:@"dianfei"];
             shuifeiDic = [[responseObject objectForKey:@"data"] objectForKey:@"shuifei"];
             roominfodic = [[responseObject objectForKey:@"data"] objectForKey:@"room_info"];
@@ -88,11 +91,11 @@
     botomview.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:botomview];
     
-    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(12, 12, Main_width/3*2, 30)];
-    label1.text = @"总额:15215.14元";
-    label1.font = font15;
-    label1.textColor = QIColor;
-    [botomview addSubview:label1];
+    amountlabel = [[UILabel alloc] initWithFrame:CGRectMake(12, 12, Main_width/3*2, 30)];
+    amountlabel.text = [NSString stringWithFormat:@"总额:%@元",[wuyeDic objectForKey:@"tot_sumvalue"]];
+    amountlabel.font = font15;
+    amountlabel.textColor = QIColor;
+    [botomview addSubview:amountlabel];
     
     UIButton *jiaofeibut = [UIButton buttonWithType:UIButtonTypeCustom];
     jiaofeibut.frame = CGRectMake(Main_width-50-12, 10, 50, 30);
@@ -188,7 +191,7 @@
     shuitextfield.layer.borderColor = [UIColor colorWithRed:212/255.0 green:212/255.0 blue:212/255.0 alpha:1].CGColor;
     [shuiview addSubview:shuitextfield];
     
-    
+    [shuitextfield addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
     
     dianview = [[UIView alloc] initWithFrame:CGRectMake(0, backview.frame.size.height+backview.frame.origin.y+15, Main_width, 125)];
     dianview.backgroundColor = [UIColor whiteColor];
@@ -220,8 +223,34 @@
     diantextfield.layer.borderWidth = 1;
     diantextfield.placeholder = @"请输出充值金额";
     diantextfield.tag = 1001;
+    [diantextfield addTarget:self action:@selector(textFieldChanged1:) forControlEvents:UIControlEventEditingChanged];
     diantextfield.layer.borderColor = [UIColor colorWithRed:212/255.0 green:212/255.0 blue:212/255.0 alpha:1].CGColor;
     [dianview addSubview:diantextfield];
+    
+    //物业费详情
+    wuyeview = [[UIView alloc] initWithFrame:CGRectMake(0, backview.frame.size.height+backview.frame.origin.y+15, Main_width, 0)];
+    [scrolloview addSubview:wuyeview];
+    
+    NSArray *wuyearr = [wuyeDic objectForKey:@"list"];
+    for (int i = 0; i<wuyearr.count-1; i++) {
+        UILabel *timelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 40*i, Main_width*3/4, 40)];
+        timelabel.text = [NSString stringWithFormat:@"%@/%@",[[[wuyearr objectAtIndex:0] objectAtIndex:i] objectForKey:@"startdate"],[[[wuyearr objectAtIndex:0] objectAtIndex:i] objectForKey:@"enddate"]];
+        timelabel.font = font15;
+        timelabel.textAlignment = NSTextAlignmentLeft;
+        [wuyeview addSubview:timelabel];
+        
+        UILabel *amountlabel = [[UILabel alloc] initWithFrame:CGRectMake(Main_width*3/4, 40*i, Main_width/4, 40)];
+        amountlabel.textAlignment = NSTextAlignmentRight;
+        amountlabel.font = font15;
+        amountlabel.text = [[[wuyearr objectAtIndex:0] objectAtIndex:i] objectForKey:@"sumvalue"];
+        [wuyeview addSubview:amountlabel];
+    }
+}
+- (void)textFieldChanged:(UITextField*)textField{
+    amountlabel.text = [NSString stringWithFormat:@"总额:%@元",shuitextfield.text];
+}
+- (void)textFieldChanged1:(UITextField*)textField{
+    amountlabel.text = [NSString stringWithFormat:@"总额:%@元",diantextfield.text];
 }
 #pragma  mark - textField delegate
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -266,12 +295,23 @@
         if (_tmpBtn.tag == 1){
             shuiview.hidden = NO;
             dianview.hidden = YES;
+            if ([shuitextfield.text isEqualToString:@""]) {
+                amountlabel.text = [NSString stringWithFormat:@"总额:%@元",@"0"];
+            }else{
+                amountlabel.text = [NSString stringWithFormat:@"总额:%@元",shuitextfield.text];
+            }
         }else if (_tmpBtn.tag == 2){
             shuiview.hidden = YES;
             dianview.hidden = NO;
+            if ([diantextfield.text isEqualToString:@""]) {
+                amountlabel.text = [NSString stringWithFormat:@"总额:%@元",@"0"];
+            }else{
+                amountlabel.text = [NSString stringWithFormat:@"总额:%@元",diantextfield.text];
+            }
         }else{
             shuiview.hidden = YES;
             dianview.hidden = YES;
+            amountlabel.text = [NSString stringWithFormat:@"总额:%@元",[wuyeDic objectForKey:@"tot_sumvalue"]];
         }
     }
 }

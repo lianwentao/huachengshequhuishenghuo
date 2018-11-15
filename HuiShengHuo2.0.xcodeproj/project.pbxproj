@@ -424,6 +424,7 @@
 		28E1FFDE1FF4052000E4AE5C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E1FFDD1FF4051700E4AE5C /* CoreMotion.framework */; };
 		28E254862050C41A00CD93F8 /* MenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E254852050C41A00CD93F8 /* MenuButton.m */; };
 		28E254892050C54300CD93F8 /* jiaofeiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E254882050C54300CD93F8 /* jiaofeiViewController.m */; };
+		28E28E38219D794600BF066C /* zushouweituoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E28E37219D794600BF066C /* zushouweituoViewController.m */; };
 		28E96D8A20BC1811007E353B /* WRCustomNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E96D8720BC1811007E353B /* WRCustomNavigationBar.m */; };
 		28E96D8B20BC1811007E353B /* WRNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E96D8920BC1811007E353B /* WRNavigationBar.m */; };
 		28E96D8F20BC19D9007E353B /* WRImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E96D8E20BC19D9007E353B /* WRImageHelper.m */; };
@@ -1299,6 +1300,8 @@
 		28E254852050C41A00CD93F8 /* MenuButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuButton.m; sourceTree = "<group>"; };
 		28E254872050C54300CD93F8 /* jiaofeiViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = jiaofeiViewController.h; sourceTree = "<group>"; };
 		28E254882050C54300CD93F8 /* jiaofeiViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = jiaofeiViewController.m; sourceTree = "<group>"; };
+		28E28E36219D794600BF066C /* zushouweituoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zushouweituoViewController.h; sourceTree = "<group>"; };
+		28E28E37219D794600BF066C /* zushouweituoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = zushouweituoViewController.m; sourceTree = "<group>"; };
 		28E96D8620BC1811007E353B /* WRCustomNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WRCustomNavigationBar.h; sourceTree = "<group>"; };
 		28E96D8720BC1811007E353B /* WRCustomNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WRCustomNavigationBar.m; sourceTree = "<group>"; };
 		28E96D8820BC1811007E353B /* WRNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WRNavigationBar.h; sourceTree = "<group>"; };
@@ -2406,6 +2409,8 @@
 		2885194A219CF65C0068EA6B /* fabufangyuan */ = {
 			isa = PBXGroup;
 			children = (
+				28E28E36219D794600BF066C /* zushouweituoViewController.h */,
+				28E28E37219D794600BF066C /* zushouweituoViewController.m */,
 			);
 			path = fabufangyuan;
 			sourceTree = "<group>";
@@ -3681,6 +3686,7 @@
 				28A124C71FC50E4400F80A35 /* GoodsDetailViewController.m in Sources */,
 				28C7413120663B8A0018E19F /* LSXPlacehoderTextView.m in Sources */,
 				28AE471920118E8B002E3095 /* MD5.m in Sources */,
+				28E28E38219D794600BF066C /* zushouweituoViewController.m in Sources */,
 				28A83C9E205F4634009ED444 /* HXCustomNavigationController.m in Sources */,
 				285DB56E1FC6904100400EA6 /* XiaoquViewController.m in Sources */,
 				28821AC01FE3AFAA00C31E68 /* wuyeViewController.m in Sources */,
