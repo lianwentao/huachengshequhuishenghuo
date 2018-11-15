@@ -245,6 +245,7 @@
 		28821AC31FE3B1BC00C31E68 /* wuyeteamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28821AC21FE3B1BC00C31E68 /* wuyeteamViewController.m */; };
 		28821AC61FE3B77100C31E68 /* wuyeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28821AC51FE3B77100C31E68 /* wuyeTableViewCell.m */; };
 		2883D7812072454F007CDF4E /* yuefunextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2883D7802072454F007CDF4E /* yuefunextViewController.m */; };
+		2885194D219CF7450068EA6B /* rentalhouseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2885194C219CF7450068EA6B /* rentalhouseViewController.m */; };
 		28854E1520526B9E0097B201 /* shuidianfeiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28854E1420526B9E0097B201 /* shuidianfeiViewController.m */; };
 		28855DD7201C759E005B249B /* NSBundle+PYSearchExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 28855DCA201C759E005B249B /* NSBundle+PYSearchExtension.m */; };
 		28855DD8201C759E005B249B /* PYSearch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 28855DCB201C759E005B249B /* PYSearch.bundle */; };
@@ -918,6 +919,8 @@
 		28821AC51FE3B77100C31E68 /* wuyeTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = wuyeTableViewCell.m; sourceTree = "<group>"; };
 		2883D77F2072454F007CDF4E /* yuefunextViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = yuefunextViewController.h; sourceTree = "<group>"; };
 		2883D7802072454F007CDF4E /* yuefunextViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = yuefunextViewController.m; sourceTree = "<group>"; };
+		2885194B219CF7450068EA6B /* rentalhouseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rentalhouseViewController.h; sourceTree = "<group>"; };
+		2885194C219CF7450068EA6B /* rentalhouseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = rentalhouseViewController.m; sourceTree = "<group>"; };
 		28854E1320526B9E0097B201 /* shuidianfeiViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shuidianfeiViewController.h; sourceTree = "<group>"; };
 		28854E1420526B9E0097B201 /* shuidianfeiViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = shuidianfeiViewController.m; sourceTree = "<group>"; };
 		28855DC9201C759E005B249B /* NSBundle+PYSearchExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+PYSearchExtension.h"; sourceTree = "<group>"; };
@@ -2374,6 +2377,39 @@
 			path = Myhome;
 			sourceTree = "<group>";
 		};
+		28851947219CF5CD0068EA6B /* RentalHouse */ = {
+			isa = PBXGroup;
+			children = (
+				2885194A219CF65C0068EA6B /* fabufangyuan */,
+				28851949219CF6510068EA6B /* shoufang */,
+				28851948219CF6210068EA6B /* zufang */,
+				2885194B219CF7450068EA6B /* rentalhouseViewController.h */,
+				2885194C219CF7450068EA6B /* rentalhouseViewController.m */,
+			);
+			path = RentalHouse;
+			sourceTree = "<group>";
+		};
+		28851948219CF6210068EA6B /* zufang */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = zufang;
+			sourceTree = "<group>";
+		};
+		28851949219CF6510068EA6B /* shoufang */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = shoufang;
+			sourceTree = "<group>";
+		};
+		2885194A219CF65C0068EA6B /* fabufangyuan */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = fabufangyuan;
+			sourceTree = "<group>";
+		};
 		28855DC8201C759E005B249B /* PYSearch */ = {
 			isa = PBXGroup;
 			children = (
@@ -2903,6 +2939,7 @@
 		28D75DB31FBD0B82000BD4A1 /* HuiShengHuo2.0 */ = {
 			isa = PBXGroup;
 			children = (
+				28851947219CF5CD0068EA6B /* RentalHouse */,
 				284D852B212EADF000BF8ED2 /* wuyejiaofei */,
 				283120EB20C28DA100B5A5C2 /* newhome */,
 				285A6A1F20C009FC00FE13FF /* jujiayanglao */,
@@ -3820,6 +3857,7 @@
 				285371551FC910B100D0376E /* DWQCartTableViewCell.m in Sources */,
 				28966FB3205CFB6C00073667 /* pengyouquanmodel.m in Sources */,
 				28280612219ADE5600B0DD7D /* WKWebViewJavascriptBridge.m in Sources */,
+				2885194D219CF7450068EA6B /* rentalhouseViewController.m in Sources */,
 				282805B3219AD72500B0DD7D /* SDWebImageManager.m in Sources */,
 				285DED991FD28C3000B0812F /* WPhotoViewController.m in Sources */,
 				282805B8219AD72500B0DD7D /* UIImage+ForceDecode.m in Sources */,

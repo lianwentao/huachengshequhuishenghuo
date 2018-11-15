@@ -9,6 +9,7 @@
 #import "yanzhengjiaofeiViewController.h"
 #import "XiaoquViewController.h"
 #import "jiaofeixiangqingViewController.h"
+#import "wuyeqianfeiViewController.h"
 #import "selectshangpuViewController.h"
 #import <AFNetworking.h>
 #import "MBProgressHUD+TVAssistant.h"
@@ -32,6 +33,10 @@
     NSString *department_id;
     NSString *department_name;
     NSString *floor;
+    
+    NSString *fullname;
+    NSString *mobeil;
+    NSString *is_ym;
     
     UILabel *label;
     
@@ -82,16 +87,47 @@
     //2.封装参数
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     dict = @{@"room_id":room_id,@"key_str":textfield.text,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
     NSString *strurl = [API stringByAppendingString:@"property/getPersonalInfo"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
        
         NSLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-            jiaofeixiangqingViewController *xiangqing = [[jiaofeixiangqingViewController alloc] init];
-            xiangqing.room_id = room_id;
-            [self.navigationController pushViewController:xiangqing animated:YES];
+            fullname = [[responseObject objectForKey:@"data"] objectForKey:@"name"];
+            mobeil = [[responseObject objectForKey:@"data"] objectForKey:@"mp1"];
+            is_ym = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"is_ym"]];
+            [self bangding];
+
+        }else{
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"failure--%@",error);
+    }];
+}
+- (void)bangding
+{
+    //1.创建会话管理者
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    //2.封装参数
+    NSDictionary *dict = nil;
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"community_id":community_id,@"community_name":community_name,@"company_id":company_id,@"company_name":company_name,@"department_id":department_id,@"department_name":department_name,@"building_id":building_id,@"building_name":building_name,@"unit":units,@"floor":floor,@"code":code,@"room_id":room_id,@"fullname":fullname,@"mobile":mobeil,@"is_ym":is_ym};
+    NSString *strurl = [API stringByAppendingString:@"property/pro_bind_user"];
+    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
+        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+            if ([is_ym isEqualToString:@"0"]) {
+                wuyeqianfeiViewController *qianfei = [[wuyeqianfeiViewController alloc] init];
+                qianfei.room_id = room_id;
+                [self.navigationController pushViewController:qianfei animated:YES];
+            }else{
+                jiaofeixiangqingViewController *xiangqing = [[jiaofeixiangqingViewController alloc] init];
+                xiangqing.room_id = room_id;
+                [self.navigationController pushViewController:xiangqing animated:YES];
+            }
         }else{
             [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }

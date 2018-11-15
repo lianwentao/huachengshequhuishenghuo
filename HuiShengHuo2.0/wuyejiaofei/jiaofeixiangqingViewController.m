@@ -10,7 +10,7 @@
 #import <AFNetworking.h>
 #import "newsuerViewController.h"
 
-@interface jiaofeixiangqingViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface jiaofeixiangqingViewController ()<UITextFieldDelegate>
 {
     UITableView *_TableView;
     
@@ -37,6 +37,11 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"缴费";
     
+    UISwipeGestureRecognizer *recognizer;
+    recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(viewTapped:)];
+    [recognizer setDirection:(UISwipeGestureRecognizerDirectionDown)];
+    [[self view] addGestureRecognizer:recognizer];
+    
     [self getData];
     
     //[self createtableview];
@@ -61,7 +66,7 @@
     NSString *strurl = [API stringByAppendingString:@"property/getBillByRoom"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        NSLog(@"---%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+        NSLog(@"--%@--%@---%@--%@",strurl,dict,[responseObject objectForKey:@"msg"],responseObject);
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
             wuyeArr = [[responseObject objectForKey:@"data"] objectForKey:@"wuye"];
             dianfeiDic = [[responseObject objectForKey:@"data"] objectForKey:@"dianfei"];
@@ -176,6 +181,7 @@
     
     shuitextfield = [[UITextField alloc] initWithFrame:CGRectMake(80+10, lineview.frame.size.height+lineview.frame.origin.y+16, 180, 40)];
     shuitextfield.keyboardType = UIKeyboardTypeNumberPad;
+    shuitextfield.delegate = self;
     shuitextfield.layer.borderWidth = 1;
     shuitextfield.placeholder = @"请输出充值金额";
     shuitextfield.tag = 1000;
@@ -226,7 +232,7 @@
 -(void)viewTapped:(UISwipeGestureRecognizer *)recognizer
 {
     UITextField * field3=(UITextField *)[self.view viewWithTag:1000];
-    
+    UITextField *firld =(UITextField *)[self.view viewWithTag:1001];
     if(recognizer.direction==UISwipeGestureRecognizerDirectionDown) {
         
         
@@ -235,8 +241,8 @@
         
         
         [field3 resignFirstResponder];
+        [firld resignFirstResponder];
     }
-    
 }
 - (void)selectzhonglei:(UIButton *)sender
 {
