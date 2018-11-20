@@ -9,7 +9,7 @@
 #import "jiaofeixiangqingViewController.h"
 #import <AFNetworking.h>
 #import "newsuerViewController.h"
-
+#import "MBProgressHUD+TVAssistant.h"
 @interface jiaofeixiangqingViewController ()<UITextFieldDelegate>
 {
     UITableView *_TableView;
@@ -29,6 +29,7 @@
     UITextField *diantextfield;
     
     UILabel *amountlabel;
+    MBProgressHUD *_HUD;
 }
 
 @end
@@ -45,12 +46,42 @@
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionDown)];
     [[self view] addGestureRecognizer:recognizer];
     
+    [self GeneralButtonAction];
     [self getData];
     
     //[self createtableview];
     // Do any additional setup after loading the view.
 }
-
+- (void)GeneralButtonAction{
+    
+    
+    
+    
+    //初始化进度框，置于当前的View当中
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:_HUD];
+    
+    //如果设置此属性则当前的view置于后台
+    //_HUD.dimBackground = YES;
+    
+    //设置对话框文字
+    _HUD.labelText = @"加载中,请稍后...";
+    _HUD.labelFont = [UIFont systemFontOfSize:14];
+    //细节文字
+    //_HUD.detailsLabelText = @"请耐心等待";
+    
+    //显示对话框
+    [_HUD showAnimated:YES whileExecutingBlock:^{
+        //对话框显示时需要执行的操作
+        
+        sleep(7);
+    }// 在HUD被隐藏后的回调
+       completionBlock:^{
+           //操作执行完后取消对话框
+           [_HUD removeFromSuperview];
+           _HUD = nil;
+       }];
+}
 - (void)getData
 {
     
