@@ -65,8 +65,10 @@
      task.response: 响应头信息
      第五个参数:failure 失败之后的回调
      */
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict = @{@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
     _strurl = [API stringByAppendingString:@"property/merchant_list"];
-    [manager POST:_strurl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:_strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSLog(@"success--%@--%@",[responseObject class],responseObject);
         

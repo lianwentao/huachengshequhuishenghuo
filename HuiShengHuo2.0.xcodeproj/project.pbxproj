@@ -84,6 +84,7 @@
 		2843230C1FC8074500472C05 /* PurchaseCarAnimationTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 2843230A1FC8074500472C05 /* PurchaseCarAnimationTool.m */; };
 		284323151FC845B000472C05 /* NSTimer+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 284323111FC845AF00472C05 /* NSTimer+Addition.m */; };
 		284323161FC845B000472C05 /* SBCycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 284323121FC845AF00472C05 /* SBCycleScrollView.m */; };
+		2844EF8921A2B339008595C7 /* myhouseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2844EF8821A2B339008595C7 /* myhouseViewController.m */; };
 		284528901FF78935006F7D3D /* TimeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845288B1FF78935006F7D3D /* TimeLabel.m */; };
 		284528911FF78935006F7D3D /* TimeNumberView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845288D1FF78935006F7D3D /* TimeNumberView.m */; };
 		284528921FF78935006F7D3D /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845288F1FF78935006F7D3D /* UIView+Frame.m */; };
@@ -191,6 +192,8 @@
 		2865570C1FFCD723008E912D /* JKBannerCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2865570A1FFCD723008E912D /* JKBannerCollectionViewCell.m */; };
 		2865570F1FFCFA27008E912D /* weixiuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2865570E1FFCFA27008E912D /* weixiuViewController.m */; };
 		28662D032022AB1900583093 /* GZActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 28662D022022AB1900583093 /* GZActionSheet.m */; };
+		28695349219E9CCD0081C57D /* fabuzufangViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28695348219E9CCD0081C57D /* fabuzufangViewController.m */; };
+		2869534C219E9CD90081C57D /* fabushoufangViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2869534B219E9CD90081C57D /* fabushoufangViewController.m */; };
 		2869E624212C080200FAAC5C /* selectxiaoquViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2869E623212C080200FAAC5C /* selectxiaoquViewController.m */; };
 		2869E629212C30AB00FAAC5C /* address.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2869E626212C30AB00FAAC5C /* address.txt */; };
 		2869E62A212C30AB00FAAC5C /* AddressPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2869E628212C30AB00FAAC5C /* AddressPickerView.m */; };
@@ -259,6 +262,11 @@
 		2885BE271FC5A89600C13AFA /* GSKeyChainDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2885BE251FC5A89600C13AFA /* GSKeyChainDataManager.m */; };
 		2885BE281FC5A89600C13AFA /* GSKeyChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 2885BE261FC5A89600C13AFA /* GSKeyChain.m */; };
 		28888D4E204F854F00703BD8 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BCB7962009E1EC00ADA953 /* AdSupport.framework */; };
+		2888C06D21A393B700BF61FE /* FSPageContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2888C06921A393B700BF61FE /* FSPageContentView.m */; };
+		2888C06E21A393B700BF61FE /* FSSegmentTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2888C06C21A393B700BF61FE /* FSSegmentTitleView.m */; };
+		2888C07121A395B500BF61FE /* ChildViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2888C07021A395B500BF61FE /* ChildViewController.m */; };
+		2888C07521A3A84000BF61FE /* myhouseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2888C07421A3A84000BF61FE /* myhouseTableViewCell.m */; };
+		2888C07821A3A85E00BF61FE /* myhousemodel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2888C07721A3A85E00BF61FE /* myhousemodel.m */; };
 		2889D323200C953800904B85 /* DefaultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2889D31B200C953700904B85 /* DefaultView.m */; };
 		2889D324200C953800904B85 /* NSObject+MethodSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 2889D31D200C953700904B85 /* NSObject+MethodSwizzle.m */; };
 		2889D326200C953800904B85 /* UICollectionView+PlaceHolderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2889D320200C953700904B85 /* UICollectionView+PlaceHolderView.m */; };
@@ -630,6 +638,8 @@
 		284323121FC845AF00472C05 /* SBCycleScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBCycleScrollView.m; sourceTree = "<group>"; };
 		284323131FC845B000472C05 /* SBCycleScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBCycleScrollView.h; sourceTree = "<group>"; };
 		284323141FC845B000472C05 /* NSTimer+Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Addition.h"; sourceTree = "<group>"; };
+		2844EF8721A2B339008595C7 /* myhouseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = myhouseViewController.h; sourceTree = "<group>"; };
+		2844EF8821A2B339008595C7 /* myhouseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = myhouseViewController.m; sourceTree = "<group>"; };
 		2845288A1FF78935006F7D3D /* TimeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeLabel.h; sourceTree = "<group>"; };
 		2845288B1FF78935006F7D3D /* TimeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeLabel.m; sourceTree = "<group>"; };
 		2845288C1FF78935006F7D3D /* TimeNumberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeNumberView.h; sourceTree = "<group>"; };
@@ -834,6 +844,10 @@
 		2865570E1FFCFA27008E912D /* weixiuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = weixiuViewController.m; sourceTree = "<group>"; };
 		28662D012022AB1900583093 /* GZActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GZActionSheet.h; sourceTree = "<group>"; };
 		28662D022022AB1900583093 /* GZActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GZActionSheet.m; sourceTree = "<group>"; };
+		28695347219E9CCD0081C57D /* fabuzufangViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fabuzufangViewController.h; sourceTree = "<group>"; };
+		28695348219E9CCD0081C57D /* fabuzufangViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = fabuzufangViewController.m; sourceTree = "<group>"; };
+		2869534A219E9CD90081C57D /* fabushoufangViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fabushoufangViewController.h; sourceTree = "<group>"; };
+		2869534B219E9CD90081C57D /* fabushoufangViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = fabushoufangViewController.m; sourceTree = "<group>"; };
 		2869E622212C080200FAAC5C /* selectxiaoquViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = selectxiaoquViewController.h; sourceTree = "<group>"; };
 		2869E623212C080200FAAC5C /* selectxiaoquViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = selectxiaoquViewController.m; sourceTree = "<group>"; };
 		2869E626212C30AB00FAAC5C /* address.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = address.txt; sourceTree = "<group>"; };
@@ -946,6 +960,17 @@
 		2885BE241FC5A89500C13AFA /* GSKeyChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSKeyChain.h; sourceTree = "<group>"; };
 		2885BE251FC5A89600C13AFA /* GSKeyChainDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSKeyChainDataManager.m; sourceTree = "<group>"; };
 		2885BE261FC5A89600C13AFA /* GSKeyChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSKeyChain.m; sourceTree = "<group>"; };
+		2888C06821A393B700BF61FE /* FSPageContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSPageContentView.h; sourceTree = "<group>"; };
+		2888C06921A393B700BF61FE /* FSPageContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSPageContentView.m; sourceTree = "<group>"; };
+		2888C06A21A393B700BF61FE /* FSScrollContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSScrollContentView.h; sourceTree = "<group>"; };
+		2888C06B21A393B700BF61FE /* FSSegmentTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSSegmentTitleView.h; sourceTree = "<group>"; };
+		2888C06C21A393B700BF61FE /* FSSegmentTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSSegmentTitleView.m; sourceTree = "<group>"; };
+		2888C06F21A395B500BF61FE /* ChildViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChildViewController.h; sourceTree = "<group>"; };
+		2888C07021A395B500BF61FE /* ChildViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChildViewController.m; sourceTree = "<group>"; };
+		2888C07321A3A84000BF61FE /* myhouseTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = myhouseTableViewCell.h; sourceTree = "<group>"; };
+		2888C07421A3A84000BF61FE /* myhouseTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = myhouseTableViewCell.m; sourceTree = "<group>"; };
+		2888C07621A3A85E00BF61FE /* myhousemodel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = myhousemodel.h; sourceTree = "<group>"; };
+		2888C07721A3A85E00BF61FE /* myhousemodel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = myhousemodel.m; sourceTree = "<group>"; };
 		2889D31A200C953700904B85 /* DefaultView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultView.h; sourceTree = "<group>"; };
 		2889D31B200C953700904B85 /* DefaultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultView.m; sourceTree = "<group>"; };
 		2889D31C200C953700904B85 /* NSObject+MethodSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MethodSwizzle.h"; sourceTree = "<group>"; };
@@ -1857,6 +1882,7 @@
 		2854D61F1FBEB90700B874D0 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				2888C06721A393B700BF61FE /* FSScrollContentViewLib */,
 				28280659219ADF8E00B0DD7D /* MBPROgress */,
 				28280614219ADE9800B0DD7D /* XLphoto */,
 				28280607219ADE3200B0DD7D /* wkwebbrg */,
@@ -2384,26 +2410,10 @@
 			isa = PBXGroup;
 			children = (
 				2885194A219CF65C0068EA6B /* fabufangyuan */,
-				28851949219CF6510068EA6B /* shoufang */,
-				28851948219CF6210068EA6B /* zufang */,
 				2885194B219CF7450068EA6B /* rentalhouseViewController.h */,
 				2885194C219CF7450068EA6B /* rentalhouseViewController.m */,
 			);
 			path = RentalHouse;
-			sourceTree = "<group>";
-		};
-		28851948219CF6210068EA6B /* zufang */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = zufang;
-			sourceTree = "<group>";
-		};
-		28851949219CF6510068EA6B /* shoufang */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = shoufang;
 			sourceTree = "<group>";
 		};
 		2885194A219CF65C0068EA6B /* fabufangyuan */ = {
@@ -2411,6 +2421,14 @@
 			children = (
 				28E28E36219D794600BF066C /* zushouweituoViewController.h */,
 				28E28E37219D794600BF066C /* zushouweituoViewController.m */,
+				28695347219E9CCD0081C57D /* fabuzufangViewController.h */,
+				28695348219E9CCD0081C57D /* fabuzufangViewController.m */,
+				2869534A219E9CD90081C57D /* fabushoufangViewController.h */,
+				2869534B219E9CD90081C57D /* fabushoufangViewController.m */,
+				2844EF8721A2B339008595C7 /* myhouseViewController.h */,
+				2844EF8821A2B339008595C7 /* myhouseViewController.m */,
+				2888C06F21A395B500BF61FE /* ChildViewController.h */,
+				2888C07021A395B500BF61FE /* ChildViewController.m */,
 			);
 			path = fabufangyuan;
 			sourceTree = "<group>";
@@ -2445,6 +2463,29 @@
 				2885BE251FC5A89600C13AFA /* GSKeyChainDataManager.m */,
 			);
 			path = GSkeychina;
+			sourceTree = "<group>";
+		};
+		2888C06721A393B700BF61FE /* FSScrollContentViewLib */ = {
+			isa = PBXGroup;
+			children = (
+				2888C06821A393B700BF61FE /* FSPageContentView.h */,
+				2888C06921A393B700BF61FE /* FSPageContentView.m */,
+				2888C06A21A393B700BF61FE /* FSScrollContentView.h */,
+				2888C06B21A393B700BF61FE /* FSSegmentTitleView.h */,
+				2888C06C21A393B700BF61FE /* FSSegmentTitleView.m */,
+			);
+			path = FSScrollContentViewLib;
+			sourceTree = "<group>";
+		};
+		2888C07221A3A81800BF61FE /* wodefangchan */ = {
+			isa = PBXGroup;
+			children = (
+				2888C07321A3A84000BF61FE /* myhouseTableViewCell.h */,
+				2888C07421A3A84000BF61FE /* myhouseTableViewCell.m */,
+				2888C07621A3A85E00BF61FE /* myhousemodel.h */,
+				2888C07721A3A85E00BF61FE /* myhousemodel.m */,
+			);
+			path = wodefangchan;
 			sourceTree = "<group>";
 		};
 		2889D319200C953700904B85 /* PlaceHolderView */ = {
@@ -3271,6 +3312,7 @@
 		28FE4CCE1FBFBEFA00C0A277 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				2888C07221A3A81800BF61FE /* wodefangchan */,
 				28321038213EB845007EA72A /* newjiaofeicell */,
 				28E96D7E20BB9201007E353B /* xianshiqianggoucell */,
 				2870F35F206E27A100BAA5E2 /* facepayjilucell */,
@@ -3619,6 +3661,7 @@
 				28357ADC20B8311700AB1864 /* yonghuxieyiwebViewController.m in Sources */,
 				282805A1219AD72500B0DD7D /* FLAnimatedImageView.m in Sources */,
 				282805B7219AD72500B0DD7D /* UIButton+WebCache.m in Sources */,
+				2888C07821A3A85E00BF61FE /* myhousemodel.m in Sources */,
 				2843230C1FC8074500472C05 /* PurchaseCarAnimationTool.m in Sources */,
 				285DED741FD2537800B0812F /* MJRefreshNormalHeader.m in Sources */,
 				2834F976213BA3B00068DE75 /* wuyeqianfeiViewController.m in Sources */,
@@ -3703,6 +3746,7 @@
 				28AA2D232019C49400EF582A /* shangpinpingjiaTableViewCell.m in Sources */,
 				2846A7402000B676003C3B78 /* youhuiquanxiangqingViewController.m in Sources */,
 				282805C1219AD72500B0DD7D /* DALabeledCircularProgressView.m in Sources */,
+				2888C07521A3A84000BF61FE /* myhouseTableViewCell.m in Sources */,
 				285DED711FD2537800B0812F /* MJRefreshBackNormalFooter.m in Sources */,
 				282805AA219AD72500B0DD7D /* SDWebImageCoder.m in Sources */,
 				28A83CBB205F4634009ED444 /* UIView+HXExtension.m in Sources */,
@@ -3714,6 +3758,7 @@
 				28280650219ADEE300B0DD7D /* FSActionSheetCell.m in Sources */,
 				284528921FF78935006F7D3D /* UIView+Frame.m in Sources */,
 				28D759FE20A031770008A07D /* shuduViewController.m in Sources */,
+				2888C06E21A393B700BF61FE /* FSSegmentTitleView.m in Sources */,
 				284F85432064A9BB0068CB0B /* FacePayViewController.m in Sources */,
 				28A83C9B205F4634009ED444 /* HXCustomCameraController.m in Sources */,
 				284F854C2064AA760068CB0B /* FacepaysuessViewController.m in Sources */,
@@ -3730,6 +3775,7 @@
 				285DED721FD2537800B0812F /* MJRefreshBackStateFooter.m in Sources */,
 				288EB2B620AEB6D00033C09C /* youxianjiaofeisussessViewController.m in Sources */,
 				28D759FA20A00AF00008A07D /* background.m in Sources */,
+				2869534C219E9CD90081C57D /* fabushoufangViewController.m in Sources */,
 				280E9B3220CC5DF300A32BBF /* xianshiqianggouerjiViewController.m in Sources */,
 				28D75DFA1FBD0E67000BD4A1 /* MainViewController.m in Sources */,
 				285DED6A1FD2537800B0812F /* MJRefreshComponent.m in Sources */,
@@ -3803,6 +3849,7 @@
 				28ADE3432063BA970084BD26 /* jiatingjiaofeijiluViewController.m in Sources */,
 				284323161FC845B000472C05 /* SBCycleScrollView.m in Sources */,
 				28C7411E2065F1CF0018E19F /* xinfangshouceViewController.m in Sources */,
+				28695349219E9CCD0081C57D /* fabuzufangViewController.m in Sources */,
 				287E56F8206A346200252463 /* xinfangshoucemolde.m in Sources */,
 				28FE4CD41FC02A9800C0A277 /* ShangpinshuxiangViewController.m in Sources */,
 				288E8C5820C7528D00F9C862 /* newgonggaoTableViewCell.m in Sources */,
@@ -3818,6 +3865,7 @@
 				28A83C97205F4634009ED444 /* HXAlbumListViewController.m in Sources */,
 				2856EAF71FCFDE2700281543 /* XiaofeijiluViewController.m in Sources */,
 				285371631FC910B100D0376E /* DWQShopModel.m in Sources */,
+				2844EF8921A2B339008595C7 /* myhouseViewController.m in Sources */,
 				283C4201200227F5008CACCE /* yindaoyeViewController.m in Sources */,
 				284D8537212ED0CB00BF8ED2 /* newwuyejiaofeijiluViewController.m in Sources */,
 				28A83C9F205F4634009ED444 /* HXCustomPreviewView.m in Sources */,
@@ -3880,6 +3928,7 @@
 				2880DA522060E2930096E86D /* YBPopupMenu.m in Sources */,
 				288EB2B920AEB6DC0033C09C /* youxianjiaofeijiluViewController.m in Sources */,
 				282805A9219AD72500B0DD7D /* SDImageCacheConfig.m in Sources */,
+				2888C06D21A393B700BF61FE /* FSPageContentView.m in Sources */,
 				28D75DFE1FBD0F7D000BD4A1 /* TabBarViewController.m in Sources */,
 				2828065C219ADFA500B0DD7D /* MBProgressHUD.m in Sources */,
 				28E254862050C41A00CD93F8 /* MenuButton.m in Sources */,
@@ -3917,6 +3966,7 @@
 				282805BB219AD72500B0DD7D /* UIImage+WebP.m in Sources */,
 				285371561FC910B100D0376E /* DWQTableHeaderView.m in Sources */,
 				288BCFD9213FE74C006F2569 /* newsuerViewController.m in Sources */,
+				2888C07121A395B500BF61FE /* ChildViewController.m in Sources */,
 				28855DDB201C759E005B249B /* PYSearchViewController.m in Sources */,
 				28A716CB2062023B0050D446 /* MyhomeViewController.m in Sources */,
 				2828064C219ADEE300B0DD7D /* UIView+XLExtension.m in Sources */,

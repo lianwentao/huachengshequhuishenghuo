@@ -29,6 +29,7 @@
     UITextField *diantextfield;
     
     UILabel *amountlabel;
+
     MBProgressHUD *_HUD;
 }
 
@@ -46,9 +47,10 @@
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionDown)];
     [[self view] addGestureRecognizer:recognizer];
     
+
     [self GeneralButtonAction];
     [self getData];
-    
+
     //[self createtableview];
     // Do any additional setup after loading the view.
 }
@@ -99,7 +101,7 @@
     dict = @{@"room_id":_room_id,@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
     NSString *strurl = [API stringByAppendingString:@"property/getBillByRoom"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
+
         NSLog(@"--%@--%@---%@--%@",strurl,dict,[responseObject objectForKey:@"msg"],responseObject);
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
             wuyeDic = [[responseObject objectForKey:@"data"] objectForKey:@"wuye"];

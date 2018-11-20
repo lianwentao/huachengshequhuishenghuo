@@ -1601,11 +1601,11 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    shangpinliebiaoViewController *liebiao = [[shangpinliebiaoViewController alloc] init];
-    liebiao.id = [[fenleiArr objectAtIndex:indexPath.section-4] objectForKey:@"id"];
-    liebiao.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:liebiao animated:YES];
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    shangpinliebiaoViewController *liebiao = [[shangpinliebiaoViewController alloc] init];
+//    liebiao.id = [[fenleiArr objectAtIndex:indexPath.section-4] objectForKey:@"id"];
+//    liebiao.hidesBottomBarWhenPushed = YES;
+//    [self.navigationController pushViewController:liebiao animated:YES];
 }
 
 - (void)pushgoods:(UIButton *)sender

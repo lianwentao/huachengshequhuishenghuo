@@ -31,7 +31,10 @@
 }
 - (void)click:(UIButton *)sender
 {
-    
+    if (sender.tag == 2) {
+        zushouweituoViewController *zushouweituo = [[zushouweituoViewController alloc] init];
+        [self.navigationController pushViewController:zushouweituo animated:YES];
+    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -46,6 +46,7 @@
 
 #import "rentalhouseViewController.h"
 #import "afteryanzhengViewController.h"
+#import "myhouseViewController.h"
 @interface MainViewController ()<UITableViewDataSource,UITableViewDelegate,UINavigationControllerDelegate,UIAlertViewDelegate>{
     UITableView *_Hometableview;
     NSMutableDictionary *_Datadic;
@@ -240,7 +241,7 @@
     }if (section==1){
         return 1;
     }else{
-        return 6;
+        return 7;
     }
 }
 
@@ -385,6 +386,28 @@
                 backview.backgroundColor = [UIColor whiteColor];
                 [cell.contentView addSubview:backview];
                 
+                NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:@"         我的房产"];
+                NSTextAttachment *attch = [[NSTextAttachment alloc] init];
+                attch.image = [UIImage imageNamed:@"youhuiquan"];
+                attch.bounds = CGRectMake(15, -5, 25, 25);
+                NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
+                [attri insertAttributedString:string atIndex:0];
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, Main_width/2, 59)];
+                label.attributedText = attri;
+                [backview addSubview:label];
+                
+                UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(10, 59, Main_width-30-20, 1)];
+                lineview.backgroundColor = BackColor;
+                [backview addSubview:lineview];
+                
+                UIImageView *youjiantou = [[UIImageView alloc] initWithFrame:CGRectMake((Main_width-30)/3-40+(Main_width-30)/3*2+15, 22.5, 9, 15)];
+                youjiantou.image = [UIImage imageNamed:@"jiantou_you"];
+                [backview addSubview:youjiantou];
+            }if(indexPath.row==3){
+                UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(15, 0, Main_width-30, 60)];
+                backview.backgroundColor = [UIColor whiteColor];
+                [cell.contentView addSubview:backview];
+                
                 NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:@"         我的邻里"];
                 NSTextAttachment *attch = [[NSTextAttachment alloc] init];
                 attch.image = [UIImage imageNamed:@"lingli"];
@@ -416,7 +439,7 @@
                 UIImageView *youjiantou = [[UIImageView alloc] initWithFrame:CGRectMake(labelnum.frame.size.width+labelnum.frame.origin.x+15, 22.5, 9, 15)];
                 youjiantou.image = [UIImage imageNamed:@"jiantou_you"];
                 [backview addSubview:youjiantou];
-            }if(indexPath.row==3){
+            }if(indexPath.row==4){
                 
                 UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(15, 0, Main_width-30, 60)];
                 backview.backgroundColor = [UIColor whiteColor];
@@ -453,7 +476,7 @@
                 UIImageView *youjiantou = [[UIImageView alloc] initWithFrame:CGRectMake(labelnum.frame.size.width+labelnum.frame.origin.x+15, 22.5, 9, 15)];
                 youjiantou.image = [UIImage imageNamed:@"jiantou_you"];
                 [backview addSubview:youjiantou];
-            }if (indexPath.row==4) {
+            }if (indexPath.row==5) {
                 UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(15, 0, Main_width-30, 60)];
                 backview.backgroundColor = [UIColor whiteColor];
                 [cell.contentView addSubview:backview];
@@ -475,7 +498,7 @@
                 UIImageView *youjiantou = [[UIImageView alloc] initWithFrame:CGRectMake((Main_width-30)/3-40+(Main_width-30)/3*2+15, 22.5, 9, 15)];
                 youjiantou.image = [UIImage imageNamed:@"jiantou_you"];
                 [backview addSubview:youjiantou];
-            }if (indexPath.row==5) {
+            }if (indexPath.row==6) {
                 UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(15, 0, Main_width-30, 60)];
                 backview.backgroundColor = [UIColor whiteColor];
                 [cell.contentView addSubview:backview];
@@ -688,14 +711,18 @@
             [self.navigationController pushViewController:youhuiquan animated:YES];
             
         }else if (indexPath.row==2) {
+            myhouseViewController *myhouse = [[myhouseViewController alloc] init];
+            myhouse.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:myhouse animated:YES];
+        }else if (indexPath.row==3) {
             mycircleViewController *mycircle = [[mycircleViewController alloc] init];
             mycircle.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:mycircle animated:YES];
-        }else if (indexPath.row==3){
+        }else if (indexPath.row==4){
             GouwucheViewController *gouwuche = [[GouwucheViewController alloc] init];
             gouwuche.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:gouwuche animated:YES];
-        }else if (indexPath.row==4){
+        }else if (indexPath.row==5){
             XiaofeijiluViewController *xiaofei = [[XiaofeijiluViewController alloc] init];
             xiaofei.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:xiaofei animated:YES];

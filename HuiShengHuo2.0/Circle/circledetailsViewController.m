@@ -182,6 +182,7 @@
             [MBProgressHUD showToastToView:self.view withText:@"回复内容不能为空"];
         }else{
             [self GeneralButtonAction];
+            [self post1];
             //[_TextView resignFirstResponder];
             [_TextView endEditing:YES];
         }
@@ -204,8 +205,8 @@
     //显示对话框
     [_HUD showAnimated:YES whileExecutingBlock:^{
         //对话框显示时需要执行的操作
-        [self post1];
-        //sleep(2);
+        
+        sleep(2);
     }// 在HUD被隐藏后的回调
        completionBlock:^{
            //操作执行完后取消对话框
