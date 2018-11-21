@@ -32,6 +32,8 @@
 
     MBProgressHUD *_HUD;
     UIView *nodataview;
+    
+    NSString *jieyustring;
 }
 
 @end
@@ -512,40 +514,92 @@
                 NSLog(@"failure--%@",error);
             }];
         }else{
+            NSString *jieyu;
             NSString *type;
             NSString *amount;
             NSString *type_cn;
+            
             if (_tmpBtn.tag == 1) {
+                jieyu = [NSString stringWithFormat:@"%@",[[shuifeiDic objectForKey:@"info"] objectForKey:@"SMay_acc"]];
                 type = @"36864";
                 amount = shuitextfield.text;
                 type_cn = [shuifeiDic objectForKey:@"type_cn"];
+                
+                float j = [shuitextfield.text floatValue];
+                float i = [jieyu floatValue] + j;
+                float shengyu = 300 - [jieyu floatValue];
+                
+                if (shuitextfield.text.length == 0) {
+                    [MBProgressHUD showToastToView:self.view withText:@"请输入缴费金额"];
+                }else if (j<=0) {
+                    [MBProgressHUD showToastToView:self.view withText:@"金额必须大于0"];
+                }else if (i>300){
+                    [MBProgressHUD showToastToView:self.view withText:[NSString stringWithFormat:@"您剩余缴费金额上限为:%.2f元",shengyu]];
+                } else{
+                    //1.创建会话管理者
+                    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+                    //2.封装参数
+                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"type":type,@"type_cn":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+                    NSString *strurl = [API stringByAppendingString:@"property/create_order"];
+                    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                        NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
+                        //_Dic = [[NSMutableDictionary alloc] init];
+                        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                            newsuerViewController *newsuer = [[newsuerViewController alloc] init];
+                            newsuer.DataDic = [responseObject objectForKey:@"data"];
+                            newsuer.biaoshi = @"2";
+                            [self.navigationController pushViewController:newsuer animated:YES];
+                        }else{
+                            
+                        }
+                    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                        NSLog(@"failure--%@",error);
+                    }];
+                }
             }else{
+                jieyu = [NSString stringWithFormat:@"%@",[[dianfeiDic objectForKey:@"info"] objectForKey:@"DMay_acc"]];
                 type = @"36865";
                 amount = diantextfield.text;
                 amount = diantextfield.text;
                 type_cn = [dianfeiDic objectForKey:@"type_cn"];
-            }
-            //1.创建会话管理者
-            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-            //2.封装参数
-            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-            NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"type":type,@"type_cn":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-            NSString *strurl = [API stringByAppendingString:@"property/create_order"];
-            [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
-                //_Dic = [[NSMutableDictionary alloc] init];
-                if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-                    newsuerViewController *newsuer = [[newsuerViewController alloc] init];
-                    newsuer.DataDic = [responseObject objectForKey:@"data"];
-                    newsuer.biaoshi = @"2";
-                    [self.navigationController pushViewController:newsuer animated:YES];
-                }else{
-                    
+                
+                
+                float j = [diantextfield.text floatValue];
+                float i = [jieyu floatValue] + j;
+                float shengyu = 300 - [jieyu floatValue];
+                
+                if (diantextfield.text.length == 0) {
+                    [MBProgressHUD showToastToView:self.view withText:@"请输入缴费金额"];
+                }else if (j<=0) {
+                    [MBProgressHUD showToastToView:self.view withText:@"金额必须大于0"];
+                }else if (i>300){
+                    [MBProgressHUD showToastToView:self.view withText:[NSString stringWithFormat:@"您剩余缴费金额上限为:%.2f元",shengyu]];
+                } else{
+                    //1.创建会话管理者
+                    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+                    //2.封装参数
+                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"type":type,@"type_cn":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+                    NSString *strurl = [API stringByAppendingString:@"property/create_order"];
+                    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                        NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
+                        //_Dic = [[NSMutableDictionary alloc] init];
+                        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                            newsuerViewController *newsuer = [[newsuerViewController alloc] init];
+                            newsuer.DataDic = [responseObject objectForKey:@"data"];
+                            newsuer.biaoshi = @"2";
+                            [self.navigationController pushViewController:newsuer animated:YES];
+                        }else{
+                            
+                        }
+                    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                        NSLog(@"failure--%@",error);
+                    }];
                 }
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                NSLog(@"failure--%@",error);
-            }];
+            }
         }
     }
 }
