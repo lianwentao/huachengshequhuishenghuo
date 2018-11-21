@@ -256,7 +256,11 @@
     }else if (indexPath.section==1){
         return 85;
     }else{
-        return 60;
+        if (indexPath.row==2) {
+            return 0;
+        }else{
+           return 60;
+        }
     }
 }
 //headview的高度和内容
@@ -382,27 +386,27 @@
                 youjiantou.image = [UIImage imageNamed:@"jiantou_you"];
                 [backview addSubview:youjiantou];
             }if(indexPath.row==2){
-                UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(15, 0, Main_width-30, 60)];
-                backview.backgroundColor = [UIColor whiteColor];
-                [cell.contentView addSubview:backview];
-                
-                NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:@"         我的房产"];
-                NSTextAttachment *attch = [[NSTextAttachment alloc] init];
-                attch.image = [UIImage imageNamed:@"youhuiquan"];
-                attch.bounds = CGRectMake(15, -5, 25, 25);
-                NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
-                [attri insertAttributedString:string atIndex:0];
-                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, Main_width/2, 59)];
-                label.attributedText = attri;
-                [backview addSubview:label];
-                
-                UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(10, 59, Main_width-30-20, 1)];
-                lineview.backgroundColor = BackColor;
-                [backview addSubview:lineview];
-                
-                UIImageView *youjiantou = [[UIImageView alloc] initWithFrame:CGRectMake((Main_width-30)/3-40+(Main_width-30)/3*2+15, 22.5, 9, 15)];
-                youjiantou.image = [UIImage imageNamed:@"jiantou_you"];
-                [backview addSubview:youjiantou];
+//                UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(15, 0, Main_width-30, 60)];
+//                backview.backgroundColor = [UIColor whiteColor];
+//                [cell.contentView addSubview:backview];
+//
+//                NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:@"         我的房产"];
+//                NSTextAttachment *attch = [[NSTextAttachment alloc] init];
+//                attch.image = [UIImage imageNamed:@"youhuiquan"];
+//                attch.bounds = CGRectMake(15, -5, 25, 25);
+//                NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
+//                [attri insertAttributedString:string atIndex:0];
+//                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, Main_width/2, 59)];
+//                label.attributedText = attri;
+//                [backview addSubview:label];
+//
+//                UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(10, 59, Main_width-30-20, 1)];
+//                lineview.backgroundColor = BackColor;
+//                [backview addSubview:lineview];
+//
+//                UIImageView *youjiantou = [[UIImageView alloc] initWithFrame:CGRectMake((Main_width-30)/3-40+(Main_width-30)/3*2+15, 22.5, 9, 15)];
+//                youjiantou.image = [UIImage imageNamed:@"jiantou_you"];
+//                [backview addSubview:youjiantou];
             }if(indexPath.row==3){
                 UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(15, 0, Main_width-30, 60)];
                 backview.backgroundColor = [UIColor whiteColor];
@@ -912,9 +916,9 @@
         [self.navigationController pushViewController:jiaofei animated:YES];
     }else if (sender.tag==2){
         //服务订单，还未开放
-        rentalhouseViewController *rentalhouse = [[rentalhouseViewController alloc] init];
-        rentalhouse.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:rentalhouse animated:YES];
+//        rentalhouseViewController *rentalhouse = [[rentalhouseViewController alloc] init];
+//        rentalhouse.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:rentalhouse animated:YES];
     }else if (sender.tag==1){
         fuwudingdanViewController *fuwudingdan = [[fuwudingdanViewController alloc] init];
         fuwudingdan.hidesBottomBarWhenPushed = YES;

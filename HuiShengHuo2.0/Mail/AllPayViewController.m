@@ -17,6 +17,7 @@
 #import "fuwudingdanViewController.h"
 #import "GouwucheViewController.h"
 #import "UIViewController+BackButtonHandler.h"
+
 #import "BestpaySDK.h"
 #import "BestpayNativeModel.h"
 #import "MD5.h"
@@ -30,6 +31,7 @@
 #import "shuidianfeiViewController.h"
 #import "youxianjiaofeiViewController.h"
 #import "youxianjiaofeijiluViewController.h"
+#import "newwuyejiaofeijiluViewController.h"
 #define kScreen_Height   ([UIScreen mainScreen].bounds.size.height)
 #define kScreen_Width    ([UIScreen mainScreen].bounds.size.width)
 #import "PrefixHeader.pch"
@@ -63,13 +65,13 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self post];
     
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backBtn setTitle:@"返回" forState:UIControlStateNormal];
-    [backBtn addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-    backBtn.frame = CGRectMake(0, 0, 60, 40);
-    [backBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithCustomView:backBtn];
-    self.navigationItem.leftBarButtonItem = item;
+//    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [backBtn setTitle:@"返回" forState:UIControlStateNormal];
+//    [backBtn addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+//    backBtn.frame = CGRectMake(0, 0, 60, 40);
+//    [backBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithCustomView:backBtn];
+//    self.navigationItem.leftBarButtonItem = item;
 }
 #pragma mark ------联网请求---
 -(void)post{
@@ -107,6 +109,11 @@
         
     }];
 }
+-(BOOL)navigationShouldPopOnBackButton {
+    [self backBtnClicked];
+    
+    return YES;
+}
 - (void)backBtnClicked
 {
     UIAlertController*alert = [UIAlertController
@@ -123,6 +130,7 @@
                       actionWithTitle:@"确定"
                       style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
                       {
+                          [self chevsuess];
                           if ([_rukoubiaoshi isEqualToString:@"jiatingzhangdan"]) {
                               //shuidianfei
                               [self.navigationController popViewControllerAnimated:YES];
@@ -220,7 +228,7 @@
         }
         [self.navigationController pushViewController:fuwu animated:YES];
     }else if ([_type isEqualToString:@"2"]){
-        jiatingjiaofeijiluViewController *jilu = [[jiatingjiaofeijiluViewController alloc] init];
+        newwuyejiaofeijiluViewController *jilu = [[newwuyejiaofeijiluViewController alloc] init];
         [self.navigationController pushViewController:jilu animated:YES];
         //
     }else if ([_type isEqualToString:@"facepay"]){
@@ -255,7 +263,7 @@
         }
         [self.navigationController pushViewController:fuwu animated:YES];
     }else if ([_type isEqualToString:@"2"]){
-        jiatingjiaofeijiluViewController *jilu = [[jiatingjiaofeijiluViewController alloc] init];
+        newwuyejiaofeijiluViewController *jilu = [[newwuyejiaofeijiluViewController alloc] init];
         [self.navigationController pushViewController:jilu animated:YES];
     }else if ([_type isEqualToString:@"facepay"]){
         NSLog(@"*********----facepay");
@@ -306,7 +314,7 @@
 {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSLog(@"--type%@",_type);
+    NSLog(@"--type%@--%@",_type,_order_id);
     NSString *type;
     if ([_type isEqualToString:@"2"]) {
         type = @"property";
@@ -319,7 +327,9 @@
     }else{
         type = @"shop";
     }
-    NSDictionary *dict = @{@"id":_order_id,@"type":type,@"prepay":@"0"};
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    //,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]
+    NSDictionary *dict = @{@"id":_order_id,@"type":type,@"prepay":@"0",@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
     NSLog(@"---dict%@",dict);
     NSString *urlstr = [API stringByAppendingString:@"userCenter/confirm_order_payment"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -558,8 +568,9 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"id":_order_id,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    NSDictionary *dict = [[NSDictionary alloc] init];
+    dict = @{@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    
     NSString *urlstr;
     if ([_type isEqualToString:@"aciti"]) {
         urlstr = [API stringByAppendingString:@"activity/pay_activity_order/typename/wxpay"];

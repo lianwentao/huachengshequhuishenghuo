@@ -52,13 +52,13 @@
     [LoadingView startAnimating];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(change) name:@"deleteshopid" object:nil];
     
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backBtn setTitle:@"返回" forState:UIControlStateNormal];
-    [backBtn addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-    backBtn.frame = CGRectMake(0, 0, 60, 40);
-    [backBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithCustomView:backBtn];
-    self.navigationItem.leftBarButtonItem = item;
+//    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [backBtn setTitle:@"返回" forState:UIControlStateNormal];
+//    [backBtn addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+//    backBtn.frame = CGRectMake(0, 0, 60, 40);
+//    [backBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithCustomView:backBtn];
+//    self.navigationItem.leftBarButtonItem = item;
     // Do any additional setup after loading the view.
 }
 - (void)LoadingView
@@ -69,6 +69,11 @@
 - (void)change
 {
     [self post];
+}
+-(BOOL)navigationShouldPopOnBackButton {
+    [self backBtnClicked];
+    
+    return YES;
 }
 - (BOOL)backBtnClicked{
     

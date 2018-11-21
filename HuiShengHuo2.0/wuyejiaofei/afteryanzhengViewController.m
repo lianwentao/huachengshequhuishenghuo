@@ -34,9 +34,13 @@
     [self createrightbutton];
     
     [self getData];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(change) name:@"shuaxinmyhome" object:nil];
     // Do any additional setup after loading the view.
 }
-
+- (void)change
+{
+    [self getData];
+}
 - (void)getData
 {
     //1.创建会话管理者

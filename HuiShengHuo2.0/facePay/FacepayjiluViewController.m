@@ -35,14 +35,19 @@
     
     [self createUI];
     [self getData];
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backBtn setTitle:@"返回" forState:UIControlStateNormal];
-    [backBtn addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-    backBtn.frame = CGRectMake(0, 0, 60, 40);
-    [backBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithCustomView:backBtn];
-    self.navigationItem.leftBarButtonItem = item;
+//    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [backBtn setTitle:@"返回" forState:UIControlStateNormal];
+//    [backBtn addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+//    backBtn.frame = CGRectMake(0, 0, 60, 40);
+//    [backBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithCustomView:backBtn];
+//    self.navigationItem.leftBarButtonItem = item;
     // Do any additional setup after loading the view.
+}
+-(BOOL)navigationShouldPopOnBackButton {
+    [self backBtnClicked];
+    
+    return NO;
 }
 - (void)backBtnClicked{
     for (UIViewController *controller in self.navigationController.viewControllers) {

@@ -93,8 +93,13 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    return 350;
+    NSArray *arr = [[_DataArr objectAtIndex:indexPath.row] objectForKey:@"list"];
+    long j=arr.count;
+    for (int i = 0; i<arr.count; i++) {
+        NSArray *arrlist = [arr objectAtIndex:indexPath.row];
+        j = arrlist.count+j;
+    }
+    return 180+35*j;
     
 }
 // 分组的数量

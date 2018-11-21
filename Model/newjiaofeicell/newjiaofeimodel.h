@@ -14,6 +14,9 @@
 @property (nonatomic,copy)NSString *zhangdanhao;
 @property (nonatomic,copy)NSString *name;
 @property (nonatomic,copy)NSString *address;
+@property (nonatomic,copy)NSString *sumvalue;
 @property (nonatomic,strong)NSArray *listarr;
+
+
 
 @end

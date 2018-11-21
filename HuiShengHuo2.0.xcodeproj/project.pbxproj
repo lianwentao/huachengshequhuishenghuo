@@ -383,6 +383,7 @@
 		28BD21E01FF0AB540028CD2A /* danyuanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD21DF1FF0AB540028CD2A /* danyuanViewController.m */; };
 		28BD21E31FF0AB760028CD2A /* roomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD21E21FF0AB760028CD2A /* roomViewController.m */; };
 		28BD21E61FF0FA8F0028CD2A /* yanzhengsusessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD21E51FF0FA8F0028CD2A /* yanzhengsusessViewController.m */; };
+		28C15A8721A509FC00BE2EAB /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C15A8621A509FC00BE2EAB /* UIViewController+BackButtonHandler.m */; };
 		28C734D92015DB0600F52289 /* scoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C734D82015DB0600F52289 /* scoreViewController.m */; };
 		28C7411B2065F0950018E19F /* fangkejiluViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C7411A2065F0950018E19F /* fangkejiluViewController.m */; };
 		28C7411E2065F1CF0018E19F /* xinfangshouceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C7411D2065F1CF0018E19F /* xinfangshouceViewController.m */; };
@@ -1231,6 +1232,8 @@
 		28BD21E21FF0AB760028CD2A /* roomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = roomViewController.m; sourceTree = "<group>"; };
 		28BD21E41FF0FA8F0028CD2A /* yanzhengsusessViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = yanzhengsusessViewController.h; sourceTree = "<group>"; };
 		28BD21E51FF0FA8F0028CD2A /* yanzhengsusessViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = yanzhengsusessViewController.m; sourceTree = "<group>"; };
+		28C15A8521A509FC00BE2EAB /* UIViewController+BackButtonHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+BackButtonHandler.h"; sourceTree = "<group>"; };
+		28C15A8621A509FC00BE2EAB /* UIViewController+BackButtonHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+BackButtonHandler.m"; sourceTree = "<group>"; };
 		28C734D72015DB0600F52289 /* scoreViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scoreViewController.h; sourceTree = "<group>"; };
 		28C734D82015DB0600F52289 /* scoreViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = scoreViewController.m; sourceTree = "<group>"; };
 		28C741192065F0950018E19F /* fangkejiluViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fangkejiluViewController.h; sourceTree = "<group>"; };
@@ -3312,6 +3315,8 @@
 		28FE4CCE1FBFBEFA00C0A277 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				28C15A8521A509FC00BE2EAB /* UIViewController+BackButtonHandler.h */,
+				28C15A8621A509FC00BE2EAB /* UIViewController+BackButtonHandler.m */,
 				2888C07221A3A81800BF61FE /* wodefangchan */,
 				28321038213EB845007EA72A /* newjiaofeicell */,
 				28E96D7E20BB9201007E353B /* xianshiqianggoucell */,
@@ -3853,6 +3858,7 @@
 				287E56F8206A346200252463 /* xinfangshoucemolde.m in Sources */,
 				28FE4CD41FC02A9800C0A277 /* ShangpinshuxiangViewController.m in Sources */,
 				288E8C5820C7528D00F9C862 /* newgonggaoTableViewCell.m in Sources */,
+				28C15A8721A509FC00BE2EAB /* UIViewController+BackButtonHandler.m in Sources */,
 				2880DA532060E2930096E86D /* YBPopupMenuPath.m in Sources */,
 				28855DDA201C759E005B249B /* PYSearchSuggestionViewController.m in Sources */,
 				28855DE0201C77DA005B249B /* searchreslutsViewController.m in Sources */,

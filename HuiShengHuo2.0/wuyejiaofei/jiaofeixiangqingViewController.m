@@ -10,7 +10,7 @@
 #import <AFNetworking.h>
 #import "newsuerViewController.h"
 #import "MBProgressHUD+TVAssistant.h"
-@interface jiaofeixiangqingViewController ()<UITextFieldDelegate>
+@interface jiaofeixiangqingViewController ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
 {
     UITableView *_TableView;
     
@@ -31,6 +31,7 @@
     UILabel *amountlabel;
 
     MBProgressHUD *_HUD;
+    UIView *nodataview;
 }
 
 @end
@@ -39,6 +40,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    if ([_biaoshi isEqualToString:@"1"]) {
+        //得到当前视图控制器中的所有控制器
+        NSMutableArray *array = [self.navigationController.viewControllers mutableCopy];
+        //把B从里面删除
+        [array removeObjectAtIndex:2];
+        //把删除后的控制器数组再次赋值
+        [self.navigationController setViewControllers:[array copy] animated:YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"shuaxinmyhome" object:nil userInfo:nil];
+    }
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"缴费";
     
@@ -98,7 +109,7 @@
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
-    dict = @{@"room_id":_room_id,@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    dict = @{@"room_id":_room_id,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
     NSString *strurl = [API stringByAppendingString:@"property/getBillByRoom"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
@@ -125,7 +136,11 @@
     [self.view addSubview:botomview];
     
     amountlabel = [[UILabel alloc] initWithFrame:CGRectMake(12, 12, Main_width/3*2, 30)];
-    amountlabel.text = [NSString stringWithFormat:@"总额:%@元",[wuyeDic objectForKey:@"tot_sumvalue"]];
+    if (![wuyeDic isKindOfClass:[NSDictionary class]]) {
+        amountlabel.text = [NSString stringWithFormat:@"总额:%@元",@"0"];
+    }else{
+        amountlabel.text = [NSString stringWithFormat:@"总额:%@元",[wuyeDic objectForKey:@"tot_sumvalue"]];
+    }
     amountlabel.font = font15;
     amountlabel.textColor = QIColor;
     [botomview addSubview:amountlabel];
@@ -201,7 +216,12 @@
     [shuiview addSubview:shuilabel];
     
     UILabel *shengyushuifei = [[UILabel alloc] initWithFrame:CGRectMake(Main_width/2, 20, Main_width/2-12, 15)];
-    shengyushuifei.text = [NSString stringWithFormat:@"余额：¥%@",[[shuifeiDic objectForKey:@"info"] objectForKey:@"Saccount"]];
+    if (![shuifeiDic isKindOfClass:[NSDictionary class]]) {
+        shengyushuifei.text = [NSString stringWithFormat:@"余额：¥%@",@"0"];
+    }else{
+        shengyushuifei.text = [NSString stringWithFormat:@"余额：¥%@",[[shuifeiDic objectForKey:@"info"] objectForKey:@"Saccount"]];
+    }
+    
     shengyushuifei.font = font15;
     shengyushuifei.textAlignment = NSTextAlignmentRight;
     [shuiview addSubview:shengyushuifei];
@@ -216,7 +236,7 @@
     [shuiview addSubview:labelshuifei];
     
     shuitextfield = [[UITextField alloc] initWithFrame:CGRectMake(80+10, lineview.frame.size.height+lineview.frame.origin.y+16, 180, 40)];
-    shuitextfield.keyboardType = UIKeyboardTypeNumberPad;
+    //shuitextfield.keyboardType = UIKeyboardTypeNumberPad;
     shuitextfield.delegate = self;
     shuitextfield.layer.borderWidth = 1;
     shuitextfield.placeholder = @"请输出充值金额";
@@ -237,7 +257,12 @@
     [dianview addSubview:dianlabel];
     
     UILabel *shengyudianfei = [[UILabel alloc] initWithFrame:CGRectMake(Main_width/2, 20, Main_width/2-12, 15)];
-    shengyudianfei.text = [NSString stringWithFormat:@"余额：¥%@",[[dianfeiDic objectForKey:@"info"] objectForKey:@"Daccount"]];
+    if (![dianfeiDic isKindOfClass:[NSDictionary class]]) {
+        shengyudianfei.text = [NSString stringWithFormat:@"余额：¥%@",@"0"];
+    }else{
+        shengyudianfei.text = [NSString stringWithFormat:@"余额：¥%@",[[dianfeiDic objectForKey:@"info"] objectForKey:@"Daccount"]];
+    }
+    
     shengyudianfei.font = font15;
     shengyudianfei.textAlignment = NSTextAlignmentRight;
     [dianview addSubview:shengyudianfei];
@@ -260,24 +285,111 @@
     diantextfield.layer.borderColor = [UIColor colorWithRed:212/255.0 green:212/255.0 blue:212/255.0 alpha:1].CGColor;
     [dianview addSubview:diantextfield];
     
-    //物业费详情
-    wuyeview = [[UIView alloc] initWithFrame:CGRectMake(0, backview.frame.size.height+backview.frame.origin.y+15, Main_width, 0)];
-    [scrolloview addSubview:wuyeview];
-    
-    NSArray *wuyearr = [wuyeDic objectForKey:@"list"];
-    for (int i = 0; i<wuyearr.count-1; i++) {
-        UILabel *timelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 40*i, Main_width*3/4, 40)];
-        timelabel.text = [NSString stringWithFormat:@"%@/%@",[[[wuyearr objectAtIndex:0] objectAtIndex:i] objectForKey:@"startdate"],[[[wuyearr objectAtIndex:0] objectAtIndex:i] objectForKey:@"enddate"]];
-        timelabel.font = font15;
-        timelabel.textAlignment = NSTextAlignmentLeft;
-        [wuyeview addSubview:timelabel];
+//    //物业费详情
+    if (![wuyeDic isKindOfClass:[NSDictionary class]]) {
+        nodataview = [[UIView alloc] initWithFrame:CGRectMake(0, backview.frame.size.height+backview.frame.origin.y+15, Main_width, 150)];
+        [scrolloview addSubview:nodataview];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((Main_width-100)/2, 10, 100, 100)];
+        imageView.image = [UIImage imageNamed:@"pinglunweikong"];
+        [nodataview addSubview:imageView];
         
-        UILabel *amountlabel = [[UILabel alloc] initWithFrame:CGRectMake(Main_width*3/4, 40*i, Main_width/4, 40)];
-        amountlabel.textAlignment = NSTextAlignmentRight;
-        amountlabel.font = font15;
-        amountlabel.text = [[[wuyearr objectAtIndex:0] objectAtIndex:i] objectForKey:@"sumvalue"];
-        [wuyeview addSubview:amountlabel];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake((Main_width-300)/2, 110, 300, 40)];
+        label.textColor = [UIColor grayColor];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.text = @"暂无数据^_^";
+        [nodataview addSubview:label];
+    }else{
+        NSArray *wuyearr = [wuyeDic objectForKey:@"list"];
+        long j=wuyearr.count;
+        for (int i = 0; i<wuyearr.count; i++) {
+            NSArray *arrlist = [wuyearr objectAtIndex:i];
+            j = arrlist.count+j;
+        }
+        wuyeview = [[UIView alloc] initWithFrame:CGRectMake(0, backview.frame.size.height+backview.frame.origin.y+15, Main_width, j*35)];
+        [scrolloview addSubview:wuyeview];
+        
+        _TableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width, j*35)];
+        _TableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _TableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        _TableView.scrollEnabled = NO;
+        _TableView.delegate = self;
+        _TableView.dataSource = self;
+        
+        [wuyeview addSubview:_TableView];
     }
+}
+#pragma mark - TableView的代理方法
+//cell 的数量
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSArray *wuyearr = [wuyeDic objectForKey:@"list"];
+    NSArray *arr = [wuyearr objectAtIndex:section];
+    return arr.count+1;
+}
+
+// 分组的数量
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    NSArray *wuyearr = [wuyeDic objectForKey:@"list"];
+    return wuyearr.count;
+}
+//headview的高度和内容
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0;
+}
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return @"   ";
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0;
+}
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    return @"  ";
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 35;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIndetifier = @"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndetifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        
+//        cell.userInteractionEnabled = YES;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;    //点击的时候无效果
+    }
+    NSArray *wuyearr = [wuyeDic objectForKey:@"list"];
+    NSArray *arr = [wuyearr objectAtIndex:indexPath.section];
+    if (indexPath.row==0) {
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 35)];
+        label.text = [[arr objectAtIndex:indexPath.row] objectForKey:@"charge_type"];
+        label.font = font18;
+        [cell.contentView addSubview:label];
+    }else{
+        UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width/2, 35)];
+        NSLog(@"%@",[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] class]);
+        if ([[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] isKindOfClass:[NSNull class]]||[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] isEqualToString:@""]) {
+            label1.text = [[arr objectAtIndex:indexPath.row-1] objectForKey:@"bill_time"];
+        }else{
+          label1.text = [NSString stringWithFormat:@"%@/%@",[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"],[[arr objectAtIndex:indexPath.row-1] objectForKey:@"enddate"]];
+        }
+        
+        label1.font = font15;
+        [cell.contentView addSubview:label1];
+        
+        UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(Main_width/2, 0, Main_width/2-10, 35)];
+        label2.font = font15;
+        label2.textAlignment = NSTextAlignmentRight;
+        label2.text = [[arr objectAtIndex:indexPath.row-1] objectForKey:@"sumvalue"];
+        [cell.contentView addSubview:label2];
+    }
+    return cell;
 }
 - (void)textFieldChanged:(UITextField*)textField{
     amountlabel.text = [NSString stringWithFormat:@"总额:%@元",shuitextfield.text];
@@ -328,6 +440,8 @@
         if (_tmpBtn.tag == 1){
             shuiview.hidden = NO;
             dianview.hidden = YES;
+            wuyeview.hidden = YES;
+            nodataview.hidden = YES;
             if ([shuitextfield.text isEqualToString:@""]) {
                 amountlabel.text = [NSString stringWithFormat:@"总额:%@元",@"0"];
             }else{
@@ -336,6 +450,8 @@
         }else if (_tmpBtn.tag == 2){
             shuiview.hidden = YES;
             dianview.hidden = NO;
+            wuyeview.hidden = YES;
+            nodataview.hidden = YES;
             if ([diantextfield.text isEqualToString:@""]) {
                 amountlabel.text = [NSString stringWithFormat:@"总额:%@元",@"0"];
             }else{
@@ -344,32 +460,94 @@
         }else{
             shuiview.hidden = YES;
             dianview.hidden = YES;
-            amountlabel.text = [NSString stringWithFormat:@"总额:%@元",[wuyeDic objectForKey:@"tot_sumvalue"]];
+            wuyeview.hidden = NO;
+            
+            if (![wuyeDic isKindOfClass:[NSDictionary class]]){
+                amountlabel.text = [NSString stringWithFormat:@"总额:%@元",@"0"];
+                nodataview.hidden = NO;
+            }else{
+                amountlabel.text = [NSString stringWithFormat:@"总额:%@元",[wuyeDic objectForKey:@"tot_sumvalue"]];
+            }
+            
         }
     }
 }
 - (void)suer
 {
-    //1.创建会话管理者
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    //2.封装参数
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"type":@"36864",@"type_cn":[shuifeiDic objectForKey:@"type_cn"],@"amount":@"100",@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-    NSString *strurl = [API stringByAppendingString:@"property/create_order"];
-    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
-        //_Dic = [[NSMutableDictionary alloc] init];
-        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-            newsuerViewController *newsuer = [[newsuerViewController alloc] init];
-            [self.navigationController pushViewController:newsuer animated:YES];
-        }else{
+    if (_tmpBtn.tag!=0&&[wuyeDic isKindOfClass:[NSDictionary class]]) {
+        [MBProgressHUD showToastToView:self.view withText:@"请先缴清物业费"];
+    }else{
+        NSString *string = @"";
+        if (_tmpBtn.tag == 0) {
+            NSArray *arr = [wuyeDic objectForKey:@"list"];
             
+            for (int i = 0; i<arr.count; i++) {
+                NSArray *arr1 = [arr objectAtIndex:i];
+                for (int j = 0; j<arr1.count; j++) {
+                    string = [NSString stringWithFormat:@"%@%@",string,[NSString stringWithFormat:@",%@",[[arr1 objectAtIndex:j] objectForKey:@"bill_id"]]];
+                }
+            }
+            NSLog(@"string--%@",[string substringFromIndex:1]);
+            //property/make_property_order
+            //1.创建会话管理者
+            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+            //2.封装参数
+            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
+            NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"bill_id":[string substringFromIndex:1],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+            NSString *strurl = [API stringByAppendingString:@"property/make_property_order"];
+            [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
+                //_Dic = [[NSMutableDictionary alloc] init];
+                if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                    newsuerViewController *newsuer = [[newsuerViewController alloc] init];
+                    newsuer.DataDic = [responseObject objectForKey:@"data"];
+                    newsuer.biaoshi = @"1";
+                    [self.navigationController pushViewController:newsuer animated:YES];
+                }else{
+                    
+                }
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"failure--%@",error);
+            }];
+        }else{
+            NSString *type;
+            NSString *amount;
+            NSString *type_cn;
+            if (_tmpBtn.tag == 1) {
+                type = @"36864";
+                amount = shuitextfield.text;
+                type_cn = [shuifeiDic objectForKey:@"type_cn"];
+            }else{
+                type = @"36865";
+                amount = diantextfield.text;
+                amount = diantextfield.text;
+                type_cn = [dianfeiDic objectForKey:@"type_cn"];
+            }
+            //1.创建会话管理者
+            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+            //2.封装参数
+            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"type":type,@"type_cn":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+            NSString *strurl = [API stringByAppendingString:@"property/create_order"];
+            [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
+                //_Dic = [[NSMutableDictionary alloc] init];
+                if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                    newsuerViewController *newsuer = [[newsuerViewController alloc] init];
+                    newsuer.DataDic = [responseObject objectForKey:@"data"];
+                    newsuer.biaoshi = @"2";
+                    [self.navigationController pushViewController:newsuer animated:YES];
+                }else{
+                    
+                }
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"failure--%@",error);
+            }];
         }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"failure--%@",error);
-    }];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

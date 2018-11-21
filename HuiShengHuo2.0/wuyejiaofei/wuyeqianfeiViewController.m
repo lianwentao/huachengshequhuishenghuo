@@ -8,7 +8,7 @@
 
 #import "wuyeqianfeiViewController.h"
 #import <AFNetworking.h>
-
+#import "MBProgressHUD+TVAssistant.h"
 @interface wuyeqianfeiViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
     UITableView *_TableView;
@@ -18,6 +18,7 @@
     NSDictionary *roominfodic;
     
     NSString *is_available;
+    MBProgressHUD *_HUD;
 }
 
 @end
@@ -27,30 +28,46 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor whiteColor];
     
     
-    UIView *botomview = [[UIView alloc] initWithFrame:CGRectMake(0, Main_Height-55, Main_width, 55)];
-    botomview.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:botomview];
     
-    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(12, 12, Main_width/3*2, 30)];
-    label1.text = @"总额:215.14元";
-    label1.font = font15;
-    label1.textColor = QIColor;
-    [botomview addSubview:label1];
-    
-    UIButton *jiaofeibut = [UIButton buttonWithType:UIButtonTypeCustom];
-    jiaofeibut.frame = CGRectMake(Main_width-50-12, 10, 50, 30);
-    [jiaofeibut setTitle:@"缴费" forState:UIControlStateNormal];
-    jiaofeibut.backgroundColor = [UIColor colorWithRed:255/255.0 green:92/255.0 blue:34/255.0 alpha:1];
-    [jiaofeibut.titleLabel setFont:[UIFont systemFontOfSize:15]];
-    [botomview addSubview:jiaofeibut];
-    
+    [self GeneralButtonAction];
     [self getData];
-    [self createtableview];
+    
     
     self.title = @"缴费";
     // Do any additional setup after loading the view.
+}
+- (void)GeneralButtonAction{
+    
+    
+    
+    
+    //初始化进度框，置于当前的View当中
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:_HUD];
+    
+    //如果设置此属性则当前的view置于后台
+    //_HUD.dimBackground = YES;
+    
+    //设置对话框文字
+    _HUD.labelText = @"加载中,请稍后...";
+    _HUD.labelFont = [UIFont systemFontOfSize:14];
+    //细节文字
+    //_HUD.detailsLabelText = @"请耐心等待";
+    
+    //显示对话框
+    [_HUD showAnimated:YES whileExecutingBlock:^{
+        //对话框显示时需要执行的操作
+        
+        sleep(2);
+    }// 在HUD被隐藏后的回调
+       completionBlock:^{
+           //操作执行完后取消对话框
+           [_HUD removeFromSuperview];
+           _HUD = nil;
+       }];
 }
 - (void)getData
 {
@@ -77,7 +94,7 @@
             shuifeiDic = [[responseObject objectForKey:@"data"] objectForKey:@"shuifei"];
             roominfodic = [[responseObject objectForKey:@"data"] objectForKey:@"room_info"];
             is_available = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"is_available"]];
-            
+            [self createtableview];
 //            [self createUI];
         }
         [_TableView reloadData];
@@ -89,12 +106,34 @@
 
 - (void)createtableview
 {
-    _TableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width, Main_Height)];
+    UIView *botomview = [[UIView alloc] initWithFrame:CGRectMake(0, Main_Height-55, Main_width, 55)];
+    botomview.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:botomview];
+    
+    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(12, 12, Main_width/3*2, 30)];
+    label1.text = @"总额:0元";
+    label1.font = font15;
+    label1.textColor = QIColor;
+    [botomview addSubview:label1];
+    
+    UIButton *jiaofeibut = [UIButton buttonWithType:UIButtonTypeCustom];
+    jiaofeibut.frame = CGRectMake(Main_width-50-12, 10, 50, 30);
+    [jiaofeibut setTitle:@"缴费" forState:UIControlStateNormal];
+    [jiaofeibut addTarget:self action:@selector(jiaofei) forControlEvents:UIControlEventTouchUpInside];
+    jiaofeibut.backgroundColor = [UIColor colorWithRed:255/255.0 green:92/255.0 blue:34/255.0 alpha:1];
+    [jiaofeibut.titleLabel setFont:[UIFont systemFontOfSize:15]];
+    [botomview addSubview:jiaofeibut];
+    
+    _TableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width, Main_Height-55)];
     _TableView.delegate = self;
     _TableView.dataSource = self;
     _TableView.backgroundColor = BackColor;
     _TableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:_TableView];
+}
+- (void)jiaofei
+{
+    [MBProgressHUD showToastToView:self.view withText:@"物业费已结清"];
 }
 #pragma mark - TableView的代理方法
 //cell 的数量

@@ -9,12 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "newjiaofeimodel.h"
 
-@interface newjiaofeiTableViewCell : UITableViewCell
+@interface newjiaofeiTableViewCell : UITableViewCell <UITableViewDelegate,UITableViewDataSource>
+
+@property (nonatomic,strong)UITableView *TableView;
 
 @property (nonatomic,strong)newjiaofeimodel *model;
 
+@property (nonatomic,strong)NSArray *wuyearr;
 @property (nonatomic,strong)UILabel *TimeLabel;
 @property (nonatomic,strong)UILabel *namelabel;
 @property (nonatomic,strong)UILabel *addresslabel;
 @property (nonatomic,strong)UILabel *zhangdanhaolabel;
+@property (nonatomic,strong)UILabel *sumvaluelabel;
 @end

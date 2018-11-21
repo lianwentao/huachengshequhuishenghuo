@@ -49,27 +49,108 @@
     label.font = font15;
     label.text = @"缴费明细:";
     [self.contentView addSubview:label];
+    
+    
 }
 - (void)setModel:(newjiaofeimodel *)model
 {
+    _wuyearr = model.listarr;
     _TimeLabel.text = model.time;
     _namelabel.text = model.name;
     _addresslabel.text = model.address;
     _zhangdanhaolabel.text = model.zhangdanhao;
-    NSLog(@"model_list---------%@--%ld",[[model.listarr objectAtIndex:0] objectAtIndex:0],model.listarr.count);
-    for (int i=0; i<model.listarr.count; i++) {
-        UILabel *typelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, _zhangdanhaolabel.frame.size.height+_zhangdanhaolabel.frame.origin.y+45+i*80, Main_width-20, 15)];
-        typelabel.text = [[[model.listarr objectAtIndex:i] objectAtIndex:0] objectForKey:@"charge_type"];
-        [self.contentView addSubview:typelabel];
-        NSArray *arr = [[NSArray alloc] init];
-        arr = [model.listarr objectAtIndex:i];
-        NSLog(@"arr---%@",arr);
-//        for (int j=0; i<arr.count; j++) {
-//            UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(10, 10+15*j, Main_width-20, 15)];
-//            label2.text = [[arr objectAtIndex:j] objectForKey:@"bill_time"];
-//            [self.contentView addSubview:label2];
-//        }
+    _sumvaluelabel.text = _model.sumvalue;
+
+    
+    long j=model.listarr.count;
+    for (int i = 0; i<model.listarr.count; i++) {
+        NSArray *arrlist = [model.listarr objectAtIndex:i];
+        j = arrlist.count+j;
     }
+    UIView *wuyeview = [[UIView alloc] initWithFrame:CGRectMake(0, _zhangdanhaolabel.frame.size.height+_zhangdanhaolabel.frame.origin.y+15+20, Main_width, j*35)];
+    [self.contentView addSubview:wuyeview];
+    
+    _TableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width, j*35)];
+    _TableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _TableView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    _TableView.scrollEnabled = NO;
+    _TableView.delegate = self;
+    _TableView.dataSource = self;
+    
+    [wuyeview addSubview:_TableView];
+}
+#pragma mark - TableView的代理方法
+//cell 的数量
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    
+    NSArray *arr = [_wuyearr objectAtIndex:section];
+    return arr.count+1;
+}
+
+// 分组的数量
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    
+    return _wuyearr.count;
+}
+//headview的高度和内容
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0;
+}
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return @"   ";
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0;
+}
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    return @"  ";
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 35;
+}
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIndetifier = @"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndetifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        
+        //        cell.userInteractionEnabled = YES;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;    //点击的时候无效果
+    }
+    
+    NSArray *arr = [_wuyearr objectAtIndex:indexPath.section];
+    if (indexPath.row==0) {
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 35)];
+        label.text = [[arr objectAtIndex:indexPath.row] objectForKey:@"charge_type"];
+        label.font = font18;
+        [cell.contentView addSubview:label];
+    }else{
+        UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width/2, 35)];
+        NSLog(@"%@",[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] class]);
+        if ([[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] isKindOfClass:[NSNull class]]||[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] isEqualToString:@""]) {
+            label1.text = [[arr objectAtIndex:indexPath.row-1] objectForKey:@"bill_time"];
+        }else{
+            label1.text = [NSString stringWithFormat:@"%@/%@",[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"],[[arr objectAtIndex:indexPath.row-1] objectForKey:@"enddate"]];
+        }
+        
+        label1.font = font15;
+        [cell.contentView addSubview:label1];
+        
+        UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(Main_width/2, 0, Main_width/2-10, 35)];
+        label2.font = font15;
+        label2.textAlignment = NSTextAlignmentRight;
+        label2.text = [[arr objectAtIndex:indexPath.row-1] objectForKey:@"sumvalue"];
+        [cell.contentView addSubview:label2];
+    }
+    return cell;
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

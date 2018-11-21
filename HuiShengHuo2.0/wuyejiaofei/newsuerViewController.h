@@ -11,9 +11,15 @@
 @interface newsuerViewController : UIViewController
 
 @property (nonatomic,copy)NSString *ordid;
+@property (nonatomic,copy)NSString *ordnum;
 @property (nonatomic,copy)NSString *timevavle;
 @property (nonatomic,copy)NSString *name;
 @property (nonatomic,copy)NSString *address;
-@property (nonatomic,copy)NSString *dingdanhao;
+@property (nonatomic,copy)NSString *samount;
 @property (nonatomic,copy)NSString *type;
+
+@property (nonatomic,copy)NSString *biaoshi;//标识是物业费还是水电费,1标识物业费，2水电费
+
+@property (nonatomic,strong)NSDictionary *DataDic;
+@property (nonatomic,strong)NSArray *listArr;
 @end

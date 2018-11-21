@@ -126,6 +126,7 @@
             }else{
                 jiaofeixiangqingViewController *xiangqing = [[jiaofeixiangqingViewController alloc] init];
                 xiangqing.room_id = room_id;
+                xiangqing.biaoshi = @"1";//1表示删除这个界面
                 [self.navigationController pushViewController:xiangqing animated:YES];
             }
         }else{

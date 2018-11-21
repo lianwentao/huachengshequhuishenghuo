@@ -255,7 +255,8 @@
     }else{
         type = @"shop";
     }
-    NSDictionary *dict = @{@"id":_id,@"type":type,@"prepay":@"0"};
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict = @{@"id":_id,@"type":type,@"prepay":@"0",@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
     NSString *urlstr = [API stringByAppendingString:@"userCenter/confirm_order_payment"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"zhifushifouchenggong--%@--%@--%@",[responseObject objectForKey:@"msg"],responseObject,dict);

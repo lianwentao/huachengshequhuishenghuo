@@ -346,7 +346,7 @@
     }
     
     NSLog(@"---%@",dictlog);
-    NSString *mianmiurllog = [API stringByAppendingString:@"apk/site/free_login"];
+    NSString *mianmiurllog = [API stringByAppendingString:@"site/free_login"];
     [managerlog POST:mianmiurllog parameters:dictlog progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
         NSLog(@"success--%@--%@--%@",[responseObject class],responseObject,[responseObject objectForKey:@"msg"]);
