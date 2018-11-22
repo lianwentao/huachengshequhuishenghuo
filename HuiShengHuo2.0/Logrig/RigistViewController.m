@@ -350,7 +350,7 @@
         NSLog(@"success--%@--%@",[responseObject class],responseObject);
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
             NSLog(@"登录成功");
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"logsusess" object:nil userInfo:nil];
+            
             [MBProgressHUD showToastToView:self.view withText:@"登录成功"];
             //            [LoadingView stopAnimating];
             //            LoadingView.hidden = YES;
@@ -372,6 +372,12 @@
             [defaults setObject:token forKey:@"token"];
             [defaults setObject:tokenSecret forKey:@"tokenSecret"];
             [defaults synchronize];
+            
+            NSString *community = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"community_id"]];
+            if ([community isEqualToString:@"0"]||[community isEqualToString:@""]) {
+                [self gengxinxiaoquid];
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"logsusess" object:nil userInfo:nil];
             [self.presentingViewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
         }else{
             
@@ -380,6 +386,22 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
        
         NSLog(@"failure--%@",error);
+    }];
+}
+//登录成功后，如果小区id为0需要走这个接口
+- (void)gengxinxiaoquid
+{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
+    NSString *strurl = [NSString stringWithFormat:@"%@%@",API,@"site/select_community"];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict = nil;
+    dict = @{@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"],@"community_id":[defaults objectForKey:@"community_id"]};
+    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"---%@",responseObject);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"%@",error);
     }];
 }
 #pragma  mark - textField delegate

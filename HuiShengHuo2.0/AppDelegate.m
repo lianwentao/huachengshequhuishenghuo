@@ -576,6 +576,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"wxlogstatus" object:nil userInfo:statusdcit];
         }else if ([status isEqualToString:@"1"]){
             NSLog(@"登录成功");
+            NSLog(@"----%@",responseObject);
             
             //[MBProgressHUD showToastToView:self.view withText:@"登录成功"];
             //            [LoadingView stopAnimating];
@@ -599,6 +600,11 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             
             [defaults synchronize];
             
+            
+            NSString *community = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"community_id"]];
+            if ([community isEqualToString:@"0"]||[community isEqualToString:@""]) {
+                [self gengxinxiaoquid];
+            }
             NSLog(@"token--%@-%@",[defaults objectForKey:@"token"],[defaults objectForKey:@"tokenSecret"]);
             [[NSNotificationCenter defaultCenter] postNotificationName:@"wxlogstatus1" object:nil userInfo:nil];
             
@@ -608,6 +614,22 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         }
         
         
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"%@",error);
+    }];
+}
+//登录成功后，如果小区id为0需要走这个接口
+- (void)gengxinxiaoquid
+{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
+    NSString *strurl = [NSString stringWithFormat:@"%@%@",API,@"site/select_community"];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict = nil;
+    dict = @{@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"],@"community_id":[defaults objectForKey:@"community_id"]};
+    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"---%@",responseObject);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"%@",error);

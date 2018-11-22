@@ -163,8 +163,9 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"apk_token":uid_username,@"c_id":[defaults objectForKey:@"community_id"],@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+    
+    NSLog(@"token--%@--%@",[defaults objectForKey:@"token"],[defaults objectForKey:@"tokenSecret"]);
+    NSDictionary *dict = @{@"c_id":[defaults objectForKey:@"community_id"],@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
     NSString *strurl = [API stringByAppendingString:@"userCenter/index_40"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         _Datadic = [[NSMutableDictionary alloc] init];
