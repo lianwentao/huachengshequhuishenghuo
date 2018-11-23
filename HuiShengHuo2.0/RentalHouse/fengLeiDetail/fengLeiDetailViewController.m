@@ -44,7 +44,7 @@
     [self customScrollview];
     //添加子控制器
     [self addChildCustomViewController];
-    // 默认点击下标为0的标题按钮
+    // 默认点击下标为1的标题按钮
     [self titleBtnClick:self.titleBtns[1]];
 
 }
@@ -67,25 +67,25 @@
 
 
 #pragma mark - 添加下滑线
-- (void)setupUnderLineView
-{
-    // 获取下标为0的标题按钮
-    UIButton *titleBtn = self.titleBtns[0];
-    UIView *lineView = [[UIView alloc] init];
-    self.lineView = lineView;
-    lineView.backgroundColor = [UIColor greenColor];
-    // 下滑线高度
-    CGFloat lineViewH = 2;
-    CGFloat y = _view.yj_height - lineViewH;
-    lineView.yj_height = lineViewH;
-    lineView.yj_y = y;
-    // 设置下划线的宽度比文本内容宽度大10
-    [titleBtn.titleLabel sizeToFit];
-    lineView.yj_width = titleBtn.titleLabel.yj_width + 2;
-    lineView.yj_centerX = titleBtn.yj_centerX;
-    // 添加到titleView里
-    [_view addSubview:lineView];
-}
+//- (void)setupUnderLineView
+//{
+//    // 获取下标为0的标题按钮
+//    UIButton *titleBtn = self.titleBtns[0];
+//    UIView *lineView = [[UIView alloc] init];
+//    self.lineView = lineView;
+//    lineView.backgroundColor = [UIColor greenColor];
+//    // 下滑线高度
+//    CGFloat lineViewH = 2;
+//    CGFloat y = _view.yj_height - lineViewH;
+//    lineView.yj_height = lineViewH;
+//    lineView.yj_y = y;
+//    // 设置下划线的宽度比文本内容宽度大10
+//    [titleBtn.titleLabel sizeToFit];
+//    lineView.yj_width = titleBtn.titleLabel.yj_width + 2;
+//    lineView.yj_centerX = titleBtn.yj_centerX;
+//    // 添加到titleView里
+//    [_view addSubview:lineView];
+//}
 
 
 
@@ -162,13 +162,13 @@
     self.preBtn = titleBtn;
     NSInteger tag = titleBtn.tag;
     // 2.处理下滑线的移动
-    [UIView animateWithDuration:0.25 animations:^{
-        self.lineView.yj_width = titleBtn.titleLabel.yj_width;
-        self.lineView.yj_centerX = titleBtn.yj_centerX;
-        
-        // 3.修改contentScrollView的便宜量,点击标题按钮的时候显示对应子控制器的view
-        self.contentScrollow.contentOffset = CGPointMake(tag * Main_width, 0);
-    }];
+//    [UIView animateWithDuration:0.25 animations:^{
+//        self.lineView.yj_width = titleBtn.titleLabel.yj_width;
+//        self.lineView.yj_centerX = titleBtn.yj_centerX;
+//
+//        // 3.修改contentScrollView的便宜量,点击标题按钮的时候显示对应子控制器的view
+//        self.contentScrollow.contentOffset = CGPointMake(tag * Main_width, 0);
+//    }];
     
     // 添加子控制器的view
     UIViewController *vc = self.childViewControllers[tag];

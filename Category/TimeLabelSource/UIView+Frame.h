@@ -27,4 +27,21 @@
 
 @property (nonatomic) CGFloat mkRight;
 
+//11.23新加
+/*
+ 分类里只能声明方法，不能声成员变量
+ 在分类声明属性是没有成员变量的，只有getter和setter方法
+ */
+@property CGFloat yj_x;
+// y值
+@property CGFloat yj_y;
+// 宽度
+@property CGFloat yj_width;
+// 高度
+@property CGFloat yj_height;
+// centerX
+@property CGFloat yj_centerX;
+// centerY
+@property CGFloat yj_centerY;
+
 @end

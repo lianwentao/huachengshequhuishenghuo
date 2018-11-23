@@ -917,9 +917,9 @@
         [self.navigationController pushViewController:jiaofei animated:YES];
     }else if (sender.tag==2){
         //服务订单，还未开放
-//        rentalhouseViewController *rentalhouse = [[rentalhouseViewController alloc] init];
-//        rentalhouse.hidesBottomBarWhenPushed = YES;
-//        [self.navigationController pushViewController:rentalhouse animated:YES];
+        rentalhouseViewController *rentalhouse = [[rentalhouseViewController alloc] init];
+        rentalhouse.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:rentalhouse animated:YES];
     }else if (sender.tag==1){
         fuwudingdanViewController *fuwudingdan = [[fuwudingdanViewController alloc] init];
         fuwudingdan.hidesBottomBarWhenPushed = YES;

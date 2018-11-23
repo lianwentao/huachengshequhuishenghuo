@@ -62,8 +62,8 @@
 
     for (int i = 0; i < _images.count; i ++) {
         UIButton *imageButton = (UIButton *)[self viewWithTag:i + 100];
-        [imageButton xr_setButtonImageWithUrl:_images[i]];
-        
+//        [imageButton xr_setButtonImageWithUrl:_images[i]];
+       
     }
     
 }
