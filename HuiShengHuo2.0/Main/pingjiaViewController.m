@@ -41,6 +41,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self createui];
+    
     // Do any additional setup after loading the view.
 }
 - (void)createui{

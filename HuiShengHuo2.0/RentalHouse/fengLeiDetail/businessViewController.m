@@ -9,12 +9,30 @@
 #import "businessViewController.h"
 #import "View+MASAdditions.h"
 //cell 滑动
-#import "HomeNetApi.h"
-#import "HomeImagesModel.h"
-#import "HorScorllView.h"
-@interface businessViewController ()<UITableViewDelegate,UITableViewDataSource,HorScorllViewImageClickDelegate>
-@property (nonatomic,strong)UITableView         *tableView;
+#import "UIImageView+WebCache.h"
+//标签
+#import "KMTagListView.h"
+#import "serviceDetailViewController.h"
 
+#import <AFNetworking.h>
+#import "MBProgressHUD+TVAssistant.h"
+#import "MJRefresh.h"
+#import "UIImageView+WebCache.h"
+#import "VOTagList.h"
+#import "businessVCModel.h"
+#import "serviceModel.h"
+#define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
+@interface businessViewController ()<UITableViewDelegate,UITableViewDataSource>
+{
+    NSInteger pageNum;
+    NSMutableArray *labelArr;
+    NSMutableArray *serviceArr;
+    NSMutableArray *titleArr;
+    NSMutableArray *titleImgArr;
+    NSMutableArray *imgIDArr;
+}
+@property (nonatomic,strong)UITableView         *tableView;
+@property (nonatomic,strong)NSMutableArray         *dataSourceArr;
 @end
 
 @implementation businessViewController
@@ -22,15 +40,56 @@
     NSMutableArray *_homeImageArray;
     NSMutableArray *_homeTitleArray;
     
-    HorScorllView *_horScorllView;
+    businessVCModel *model;
     UILabel *_textLabel;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    [self getData];
     [self createdUI];
-//    [self loadNetworkData];
+}
+- (void)getData{
+    
+    //1.创建会话管理者
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    //2.封装参数
+    NSDictionary *dict = nil;
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":@"2",@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+    NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/institution/merchantList"];
+    [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSLog(@"dataStr = %@",dataStr);
+        
+        NSArray *dataArr = responseObject[@"data"];
+        [_tableView.mj_header endRefreshing];
+        [_tableView.mj_footer endRefreshing];
+        _dataSourceArr = [NSMutableArray array];
+        for (NSDictionary *dic in dataArr) {
+
+            model = [[businessVCModel alloc]initWithDictionary:dic error:NULL];
+            [_dataSourceArr addObject:model];
+        }
+        serviceArr = [NSMutableArray array];
+        for (NSDictionary *serviceDic in model.service) {
+            serviceModel *sModel = [[serviceModel alloc]initWithDictionary:serviceDic error:NULL];
+            [serviceArr addObject:sModel];
+        }
+
+        [_tableView reloadData];
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+   
 }
 -(void)createdUI{
     UIView *topView = [[UIView alloc]init];
@@ -45,7 +104,7 @@
     UIButton *itemBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     itemBtn.layer.cornerRadius = 10.0;
     itemBtn.backgroundColor = [UIColor lightGrayColor];
-    [itemBtn setTitle:@"保洁保洁保洁保洁保洁" forState:UIControlStateNormal];
+    [itemBtn setTitle:@"保洁" forState:UIControlStateNormal];
     [itemBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [topView addSubview:itemBtn];
     [itemBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -62,45 +121,21 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
-     [self loadNetworkData];
     
-    //    WS(ws);
-    //    dataSourceArr = [[NSMutableArray alloc] init];
-    //    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-    //        [ws.tableView.mj_footer endRefreshing];
-    //        pageNum = 1;
-    //        [ws loadData];
-    //
-    //    }];
-    //    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-    //        [ws.tableView.mj_header endRefreshing];
-    //        [ws loadData];
-    //    }];
-    //    [self.tableView.mj_header beginRefreshing];
-}
-
-- (void)loadNetworkData {
-    
-    _homeImageArray = @[].mutableCopy;
-    _homeTitleArray = @[].mutableCopy;
-    
-    HomeNetApi *api = [[HomeNetApi alloc] initWithVid:@""];
-    [api startWithCompletionBlockWithSuccess:^(__kindof YTKBaseRequest * _Nonnull request) {
-        
-        NSLog(@"%@",request.responseObject);
-        for (NSDictionary *dic in request.responseObject[@"result"]) {
-            //            HomeImagesModel *model = [[HomeImagesModel alloc] initWithDataDic:dic];
-            [_homeImageArray addObject:dic[@"path"]];
-            [_homeTitleArray addObject:dic[@"name"]];
-            
-        }
-        
-        _horScorllView.titles = _homeTitleArray;
-        _horScorllView.images = _homeImageArray;
-        
-    } failure:^(__kindof YTKBaseRequest * _Nonnull request) {
+    WS(ws);
+    _dataSourceArr = [[NSMutableArray alloc] init];
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [ws.tableView.mj_footer endRefreshing];
+        pageNum = 1;
+        [ws getData];
         
     }];
+    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        [ws.tableView.mj_header endRefreshing];
+        pageNum = pageNum+1;
+        [ws getData];
+    }];
+    [self.tableView.mj_header beginRefreshing];
 }
 
 
@@ -108,11 +143,11 @@
 //cell 的数量
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 5;
+    return _dataSourceArr.count;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 230;
+    return 280;
 }
 //headview的高度和内容
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -130,17 +165,103 @@
         cell.userInteractionEnabled = YES;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;    //点击的时候无效果
     }
+    businessVCModel *model = _dataSourceArr[indexPath.row];
+    UIImageView *imgView = [[UIImageView alloc]init];
+    imgView.frame = CGRectMake(10, 10, 60, 60);
+    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.logo]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    imgView.layer.cornerRadius = 30;
+    imgView.clipsToBounds = YES;
+
+//    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.head_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    [cell addSubview:imgView];
     
+//    UIButton *imgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    imgBtn.frame = CGRectMake(10, 10, 60, 60);
+//    NSString *iconStr = model.u_img;
+//    if ([iconStr isKindOfClass:[NSString class]]?iconStr:@"") {
+//        [imgBtn xr_setButtonImageWithUrl:iconStr];
+//    }else{
+//        [imgBtn setImage:PlaceHolderImage_Icon forState:UIControlStateNormal];
+//    }
     
-    _horScorllView = [[HorScorllView alloc] initWithFrame:CGRectMake(10, 80, Main_width-60, 100)];
-    _horScorllView.delegate = self;
-    [cell addSubview:_horScorllView];
+    UILabel *titleLab = [[UILabel alloc]init];
+    titleLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, 10, Main_width-20-60-5, 30);
+    titleLab.text = model.name ;
+    titleLab.font = [UIFont systemFontOfSize:17];
+    titleLab.textAlignment = NSTextAlignmentLeft;
+    [cell addSubview:titleLab];
+
     
-    _textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height / 2, [UIScreen mainScreen].bounds.size.width, 30)];
+    labelArr = [NSMutableArray array];
+    for (int i = 0; i < model.category.count; i++) {
+        NSDictionary *dic = model.category[i];
+        NSString *labStr = [dic objectForKey:@"category_cn"];
+        [labelArr addObject:labStr];
+    }
+        VOTagList *tagList = [[VOTagList alloc] initWithTags:labelArr];
+        tagList.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(titleLab.frame), Main_width-20-5-60, 20);
+        tagList.multiLine = YES;
+        tagList.multiSelect = YES;
+        tagList.allowNoSelection = YES;
+        tagList.vertSpacing = 20;
+        tagList.horiSpacing = 10;
+        tagList.selectedTextColor = [UIColor blackColor];
+        tagList.tagBackgroundColor = [UIColor colorWithRed:246/255.0 green:246/255.0 blue:246/255.0 alpha:1];
+        tagList.selectedTagBackgroundColor = [UIColor redColor];
+        tagList.tagCornerRadius = 3;
+        tagList.tagEdge = UIEdgeInsetsMake(2, 2, 2, 2);
+        [cell addSubview:tagList];
     
-    _textLabel.textAlignment = NSTextAlignmentCenter;
-    _textLabel.font = [UIFont systemFontOfSize:18];
-    [cell addSubview:_textLabel];
+    titleImgArr = [NSMutableArray array];
+    for (int i = 0; i < model.service.count; i++) {
+        NSDictionary *dic = model.service[i];
+        NSString *titleImgStr = [dic objectForKey:@"title_img"];
+        [titleImgArr addObject:titleImgStr];
+    }
+    titleArr = [NSMutableArray array];
+    for (int i = 0; i < model.service.count; i++) {
+        NSDictionary *dic = model.service[i];
+        NSString *titleStr = [dic objectForKey:@"title"];
+        [titleArr addObject:titleStr];
+    }
+    imgIDArr = [NSMutableArray array];
+    for (int i = 0;  i < model.service.count; i++) {
+        NSDictionary *dic = model.service[i];
+        NSString *titleStr = [dic objectForKey:@"id"];
+        [imgIDArr addObject:titleStr];
+    }
+    UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 80, Main_width, 180)];
+    backscrollview.contentSize = CGSizeMake((Main_width-40)*titleImgArr.count+16*(titleImgArr.count-1), 180);
+    backscrollview.showsVerticalScrollIndicator = NO;
+    backscrollview.showsHorizontalScrollIndicator = NO;
+    [cell addSubview:backscrollview];
+    for (int i=0; i<titleImgArr.count; i++) {
+        
+//        UIImageView *imgView = [[UIImageView alloc]init];
+//        imgView.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, 150);
+//        [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:titleImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+//         imgView.layer.cornerRadius = 5;
+//        [backscrollview addSubview:imgView];
+        
+        UIButton *imgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        imgBtn.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, 150);
+        NSString *imgStr = [API_img stringByAppendingString:titleImgArr[i]];
+        [imgBtn xr_setButtonImageWithUrl:imgStr];
+        imgBtn.layer.cornerRadius = 5;
+        imgBtn.clipsToBounds = YES;
+        imgBtn.tag = [imgIDArr[i] integerValue]+100;
+        [imgBtn addTarget:self action:@selector(iconImageViewAction:) forControlEvents:UIControlEventTouchUpInside];
+        [backscrollview addSubview:imgBtn];
+        
+        UILabel *titleLab = [[UILabel alloc] init];
+        titleLab.frame = CGRectMake(10+(i*(Main_width-30)), CGRectGetMaxY(imgBtn.frame), Main_width-40, 30);
+        titleLab.text = titleArr[i];
+        titleLab.textAlignment = NSTextAlignmentLeft;
+        titleLab.font = [UIFont systemFontOfSize:18];
+        [backscrollview addSubview:titleLab];
+
+        
+    }
     
     return cell;
 }
@@ -156,6 +277,19 @@
     NSLog(@"你点击的按钮tag值为：%ld",tag);
     
     _textLabel.text = [NSString stringWithFormat:@"你点击的按钮tag值为：%ld",tag];
+    serviceDetailViewController *sfDetailVC = [[serviceDetailViewController alloc] init];
+    //    sfListModel *model = dataSourceArr[indexPath.row];
+    //    sfDetailVC.sfID = model.id;
+    [self.navigationController pushViewController:sfDetailVC animated:YES];
+}
+-(void)iconImageViewAction:(UIButton *)sender{
+    
+//    NSInteger index = sender.tag-100;
+//    serviceDetailViewController *sdVC = [[serviceDetailViewController alloc]init];
+//    sdVC.serviceID = [NSString stringWithFormat:@"%ld",index];
+//    [self.navigationController pushViewController:sdVC animated:YES];
+    
+    NSLog(@"777777");
 }
 
 @end

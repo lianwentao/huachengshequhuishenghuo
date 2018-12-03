@@ -8,8 +8,23 @@
 
 #import "serviceViewController.h"
 #import "View+MASAdditions.h"
+#import "serviceDetailViewController.h"
+
+#import <AFNetworking.h>
+#import "MBProgressHUD+TVAssistant.h"
+#import "MJRefresh.h"
+#import "UIImageView+WebCache.h"
+
+#import "fwListModel.h"
+
+#define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
+
 @interface serviceViewController ()<UITableViewDelegate,UITableViewDataSource>
+{
+     NSInteger pageNum;
+}
 @property (nonatomic,strong)UITableView         *tableView;
+@property (nonatomic,strong)NSMutableArray         *dataSourceArr;
 @end
 
 @implementation serviceViewController
@@ -17,7 +32,63 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
      self.view.backgroundColor = [UIColor whiteColor];
+    [self getData];
     [self createdUI];
+}
+- (void)getData
+{
+//    //1.创建会话管理者
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+//    //2.封装参数
+//    NSDictionary *dict = nil;
+//    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+//    dict = @{@"c_id":[userinfo objectForKey:@"community_id"]};
+//    NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/index/serviceindex"];
+//    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//
+////        NSLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
+//
+//        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+//        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+//        NSLog(@"dataStr = %@",dataStr);
+//
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        NSLog(@"failure--%@",error);
+//    }];
+    
+    //1.创建会话管理者
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    //2.封装参数
+    NSDictionary *dict = nil;
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":@"2",@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+    NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/service/serviceList"];
+    [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSLog(@"dataStr = %@",dataStr);
+        
+        NSArray *dataArr = responseObject[@"data"];
+        [_tableView.mj_header endRefreshing];
+        [_tableView.mj_footer endRefreshing];
+        _dataSourceArr = [NSMutableArray array];
+        for (NSDictionary *dic in dataArr) {
+            
+            fwListModel *model = [[fwListModel alloc]initWithDictionary:dic error:NULL];
+            [_dataSourceArr addObject:model];
+        }
+        
+         [_tableView reloadData];
+        
+
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
 }
 -(void)createdUI{
     UIView *topView = [[UIView alloc]init];
@@ -32,7 +103,7 @@
     UIButton *itemBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     itemBtn.layer.cornerRadius = 10.0;
     itemBtn.backgroundColor = [UIColor lightGrayColor];
-    [itemBtn setTitle:@"保洁保洁保洁保洁保洁" forState:UIControlStateNormal];
+    [itemBtn setTitle:@"保洁" forState:UIControlStateNormal];
     [itemBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [topView addSubview:itemBtn];
     [itemBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -50,30 +121,31 @@
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
     
-//    WS(ws);
-//    dataSourceArr = [[NSMutableArray alloc] init];
-//    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-//        [ws.tableView.mj_footer endRefreshing];
-//        pageNum = 1;
-//        [ws loadData];
-//
-//    }];
-//    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-//        [ws.tableView.mj_header endRefreshing];
-//        [ws loadData];
-//    }];
-//    [self.tableView.mj_header beginRefreshing];
+    WS(ws);
+    _dataSourceArr = [[NSMutableArray alloc] init];
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [ws.tableView.mj_footer endRefreshing];
+        pageNum = 1;
+        [ws getData];
+
+    }];
+    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        [ws.tableView.mj_header endRefreshing];
+         pageNum = pageNum+1;
+        [ws getData];
+    }];
+    [self.tableView.mj_header beginRefreshing];
 }
 
 #pragma mark - TableView的代理方法
 //cell 的数量
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
-    return 10;
+    return _dataSourceArr.count;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 160;
+    return 180;
 }
 //headview的高度和内容
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -92,15 +164,15 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;    //点击的时候无效果
     }
     
-    
+    fwListModel *model = _dataSourceArr[indexPath.row];
     UIImageView *imgView = [[UIImageView alloc]init];
-    imgView.frame = CGRectMake(10, 10,Main_width-20, 120);
-    imgView.backgroundColor = [UIColor colorWithRed:240/255.0 green:106/255.0 blue:157/255.0 alpha:1];
+    imgView.frame = CGRectMake(10, 10,Main_width-20, 140);
+    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.title_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
     [cell addSubview:imgView];
     
     UILabel *titleLab = [[UILabel alloc]init];
     titleLab.frame = CGRectMake(10, CGRectGetMaxY(imgView.frame),Main_width/2-10, 30);
-    titleLab.text = @"家用地暖清洗服务";
+    titleLab.text = model.title;
     titleLab.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
     titleLab.font = [UIFont systemFontOfSize:15];
     titleLab.numberOfLines = 2;
@@ -109,7 +181,7 @@
     
     UILabel *priceLab = [[UILabel alloc]init];
     priceLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame), CGRectGetMaxY(imgView.frame), Main_width/2-10, 30);
-    priceLab.text = @"￥60";
+    priceLab.text = [NSString stringWithFormat:@"￥%@",model.price];
     priceLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
     priceLab.font = [UIFont systemFontOfSize:15];
     priceLab.textAlignment = NSTextAlignmentRight;
@@ -120,10 +192,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    shouFangDetailViewController *sfDetailVC = [[shouFangDetailViewController alloc] init];
-//    sfListModel *model = dataSourceArr[indexPath.row];
-//    sfDetailVC.sfID = model.id;
-//    [self.navigationController pushViewController:sfDetailVC animated:YES];
+    serviceDetailViewController *sfDetailVC = [[serviceDetailViewController alloc] init];
+    fwListModel *model = _dataSourceArr[indexPath.row];
+    sfDetailVC.serviceID = model.id;
+    [self.navigationController pushViewController:sfDetailVC animated:YES];
 }
 
 @end

@@ -36,6 +36,20 @@
     }
     return _titleBtns;
 }
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadTableView) name:@"PostSuccess" object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadTableView) name:@"PostSuccess" object:nil];
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -46,9 +60,17 @@
     [self addChildCustomViewController];
     // 默认点击下标为1的标题按钮
     [self titleBtnClick:self.titleBtns[1]];
-
+    
 }
-
+-(void)loadTableView{
+    
+    [self setupTitleView];
+    [self customScrollview];
+    //添加子控制器
+    [self addChildCustomViewController];
+    // 默认点击下标为0的标题按钮
+    [self titleBtnClick:self.titleBtns[0]];
+}
 - (void)setupTitleView{
     
     
@@ -86,9 +108,6 @@
 //    // 添加到titleView里
 //    [_view addSubview:lineView];
 //}
-
-
-
 
 - (void)customScrollview{
     
@@ -151,24 +170,19 @@
     
     isClick = YES;
     
-    //    // 判断标题按钮是否重复点击
-    //    if (titleBtn == self.preBtn) {
-    //        // 重复点击标题按钮，发送通知给帖子控制器，告诉它刷新数据
-    //        [[NSNotificationCenter defaultCenter] postNotificationName:@"titleBtnRefreshClick" object:nil];
-    //    }
     // 1.标题按钮点击三步曲
     self.preBtn.selected = NO;
     titleBtn.selected = YES;
     self.preBtn = titleBtn;
     NSInteger tag = titleBtn.tag;
     // 2.处理下滑线的移动
-//    [UIView animateWithDuration:0.25 animations:^{
-//        self.lineView.yj_width = titleBtn.titleLabel.yj_width;
-//        self.lineView.yj_centerX = titleBtn.yj_centerX;
-//
-//        // 3.修改contentScrollView的便宜量,点击标题按钮的时候显示对应子控制器的view
-//        self.contentScrollow.contentOffset = CGPointMake(tag * Main_width, 0);
-//    }];
+    [UIView animateWithDuration:0.25 animations:^{
+        self.lineView.yj_width = titleBtn.titleLabel.yj_width;
+        self.lineView.yj_centerX = titleBtn.yj_centerX;
+
+        // 3.修改contentScrollView的便宜量,点击标题按钮的时候显示对应子控制器的view
+        self.contentScrollow.contentOffset = CGPointMake(tag * Main_width, 0);
+    }];
     
     // 添加子控制器的view
     UIViewController *vc = self.childViewControllers[tag];
@@ -178,9 +192,6 @@
     }
     vc.view.frame = CGRectMake(tag * Main_width, 0 , Main_width, Main_Height - 64);
     [self.contentScrollow addSubview:vc.view];
-    
-    
-    
 }
 
 
