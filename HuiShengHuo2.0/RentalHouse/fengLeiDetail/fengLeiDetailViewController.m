@@ -66,27 +66,6 @@
 }
 
 
-#pragma mark - 添加下滑线
-//- (void)setupUnderLineView
-//{
-//    // 获取下标为0的标题按钮
-//    UIButton *titleBtn = self.titleBtns[0];
-//    UIView *lineView = [[UIView alloc] init];
-//    self.lineView = lineView;
-//    lineView.backgroundColor = [UIColor greenColor];
-//    // 下滑线高度
-//    CGFloat lineViewH = 2;
-//    CGFloat y = _view.yj_height - lineViewH;
-//    lineView.yj_height = lineViewH;
-//    lineView.yj_y = y;
-//    // 设置下划线的宽度比文本内容宽度大10
-//    [titleBtn.titleLabel sizeToFit];
-//    lineView.yj_width = titleBtn.titleLabel.yj_width + 2;
-//    lineView.yj_centerX = titleBtn.yj_centerX;
-//    // 添加到titleView里
-//    [_view addSubview:lineView];
-//}
-
 
 
 

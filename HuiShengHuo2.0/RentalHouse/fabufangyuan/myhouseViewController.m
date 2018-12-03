@@ -27,9 +27,11 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor whiteColor];
     
-    self.titleView = [[FSSegmentTitleView alloc]initWithFrame:CGRectMake(0, 64, CGRectGetWidth(self.view.bounds), 50) titles:@[@"售房信息",@"租房信息"] delegate:self indicatorType:FSIndicatorTypeEqualTitle];
-    self.titleView.titleSelectFont = [UIFont systemFontOfSize:15];
-    self.titleView.selectIndex = 2;
+    self.titleView = [[FSSegmentTitleView alloc]initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44, CGRectGetWidth(self.view.bounds), 50) titles:@[@"售房信息",@"租房信息"] delegate:self indicatorType:FSIndicatorTypeEqualTitle];
+    self.titleView.titleSelectFont = [UIFont systemFontOfSize:17];
+    self.titleView.backgroundColor = [UIColor colorWithRed:(244)/255.0 green:(247)/255.0 blue:(248)/255.0 alpha:0.54];
+    self.titleView.titleNormalColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.54];
+    self.titleView.selectIndex = 0;
     [self.view addSubview:_titleView];
     
     NSMutableArray *childVCs = [[NSMutableArray alloc]init];
@@ -39,8 +41,8 @@
         vc.house_type = title;
         [childVCs addObject:vc];
     }
-    self.pageContentView = [[FSPageContentView alloc]initWithFrame:CGRectMake(0, 114, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) - 90) childVCs:childVCs parentVC:self delegate:self];
-    self.pageContentView.contentViewCurrentIndex = 2;
+    self.pageContentView = [[FSPageContentView alloc]initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44+50, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) - 90) childVCs:childVCs parentVC:self delegate:self];
+    self.pageContentView.contentViewCurrentIndex = 0;
     //    self.pageContentView.contentViewCanScroll = NO;//设置滑动属性
     [self.view addSubview:_pageContentView];
     

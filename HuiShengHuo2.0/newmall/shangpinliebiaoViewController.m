@@ -41,6 +41,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor whiteColor];
     _pagenum = 1;
     
     [self post];

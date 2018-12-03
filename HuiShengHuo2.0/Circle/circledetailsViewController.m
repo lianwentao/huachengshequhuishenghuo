@@ -161,7 +161,7 @@
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    NSLog(@"点击空白");
+    WBLog(@"点击空白");
     //[_TextView resignFirstResponder];
 }
 //点击空白处的手势要实现的方法

@@ -100,7 +100,7 @@
     [self getcenter];
     [self createui];
     
-    [self wr_setNavBarBarTintColor:BackColor];
+    [self wr_setNavBarBarTintColor:[UIColor whiteColor]];
     [self wr_setNavBarBackgroundAlpha:0];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0]; //清除角标//以上方法在任何地方均可调用，根据自己的需要设定即可。
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(change:) name:@"changetitle" object:nil];
@@ -484,27 +484,27 @@
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSLog(@"success--%@--%@",[responseObject class],responseObject);
-        
-        dataDic = [[NSDictionary alloc] init];
-        dataDic = [responseObject objectForKey:@"data"];
-        
-        xieyiarr = [NSArray array];
-        xieyiarr = [dataDic objectForKey:@"article_list"];
-        tieziarr = [NSArray array];
-        tieziarr = [dataDic objectForKey:@"social_list"];
-        chanpinarr = [NSArray array];
-        chanpinarr = [dataDic objectForKey:@"pro_list"];
-        
-        
-        muluarr = [NSArray array];
-        muluarr = [dataDic objectForKey:@"menu_list"];
-        
-        
-        
+        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+            dataDic = [[NSDictionary alloc] init];
+            dataDic = [responseObject objectForKey:@"data"];
+            
+            xieyiarr = [NSArray array];
+            xieyiarr = [dataDic objectForKey:@"article_list"];
+            tieziarr = [NSArray array];
+            tieziarr = [dataDic objectForKey:@"social_list"];
+            chanpinarr = [NSArray array];
+            chanpinarr = [dataDic objectForKey:@"pro_list"];
+            
+            
+            muluarr = [NSArray array];
+            muluarr = [dataDic objectForKey:@"menu_list"];
+        }else{
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+        }
         [_tableView.mj_header endRefreshing];
         [_tableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
+        [MBProgressHUD showToastToView:self.view withText:@"加载失败"];
         NSLog(@"failure--%@",error);
     }];
 }

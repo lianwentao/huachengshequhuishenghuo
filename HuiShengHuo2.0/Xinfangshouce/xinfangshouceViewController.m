@@ -205,7 +205,7 @@
 //        web.hidesBottomBarWhenPushed = YES;
 //        [self.navigationController pushViewController:web animated:YES];
     }if ([url_type isEqualToString:@"12"]) {
-        self.tabBarController.selectedIndex = 3;
+        self.tabBarController.selectedIndex = 4;
     }if ([url_type isEqualToString:@"13"]) {
         circledetailsViewController *notice = [[circledetailsViewController alloc] init];
         notice.hidesBottomBarWhenPushed = YES;

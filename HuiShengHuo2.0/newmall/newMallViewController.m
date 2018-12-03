@@ -99,7 +99,7 @@
     
     //_tmpBtn.tag=0;
     
-    self.view.backgroundColor = BackColor;
+    self.view.backgroundColor = [UIColor whiteColor];
     [self postcenter];
     [self postshopindex];
     [self postguanggao];
@@ -110,7 +110,7 @@
     //[self.tableView addSubview:self.advView];
     
     [self createui];
-    [self wr_setNavBarBarTintColor:BackColor];
+    [self wr_setNavBarBarTintColor:[UIColor whiteColor]];
     [self wr_setNavBarBackgroundAlpha:0];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(change) name:@"changetitle" object:nil];
@@ -1601,11 +1601,15 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    shangpinliebiaoViewController *liebiao = [[shangpinliebiaoViewController alloc] init];
-//    liebiao.id = [[fenleiArr objectAtIndex:indexPath.section-4] objectForKey:@"id"];
-//    liebiao.hidesBottomBarWhenPushed = YES;
-//    [self.navigationController pushViewController:liebiao animated:YES];
+    if (indexPath.section>3&&indexPath.row==0){
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        shangpinliebiaoViewController *liebiao = [[shangpinliebiaoViewController alloc] init];
+        liebiao.id = [[fenleiArr objectAtIndex:indexPath.section-4] objectForKey:@"id"];
+        liebiao.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:liebiao animated:YES];
+    }else{
+        
+    }
 }
 
 - (void)pushgoods:(UIButton *)sender

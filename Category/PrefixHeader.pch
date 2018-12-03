@@ -10,11 +10,11 @@
 #define PrefixHeader_pch
 
 //正式
-#define API                @"http://m.hui-shenghuo.cn/apk40/"
-#define API_NOAPK          @"http://m.hui-shenghuo.cn"
+//#define API                @"http://m.hui-shenghuo.cn/apk41/"
+//#define API_NOAPK          @"http://m.hui-shenghuo.cn"
 //测试
-//#define API                @"http://test.hui-shenghuo.cn/apk40/"
-//#define API_NOAPK          @"http://test.hui-shenghuo.cn"
+#define API                @"http://test.hui-shenghuo.cn/apk41/"
+#define API_NOAPK          @"http://test.hui-shenghuo.cn"
 
 
 #define API_img                @"http://img.hui-shenghuo.cn/"
@@ -26,6 +26,7 @@
 #define nomalfont    [UIFont systemFontOfSize:16.5]
 #define font18    [UIFont systemFontOfSize:18]
 #define font15    [UIFont systemFontOfSize:15]
+#define Font(x)   [UIFont systemFontOfSize:x]
 //帖子字体
 #define biaotifont    [UIFont systemFontOfSize:16.5]
 
@@ -41,10 +42,20 @@
 
 #define random(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)/255.0]
 
+
 #define randomColor random(arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256))
 //11.23新增
 #import "WB_NetApiMacro.h"
 #import "BaseModel.h"
 #import "UIButton+WebCache.h"
+#import "myserviceViewController.h"
+#import "myservicechildViewController.h"
+#import "FSScrollContentView.h"
+#import <AFNetworking.h>
+#import "MJRefresh.h"
+#import "MBProgressHUD+TVAssistant.h"
+#import "UIImageView+WebCache.h"
+#import "kuodabuttondianjifanwei.h"
+#import "UIColor+ColorHex.h"
 
 #endif /* PrefixHeader_pch */

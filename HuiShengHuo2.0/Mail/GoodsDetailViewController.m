@@ -322,13 +322,18 @@ static NSString * LINKEDME_SHORT_URL;
     NSDictionary *dict = @{@"m_id":[userinfo objectForKey:@"community_id"],@"para_amount":price,@"products":jsonString,@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
     NSString *strurl = [API stringByAppendingString:@"shop/submit_order_before"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSString *status = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"status"]];
+        if ([status isEqualToString:@"1"]) {
+            SuredingdanViewController *sure = [[SuredingdanViewController alloc] init];
+            sure.Dic = [responseObject objectForKey:@"data"];
+            sure.jsonstring = jsonString;
+            [self.navigationController pushViewController:sure animated:YES];
+            
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:@"lijigoumai" object:nil];
+        }else{
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+        }
         
-        SuredingdanViewController *sure = [[SuredingdanViewController alloc] init];
-        sure.Dic = [responseObject objectForKey:@"data"];
-        sure.jsonstring = jsonString;
-        [self.navigationController pushViewController:sure animated:YES];
-        
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"lijigoumai" object:nil];
         //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
         NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

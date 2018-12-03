@@ -10,7 +10,7 @@
 #import "HomeViewController.h"
 #import "MailHomeViewController.h"
 #import "MainViewController.h"
-#import "ServiceViewController.h"
+#import "newserviceViewController.h"
 #import "CircleViewController.h"
 #import "LoginViewController.h"
 #import "MoreViewController.h"
@@ -38,7 +38,7 @@
 {
     UINavigationController *HomeNavigation = [[UINavigationController alloc] initWithRootViewController:[[newhomeViewController alloc] init]];
     UINavigationController *MailNavigation = [[UINavigationController alloc] initWithRootViewController:[[newMallViewController alloc] init]];
-    //UINavigationController *ServiceNavigation = [[UINavigationController alloc] initWithRootViewController:[[ServiceViewController alloc] init]];
+    UINavigationController *ServiceNavigation = [[UINavigationController alloc] initWithRootViewController:[[newserviceViewController alloc] init]];
     UINavigationController *CircleNavigation = [[UINavigationController alloc] initWithRootViewController:[[MoreViewController alloc] init]];
     UINavigationController *MainNavigation = [[UINavigationController alloc] initWithRootViewController:[[MainViewController alloc] init]];
     UINavigationController *LoginNavigation = [[UINavigationController alloc] initWithRootViewController:[[LoginViewController alloc]  init]  ];
@@ -48,8 +48,8 @@
     
     MailNavigation.tabBarItem.image = [[UIImage imageNamed:@"shopdianjiqian"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     MailNavigation.tabBarItem.selectedImage = [[UIImage imageNamed:@"shopdianjihou"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    //ServiceNavigation.tabBarItem.image = [[UIImage imageNamed:@"servicedianjiqian"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    //ServiceNavigation.tabBarItem.selectedImage = [[UIImage imageNamed:@"servicedianjihou"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    ServiceNavigation.tabBarItem.image = [[UIImage imageNamed:@"servicedianjiqian"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    ServiceNavigation.tabBarItem.selectedImage = [[UIImage imageNamed:@"servicedianjihou"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     CircleNavigation.tabBarItem.image = [[UIImage imageNamed:@"socialdianjiqian"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     CircleNavigation.tabBarItem.selectedImage = [[UIImage imageNamed:@"socialdianjihou"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     MainNavigation.tabBarItem.image = [[UIImage imageNamed:@"maindianjiqian"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -57,7 +57,7 @@
     
     HomeNavigation.title = @"首页";
     MailNavigation.title = @"商城";
-    //ServiceNavigation.title = @"服务";
+    ServiceNavigation.title = @"服务";
     CircleNavigation.title = @"邻里";
     MainNavigation.title = @"我的";
     
@@ -66,7 +66,7 @@
     [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName:admincolor} forState:UIControlStateSelected];
     
     //创建一个数组包含个导航栏控制器
-    NSArray *vcArry = [NSArray arrayWithObjects:HomeNavigation,MailNavigation,CircleNavigation,MainNavigation, nil];
+    NSArray *vcArry = [NSArray arrayWithObjects:HomeNavigation,MailNavigation,ServiceNavigation,CircleNavigation,MainNavigation, nil];
   
         self.viewControllers = vcArry;
  

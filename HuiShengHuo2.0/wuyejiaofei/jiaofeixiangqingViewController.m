@@ -62,7 +62,6 @@
     
 
     [self GeneralButtonAction];
-    [self getData];
 
     //[self createtableview];
     // Do any additional setup after loading the view.
@@ -89,47 +88,42 @@
     [_HUD showAnimated:YES whileExecutingBlock:^{
         //对话框显示时需要执行的操作
         
-        sleep(7);
+        wuyeDic = [[NSDictionary alloc] init];
+        dianfeiDic = [[NSDictionary alloc] init];
+        shuifeiDic = [[NSDictionary alloc] init];
+        roominfodic = [[NSDictionary alloc] init];
+        //1.创建会话管理者
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+        //2.封装参数
+        NSDictionary *dict = nil;
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
+        dict = @{@"room_id":_room_id,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+        NSString *strurl = [API stringByAppendingString:@"property/getBillByRoom"];
+        [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            
+            NSLog(@"--%@--%@---%@--%@",strurl,dict,[responseObject objectForKey:@"msg"],responseObject);
+            if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                wuyeDic = [[responseObject objectForKey:@"data"] objectForKey:@"wuye"];
+                dianfeiDic = [[responseObject objectForKey:@"data"] objectForKey:@"dianfei"];
+                shuifeiDic = [[responseObject objectForKey:@"data"] objectForKey:@"shuifei"];
+                roominfodic = [[responseObject objectForKey:@"data"] objectForKey:@"room_info"];
+                is_available = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"is_available"]];
+                
+                [self createUI];
+            }
+            
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"failure--%@",error);
+        }];
     }// 在HUD被隐藏后的回调
        completionBlock:^{
            //操作执行完后取消对话框
            [_HUD removeFromSuperview];
            _HUD = nil;
        }];
-}
-- (void)getData
-{
-    
-    wuyeDic = [[NSDictionary alloc] init];
-    dianfeiDic = [[NSDictionary alloc] init];
-    shuifeiDic = [[NSDictionary alloc] init];
-    roominfodic = [[NSDictionary alloc] init];
-    //1.创建会话管理者
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    //2.封装参数
-    NSDictionary *dict = nil;
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
-    dict = @{@"room_id":_room_id,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-    NSString *strurl = [API stringByAppendingString:@"property/getBillByRoom"];
-    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-
-        NSLog(@"--%@--%@---%@--%@",strurl,dict,[responseObject objectForKey:@"msg"],responseObject);
-        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-            wuyeDic = [[responseObject objectForKey:@"data"] objectForKey:@"wuye"];
-            dianfeiDic = [[responseObject objectForKey:@"data"] objectForKey:@"dianfei"];
-            shuifeiDic = [[responseObject objectForKey:@"data"] objectForKey:@"shuifei"];
-            roominfodic = [[responseObject objectForKey:@"data"] objectForKey:@"room_info"];
-            is_available = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"is_available"]];
-            
-            [self createUI];
-        }
-        
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"failure--%@",error);
-    }];
 }
 - (void)createUI
 {

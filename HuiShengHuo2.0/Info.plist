@@ -96,7 +96,7 @@
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>蓝牙开门功能需要需要使用您的蓝牙</string>
 	<key>NSCameraUsageDescription</key>
-	<string>设置头像，发帖等服务中需要使用您的相机</string>
+	<string>设置头像，发帖，扫描二维码等服务中需要使用您的相机</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>选择小区服务需要使用您的定位权限</string>
 	<key>NSMicrophoneUsageDescription</key>
