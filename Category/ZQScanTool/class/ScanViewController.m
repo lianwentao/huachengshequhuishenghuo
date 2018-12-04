@@ -11,6 +11,7 @@
 #import "ScanViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h> //声音提示
+#import "AllPayViewController.h"
 //#import "ScanResultViewController.h"
 
 
@@ -146,7 +147,18 @@
         
         //输出扫描字符串
         NSString *data = metadataObject.stringValue;
-        WBLog(@"%@",data);
+        NSData *jsonData = [data dataUsingEncoding:NSUTF8StringEncoding];
+        NSError *err;
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                            options:NSJSONReadingMutableContainers
+                                                              error:&err];
+        WBLog(@"%@--%@--%@",[dic objectForKey:@"o_id"],[dic objectForKey:@"price"],dic);
+        AllPayViewController *allpay = [[AllPayViewController alloc] init];
+        allpay.order_id = [dic objectForKey:@"o_id"];
+        allpay.price = [dic objectForKey:@"price"];
+        allpay.type = @"newservicescan";
+        allpay.rukoubiaoshi = @"scanjiaofei";
+        [self.navigationController pushViewController:allpay animated:YES];
     }
 }
 

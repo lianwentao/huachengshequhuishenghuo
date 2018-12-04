@@ -17,9 +17,10 @@
 #import "fuwudingdanViewController.h"
 #import "GouwucheViewController.h"
 #import "UIViewController+BackButtonHandler.h"
-
+#import "ScanViewController.h"
 #import "BestpaySDK.h"
 #import "BestpayNativeModel.h"
+#import "myserviceViewController.h"
 #import "MD5.h"
 #import <Security/Security.h>
 #import "GoodsDetailViewController.h"
@@ -160,6 +161,15 @@
                                   }
                               }
                               [self chevsuess];
+                          }else if ([_rukoubiaoshi isEqualToString:@"scanjiaofei"]){
+                              NSLog(@"---------扫描付款");
+                              for (UIViewController *controller in self.navigationController.viewControllers) {
+                                  if ([controller isKindOfClass:[ScanViewController class]]) {
+                                      ScanViewController *scan =(ScanViewController *)controller;
+                                      [self.navigationController popToViewController:scan animated:YES];
+                                  }
+                              }
+                              [self chevsuess];
                           } else{
                               UIViewController *viewc = self.navigationController.viewControllers[1];
                               [[NSNotificationCenter defaultCenter] postNotificationName:@"shuaxingouwuche" object:nil userInfo:nil];
@@ -241,6 +251,10 @@
         //        [self.navigationController pushViewController:facesuess animated:YES];
         youxianjiaofeijiluViewController *jilu = [[youxianjiaofeijiluViewController alloc] init];
         [self.navigationController pushViewController:jilu animated:YES];
+    }else if ([_type isEqualToString:@"newservicescan"]){
+        NSLog(@"*********----newservicescan");
+        myserviceViewController *myserve = [[myserviceViewController alloc] init];
+        [self.navigationController pushViewController:myserve animated:YES];
     }else{
         dingdanViewController *dingdan = [[dingdanViewController alloc] init];
         dingdan.but_tag = @"2";
@@ -248,6 +262,47 @@
     }
     [self GeneralButtonAction1];
 }
+- (void)send
+{
+    if ([_type isEqualToString:@"2"]) {
+        if ([_shuidianfei isEqualToString:@"shuidianfei"]) {
+            for (UIViewController *controller in self.navigationController.viewControllers) {
+                if ([controller isKindOfClass:[shuidianfeiViewController class]]) {
+                    shuidianfeiViewController *revise =(shuidianfeiViewController *)controller;
+                    [self.navigationController popToViewController:revise animated:YES];
+                }
+            }
+        }else{
+            for (UIViewController *controller in self.navigationController.viewControllers) {
+                if ([controller isKindOfClass:[jiatingzhangdanViewController class]]) {
+                    jiatingzhangdanViewController *revise =(jiatingzhangdanViewController *)controller;
+                    [self.navigationController popToViewController:revise animated:YES];
+                }
+            }
+        }
+    }else if ([_type isEqualToString:@"aciti"]){
+        
+    }else if ([_type isEqualToString:@"facepay"]){
+        for (UIViewController *controller in self.navigationController.viewControllers) {
+            if ([controller isKindOfClass:[FacePayViewController class]]) {
+                FacePayViewController *revise =(FacePayViewController *)controller;
+                [self.navigationController popToViewController:revise animated:YES];
+            }
+        }
+    }else if ([_type isEqualToString:@"youxianjiaofei"]){
+        for (UIViewController *controller in self.navigationController.viewControllers) {
+            if ([controller isKindOfClass:[youxianjiaofeiViewController class]]) {
+                youxianjiaofeiViewController *revise =(youxianjiaofeiViewController *)controller;
+                [self.navigationController popToViewController:revise animated:YES];
+            }
+        }
+    }else{
+        
+    }
+    [MBProgressHUD showToastToView:self.view withText:@"支付失败"];
+}
+
+
 - (void)alichange:(NSNotification *)user
 {
     NSLog(@"%@",[[user userInfo] objectForKey:@"memo"]);
@@ -277,6 +332,10 @@
         //        [self.navigationController pushViewController:facesuess animated:YES];
         youxianjiaofeijiluViewController *jilu = [[youxianjiaofeijiluViewController alloc] init];
         [self.navigationController pushViewController:jilu animated:YES];
+    }else if ([_type isEqualToString:@"newservicescan"]){
+        NSLog(@"*********----newservicescan");
+        myserviceViewController *myserve = [[myserviceViewController alloc] init];
+        [self.navigationController pushViewController:myserve animated:YES];
     }else{
         dingdanViewController *dingdan = [[dingdanViewController alloc] init];
         dingdan.but_tag = @"2";
@@ -324,6 +383,8 @@
         type = @"face";
     }else if ([_type isEqualToString:@"youxianjiaofei"]){
         type = @"wired";
+    }else if ([_type isEqualToString:@"newservicescan"]){
+        type = @"serve";
     }else{
         type = @"shop";
     }
@@ -345,6 +406,8 @@
                 
             }else if ([_type isEqualToString:@"youxianjiaofei"]){
                 
+            }else if ([_type isEqualToString:@"newservicescan"]){
+                [self postfuwususess];
             }else{
                 [self postsusess];
                 [self postsusess1];
@@ -394,51 +457,30 @@
                 [self.navigationController popToViewController:revise animated:YES];
             }
         }
+    }else if ([_type isEqualToString:@"newservicescan"]){
+        
     }else{
         
     }
     [MBProgressHUD showToastToView:self.view withText:[[user userInfo] objectForKey:@"memo"]];
 }
-- (void)send
-{
-    if ([_type isEqualToString:@"2"]) {
-        if ([_shuidianfei isEqualToString:@"shuidianfei"]) {
-            for (UIViewController *controller in self.navigationController.viewControllers) {
-                if ([controller isKindOfClass:[shuidianfeiViewController class]]) {
-                    shuidianfeiViewController *revise =(shuidianfeiViewController *)controller;
-                    [self.navigationController popToViewController:revise animated:YES];
-                }
-            }
-        }else{
-            for (UIViewController *controller in self.navigationController.viewControllers) {
-                if ([controller isKindOfClass:[jiatingzhangdanViewController class]]) {
-                    jiatingzhangdanViewController *revise =(jiatingzhangdanViewController *)controller;
-                    [self.navigationController popToViewController:revise animated:YES];
-                }
-            }
-        }
-    }else if ([_type isEqualToString:@"aciti"]){
-        
-    }else if ([_type isEqualToString:@"facepay"]){
-        for (UIViewController *controller in self.navigationController.viewControllers) {
-            if ([controller isKindOfClass:[FacePayViewController class]]) {
-                FacePayViewController *revise =(FacePayViewController *)controller;
-                [self.navigationController popToViewController:revise animated:YES];
-            }
-        }
-    }else if ([_type isEqualToString:@"youxianjiaofei"]){
-        for (UIViewController *controller in self.navigationController.viewControllers) {
-            if ([controller isKindOfClass:[youxianjiaofeiViewController class]]) {
-                youxianjiaofeiViewController *revise =(youxianjiaofeiViewController *)controller;
-                [self.navigationController popToViewController:revise animated:YES];
-            }
-        }
-    }else{
-        
-    }
-    [MBProgressHUD showToastToView:self.view withText:@"支付失败"];
-}
 
+
+//判断服务订单成功否
+-(void)postfuwususess
+{
+    //1.创建会话管理者
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    NSDictionary *dict = @{@"id":_order_id};
+    NSString *urlstr = [API stringByAppendingString:@"jpush/service_order_toAmountWorker_push"];
+    [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"fuwuzhifu--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"failure--%@",error);
+    }];
+}
+//判断商城订单成功否
 -(void)postsusess
 {
     //1.创建会话管理者
@@ -458,7 +500,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSDictionary *dict = @{@"oid":_order_id};
-    NSString *urlstr = [API_NOAPK stringByAppendingString:@"distribution/distribution/toDistribution"];
+    NSString *urlstr = [API_NOAPK stringByAppendingString:@"Jpush/distribution_push"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"zhifu1--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -549,6 +591,8 @@
             yikatong.otype = @"dm";
         }else if ([_type isEqualToString:@"youxianjiaofei"]){
             yikatong.otype = @"yx";
+        }else if ([_type isEqualToString:@"newservicescan"]){
+            yikatong.otype = @"se";
         }else{
             yikatong.otype = @"gw";
         }
@@ -579,7 +623,9 @@
     }else if ([_type isEqualToString:@"facepay"]){
         urlstr = [API stringByAppendingString:@"property/pay_face_order/typename/wxpay"];
     }else if ([_type isEqualToString:@"youxianjiaofei"]){
-        urlstr = [API stringByAppendingString:@"property/pay_wired_order/typename/wxpay"];
+        urlstr = [API stringByAppendingString:@"property/pay_wired_order/typename/wxpay/wxpay"];
+    }else if ([_type isEqualToString:@"newservicescan"]){
+        urlstr = [API_NOAPK stringByAppendingString:@"/service/order/pay_service_order"];
     }else{
         urlstr = [API stringByAppendingString:@"userCenter/pay_shopping_order/typename/wxpay"];
     }
@@ -627,6 +673,8 @@
         urlstr = [API stringByAppendingString:@"property/pay_face_order/typename/alipay"];
     }else if ([_type isEqualToString:@"youxianjiaofei"]){
         urlstr = [API stringByAppendingString:@"property/pay_wired_order/typename/alipay"];
+    }else if ([_type isEqualToString:@"newservicescan"]){
+        urlstr = [API_NOAPK stringByAppendingString:@"/service/order/pay_service_order/alipay"];
     }else{
         urlstr = [API stringByAppendingString:@"userCenter/pay_shopping_order/typename/alipay"];
     }
@@ -667,6 +715,8 @@
         urlstr = [API stringByAppendingString:@"property/pay_face_order/typename/bestpay"];
     }else if ([_type isEqualToString:@"youxianjiaofei"]){
         urlstr = [API stringByAppendingString:@"property/pay_wired_order/typename/bestpay"];
+    }else if ([_type isEqualToString:@"newservicescan"]){
+        urlstr = [API_NOAPK stringByAppendingString:@"/service/order/pay_service_order/bestpay"];
     }else{
         urlstr = [API stringByAppendingString:@"userCenter/pay_shopping_order/typename/bestpay"];
     }
@@ -751,6 +801,8 @@
                             [self.navigationController popToViewController:revise animated:YES];
                         }
                     }
+                }else if ([_type isEqualToString:@"newservicescan"]){
+                    //[self.navigationController popToRootViewControllerAnimated:YES];
                 }else{
                     
                 }
@@ -825,6 +877,10 @@
     }else if ([_type isEqualToString:@"youxianjiaofei"]){
         youxianjiaofeijiluViewController *jilu = [[youxianjiaofeijiluViewController alloc] init];
         [self.navigationController pushViewController:jilu animated:YES];
+    }else if ([_type isEqualToString:@"newservicescan"]){
+        NSLog(@"*********----newservicescan");
+        myserviceViewController *myserve = [[myserviceViewController alloc] init];
+        [self.navigationController pushViewController:myserve animated:YES];
     } else{
         dingdanViewController *dingdan = [[dingdanViewController alloc] init];
         dingdan.but_tag = @"2";

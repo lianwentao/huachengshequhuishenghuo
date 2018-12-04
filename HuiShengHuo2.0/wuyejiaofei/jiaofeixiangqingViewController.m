@@ -215,7 +215,7 @@
     if (![shuifeiDic isKindOfClass:[NSDictionary class]]) {
         shengyushuifei.text = [NSString stringWithFormat:@"余额：¥%@",@"0"];
     }else{
-        shengyushuifei.text = [NSString stringWithFormat:@"余额：¥%@",[[shuifeiDic objectForKey:@"info"] objectForKey:@"Saccount"]];
+        shengyushuifei.text = [NSString stringWithFormat:@"余额：¥%@",[[shuifeiDic objectForKey:@"info"] objectForKey:@"SMay_acc"]];
     }
     
     shengyushuifei.font = font15;
@@ -256,7 +256,7 @@
     if (![dianfeiDic isKindOfClass:[NSDictionary class]]) {
         shengyudianfei.text = [NSString stringWithFormat:@"余额：¥%@",@"0"];
     }else{
-        shengyudianfei.text = [NSString stringWithFormat:@"余额：¥%@",[[dianfeiDic objectForKey:@"info"] objectForKey:@"Daccount"]];
+        shengyudianfei.text = [NSString stringWithFormat:@"余额：¥%@",[[dianfeiDic objectForKey:@"info"] objectForKey:@"DMay_acc"]];
     }
     
     shengyudianfei.font = font15;

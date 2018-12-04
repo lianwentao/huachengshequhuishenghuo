@@ -39,7 +39,14 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shauxin) name:@"newquxiaodingdan" object:nil];
     // Do any additional setup after loading the view.
 }
-
+-(BOOL)navigationShouldPopOnBackButton {
+    [self backBtnClicked];
+    
+    return YES;
+}
+- (void)backBtnClicked{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 - (void)shauxin
 {
     //1.创建会话管理者

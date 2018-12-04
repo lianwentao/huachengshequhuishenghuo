@@ -15,6 +15,7 @@
 #define kScreen_Width    ([UIScreen mainScreen].bounds.size.width)
 #import "PrefixHeader.pch"
 #import "jiatingjiaofeijiluViewController.h"
+#import "myserviceViewController.h"
 @interface yikatongViewController ()
 {
     UITextField *_textFieldcard;
@@ -197,6 +198,9 @@
             }else if ([_otype isEqualToString:@"yx"]){
                 youxianjiaofeijiluViewController *jilu = [[youxianjiaofeijiluViewController alloc] init];
                 [self.navigationController pushViewController:jilu animated:YES];
+            }else if ([_otype isEqualToString:@"se"]){
+                myserviceViewController *mtse = [[myserviceViewController alloc] init];
+                [self.navigationController pushViewController:mtse animated:YES];
             }else{
                 [self.navigationController popToRootViewControllerAnimated:YES];
             }
@@ -252,6 +256,8 @@
         type = @"face";
     }else if ([_otype isEqualToString:@"yx"]){
         type = @"wired";
+    }else if ([_otype isEqualToString:@"se"]){
+        type = @"serve";
     }else{
         type = @"shop";
     }
@@ -263,15 +269,41 @@
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
             NSLog(@"监测成--");
             //[[NSNotificationCenter defaultCenter] postNotificationName:@"wuyejiaofeichenggong" object:nil userInfo:nil];
-            [self postsusess];
-            [self postsusess1];
+            if ([_otype isEqualToString:@"wy"]) {
+                
+            }else if ([_otype isEqualToString:@"hd"]){
+                
+            }else if ([_otype isEqualToString:@"dm"]){
+                
+            }else if ([_otype isEqualToString:@"yx"]){
+                
+            }else if ([_otype isEqualToString:@"se"]){
+                [self postfuwususess];
+            }else{
+                [self postsusess];
+                [self postsusess1];
+            }
         }else{
             [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
     }];
+}//判断服务订单成功否
+-(void)postfuwususess
+{
+    //1.创建会话管理者
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    NSDictionary *dict = @{@"id":_id};
+    NSString *urlstr = [API stringByAppendingString:@"jpush/service_order_toAmountWorker_push"];
+    [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"fuwuzhifu--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"failure--%@",error);
+    }];
 }
+//判断商城订单成功否
 -(void)postsusess
 {
     //1.创建会话管理者
@@ -291,7 +323,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSDictionary *dict = @{@"oid":_id};
-    NSString *urlstr = [API_NOAPK stringByAppendingString:@"distribution/distribution/toDistribution/"];
+    NSString *urlstr = [API_NOAPK stringByAppendingString:@"Jpush/distribution_push"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"zhifu1--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
