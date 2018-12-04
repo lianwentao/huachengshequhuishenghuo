@@ -58,6 +58,7 @@
 #import "kuodabuttondianjifanwei.h"
 #import "UIColor+ColorHex.h"
 #import "TooBox.h"
+#import "UIImage+GIF.h"
 
 #define Image1080                @"thumb_1080_1920_"
 #define Image800               @"thumb_800_1280_"

@@ -91,14 +91,31 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     JKBannerCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ID" forIndexPath:indexPath];
-    [cell.imageView sd_setImageWithURL:[NSURL URLWithString:_items[indexPath.row]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
     cell.imageView.userInteractionEnabled = YES;
     cell.imageView.clipsToBounds = YES;
-    cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
-    return cell;
     
+    NSString *datastr = _items[indexPath.row];
+    NSURL *imgeUrl = [NSURL URLWithString:datastr];
+    SDWebImageDownloaderOptions options = 0;
+    
+    NSString *str = [datastr substringFromIndex:datastr.length-3];//字符串结尾
+    if ([str isEqualToString:@"gif"]||[str isEqualToString:@"GIF"]) {
+        WBLog(@"111---%@",str);
+        SDWebImageDownloader *downloader = [SDWebImageDownloader sharedDownloader];
+        [downloader downloadImageWithURL:imgeUrl
+                                 options:options
+                                progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL * _Nullable targetURL) {
+                                    
+                                } completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, BOOL finished) {
+                                    cell.imageView.image = [UIImage sd_animatedGIFWithData:data];
+                                }];
+    }else{
+        WBLog(@"222---%@",str);
+        [cell.imageView sd_setImageWithURL:[NSURL URLWithString:_items[indexPath.row]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+        cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    }
+    return cell;
 }
 
 - (void)setItems:(NSArray *)items{

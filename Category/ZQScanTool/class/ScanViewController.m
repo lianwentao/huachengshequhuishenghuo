@@ -2,8 +2,6 @@
 //  ScanViewController.m
 //  ZQScanViewController
 //
-//  Created by 肖兆强 on 2018/1/26.
-//  Copyright © 2018年 JWZT. All rights reserved.
 //
 
 //屏幕宽度、高度
@@ -146,13 +144,9 @@
 
         AVMetadataMachineReadableCodeObject * metadataObject = [metadataObjects objectAtIndex :0];
         
-//        //输出扫描字符串
-//        NSString *data = metadataObject.stringValue;
-//        ScanResultViewController *resultVC = [[ScanResultViewController alloc] init];
-//        resultVC.title = @"扫描结果";
-//        resultVC.result = data;
-//        [self.navigationController pushViewController:resultVC animated:YES];
-        
+        //输出扫描字符串
+        NSString *data = metadataObject.stringValue;
+        WBLog(@"%@",data);
     }
 }
 
