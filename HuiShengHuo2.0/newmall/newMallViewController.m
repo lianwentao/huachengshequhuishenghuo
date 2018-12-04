@@ -1136,6 +1136,7 @@
                 //[cell.contentView addSubview:morebut];
                 
                 UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(18, 25+8, Main_width-18*2, 212)];
+                
                 backscrollview.contentSize = CGSizeMake(125*pro_discount_listArr.count+16*(pro_discount_listArr.count-1), 212);
                 backscrollview.showsVerticalScrollIndicator = NO;
                 backscrollview.showsHorizontalScrollIndicator = NO;

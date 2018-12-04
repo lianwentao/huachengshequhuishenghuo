@@ -16,6 +16,7 @@
 #import "HalfCircleActivityIndicatorView.h"
 #import "WKWebViewJavascriptBridge.h"
 #import "PrefixHeader.pch"
+#import "activitydetailsViewController.h"
 #define kScreen_Height   ([UIScreen mainScreen].bounds.size.height)
 #define kScreen_Width    ([UIScreen mainScreen].bounds.size.width)
 @interface activitydetailsViewController ()<UITableViewDelegate,UITableViewDataSource,UIWebViewDelegate,WKUIDelegate,WKNavigationDelegate>

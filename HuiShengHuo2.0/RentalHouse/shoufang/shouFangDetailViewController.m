@@ -23,6 +23,7 @@
 #define IMAGE_HEIGHT 0
 #define SCROLL_DOWN_LIMIT 70
 
+#import "XLPhotoBrowser.h"
 #import "sfDetailModel.h"
 #import "tjListModel.h"
 @interface shouFangDetailViewController ()<UITableViewDelegate,UITableViewDataSource,PTLMenuButtonDelegate, KMTagListViewDelegate>
@@ -53,6 +54,7 @@
     [self wr_setNavBarBackgroundAlpha:0];
     
 }
+
 -(void)loadData{
 
     
@@ -173,15 +175,24 @@
         sfDetailModel *model = dataSourceArr[0];
         NSMutableArray *imagearr = [NSMutableArray array];
         bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)) viewSize:CGSizeMake(Main_width,Main_width/(1.87))];
+        
         for (int i=0; i<model.house_img.count; i++) {
-            NSString *strurl = [API_img stringByAppendingString:[[model.house_img objectAtIndex:i]objectForKey:@"house_imgs"]];
-            NSLog(@"%@",strurl);
-            [imagearr addObject:strurl];
+            NSString *strurl = [API_img stringByAppendingString:[[model.house_img objectAtIndex:i]objectForKey:@"path"]];
+            NSString *strurl1 = [strurl stringByAppendingString:Image1080];
+            NSString *strurl2 = [strurl1 stringByAppendingString:[[model.house_img objectAtIndex:i]objectForKey:@"house_imgs_name"]];
+            NSLog(@"strurl = %@",strurl2);
+            [imagearr addObject:strurl2];
             bannerView.items = imagearr;
         }
+        
+        [bannerView imageViewClick:^(JKBannarView * _Nonnull barnerview, NSInteger index) {
+            
+            XLPhotoBrowser *browser = [XLPhotoBrowser showPhotoBrowserWithImages:imagearr currentImageIndex:index];
+            browser.browserStyle = XLPhotoBrowserStylePageControl;
+        }];
+       
          [cell.contentView addSubview:bannerView];
-        [bannerView imageViewClick:^(JKBannarView * _Nonnull barnerview, NSInteger index) {}];
-        cell.backgroundColor = [UIColor greenColor];
+       
     }else if (indexPath.section == 1){
         
         sfDetailModel *model = dataSourceArr[0];

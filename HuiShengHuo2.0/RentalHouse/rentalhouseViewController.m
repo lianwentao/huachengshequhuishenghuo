@@ -11,6 +11,8 @@
 #import "zuFangViewController.h"
 #import "shouFangViewController.h"
 #import "fengLeiDetailViewController.h"
+#import "fuWuFengLeiViewController.h"
+#import "fwflViewController.h"
 @interface rentalhouseViewController ()
 
 @end
@@ -20,7 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    NSArray *arr = @[@"租房",@"售房",@"发布房源",@"服务item"];
+    NSArray *arr = @[@"租房",@"售房",@"发布房源",@"服务item",@"服务分类"];
     for (int i = 0; i < arr.count ; i ++) {
         UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
         but.backgroundColor = QIColor;
@@ -43,8 +45,11 @@
     }else if (sender.tag == 1){
         shouFangViewController *zushouweituo = [[shouFangViewController alloc] init];
         [self.navigationController pushViewController:zushouweituo animated:YES];
-    }else{
+    }else if (sender.tag == 3){
         fengLeiDetailViewController *zushouweituo = [[fengLeiDetailViewController alloc] init];
+        [self.navigationController pushViewController:zushouweituo animated:YES];
+    }else{
+        fwflViewController *zushouweituo = [[fwflViewController alloc] init];
         [self.navigationController pushViewController:zushouweituo animated:YES];
     }
 }

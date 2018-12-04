@@ -51,9 +51,11 @@
    self.view.backgroundColor = [UIColor whiteColor];
     // 设置导航控制器的代理为self
 //    self.navigationController.delegate = self;
-    [self loadData];
+//    [self loadData];
     [self loadData1];
     [self CreateTableview];
+    
+    
     [self createdaohangolan];
     [self shaixuanList];
 //    [self setUpAllView];
@@ -150,7 +152,7 @@
              [dataSourceArr addObject:model];
             
         }
-        
+         [_tableView reloadData];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);

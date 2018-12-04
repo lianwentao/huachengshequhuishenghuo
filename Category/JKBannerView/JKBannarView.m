@@ -94,6 +94,9 @@
     
     JKBannerCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ID" forIndexPath:indexPath];
     [cell.imageView sd_setImageWithURL:[NSURL URLWithString:_items[indexPath.row]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    cell.imageView.userInteractionEnabled = YES;
+    cell.imageView.clipsToBounds = YES;
+    cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
     return cell;
     
 }

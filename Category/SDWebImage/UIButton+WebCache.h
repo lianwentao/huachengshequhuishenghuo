@@ -17,6 +17,8 @@
  */
 @interface UIButton (WebCache)
 
+- (void)xr_setButtonImageWithUrl:(NSString *)urlStr;
+
 #pragma mark - Image
 
 /**
