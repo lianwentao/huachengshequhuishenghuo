@@ -1096,7 +1096,7 @@
             UIView *view = [[UIView alloc] initWithFrame:CGRectMake(15, 8, Main_width-30, 55)];
             view.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:view];
-            NSString *urlstr = [API_img stringByAppendingString:[[xieyiarr objectAtIndex:indexPath.row-2] objectForKey:@"article_image"]];
+            NSString *urlstr = [API_img stringByAppendingString:[[xieyiarr objectAtIndex:indexPath.row] objectForKey:@"article_image"]];
             UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 25, 25)];
             [imageview sd_setImageWithURL:[NSURL URLWithString:urlstr]];
             [view addSubview:imageview];
@@ -2028,8 +2028,8 @@
         if (indexPath.row>1) {
             yuefunextViewController *yuefunext = [[yuefunextViewController alloc] init];
             yuefunext.hidesBottomBarWhenPushed = YES;
-            yuefunext.title = [[xieyiarr objectAtIndex:indexPath.row-2] objectForKey:@"title"];
-            yuefunext.content = [[xieyiarr objectAtIndex:indexPath.row-2] objectForKey:@"content"];
+            yuefunext.title = [[xieyiarr objectAtIndex:indexPath.row] objectForKey:@"title"];
+            yuefunext.content = [[xieyiarr objectAtIndex:indexPath.row] objectForKey:@"content"];
             [self.navigationController pushViewController:yuefunext animated:YES];
         }
     }else if(indexPath.section==5){

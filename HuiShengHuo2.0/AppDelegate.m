@@ -565,7 +565,12 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSString *strurl = [NSString stringWithFormat:@"%@%@",API,@"site/wx_login"];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = nil;
-    dict = @{@"phone_name":[defaults objectForKey:@"registrationID"],@"phone_type":@"2",@"code":WXCODE};
+    if ([defaults objectForKey:@"registrationID"]==nil){
+        dict = @{@"phone_type":@"2",@"code":WXCODE};
+    }else{
+        dict = @{@"phone_name":[defaults objectForKey:@"registrationID"],@"phone_type":@"2",@"code":WXCODE};
+    }
+    
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"1---%@",responseObject);
         NSString *status = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"status"]];

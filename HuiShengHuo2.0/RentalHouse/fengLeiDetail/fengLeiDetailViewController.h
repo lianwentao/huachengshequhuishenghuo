@@ -10,4 +10,7 @@
 
 @interface fengLeiDetailViewController : UIViewController
 
+
+@property (nonatomic,copy)NSString *fuwuid;
+@property (nonatomic,copy)NSString *name;
 @end

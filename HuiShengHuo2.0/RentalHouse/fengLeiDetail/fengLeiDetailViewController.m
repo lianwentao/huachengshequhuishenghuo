@@ -123,7 +123,6 @@
     CGFloat btnW = _view.bounds.size.width/2;
     CGFloat btnH = _view.bounds.size.height;
     
-    
     for (int i = 0; i < titles.count; i++) {
         UIButton * titleBtn = [[UIButton alloc]init];
         titleBtn.tag = i;

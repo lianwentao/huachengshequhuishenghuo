@@ -1358,8 +1358,8 @@
                     tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*arr.count/2+5;
                     number = arr.count;
                 }else{
-                    tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*(arr.count-1)/2+5;
-                    number = arr.count-1;
+                    tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*(arr.count+1)/2+5;
+                    number = arr.count;
                 }
                 
                 

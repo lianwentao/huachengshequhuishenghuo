@@ -78,11 +78,10 @@
     }
     _titlelabel.text = model.title;
     
-    
     _content.text = model.content;
     
     
-    [_touxiangimageview sd_setImageWithURL:[NSURL URLWithString:model.touxiangurl] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    [_touxiangimageview sd_setImageWithURL:[NSURL URLWithString:model.touxiangurl] placeholderImage:[UIImage imageNamed:@"facehead1"]];
     
     _name.text = [NSString stringWithFormat:@"%@  发布于  %@  %@",model.name,model.fenlei,model.fabutime];
     

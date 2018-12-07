@@ -670,7 +670,13 @@
         _dict = [[NSDictionary alloc] init];
         _strurl = [API stringByAppendingString:@"site/login_verify"];
         NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
-        _dict = @{@"username":phonbe.text,@"mobile_vcode":yanzhengmatextfield.text,@"phone_name":[userdefaults objectForKey:@"registrationID"],@"phone_type":@"2"};
+        if ([userdefaults objectForKey:@"registrationID"]==nil){
+            _dict = @{@"username":phonbe.text,@"mobile_vcode":yanzhengmatextfield.text,@"phone_type":@"2"};
+        }else{
+            _dict = @{@"username":phonbe.text,@"mobile_vcode":yanzhengmatextfield.text,@"phone_name":[userdefaults objectForKey:@"registrationID"],@"phone_type":@"2"};
+        }
+        
+        
         [self GeneralButtonAction1];
     }
 }

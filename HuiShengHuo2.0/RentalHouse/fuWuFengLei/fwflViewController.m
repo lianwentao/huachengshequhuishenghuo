@@ -19,10 +19,13 @@
 {
     UITableView *tableView;
     feflModel *model;
+    NSArray *dataArr;
 }
 @property (nonatomic,strong)NSMutableArray         *dataSourceArr;
 @property (nonatomic,strong)NSMutableArray         *listArr;
 @property (nonatomic,strong)NSMutableArray         *titleArr;
+//_idArr
+@property (nonatomic,strong)NSMutableArray         *idArr;
 @property (nonatomic,strong)NSMutableArray         *topArr;
 
 @end
@@ -52,23 +55,22 @@
         
         NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
         NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSLog(@"dataStr = %@",dataStr);
+        WBLog(@"dataStr = %@",dataStr);
         
-        NSArray *dataArr = responseObject[@"data"];
+        dataArr = responseObject[@"data"];
         _dataSourceArr = [NSMutableArray array];
         
         for (NSDictionary *dic in dataArr) {
             model = [[feflModel alloc]initWithDictionary:dic error:NULL];
             [_dataSourceArr addObject:model];
-    
         }
-         NSLog(@"_dataSourceArr = %@",_dataSourceArr);
+         WBLog(@"_dataSourceArr = %@",_dataSourceArr);
          _listArr = [NSMutableArray array];
         for (NSDictionary *listDic in model.list) {
             listModel *lModel = [[listModel alloc]initWithDictionary:listDic error:NULL];
             [_listArr addObject:lModel];
         }
-        NSLog(@"_listArr = %@",_listArr);
+        WBLog(@"_listArr = %@",_listArr);
         
         [self creatUI];
         
@@ -80,13 +82,9 @@
 -(void)creatUI{
     
     CGRect frame = CGRectMake(0, 0, Main_width, Main_Height);
-    tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped];
-    [tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.dataSource = self;
-    tableView.estimatedRowHeight = 0;
-    tableView.estimatedSectionFooterHeight = 0;
-    tableView.estimatedSectionHeaderHeight = 0;
     tableView.showsVerticalScrollIndicator = NO;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     tableView.backgroundColor = [UIColor whiteColor];
@@ -98,12 +96,17 @@
 }
 #pragma mark - tableview delegate / dataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return _dataSourceArr.count;
+    return dataArr.count+1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
-   return 1;
+    if (section==0) {
+        return 1;
+    }else{
+        NSArray *arr = [[NSArray alloc] init];
+        arr = [[dataArr objectAtIndex:section-1] objectForKey:@"list"];
+        return (arr.count+3)/4;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -124,79 +127,108 @@
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        
-        cell.userInteractionEnabled = YES;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;    //点击的时候无效果
     }
-  
-    _titleArr = [NSMutableArray array];
-    for (int i = 0;  i < model.list.count; i++) {
-        NSDictionary *dic = model.list[i];
-        NSString *titleStr = [dic objectForKey:@"name"];
-        [_titleArr addObject:titleStr];
+    if (indexPath.section>0) {
+        NSArray *arr = [[NSArray alloc] init];
+        arr = [[dataArr objectAtIndex:indexPath.section-1] objectForKey:@"list"];
+        CGFloat width = (Main_width-30-7*2)/3;
+        if ((arr.count-indexPath.row*3)/3>=1) {
+            for (int i=0; i<3; i++) {
+                UILabel *backlabel = [[UILabel alloc] initWithFrame:CGRectMake(15+i*width+7*i, 10, width, 40)];
+                backlabel.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.1];
+                backlabel.text = [[arr objectAtIndex:i] objectForKey:@"name"];
+                backlabel.font = Font(14);
+                backlabel.textAlignment = NSTextAlignmentCenter;
+                [cell.contentView addSubview:backlabel];
+                
+                UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+                but.frame = CGRectMake(15+i*width+7*i, 10, width, 40);
+                but.tag = [[[arr objectAtIndex:i] objectForKey:@"id"] integerValue];
+                [but setTitle:[[arr objectAtIndex:i] objectForKey:@"name"] forState:UIControlStateNormal];
+                but.titleLabel.font = Font(0.1);
+                [but addTarget:self action:@selector(push:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.contentView addSubview:but];
+            }
+        }else{
+            for (int i=0; i<(arr.count-indexPath.row*3); i++) {
+                UILabel *backlabel = [[UILabel alloc] initWithFrame:CGRectMake(15+i*width+7*i, 10, width, 40)];
+                backlabel.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.1];
+                backlabel.text = [[arr objectAtIndex:i] objectForKey:@"name"];
+                backlabel.font = Font(14);
+                backlabel.textAlignment = NSTextAlignmentCenter;
+                [cell.contentView addSubview:backlabel];
+                
+                UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+                but.frame = CGRectMake(15+i*width+7*i, 10, width, 40);
+                but.tag = [[[arr objectAtIndex:i] objectForKey:@"p_id"] integerValue];
+                [but setTitle:[[arr objectAtIndex:i] objectForKey:@"name"] forState:UIControlStateNormal];
+                but.titleLabel.font = Font(0.1);
+                [but addTarget:self action:@selector(push:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.contentView addSubview:but];
+            }
+        }
+    }else{
+        CGFloat width = (Main_width-30-7*2)/3;
+        UILabel *backlabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, width, 40)];
+        backlabel.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.1];
+        backlabel.text = @"全部";
+        backlabel.font = Font(14);
+        backlabel.textAlignment = NSTextAlignmentCenter;
+        [cell.contentView addSubview:backlabel];
+        
+        UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+        but.frame = CGRectMake(15, 10, width, 40);
+        but.tag = -1000;
+        [but setTitle:@"全部" forState:UIControlStateNormal];
+        but.titleLabel.font = Font(0.1);
+        [but addTarget:self action:@selector(push:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.contentView addSubview:but];
     }
-    
-    NSLog(@"_titleArr = %@",_titleArr);
-
-    for (int i = 0; i < _titleArr.count; i++) {
-
-        UIButton *flBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        flBtn.backgroundColor = [UIColor yellowColor];
-        flBtn.frame = CGRectMake(i*btnWidth+10, 10, btnWidth, 50);
-        [flBtn setTitle:_titleArr[i] forState:UIControlStateNormal];
-        flBtn.transform = CGAffineTransformMakeScale(0.9, 1);
-        flBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-        [flBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [flBtn addTarget:self action:@selector(clickAction:) forControlEvents:UIControlEventTouchUpInside];
-        flBtn.tag = i + indexPath.section*100;
-        [cell addSubview:flBtn];
-
-    }
-    
-    UIView *line = [[UIView alloc]init];
-    line.frame = CGRectMake(0, 59, Main_width, .5);
-    line.backgroundColor = [UIColor blackColor];
-    [cell addSubview:line];
-   
-    
     
     return cell;
-    
 }
 
+- (void)push:(UIButton *)sender
+{
+    if (sender.tag == -1000) {
+        fengLeiDetailViewController *flVC = [[fengLeiDetailViewController alloc]init];
+        flVC.name = sender.titleLabel.text;
+        [self.navigationController pushViewController:flVC animated:YES];
+    }else{
+        fengLeiDetailViewController *flVC = [[fengLeiDetailViewController alloc]init];
+        flVC.fuwuid = [NSString stringWithFormat:@"%ld",sender.tag];
+        
+        [self.navigationController pushViewController:flVC animated:YES];
+    }
+}
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 
    
-   model = _dataSourceArr[section];
+   
     
     UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, Main_width, 50)];
     headerView.backgroundColor = [UIColor whiteColor];
-    
     UIView *lineView = [[UIView alloc]init];
-    lineView.frame = CGRectMake(2, 20, 2, 30);
+    lineView.frame = CGRectMake(2, 10, 2, 30);
     lineView.backgroundColor = [UIColor redColor];
     [headerView addSubview:lineView];
     
     UILabel *titleLab = [[UILabel alloc]init];
-    titleLab.frame = CGRectMake(10, 10, 150, 50);
-    titleLab.text = model.name;
-    titleLab.font = [UIFont systemFontOfSize:17];
-    titleLab.textAlignment = NSTextAlignmentLeft;
+    titleLab.frame = CGRectMake(10, 0, 150, 50);
+    titleLab.font = [UIFont systemFontOfSize:12];
+    titleLab.textColor = [UIColor redColor];
     [headerView addSubview:titleLab];
+    if (section==0) {
+        titleLab.text = @"全部";
+    }else{
+        model = _dataSourceArr[section-1];
+        titleLab.text = model.name;
+    }
+    
     return headerView;
     
 }
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-}
-- (void)clickAction:(UIButton *)button {
-  
-    NSLog(@"你点击的按钮tag值为：%ld", button.tag);
-    fengLeiDetailViewController *flVC = [[fengLeiDetailViewController alloc]init];
-    [self.navigationController pushViewController:flVC animated:YES];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"PostSuccess" object:nil userInfo:nil];
-    [self dismissViewControllerAnimated:YES completion:nil];
-   
-    
-}
+
+
 @end
