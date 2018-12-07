@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface myserviceViewController : UIViewController
-
+@property (nonatomic,copy)NSString *backStr;
 @end

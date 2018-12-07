@@ -9,6 +9,7 @@
 #import "myserviceViewController.h"
 #import "cancledingdanViewController.h"
 #import "pingjiadingdanViewController.h"
+#import "serviceDetailViewController.h"
 @interface myserviceViewController ()<FSPageContentViewDelegate,FSSegmentTitleViewDelegate>
 {
     NSString *str1;
@@ -45,7 +46,18 @@
     return YES;
 }
 - (void)backBtnClicked{
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    if ([_backStr isEqualToString:@"1"]) {
+        
+        for (UIViewController *controller in self.navigationController.viewControllers) {
+            if ([controller isKindOfClass:[serviceDetailViewController class]]) {
+                serviceDetailViewController *facepay =(serviceDetailViewController *)controller;
+                [self.navigationController popToViewController:facepay animated:YES];
+            }
+        }
+    }else{
+       [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+   
 }
 - (void)shauxin
 {

@@ -15,7 +15,7 @@
 #import "UIImageView+WebCache.h"
 
 #import "SpecialAlertView.h"
-#import "fuwudingdanViewController.h"
+#import "myserviceViewController.h"
 
 @interface queRenViewController ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
 {
@@ -314,7 +314,8 @@
         SpecialAlertView *special = [[SpecialAlertView alloc]initWithTitleImage:@"chsiHeadericon" messageTitle:@"预约成功" messageString:@"请等待服务商上门服务" sureBtnTitle:@"确定" sureBtnColor:[UIColor blueColor]];
         [special withSureClick:^(NSString *string) {
             NSLog(@"222");
-            fuwudingdanViewController *fwddVC = [[fuwudingdanViewController alloc]init];
+            myserviceViewController *fwddVC = [[myserviceViewController alloc]init];
+            fwddVC.backStr = @"1";//1代表跳回下单界面
             [self.navigationController pushViewController:fwddVC animated:YES];
         }];
         

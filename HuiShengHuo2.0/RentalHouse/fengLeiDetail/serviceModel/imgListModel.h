@@ -11,4 +11,5 @@
 @interface imgListModel : JSONModel
 @property (nonatomic ,strong)NSString *id;
 @property (nonatomic ,strong)NSString *img;
+@property (nonatomic ,strong)NSString *img_size;
 @end
