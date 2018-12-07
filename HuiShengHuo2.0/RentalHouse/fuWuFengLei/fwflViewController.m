@@ -137,15 +137,15 @@
             for (int i=0; i<3; i++) {
                 UILabel *backlabel = [[UILabel alloc] initWithFrame:CGRectMake(15+i*width+7*i, 10, width, 40)];
                 backlabel.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.1];
-                backlabel.text = [[arr objectAtIndex:i] objectForKey:@"name"];
+                backlabel.text = [[arr objectAtIndex:i+indexPath.row*3] objectForKey:@"name"];
                 backlabel.font = Font(14);
                 backlabel.textAlignment = NSTextAlignmentCenter;
                 [cell.contentView addSubview:backlabel];
                 
                 UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
                 but.frame = CGRectMake(15+i*width+7*i, 10, width, 40);
-                but.tag = [[[arr objectAtIndex:i] objectForKey:@"id"] integerValue];
-                [but setTitle:[[arr objectAtIndex:i] objectForKey:@"name"] forState:UIControlStateNormal];
+                but.tag = [[[arr objectAtIndex:i+indexPath.row*3] objectForKey:@"id"] integerValue];
+                [but setTitle:[[arr objectAtIndex:i+indexPath.row*3] objectForKey:@"name"] forState:UIControlStateNormal];
                 but.titleLabel.font = Font(0.1);
                 [but addTarget:self action:@selector(push:) forControlEvents:UIControlEventTouchUpInside];
                 [cell.contentView addSubview:but];
@@ -154,15 +154,15 @@
             for (int i=0; i<(arr.count-indexPath.row*3); i++) {
                 UILabel *backlabel = [[UILabel alloc] initWithFrame:CGRectMake(15+i*width+7*i, 10, width, 40)];
                 backlabel.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.1];
-                backlabel.text = [[arr objectAtIndex:i] objectForKey:@"name"];
+                backlabel.text = [[arr objectAtIndex:i+indexPath.row*3] objectForKey:@"name"];
                 backlabel.font = Font(14);
                 backlabel.textAlignment = NSTextAlignmentCenter;
                 [cell.contentView addSubview:backlabel];
                 
                 UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
                 but.frame = CGRectMake(15+i*width+7*i, 10, width, 40);
-                but.tag = [[[arr objectAtIndex:i] objectForKey:@"p_id"] integerValue];
-                [but setTitle:[[arr objectAtIndex:i] objectForKey:@"name"] forState:UIControlStateNormal];
+                but.tag = [[[arr objectAtIndex:i+indexPath.row*3] objectForKey:@"p_id"] integerValue];
+                [but setTitle:[[arr objectAtIndex:i+indexPath.row*3] objectForKey:@"name"] forState:UIControlStateNormal];
                 but.titleLabel.font = Font(0.1);
                 [but addTarget:self action:@selector(push:) forControlEvents:UIControlEventTouchUpInside];
                 [cell.contentView addSubview:but];
