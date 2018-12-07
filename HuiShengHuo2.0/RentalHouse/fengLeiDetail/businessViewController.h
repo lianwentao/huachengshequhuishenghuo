@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface businessViewController : UIViewController
-
+@property (nonatomic ,strong)NSString *bID;
+@property (nonatomic ,strong)NSString *bName;
 @end

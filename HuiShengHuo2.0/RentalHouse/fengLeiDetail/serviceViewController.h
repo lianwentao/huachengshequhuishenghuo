@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface serviceViewController : UIViewController
-
+@property (nonatomic ,strong)NSString *sID;
+@property (nonatomic ,strong)NSString *sName;
 @end

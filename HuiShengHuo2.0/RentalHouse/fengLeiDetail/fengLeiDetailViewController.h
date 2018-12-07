@@ -9,8 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface fengLeiDetailViewController : UIViewController
-
-
 @property (nonatomic,copy)NSString *fuwuid;
 @property (nonatomic,copy)NSString *name;
+@property (nonatomic ,strong)NSString *tagStr;
 @end

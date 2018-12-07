@@ -18,6 +18,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import "newshangjiaViewController.h"
 
+#import "fengLeiDetailViewController.h"
+
 #define NAVBAR_COLORCHANGE_POINT (-IMAGE_HEIGHT + NAV_HEIGHT)
 #define NAV_HEIGHT 64
 #define IMAGE_HEIGHT 0
@@ -485,19 +487,28 @@
         NSLog(@"failure--%@",error);
     }];
 }
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)menuScrollViewDeleagte:(id)menuScrollViewDeleagte index:(NSInteger)index{
+    NSLog(@"点击的是 第%ld个",index);
+    if ([category isKindOfClass:[NSArray class]]) {
+        
+        NSMutableArray *IDArr = [NSMutableArray array];
+        for (int i = 0; i < category.count; i++) {
+            NSDictionary *dic = category[i];
+            NSString *idStr = [dic objectForKey:@"id"];
+            [IDArr addObject:idStr];
+        }
+        NSMutableArray *titleArr = [NSMutableArray array];
+        for (int i = 0; i < category.count; i++) {
+            NSDictionary *dic = category[i];
+            NSString *titleStr = [dic objectForKey:@"name"];
+            [titleArr addObject:titleStr];
+        }
+        fengLeiDetailViewController *fldVC = [[fengLeiDetailViewController alloc]init];
+        fldVC.hidesBottomBarWhenPushed = YES;
+        fldVC.fuwuid = IDArr[index];
+        fldVC.name = titleArr[index];
+        [self.navigationController pushViewController:fldVC animated:YES];
+        
+    }
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 @end

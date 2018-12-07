@@ -37,19 +37,6 @@
     return _titleBtns;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadTableView) name:@"PostSuccess" object:nil];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadTableView) name:@"PostSuccess" object:nil];
-    
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -59,18 +46,16 @@
     //添加子控制器
     [self addChildCustomViewController];
     // 默认点击下标为1的标题按钮
-    [self titleBtnClick:self.titleBtns[1]];
+    
+    
+    if ([_tagStr isEqualToString:@"1"]) {
+        [self titleBtnClick:self.titleBtns[0]];
+    }else{
+        [self titleBtnClick:self.titleBtns[1]];
+    }
     
 }
--(void)loadTableView{
-    
-    [self setupTitleView];
-    [self customScrollview];
-    //添加子控制器
-    [self addChildCustomViewController];
-    // 默认点击下标为0的标题按钮
-    [self titleBtnClick:self.titleBtns[0]];
-}
+
 - (void)setupTitleView{
     
     
@@ -83,7 +68,7 @@
     [self addAllTitleBtns];
     
     //添加下划线
-//    [self setupUnderLineView];
+    //    [self setupUnderLineView];
     
 }
 
@@ -98,17 +83,21 @@
     contentScrollow.pagingEnabled = YES;
     contentScrollow.bounces = NO;
     contentScrollow.showsHorizontalScrollIndicator = NO;
-  
+    
 }
 
 
 - (void)addChildCustomViewController{
     //第一个
     businessViewController * businesVc = [[businessViewController alloc]init];
+    businesVc.bID = _fuwuid;
+    businesVc.bName = _name;
     [self addChildViewController:businesVc];
     
     //第二个
     serviceViewController * serviceVc = [[serviceViewController alloc]init];
+    serviceVc.sID = _fuwuid;
+    serviceVc.sName = _name;
     [self addChildViewController:serviceVc];
     
     NSInteger count = self.childViewControllers.count;
@@ -117,11 +106,12 @@
 }
 
 - (void)addAllTitleBtns{
-
+    
     NSArray * titles = @[@"商家",@"服务"];
     
     CGFloat btnW = _view.bounds.size.width/2;
     CGFloat btnH = _view.bounds.size.height;
+    
     
     for (int i = 0; i < titles.count; i++) {
         UIButton * titleBtn = [[UIButton alloc]init];
@@ -140,7 +130,7 @@
         [titleBtn addTarget:self action:@selector(titleBtnClick:) forControlEvents:UIControlEventTouchDown];
         
     }
-   
+    
 }
 
 - (void)titleBtnClick:(UIButton *)titleBtn{
@@ -156,13 +146,15 @@
     [UIView animateWithDuration:0.25 animations:^{
         self.lineView.yj_width = titleBtn.titleLabel.yj_width;
         self.lineView.yj_centerX = titleBtn.yj_centerX;
-
+        
         // 3.修改contentScrollView的便宜量,点击标题按钮的时候显示对应子控制器的view
         self.contentScrollow.contentOffset = CGPointMake(tag * Main_width, 0);
     }];
     
     // 添加子控制器的view
+    
     UIViewController *vc = self.childViewControllers[tag];
+    
     // 如果子控制器的view已经添加过了，就不需要再添加了
     if (vc.view.superview) {
         return;

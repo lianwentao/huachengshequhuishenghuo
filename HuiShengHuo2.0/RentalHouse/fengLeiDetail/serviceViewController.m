@@ -21,7 +21,7 @@
 
 @interface serviceViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
-     NSInteger pageNum;
+    NSInteger pageNum;
 }
 @property (nonatomic,strong)UITableView         *tableView;
 @property (nonatomic,strong)NSMutableArray         *dataSourceArr;
@@ -31,31 +31,31 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-     self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     [self getData];
     [self createdUI];
 }
 - (void)getData
 {
-//    //1.创建会话管理者
-//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-//    //2.封装参数
-//    NSDictionary *dict = nil;
-//    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-//    dict = @{@"c_id":[userinfo objectForKey:@"community_id"]};
-//    NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/index/serviceindex"];
-//    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//
-////        NSLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
-//
-//        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
-//        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-//        NSLog(@"dataStr = %@",dataStr);
-//
-//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//        NSLog(@"failure--%@",error);
-//    }];
+    //    //1.创建会话管理者
+    //    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    //    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    //    //2.封装参数
+    //    NSDictionary *dict = nil;
+    //    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    //    dict = @{@"c_id":[userinfo objectForKey:@"community_id"]};
+    //    NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/index/serviceindex"];
+    //    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    //
+    ////        NSLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
+    //
+    //        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+    //        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    //        NSLog(@"dataStr = %@",dataStr);
+    //
+    //    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+    //        NSLog(@"failure--%@",error);
+    //    }];
     
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -63,7 +63,7 @@
     //2.封装参数
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":@"2",@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+    dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":_sID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/service/serviceList"];
     [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
@@ -83,9 +83,9 @@
             [_dataSourceArr addObject:model];
         }
         
-         [_tableView reloadData];
+        [_tableView reloadData];
         
-
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
@@ -103,11 +103,12 @@
     UIButton *itemBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     itemBtn.layer.cornerRadius = 10.0;
     itemBtn.backgroundColor = [UIColor lightGrayColor];
-    [itemBtn setTitle:@"保洁" forState:UIControlStateNormal];
+    NSLog(@"_sName = %@",_sName);
+    [itemBtn setTitle:_sName forState:UIControlStateNormal];
     [itemBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [topView addSubview:itemBtn];
     [itemBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-
+        
         make.left.equalTo(topView).offset(100);
         make.centerY.equalTo(topView);
         make.width.lessThanOrEqualTo(@200);
@@ -116,7 +117,7 @@
     [self.view addSubview:topView];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, self.view.frame.size.width, self.view.frame.size.height-80-64)style:UITableViewStylePlain ];
-//    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
@@ -127,11 +128,11 @@
         [ws.tableView.mj_footer endRefreshing];
         pageNum = 1;
         [ws getData];
-
+        
     }];
     self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [ws.tableView.mj_header endRefreshing];
-         pageNum = pageNum+1;
+        pageNum = pageNum+1;
         [ws getData];
     }];
     [self.tableView.mj_header beginRefreshing];

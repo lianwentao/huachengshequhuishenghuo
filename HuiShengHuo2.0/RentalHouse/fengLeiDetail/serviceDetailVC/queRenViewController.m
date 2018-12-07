@@ -14,6 +14,9 @@
 #import "MJRefresh.h"
 #import "UIImageView+WebCache.h"
 
+#import "SpecialAlertView.h"
+#import "fuwudingdanViewController.h"
+
 @interface queRenViewController ()<UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
 {
     UILabel *labelname;
@@ -58,7 +61,7 @@
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor whiteColor];
-//    _tableView.contentInset = UIEdgeInsetsMake(IMAGE_HEIGHT - [self navBarBottom], 0, 0, 0);
+    //    _tableView.contentInset = UIEdgeInsetsMake(IMAGE_HEIGHT - [self navBarBottom], 0, 0, 0);
     [self.view addSubview:_tableView];
 }
 
@@ -171,7 +174,7 @@
         but.frame = CGRectMake(20, 0, Main_width-40, 110);
         but.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:@"请选择地址"];
-
+        
         NSTextAttachment *attch = [[NSTextAttachment alloc] init];
         attch.image = [UIImage imageNamed:@"iv_address"];
         attch.bounds = CGRectMake(0, -5, 20, 20);
@@ -296,28 +299,30 @@
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    
+    NSLog(@"_name==%@",_name);
     NSDictionary *dict = [[NSDictionary alloc] init];
-//    if ([[_Dic objectForKey:@"address"] isEqualToString:@""]) {
-//
-//        [MBProgressHUD showToastToView:self.view withText:@"请选择地址"];
-//    }else{
-//
-//        dict = @{@"s_id":_serviceID,@"s_tag_id":_serviceTagID,@"s_tag_cn":_serviceStr,@"price":_priceStr,@"address":labelcontent.text,@"contact":_name,@"mobile":_phone,@"address_id":_addressid,@"description":_textView.text};
-//        NSLog(@"dict===%@",dict);
-//
-        dict = @{@"s_id":_serviceID,@"s_tag_id":_serviceTagID,@"s_tag_cn":_serviceStr,@"price":_priceStr,@"address":labelcontent.text,@"contact":_name,@"mobile":_phone,@"address_id":_addressid,@"description":_textView.text};
-        NSLog(@"dict===%@",dict);
-        NSString *urlstr = [API stringByAppendingString:@"/service/service/serviceReserve"];
-        [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            NSLog(@"suredingdan--success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
-            //            [self.navigationController pushViewController:allpay animated:YES];
-            //
-            [_tableView reloadData];
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            NSLog(@"failure--%@",error);
-            [MBProgressHUD showToastToView:self.view withText:@"请求失败"];
+    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"s_id":_serviceID,@"s_tag_id":_serviceTagID,@"s_tag_cn":_serviceStr,@"price":_priceStr,@"address":labelcontent.text,@"contacts":_name,@"mobile":_phone,@"address_id":_addressid,@"description":_textView.text};
+    NSLog(@"dict===%@",dict);
+    
+    
+    NSString *urlstr = [API_NOAPK stringByAppendingString:@"/service/service/serviceReserve"];
+    [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"suredingdan--success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+        
+        SpecialAlertView *special = [[SpecialAlertView alloc]initWithTitleImage:@"chsiHeadericon" messageTitle:@"预约成功" messageString:@"请等待服务商上门服务" sureBtnTitle:@"确定" sureBtnColor:[UIColor blueColor]];
+        [special withSureClick:^(NSString *string) {
+            NSLog(@"222");
+            fuwudingdanViewController *fwddVC = [[fuwudingdanViewController alloc]init];
+            [self.navigationController pushViewController:fwddVC animated:YES];
         }];
+        
+        [_tableView reloadData];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"failure--%@",error);
+        [MBProgressHUD showToastToView:self.view withText:@"请求失败"];
+    }];
     
 }
 @end

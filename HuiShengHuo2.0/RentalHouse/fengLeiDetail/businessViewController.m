@@ -58,7 +58,7 @@
     //2.封装参数
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":@"2",@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+    dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":_bID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/institution/merchantList"];
     [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
@@ -73,7 +73,7 @@
         [_tableView.mj_footer endRefreshing];
         _dataSourceArr = [NSMutableArray array];
         for (NSDictionary *dic in dataArr) {
-
+            
             model = [[businessVCModel alloc]initWithDictionary:dic error:NULL];
             [_dataSourceArr addObject:model];
         }
@@ -82,14 +82,14 @@
             serviceModel *sModel = [[serviceModel alloc]initWithDictionary:serviceDic error:NULL];
             [serviceArr addObject:sModel];
         }
-
+        
         [_tableView reloadData];
         
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
-   
+    
 }
 -(void)createdUI{
     UIView *topView = [[UIView alloc]init];
@@ -104,7 +104,7 @@
     UIButton *itemBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     itemBtn.layer.cornerRadius = 10.0;
     itemBtn.backgroundColor = [UIColor lightGrayColor];
-    [itemBtn setTitle:@"保洁" forState:UIControlStateNormal];
+    [itemBtn setTitle:_bName forState:UIControlStateNormal];
     [itemBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [topView addSubview:itemBtn];
     [itemBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -171,18 +171,18 @@
     [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.logo]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
     imgView.layer.cornerRadius = 30;
     imgView.clipsToBounds = YES;
-
-//    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.head_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    
+    //    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.head_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
     [cell addSubview:imgView];
     
-//    UIButton *imgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    imgBtn.frame = CGRectMake(10, 10, 60, 60);
-//    NSString *iconStr = model.u_img;
-//    if ([iconStr isKindOfClass:[NSString class]]?iconStr:@"") {
-//        [imgBtn xr_setButtonImageWithUrl:iconStr];
-//    }else{
-//        [imgBtn setImage:PlaceHolderImage_Icon forState:UIControlStateNormal];
-//    }
+    //    UIButton *imgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    //    imgBtn.frame = CGRectMake(10, 10, 60, 60);
+    //    NSString *iconStr = model.u_img;
+    //    if ([iconStr isKindOfClass:[NSString class]]?iconStr:@"") {
+    //        [imgBtn xr_setButtonImageWithUrl:iconStr];
+    //    }else{
+    //        [imgBtn setImage:PlaceHolderImage_Icon forState:UIControlStateNormal];
+    //    }
     
     UILabel *titleLab = [[UILabel alloc]init];
     titleLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, 10, Main_width-20-60-5, 30);
@@ -190,7 +190,7 @@
     titleLab.font = [UIFont systemFontOfSize:17];
     titleLab.textAlignment = NSTextAlignmentLeft;
     [cell addSubview:titleLab];
-
+    
     
     labelArr = [NSMutableArray array];
     for (int i = 0; i < model.category.count; i++) {
@@ -198,19 +198,19 @@
         NSString *labStr = [dic objectForKey:@"category_cn"];
         [labelArr addObject:labStr];
     }
-        VOTagList *tagList = [[VOTagList alloc] initWithTags:labelArr];
-        tagList.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(titleLab.frame), Main_width-20-5-60, 20);
-        tagList.multiLine = YES;
-        tagList.multiSelect = YES;
-        tagList.allowNoSelection = YES;
-        tagList.vertSpacing = 20;
-        tagList.horiSpacing = 10;
-        tagList.selectedTextColor = [UIColor blackColor];
-        tagList.tagBackgroundColor = [UIColor colorWithRed:246/255.0 green:246/255.0 blue:246/255.0 alpha:1];
-        tagList.selectedTagBackgroundColor = [UIColor redColor];
-        tagList.tagCornerRadius = 3;
-        tagList.tagEdge = UIEdgeInsetsMake(2, 2, 2, 2);
-        [cell addSubview:tagList];
+    VOTagList *tagList = [[VOTagList alloc] initWithTags:labelArr];
+    tagList.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(titleLab.frame), Main_width-20-5-60, 20);
+    tagList.multiLine = YES;
+    tagList.multiSelect = YES;
+    tagList.allowNoSelection = YES;
+    tagList.vertSpacing = 20;
+    tagList.horiSpacing = 10;
+    tagList.selectedTextColor = [UIColor blackColor];
+    tagList.tagBackgroundColor = [UIColor colorWithRed:246/255.0 green:246/255.0 blue:246/255.0 alpha:1];
+    tagList.selectedTagBackgroundColor = [UIColor redColor];
+    tagList.tagCornerRadius = 3;
+    tagList.tagEdge = UIEdgeInsetsMake(2, 2, 2, 2);
+    [cell addSubview:tagList];
     
     titleImgArr = [NSMutableArray array];
     for (int i = 0; i < model.service.count; i++) {
@@ -234,32 +234,51 @@
     backscrollview.contentSize = CGSizeMake((Main_width-40)*titleImgArr.count+16*(titleImgArr.count-1), 180);
     backscrollview.showsVerticalScrollIndicator = NO;
     backscrollview.showsHorizontalScrollIndicator = NO;
+    backscrollview.userInteractionEnabled = YES;
     [cell addSubview:backscrollview];
     for (int i=0; i<titleImgArr.count; i++) {
         
-//        UIImageView *imgView = [[UIImageView alloc]init];
-//        imgView.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, 150);
-//        [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:titleImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-//         imgView.layer.cornerRadius = 5;
-//        [backscrollview addSubview:imgView];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, 150)];
+        view.backgroundColor = [UIColor whiteColor];
+        view.layer.cornerRadius = 3;
+        [backscrollview addSubview:view];
+        //
+        //        UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
+        //        dianjibut.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, 150);;
+        ////        dianjibut.tag = [[[imgIDArr objectAtIndex:i] objectForKey:@"id"] longValue];
+        //        [dianjibut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
+        //        [backscrollview addSubview:dianjibut];
         
-        UIButton *imgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        imgBtn.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, 150);
-        NSString *imgStr = [API_img stringByAppendingString:titleImgArr[i]];
-        [imgBtn xr_setButtonImageWithUrl:imgStr];
-        imgBtn.layer.cornerRadius = 5;
-        imgBtn.clipsToBounds = YES;
-        imgBtn.tag = [imgIDArr[i] integerValue]+100;
-        [imgBtn addTarget:self action:@selector(iconImageViewAction:) forControlEvents:UIControlEventTouchUpInside];
-        [backscrollview addSubview:imgBtn];
+        UIImageView *imgView = [[UIImageView alloc]init];
+        imgView.frame = CGRectMake(0,0 , Main_width-40, 150);
+        [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:titleImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+        imgView.layer.cornerRadius = 5;
+        
+        [view addSubview:imgView];
+        
+        UIButton *goodsbut = [UIButton buttonWithType:UIButtonTypeCustom];
+        goodsbut.frame = CGRectMake(0, 0, Main_width-40, 150);
+        goodsbut.tag = [imgIDArr[i] integerValue]+100;
+        [goodsbut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
+        [view addSubview:goodsbut];
+        
+        //        UIButton *imgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        //        imgBtn.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, 150);
+        //        NSString *imgStr = [API_img stringByAppendingString:titleImgArr[i]];
+        //        [imgBtn xr_setButtonImageWithUrl:imgStr];
+        //        imgBtn.layer.cornerRadius = 5;
+        //        imgBtn.clipsToBounds = YES;
+        //        imgBtn.tag = [imgIDArr[i] integerValue]+100;
+        //        [imgBtn addTarget:self action:@selector(iconImageViewAction:) forControlEvents:UIControlEventTouchUpInside];
+        //        [backscrollview addSubview:imgBtn];
         
         UILabel *titleLab = [[UILabel alloc] init];
-        titleLab.frame = CGRectMake(10+(i*(Main_width-30)), CGRectGetMaxY(imgBtn.frame), Main_width-40, 30);
+        titleLab.frame = CGRectMake(10+(i*(Main_width-30)), CGRectGetMaxY(imgView.frame), Main_width-40, 30);
         titleLab.text = titleArr[i];
         titleLab.textAlignment = NSTextAlignmentLeft;
         titleLab.font = [UIFont systemFontOfSize:18];
         [backscrollview addSubview:titleLab];
-
+        
         
     }
     
@@ -284,12 +303,25 @@
 }
 -(void)iconImageViewAction:(UIButton *)sender{
     
-//    NSInteger index = sender.tag-100;
-//    serviceDetailViewController *sdVC = [[serviceDetailViewController alloc]init];
-//    sdVC.serviceID = [NSString stringWithFormat:@"%ld",index];
-//    [self.navigationController pushViewController:sdVC animated:YES];
+    //    NSInteger index = sender.tag-100;
+    //    serviceDetailViewController *sdVC = [[serviceDetailViewController alloc]init];
+    //    sdVC.serviceID = [NSString stringWithFormat:@"%ld",index];
+    //    [self.navigationController pushViewController:sdVC animated:YES];
     
     NSLog(@"777777");
+}
+//点击事件
+
+-(void)singleTapAction:(UITapGestureRecognizer *)tap{
+    NSLog(@"rrrrr");
+}
+- (void)pushgoods:(UIButton *)sender{
+    NSInteger i = sender.tag-100;
+    NSLog(@"oooooo = %ld",i);
+    //    GoodsDetailViewController *goods = [[GoodsDetailViewController alloc] init];
+    //    goods.IDstring = [NSString stringWithFormat:@"%lu",sender.tag];
+    //    goods.hidesBottomBarWhenPushed = YES;
+    //    [self.navigationController pushViewController:goods animated:YES];
 }
 
 @end

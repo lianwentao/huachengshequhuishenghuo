@@ -491,6 +491,7 @@
 		840596FA21B1138E0052B99D /* scoreInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 840596F921B1138E0052B99D /* scoreInfoModel.m */; };
 		840596FF21B121FE0052B99D /* businessVCModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 840596FE21B121FE0052B99D /* businessVCModel.m */; };
 		8405970221B12B210052B99D /* serviceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8405970121B12B210052B99D /* serviceModel.m */; };
+		840950AE21BA50FC001CC202 /* SpecialAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 840950AC21BA50FB001CC202 /* SpecialAlertView.m */; };
 		842049D521A8E93F0084EC18 /* fuWuFengLeiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842049D421A8E93F0084EC18 /* fuWuFengLeiViewController.m */; };
 		842049D921A939160084EC18 /* serviceDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842049D821A939160084EC18 /* serviceDetailViewController.m */; };
 		842049DC21A9494C0084EC18 /* queRenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842049DB21A9494C0084EC18 /* queRenViewController.m */; };
@@ -1522,6 +1523,8 @@
 		840596FE21B121FE0052B99D /* businessVCModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = businessVCModel.m; sourceTree = "<group>"; };
 		8405970021B12B210052B99D /* serviceModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = serviceModel.h; sourceTree = "<group>"; };
 		8405970121B12B210052B99D /* serviceModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = serviceModel.m; sourceTree = "<group>"; };
+		840950AC21BA50FB001CC202 /* SpecialAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecialAlertView.m; sourceTree = "<group>"; };
+		840950AD21BA50FB001CC202 /* SpecialAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialAlertView.h; sourceTree = "<group>"; };
 		842049D321A8E93F0084EC18 /* fuWuFengLeiViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fuWuFengLeiViewController.h; sourceTree = "<group>"; };
 		842049D421A8E93F0084EC18 /* fuWuFengLeiViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = fuWuFengLeiViewController.m; sourceTree = "<group>"; };
 		842049D721A939160084EC18 /* serviceDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = serviceDetailViewController.h; sourceTree = "<group>"; };
@@ -3838,6 +3841,8 @@
 				842049DB21A9494C0084EC18 /* queRenViewController.m */,
 				846D2D4321ABDB0B00221687 /* pingLunViewController.h */,
 				846D2D4421ABDB0B00221687 /* pingLunViewController.m */,
+				840950AD21BA50FB001CC202 /* SpecialAlertView.h */,
+				840950AC21BA50FB001CC202 /* SpecialAlertView.m */,
 			);
 			path = serviceDetailVC;
 			sourceTree = "<group>";
@@ -4680,6 +4685,7 @@
 				28FE4CD41FC02A9800C0A277 /* ShangpinshuxiangViewController.m in Sources */,
 				845C563B21A7F528002F509D /* UIWebView+ZJMasonryKit.m in Sources */,
 				845C562721A7F528002F509D /* oneTitleModel.m in Sources */,
+				840950AE21BA50FC001CC202 /* SpecialAlertView.m in Sources */,
 				288E8C5820C7528D00F9C862 /* newgonggaoTableViewCell.m in Sources */,
 				845C562E21A7F528002F509D /* TooBox.m in Sources */,
 				28C15A8721A509FC00BE2EAB /* UIViewController+BackButtonHandler.m in Sources */,

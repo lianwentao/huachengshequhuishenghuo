@@ -41,6 +41,7 @@
     NSMutableArray *tagListArr;
     NSMutableArray *scoreInfoArr;
     NSMutableArray *imgListArr;
+    NSMutableArray *imgSizeArr;
     NSMutableArray *insinfoArr;
     NSMutableArray *serviceListArr;
     NSMutableArray *labelArr;
@@ -64,7 +65,7 @@
     self.title = _serviceTitle;
     [self getData];
     [self setupNavItems];
-//    [self CreateTableview];
+    //    [self CreateTableview];
     [self loadFunctionView];
     [self wr_setNavBarBarTintColor:BackColor];
     [self wr_setNavBarBackgroundAlpha:0];
@@ -72,7 +73,7 @@
 }
 
 - (void)getData{
-
+    
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
@@ -99,7 +100,7 @@
             tagListModel *tModel = [[tagListModel alloc]initWithDictionary:tagListDic error:NULL];
             [tagListArr addObject:tModel];
         }
-          
+        
         scoreInfoArr = [NSMutableArray array];
         if ([dataDic[@"score_info"] isKindOfClass:[NSNull class]]) {
             NSLog(@"1111111111");
@@ -113,22 +114,28 @@
             imgListModel *imgModel = [[imgListModel alloc]initWithDictionary:imgDic error:NULL];
             [imgListArr addObject:imgModel.img];
         }
-            
+        imgSizeArr = [NSMutableArray array];
+        for (NSDictionary *imgDic in model.img_list) {
+            imgListModel *imgModel = [[imgListModel alloc]initWithDictionary:imgDic error:NULL];
+            [imgSizeArr addObject:imgModel.img_size];
+        }
+        
         insinfoArr = [NSMutableArray array];
         insinfoModel *iiModel = [[insinfoModel alloc]initWithDictionary:model.ins_info error:NULL];
         [insinfoArr addObject:iiModel];
-            
+        
         serviceListArr = [NSMutableArray array];
         for (NSDictionary *serviceListDic in model.ins_info[@"service_list"]) {
             serviceListModel *slModel = [[serviceListModel alloc]initWithDictionary:serviceListDic error:NULL];
             [serviceListArr addObject:slModel];
         }
-    
-       [self CreateTableview];
+        
+        [self CreateTableview];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
     }];
+    
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -216,27 +223,16 @@
             return 150;
         }
     }else if (indexPath.section == 5){
-        return imgListArr.count*200;
-//        CGFloat height = 0;
-//        NSMutableArray *heightArr = [NSMutableArray array];
-//        for (int i = 0; i < imgListArr.count; i++) {
-//            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[API_img stringByAppendingString:imgListArr[i]]]];
-//            UIImage *showimage = [UIImage imageWithData:data];
-//
-//            height = (Main_width-20)*(showimage.size.height/showimage.size.width);
-//
-//            NSString *h = [NSString stringWithFormat:@"%lf",height];
-//            [heightArr addObject:h];
-//            NSLog(@"heightArr = %@",heightArr);
-//
-//        }
-//
-//        for (int j = 0; j < heightArr.count; j++) {
-//
-//            height += [heightArr[j] floatValue];
-//        }
-//         NSLog(@"h222 = %f",height);
-//        return height;
+        CGFloat height = 0;
+        NSLog(@"imgSizeArr = %@",imgSizeArr);
+        for (int i = 0; i < imgSizeArr.count; i++) {
+            
+            height += (Main_width-20)/[imgSizeArr[i] floatValue];
+            
+        }
+        //        NSLog(@"height = %lf",height);
+        return height;
+        
     }else if (indexPath.section == 6){
         return 260;
     }else {
@@ -255,7 +251,7 @@
         cell.userInteractionEnabled = YES;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;    //点击的时候无效果
     }
-   
+    
     fwDetailModel *model = dataSourceArr[0];
     if (indexPath.section == 0) {
         
@@ -379,39 +375,24 @@
             [cell addSubview:titleLab];
         }
         
-        
     }else if (indexPath.section == 5){
-        NSMutableArray *imgHArr = [NSMutableArray array];
-        for (int i = 0; i < imgListArr.count; i++) {
+        
+        CGFloat height = 0;
+        for (int i = 0; i < imgSizeArr.count; i++) {
             UIImageView *imgView = [[UIImageView alloc]init];
-           
-            
             [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imgListArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-            imgView.frame = CGRectMake(10, 10+(i*200), Main_width-20, 200);
-//            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[API_img stringByAppendingString:imgListArr[i]]]];
-//            UIImage *showimage = [UIImage imageWithData:data];
-//            NSLog(@"w1111 = %f,h11111 = %f",showimage.size.width,showimage.size.height);
-            
-//            imgView.frame = CGRectMake(10, 10+(i*200), Main_width-20, (Main_width-20)*(showimage.size.height/showimage.size.width));
-//            CGFloat Y = (Main_width-20)*(showimage.size.height/showimage.size.width);
-//            NSString *imgH = [NSString stringWithFormat:@"%lf",Y];
-//            [imgHArr addObject:imgH];
-//            NSLog(@"imgHArr = %@",imgHArr);
-//
-//            if (i == 0) {
-//
-//                imgView.frame = CGRectMake(10,0, Main_width-20, (Main_width-20)*(showimage.size.height/showimage.size.width));
-//            }else if (i == 1){
-//                NSString *h = imgHArr[i-1];
-//                 imgView.frame = CGRectMake(10,[h floatValue], Main_width-20, (Main_width-20)*(showimage.size.height/showimage.size.width));
-//            }else{
-//                imgView.frame = CGRectMake(10,0, Main_width-20, (Main_width-20)*(showimage.size.height/showimage.size.width));
-//            }
-//
-            
-            
+            height += (Main_width-20)/[imgSizeArr[i] floatValue];
+            NSLog(@"height = %lf",height);
+            CGFloat Y;
+            if (i == 0) {
+                Y = height-(Main_width-20)/[imgSizeArr[0] floatValue];
+            }else{
+                Y = height-(Main_width-20)/[imgSizeArr[i] floatValue];
+            }
+            imgView.frame = CGRectMake(10, Y, Main_width-20, (Main_width-20)/[imgSizeArr[i] floatValue]);
             [cell addSubview:imgView];
-        }  
+        }
+        
     }else{
         
         insinfoModel *iiModel = insinfoArr[0];
@@ -488,11 +469,11 @@
         [cell addSubview:backscrollview];
         for (int i=0; i<titleImgArr.count; i++) {
             
-//            UIImageView *imgView = [[UIImageView alloc]init];
-//            imgView.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, (Main_width-40)/2.5);
-//            [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:titleImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-//            imgView.layer.cornerRadius = 5;
-//            [backscrollview addSubview:imgView];
+            //            UIImageView *imgView = [[UIImageView alloc]init];
+            //            imgView.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, (Main_width-40)/2.5);
+            //            [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:titleImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            //            imgView.layer.cornerRadius = 5;
+            //            [backscrollview addSubview:imgView];
             
             UIButton *imgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             imgBtn.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, (Main_width-40)/2.5);
@@ -517,7 +498,7 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-   
+    
     return nil;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -544,7 +525,7 @@
     
     UIButton *callBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 10, 60, 30)];
     callBtn.backgroundColor = [UIColor colorWithRed:252/255.0 green:88/255.0 blue:48/255.0 alpha:1];
-//    [callBtn setTitle:@"立即预约" forState:UIControlStateNormal];
+    //    [callBtn setTitle:@"立即预约" forState:UIControlStateNormal];
     [callBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     //    [likeButton setTitleColor:Blue_Selected forState:UIControlStateSelected];
     callBtn.titleLabel.font = [UIFont systemFontOfSize:17];
@@ -556,7 +537,7 @@
     
     UIButton *shopBtn = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMaxX(callBtn.frame)+10, 10, 60, 30)];
     shopBtn.backgroundColor = [UIColor colorWithRed:252/255.0 green:88/255.0 blue:48/255.0 alpha:1];
-//    [shopBtn setTitle:@"立即预约" forState:UIControlStateNormal];
+    //    [shopBtn setTitle:@"立即预约" forState:UIControlStateNormal];
     [shopBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     //    [likeButton setTitleColor:Blue_Selected forState:UIControlStateSelected];
     shopBtn.titleLabel.font = [UIFont systemFontOfSize:17];

@@ -194,19 +194,18 @@
     if (sender.tag == -1000) {
         fengLeiDetailViewController *flVC = [[fengLeiDetailViewController alloc]init];
         flVC.name = sender.titleLabel.text;
+        flVC.tagStr = @"1";
         [self.navigationController pushViewController:flVC animated:YES];
     }else{
         fengLeiDetailViewController *flVC = [[fengLeiDetailViewController alloc]init];
         flVC.fuwuid = [NSString stringWithFormat:@"%ld",sender.tag];
-        
+        flVC.name = sender.titleLabel.text;
+        flVC.tagStr = @"1";
         [self.navigationController pushViewController:flVC animated:YES];
     }
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-
-   
-   
-    
+ 
     UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, Main_width, 50)];
     headerView.backgroundColor = [UIColor whiteColor];
     UIView *lineView = [[UIView alloc]init];
