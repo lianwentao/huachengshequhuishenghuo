@@ -71,19 +71,18 @@
     [self post];
 }
 -(BOOL)navigationShouldPopOnBackButton {
+    WBLog(@"222");
     [self backBtnClicked];
     
     return YES;
 }
-- (BOOL)backBtnClicked{
-    
-    if (_but_tag.length==0) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }else{
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }
-    
-    return YES;
+- (void)backBtnClicked{
+    WBLog(@"%@",_but_tag);
+//    if (_but_tag.length==0) {
+//        [self.navigationController popViewControllerAnimated:YES];
+//    }else{
+//        [self.navigationController popToRootViewControllerAnimated:YES];
+//    }
 }
 - (void)createui
 {

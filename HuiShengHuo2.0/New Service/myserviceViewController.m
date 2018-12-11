@@ -10,6 +10,7 @@
 #import "cancledingdanViewController.h"
 #import "pingjiadingdanViewController.h"
 #import "serviceDetailViewController.h"
+#import "UIViewController+BackButtonHandler.h"
 @interface myserviceViewController ()<FSPageContentViewDelegate,FSSegmentTitleViewDelegate>
 {
     NSString *str1;
@@ -40,25 +41,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shauxin) name:@"newquxiaodingdan" object:nil];
     // Do any additional setup after loading the view.
 }
--(BOOL)navigationShouldPopOnBackButton {
-    [self backBtnClicked];
-    
-    return YES;
-}
-- (void)backBtnClicked{
-    if ([_backStr isEqualToString:@"1"]) {
-        
-        for (UIViewController *controller in self.navigationController.viewControllers) {
-            if ([controller isKindOfClass:[serviceDetailViewController class]]) {
-                serviceDetailViewController *facepay =(serviceDetailViewController *)controller;
-                [self.navigationController popToViewController:facepay animated:YES];
-            }
-        }
-    }else{
-       [self.navigationController popToRootViewControllerAnimated:YES];
-    }
-   
-}
+
 - (void)shauxin
 {
     //1.创建会话管理者
