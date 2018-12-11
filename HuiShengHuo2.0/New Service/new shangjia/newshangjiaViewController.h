@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+
+
 @interface newshangjiaViewController : UIViewController
 
 @property(nonatomic,copy)NSString *shangjiaid;
+
+@property (nonatomic, assign) OffsetType offsetType;
 @end

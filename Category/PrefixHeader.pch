@@ -10,13 +10,11 @@
 #define PrefixHeader_pch
 
 //正式
-//#define API                @"http://m.hui-shenghuo.cn/apk40/"
-//
-//
-//#define API_NOAPK          @"http://m.hui-shenghuo.cn"
+#define API                @"http://m.hui-shenghuo.cn/apk40/"
+#define API_NOAPK          @"http://m.hui-shenghuo.cn"
 //测试
-#define API                @"http://test.hui-shenghuo.cn/apk41/"
-#define API_NOAPK          @"http://test.hui-shenghuo.cn"
+//#define API                @"http://test.hui-shenghuo.cn/apk41/"
+//#define API_NOAPK          @"http://test.hui-shenghuo.cn"
 //
 //
 #define API_img                @"http://img.hui-shenghuo.cn/"
@@ -42,7 +40,12 @@
 #define admincolor [UIColor colorWithRed:(255)/255.0 green:(87)/255.0 blue:(34)/255.0 alpha:1.0]
 #import "MD5.h"
 
-
+//tableview偏移类型
+typedef NS_ENUM(NSInteger, OffsetType) {
+    OffsetTypeMin,
+    OffsetTypeCenter,
+    OffsetTypeMax,
+};
 
 
 #define randomColor random(arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256))
@@ -69,5 +72,12 @@
 # define WBLog(format, ...) printf("[%s] %s [第%d行] %s\n", __TIME__, __FUNCTION__, __LINE__, [[NSString stringWithFormat:format, ## __VA_ARGS__] UTF8String]);
 #else
 # define WBLog(...);
+
+
+
+
+
+
+
 
 #endif /* PrefixHeader_pch */

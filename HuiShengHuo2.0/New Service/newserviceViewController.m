@@ -17,8 +17,10 @@
 #import "ScanViewController.h"//扫描二维码界面
 #import <AVFoundation/AVFoundation.h>
 #import "newshangjiaViewController.h"
-
+#import "fuwusearchViewController.h"
 #import "fengLeiDetailViewController.h"
+#import "PYSearch.h"
+#import "searchreslutsViewController.h"
 
 #define NAVBAR_COLORCHANGE_POINT (-IMAGE_HEIGHT + NAV_HEIGHT)
 #define NAV_HEIGHT 64
@@ -118,7 +120,11 @@
     [self.navigationController pushViewController:myservice animated:YES];
 }
 - (void)butthree
-{}
+{
+    fuwusearchViewController *vc = [[fuwusearchViewController alloc] init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat offsetY = scrollView.contentOffset.y;

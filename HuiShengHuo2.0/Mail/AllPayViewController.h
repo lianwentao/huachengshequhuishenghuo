@@ -17,5 +17,4 @@
 
 @property (nonatomic,copy)NSString *rukoubiaoshi;
 @property (nonatomic,copy)NSString *shuidianfei;
-- (BOOL)navigationShouldPopOnBackButton;
 @end
