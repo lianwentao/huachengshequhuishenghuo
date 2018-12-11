@@ -19,6 +19,7 @@
 #import "newshangjiaViewController.h"
 
 #import "fengLeiDetailViewController.h"
+#import "serviceDetailViewController.h"
 
 #define NAVBAR_COLORCHANGE_POINT (-IMAGE_HEIGHT + NAV_HEIGHT)
 #define NAV_HEIGHT 64
@@ -254,12 +255,25 @@
             
             tableView.rowHeight = 65;
         }else{
-            UILabel *label = [[UILabel alloc] init];
-            label.frame = CGRectMake(15, 20, Main_width-30, 15);
-            label.font = [UIFont systemFontOfSize:14];
-            label.alpha = 0.54;
-            label.text = [NSString stringWithFormat:@"%@>",[[category_service objectAtIndex:indexPath.row-1] objectForKey:@"name"]];
-            [cell.contentView addSubview:label];
+            
+            UIButton *titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            titleBtn.frame = CGRectMake(15, 20, Main_width-30, 15);
+            titleBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+            [titleBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            NSString *titleStr = [NSString stringWithFormat:@"%@>",[[category_service objectAtIndex:indexPath.row-1] objectForKey:@"name"]];
+            titleBtn.tag = [[NSString stringWithFormat:@"%@",[[category_service objectAtIndex:indexPath.row-1] objectForKey:@"id"]] integerValue]+100;
+            [titleBtn setTitle: titleStr forState:UIControlStateNormal];
+             titleBtn.alpha = 0.54;
+            [titleBtn addTarget:self action:@selector(titleBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:titleBtn];
+            
+//            UILabel *label = [[UILabel alloc] init];
+//            label.frame = CGRectMake(15, 20, Main_width-30, 15);
+//            label.font = [UIFont systemFontOfSize:14];
+//            label.alpha = 0.54;
+//            label.text = [NSString stringWithFormat:@"%@>",[[category_service objectAtIndex:indexPath.row-1] objectForKey:@"name"]];
+//            [cell.contentView addSubview:label];
             
             UIScrollView *scrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 35+18, Main_width, 114+10+15)];
             scrollview.showsHorizontalScrollIndicator = NO;
@@ -270,14 +284,25 @@
             imgarr = [[category_service objectAtIndex:indexPath.row-1] objectForKey:@"service"];
             scrollview.contentSize = CGSizeMake(30+252*imgarr.count-10, 114+10+15);
             for (int i=0; i<imgarr.count; i++) {
-                UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(15+242*i+10*i, 0, 242, 114)];
-                [img sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[imgarr objectAtIndex:i] objectForKey:@"title_img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
                 
+                UIView *view = [[UIView alloc] initWithFrame:CGRectMake(15+242*i+10*i, 0, 242, 97)];
+                view.backgroundColor = [UIColor whiteColor];
+                view.layer.cornerRadius = 3;
+                [scrollview addSubview:view];
+                
+                UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 242, 97)];
+                [img sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[imgarr objectAtIndex:i] objectForKey:@"title_img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
                 img.clipsToBounds = YES;
                 img.layer.cornerRadius = 7;
-                [scrollview addSubview:img];
+                [view addSubview:img];
                 
-                UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(15+242*i+10*i, 124, 242, 15)];
+                UIButton *imgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+                imgBtn.frame = CGRectMake(0, 0, 242, 97);
+                imgBtn.tag = [[[imgarr objectAtIndex:i] objectForKey:@"id"] integerValue]+100;
+                [imgBtn addTarget:self action:@selector(imgBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+                [view addSubview:imgBtn];
+                
+                UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(15+242*i+10*i, 107, 242, 15)];
                 label1.text = [[imgarr objectAtIndex:i] objectForKey:@"title"];
                 label1.font = [UIFont systemFontOfSize:14];
                 label1.textAlignment = NSTextAlignmentCenter;
@@ -296,6 +321,17 @@
             imageview.image = [UIImage imageNamed:@"优质商家"];
             [cell.contentView addSubview:imageview];
             
+            UIButton *titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            titleBtn.frame = CGRectMake(Main_width-60, 20, 50, 30);
+            titleBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+            [titleBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            NSString *titleStr = @"更多>";
+            [titleBtn setTitle: titleStr forState:UIControlStateNormal];
+            titleBtn.alpha = 0.54;
+            [titleBtn addTarget:self action:@selector(gengDuoAction1:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:titleBtn];
+            
             tableView.rowHeight = 65;
         }else{
             UIScrollView *scrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(15, 20, Main_width-30, 227)];
@@ -305,6 +341,7 @@
             [cell.contentView addSubview:scrollview];
             
             for (int i = 0; i<info.count; i++) {
+                
                 UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(168*i, 0, 158, 227)];
                 backview.clipsToBounds = YES;
                 backview.layer.cornerRadius = 10;
@@ -363,8 +400,21 @@
             imageview.image = [UIImage imageNamed:@"精选服务"];
             [cell.contentView addSubview:imageview];
             
+            UIButton *titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            titleBtn.frame = CGRectMake(Main_width-60, 20, 50, 30);
+            titleBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+            [titleBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            NSString *titleStr = @"更多>";
+            [titleBtn setTitle: titleStr forState:UIControlStateNormal];
+            titleBtn.alpha = 0.54;
+            [titleBtn addTarget:self action:@selector(gengDuoAction2:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:titleBtn];
+            
             tableView.rowHeight = 65;
         }else{
+            
+            
             UIImageView *imgview = [[UIImageView alloc] initWithFrame:CGRectMake(15, 20, Main_width-30, (Main_width-30)/[[[item objectAtIndex:indexPath.row-1] objectForKey:@"title_img_size"] floatValue])];
             [imgview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[item objectAtIndex:indexPath.row-1] objectForKey:@"title_img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
             imgview.clipsToBounds = YES;
@@ -407,6 +457,23 @@
         tableView.rowHeight = Main_width/1.76;
     }
     return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    if (indexPath.section==4){
+        if (indexPath.row == 0) {
+        }else{
+            NSString *idStr =  [[item objectAtIndex:indexPath.row-1] objectForKey:@"id"];
+            NSString *titleStr =  [[item objectAtIndex:indexPath.row-1] objectForKey:@"title"];
+//            NSLog(@"idStr = %@",idStr);
+//            NSLog(@"titleStr = %@",titleStr);
+            serviceDetailViewController *sdVC = [[serviceDetailViewController alloc]init];
+            sdVC.hidesBottomBarWhenPushed = YES;
+            sdVC.serviceID = idStr;
+            sdVC.serviceTitle = titleStr;
+            [self.navigationController pushViewController:sdVC animated:YES];
+        }
+    }
 }
 - (void)pushshangjia:(UIButton *)sender
 {
@@ -487,6 +554,7 @@
         NSLog(@"failure--%@",error);
     }];
 }
+#pragma mark - item 点击跳转
 - (void)menuScrollViewDeleagte:(id)menuScrollViewDeleagte index:(NSInteger)index{
     NSLog(@"点击的是 第%ld个",index);
     if ([category isKindOfClass:[NSArray class]]) {
@@ -511,4 +579,39 @@
         
     }
 }
+#pragma mark - 最受欢迎 titleBtn 点击跳转
+-(void)titleBtnAction:(UIButton *)sender{
+    
+    fengLeiDetailViewController *fldVC = [[fengLeiDetailViewController alloc]init];
+    fldVC.hidesBottomBarWhenPushed = YES;
+    fldVC.fuwuid =[NSString stringWithFormat:@"%ld",sender.tag-100];
+    fldVC.name = sender.titleLabel.text;
+    [self.navigationController pushViewController:fldVC animated:YES];
+}
+#pragma mark - 最受欢迎 imgActionBtn 点击跳转
+-(void)imgBtnAction:(UIButton *)sender{
+    serviceDetailViewController *sdVC = [[serviceDetailViewController alloc]init];
+    sdVC.hidesBottomBarWhenPushed = YES;
+    sdVC.serviceID =[NSString stringWithFormat:@"%ld",sender.tag-100];
+    sdVC.serviceTitle = sender.titleLabel.text;
+    [self.navigationController pushViewController:sdVC animated:YES];
+}
+#pragma mark - 更多
+-(void)gengDuoAction1:(UIButton *)sender{
+    fengLeiDetailViewController *fldVC = [[fengLeiDetailViewController alloc]init];
+    fldVC.hidesBottomBarWhenPushed = YES;
+    fldVC.fuwuid = @"";
+    fldVC.name = @"全部";
+    fldVC.tagStr = @"1";
+    [self.navigationController pushViewController:fldVC animated:YES];
+}
+-(void)gengDuoAction2:(UIButton *)sender{
+    fengLeiDetailViewController *fldVC = [[fengLeiDetailViewController alloc]init];
+    fldVC.hidesBottomBarWhenPushed = YES;
+    fldVC.fuwuid = @"";
+    fldVC.name = @"全部";
+    fldVC.tagStr = @"0";
+    [self.navigationController pushViewController:fldVC animated:YES];
+}
+
 @end

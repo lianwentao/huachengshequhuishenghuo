@@ -36,13 +36,14 @@
         [self addSubview:self.alertView];
 
         if (backImage) {
-            UIImageView *titleImage = [[UIImageView alloc]initWithFrame:CGRectMake((self.alertView.frame.size.width/2)-35, 15, 70, 70)];
+            UIImageView *titleImage = [[UIImageView alloc]initWithFrame:CGRectMake((self.alertView.frame.size.width/2)-50, 15, 100, 100)];
             titleImage.image = [UIImage imageNamed:backImage];
             [self.alertView addSubview:titleImage];
         }
         if (titleStr) {
-            UILabel *titleLab = [[UILabel alloc]initWithFrame:CGRectMake(MARGIN, 90, self.alertView.frame.size.width-40, 30)];
+            UILabel *titleLab = [[UILabel alloc]initWithFrame:CGRectMake(MARGIN, 110, self.alertView.frame.size.width-40, 30)];
             titleLab.text = titleStr;
+            titleLab.textColor = [UIColor colorWithRed:215/255.0 green:145/255.0 blue:57/255.0 alpha:1];
             titleLab.font = [UIFont systemFontOfSize:17];
             titleLab.textAlignment = NSTextAlignmentCenter;
             [self.alertView addSubview:titleLab];
@@ -57,9 +58,9 @@
             [self.alertView addSubview:contentLab];
         }
         if (titleString) {
-            UIButton *sureBtn= [[UIButton alloc]initWithFrame:CGRectMake(25, ALERTVIEW_HEIGHT-15, self.alertView.frame.size.width-50, 40)];
+            UIButton *sureBtn= [[UIButton alloc]initWithFrame:CGRectMake(80, ALERTVIEW_HEIGHT-15, self.alertView.frame.size.width-160, 40)];
             [sureBtn setTitle:titleString forState:UIControlStateNormal];
-            [sureBtn setBackgroundColor:BtnColor];
+            [sureBtn setBackgroundColor:[UIColor colorWithRed:252/255.0 green:109/255.0 blue:42/255.0 alpha:1]];
             sureBtn.layer.cornerRadius=3.0;
             sureBtn.layer.masksToBounds=YES;
             [sureBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

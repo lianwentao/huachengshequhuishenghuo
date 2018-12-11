@@ -125,10 +125,22 @@
         [insinfoArr addObject:iiModel];
         
         serviceListArr = [NSMutableArray array];
-        for (NSDictionary *serviceListDic in model.ins_info[@"service_list"]) {
-            serviceListModel *slModel = [[serviceListModel alloc]initWithDictionary:serviceListDic error:NULL];
-            [serviceListArr addObject:slModel];
+        
+        if ([dataDic[@"ins_info"][@"service_list"] isKindOfClass:[NSNull class]]) {
+            NSLog(@"1111111111");
+        }else{
+    
+            for (NSDictionary *serviceListDic in dataDic[@"ins_info"][@"service_list"]) {
+                serviceListModel *slModel = [[serviceListModel alloc]initWithDictionary:serviceListDic error:NULL];
+                [serviceListArr addObject:slModel];
+            }
+
         }
+        
+//        for (NSDictionary *serviceListDic in model.ins_info[@"service_list"]) {
+//            serviceListModel *slModel = [[serviceListModel alloc]initWithDictionary:serviceListDic error:NULL];
+//            [serviceListArr addObject:slModel];
+//        }
         
         [self CreateTableview];
         
@@ -205,8 +217,12 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 5) {
+        return  50;
+    }else{
+        return 1;
+    }
     
-    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
@@ -230,11 +246,16 @@
             height += (Main_width-20)/[imgSizeArr[i] floatValue];
             
         }
-        //        NSLog(@"height = %lf",height);
         return height;
         
     }else if (indexPath.section == 6){
-        return 260;
+        
+        if ([dataDic[@"ins_info"][@"service_list"] isKindOfClass:[NSNull class]]){
+            return 130;
+        }else{
+            return 260;
+        }
+       
     }else {
         return 50;
     }
@@ -316,10 +337,10 @@
         
         if ([dataDic[@"score_info"] isKindOfClass:[NSNull class]]){}else{
             scoreInfoModel *model = scoreInfoArr[0];
-            UIImageView *pjImg = [[UIImageView alloc]init];
-            pjImg.frame = CGRectMake(10, 10, 80, 40);
-            //        [pjImg sd_setImageWithURL:[NSURL URLWithString:model.avatars] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-            [cell addSubview:pjImg];
+            UIImageView *imgView = [[UIImageView alloc]init];
+            imgView.frame = CGRectMake(10, 10, 60, 30);
+            imgView.image = [UIImage imageNamed:@"fw_yhpj"];
+            [cell addSubview:imgView];
             
             UIButton *plBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             plBtn.frame = CGRectMake(Main_width-100-20, 10, 100, 40);
@@ -331,14 +352,14 @@
             [cell addSubview:plBtn];
             
             UIImageView *headImg = [[UIImageView alloc]init];
-            headImg.frame = CGRectMake(10, CGRectGetMaxY(pjImg.frame)+10, 40, 40);
+            headImg.frame = CGRectMake(10, CGRectGetMaxY(imgView.frame)+10, 40, 40);
             headImg.layer.cornerRadius = 20;
             headImg.clipsToBounds = YES;
             [headImg sd_setImageWithURL:[NSURL URLWithString:model.avatars] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
             [cell addSubview:headImg];
             
             UILabel *nameLab = [[UILabel alloc]init];
-            nameLab.frame = CGRectMake(CGRectGetMaxX(headImg.frame)+10, CGRectGetMaxY(pjImg.frame)+10, 150, 20);
+            nameLab.frame = CGRectMake(CGRectGetMaxX(headImg.frame)+10, CGRectGetMaxY(imgView.frame)+10, 150, 20);
             nameLab.text = model.nickname;
             nameLab.font = [UIFont systemFontOfSize:15];
             nameLab.textAlignment = NSTextAlignmentLeft;
@@ -353,7 +374,7 @@
             }
             
             UILabel *timeLab = [[UILabel alloc]init];
-            timeLab.frame = CGRectMake(Main_width-20-100, CGRectGetMaxY(pjImg.frame)+10, 100, 20);
+            timeLab.frame = CGRectMake(Main_width-20-100, CGRectGetMaxY(imgView .frame)+10, 100, 20);
             NSTimeInterval time=[model.evaluatime doubleValue]+28800;
             NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
             NSLog(@"date:%@",[detaildate description]);
@@ -441,67 +462,104 @@
         tagList.selectedTagBackgroundColor = [UIColor redColor];
         tagList.tagCornerRadius = 3;
         tagList.tagEdge = UIEdgeInsetsMake(2, 2, 2, 2);
-        [tagList addTarget:self action:@selector(selectedTagsChanged:) forControlEvents:UIControlEventValueChanged];
+//        [tagList addTarget:self action:@selector(selectedTagsChanged:) forControlEvents:UIControlEventValueChanged];
         [cell addSubview:tagList];
         
-        titleImgArr = [NSMutableArray array];
-        for (int i = 0; i < iiModel.service_list.count; i++) {
-            NSDictionary *dic = iiModel.service_list[i];
-            NSString *titleImgStr = [dic objectForKey:@"title_img"];
-            [titleImgArr addObject:titleImgStr];
-        }
-        titleArr = [NSMutableArray array];
-        for (int i = 0;  i < iiModel.service_list.count; i++) {
-            NSDictionary *dic = iiModel.service_list[i];
-            NSString *titleStr = [dic objectForKey:@"title"];
-            [titleArr addObject:titleStr];
-        }
-        imgIDArr = [NSMutableArray array];
-        for (int i = 0;  i < iiModel.service_list.count; i++) {
-            NSDictionary *dic = iiModel.service_list[i];
-            NSString *titleStr = [dic objectForKey:@"id"];
-            [imgIDArr addObject:titleStr];
-        }
-        UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(tagList.frame)+10, Main_width, 180)];
-        backscrollview.contentSize = CGSizeMake((Main_width-40)*titleImgArr.count+16*(titleImgArr.count-1), (Main_width-40)/2.5+30);
-        backscrollview.showsVerticalScrollIndicator = NO;
-        backscrollview.showsHorizontalScrollIndicator = NO;
-        [cell addSubview:backscrollview];
-        for (int i=0; i<titleImgArr.count; i++) {
+        if ([dataDic[@"ins_info"][@"service_list"] isKindOfClass:[NSNull class]]){}else{
             
-            //            UIImageView *imgView = [[UIImageView alloc]init];
-            //            imgView.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, (Main_width-40)/2.5);
-            //            [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:titleImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-            //            imgView.layer.cornerRadius = 5;
-            //            [backscrollview addSubview:imgView];
+            NSArray *slArr = dataDic[@"ins_info"][@"service_list"];
+            titleImgArr = [NSMutableArray array];
+            for (int i = 0; i < slArr.count; i++) {
+                NSDictionary *dic = slArr[i];
+                NSString *titleImgStr = [dic objectForKey:@"title_img"];
+                [titleImgArr addObject:titleImgStr];
+            }
+            titleArr = [NSMutableArray array];
+            for (int i = 0;  i < slArr.count; i++) {
+                NSDictionary *dic = slArr[i];
+                NSString *titleStr = [dic objectForKey:@"title"];
+                [titleArr addObject:titleStr];
+            }
+            imgIDArr = [NSMutableArray array];
+            for (int i = 0;  i < slArr.count; i++) {
+                NSDictionary *dic = slArr[i];
+                NSString *titleStr = [dic objectForKey:@"id"];
+                [imgIDArr addObject:titleStr];
+            }
             
-            UIButton *imgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-            imgBtn.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, (Main_width-40)/2.5);
-            NSString *imgStr = [API_img stringByAppendingString:titleImgArr[i]];
-            [imgBtn xr_setButtonImageWithUrl:imgStr];
-            imgBtn.layer.cornerRadius = 5;
-            imgBtn.clipsToBounds = YES;
-            imgBtn.tag = [imgIDArr[i] integerValue]+100;
-            [imgBtn addTarget:self action:@selector(iconImageViewAction:) forControlEvents:UIControlEventTouchUpInside];
-            [backscrollview addSubview:imgBtn];
             
-            UILabel *titleLab = [[UILabel alloc] init];
-            titleLab.frame = CGRectMake(10+(i*(Main_width-30)), CGRectGetMaxY(imgBtn.frame), Main_width-40, 30);
-            titleLab.text = titleArr[i];
-            titleLab.textAlignment = NSTextAlignmentLeft;
-            titleLab.font = [UIFont systemFontOfSize:18];
-            [backscrollview addSubview:titleLab];
-            
+//            titleImgArr = [NSMutableArray array];
+//            for (int i = 0; i < slArr.count; i++) {
+//                NSDictionary *dic = slArr[i];
+//                NSString *titleImgStr = [dic objectForKey:@"title_img"];
+//                [titleImgArr addObject:titleImgStr];
+//            }
+//            titleArr = [NSMutableArray array];
+//            for (int i = 0;  i < iiModel.service_list.count; i++) {
+//                NSDictionary *dic = iiModel.service_list[i];
+//                NSString *titleStr = [dic objectForKey:@"title"];
+//                [titleArr addObject:titleStr];
+//            }
+//            imgIDArr = [NSMutableArray array];
+//            for (int i = 0;  i < iiModel.service_list.count; i++) {
+//                NSDictionary *dic = iiModel.service_list[i];
+//                NSString *titleStr = [dic objectForKey:@"id"];
+//                [imgIDArr addObject:titleStr];
+//            }
+            UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(tagList.frame)+10, Main_width, 180)];
+            backscrollview.contentSize = CGSizeMake((Main_width-40)*titleImgArr.count+16*(titleImgArr.count-1), (Main_width-40)/2.5+30);
+            backscrollview.showsVerticalScrollIndicator = NO;
+            backscrollview.showsHorizontalScrollIndicator = NO;
+            [cell addSubview:backscrollview];
+            for (int i=0; i<titleImgArr.count; i++) {
+                
+                //            UIImageView *imgView = [[UIImageView alloc]init];
+                //            imgView.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, (Main_width-40)/2.5);
+                //            [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:titleImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                //            imgView.layer.cornerRadius = 5;
+                //            [backscrollview addSubview:imgView];
+                
+                UIButton *imgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+                imgBtn.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, (Main_width-40)/2.5);
+                NSString *imgStr = [API_img stringByAppendingString:titleImgArr[i]];
+                [imgBtn xr_setButtonImageWithUrl:imgStr];
+                imgBtn.layer.cornerRadius = 5;
+                imgBtn.clipsToBounds = YES;
+                imgBtn.tag = [imgIDArr[i] integerValue]+100;
+                [imgBtn addTarget:self action:@selector(iconImageViewAction:) forControlEvents:UIControlEventTouchUpInside];
+                [backscrollview addSubview:imgBtn];
+                
+                UILabel *titleLab = [[UILabel alloc] init];
+                titleLab.frame = CGRectMake(10+(i*(Main_width-30)), CGRectGetMaxY(imgBtn.frame), Main_width-40, 30);
+                titleLab.text = titleArr[i];
+                titleLab.textAlignment = NSTextAlignmentLeft;
+                titleLab.font = [UIFont systemFontOfSize:18];
+                [backscrollview addSubview:titleLab];
+                
+            }
         }
+        
+        
     }
     return cell;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    
-    return nil;
-}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *headerView = [[UIView alloc]init];
+    if (section == 5) {
+       
+        headerView.frame = CGRectMake(0, 0, Main_width, 50);
+        headerView.backgroundColor = [UIColor whiteColor];
+        UIImageView *imgView = [[UIImageView alloc]init];
+        imgView.frame = CGRectMake(10, 10, 60, 30);
+        imgView.image = [UIImage imageNamed:@"fw_xq"];
+        [headerView addSubview:imgView];
+    }
+    
+    return headerView;
 }
 
 - (void)setupNavItems
@@ -523,29 +581,30 @@
     UIView *functionView = [[UIView alloc]initWithFrame:CGRectMake(0, contentY, Main_width, 50)];
     functionView.backgroundColor = [UIColor colorWithRed:243/255.0 green:247/255.0 blue:248/255.0 alpha:1];
     
-    UIButton *callBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 10, 60, 30)];
-    callBtn.backgroundColor = [UIColor colorWithRed:252/255.0 green:88/255.0 blue:48/255.0 alpha:1];
-    //    [callBtn setTitle:@"立即预约" forState:UIControlStateNormal];
-    [callBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    //    [likeButton setTitleColor:Blue_Selected forState:UIControlStateSelected];
-    callBtn.titleLabel.font = [UIFont systemFontOfSize:17];
-    //    [likeButton setImage:[UIImage imageNamed:@"icon_praise"] forState:UIControlStateNormal];
-    //    [likeButton setImage:[UIImage imageNamed:@"icon_praise_tabbar"] forState:UIControlStateSelected];
+    UIButton *callBtn = [[UIButton alloc]initWithFrame:CGRectMake(30, 10, 20, 20)];
+    [callBtn setImage:[UIImage imageNamed:@"fw_tel"] forState:UIControlStateNormal];
     [callBtn addTarget:self action:@selector(callAction:) forControlEvents:UIControlEventTouchUpInside];
     callBtn.layer.cornerRadius = 3.0;
     [functionView addSubview:callBtn];
+    UILabel *callLab = [[UILabel alloc]init];
+    callLab.frame = CGRectMake(10, CGRectGetMaxY(callBtn.frame), 60, 20);
+    callLab.text = @"联系商家";
+    callLab.font = [UIFont systemFontOfSize:13];
+    callLab.textAlignment = NSTextAlignmentCenter;
+    [functionView addSubview:callLab];
     
-    UIButton *shopBtn = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMaxX(callBtn.frame)+10, 10, 60, 30)];
-    shopBtn.backgroundColor = [UIColor colorWithRed:252/255.0 green:88/255.0 blue:48/255.0 alpha:1];
-    //    [shopBtn setTitle:@"立即预约" forState:UIControlStateNormal];
-    [shopBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    //    [likeButton setTitleColor:Blue_Selected forState:UIControlStateSelected];
-    shopBtn.titleLabel.font = [UIFont systemFontOfSize:17];
-    //    [likeButton setImage:[UIImage imageNamed:@"icon_praise"] forState:UIControlStateNormal];
-    //    [likeButton setImage:[UIImage imageNamed:@"icon_praise_tabbar"] forState:UIControlStateSelected];
+    
+    UIButton *shopBtn = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMaxX(callBtn.frame)+65, 10, 20, 20)];
+     [shopBtn setImage:[UIImage imageNamed:@"fw_sp"] forState:UIControlStateNormal];
     [shopBtn addTarget:self action:@selector(shopAction:) forControlEvents:UIControlEventTouchUpInside];
     shopBtn.layer.cornerRadius = 3.0;
     [functionView addSubview:shopBtn];
+    UILabel *shopLab = [[UILabel alloc]init];
+    shopLab.frame = CGRectMake(CGRectGetMaxX(callBtn.frame)+50, CGRectGetMaxY(callBtn.frame), 50, 20);
+    shopLab.text = @"商铺";
+    shopLab.font = [UIFont systemFontOfSize:13];
+    shopLab.textAlignment = NSTextAlignmentCenter;
+    [functionView addSubview:shopLab];
     
     UIButton *yuYueBtn = [[UIButton alloc]initWithFrame:CGRectMake(Main_width-10-100, 10, 100, 30)];
     yuYueBtn.backgroundColor = [UIColor colorWithRed:252/255.0 green:88/255.0 blue:48/255.0 alpha:1];

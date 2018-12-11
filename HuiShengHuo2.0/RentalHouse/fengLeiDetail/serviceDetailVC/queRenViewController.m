@@ -115,13 +115,13 @@
         [cell addSubview:titleLab];
         
         UIImageView *leftImg = [[UIImageView alloc]init];
-        leftImg.frame = CGRectMake(Main_width/2-110, 20, 70, 10);
-        leftImg.backgroundColor = [UIColor purpleColor];
+        leftImg.frame = CGRectMake(Main_width/2-90, 25, 50, 2);
+        leftImg.image = [UIImage imageNamed:@"fw_left"];
         [cell addSubview:leftImg];
         
         UIImageView *rightImg = [[UIImageView alloc]init];
-        rightImg.frame = CGRectMake(Main_width/2+40, 20, 70, 10);
-        rightImg.backgroundColor = [UIColor purpleColor];
+        rightImg.frame = CGRectMake(Main_width/2+40, 25, 50, 2);
+         rightImg.image = [UIImage imageNamed:@"fw_right"];
         [cell addSubview:rightImg];
         
         UIView *bgView = [[UIView alloc]init];
@@ -150,13 +150,13 @@
         [cell addSubview:titleLab];
         
         UIImageView *leftImg = [[UIImageView alloc]init];
-        leftImg.frame = CGRectMake(Main_width/2-110, 20, 70, 10);
-        leftImg.backgroundColor = [UIColor purpleColor];
+        leftImg.frame = CGRectMake(Main_width/2-90, 25, 50, 2);
+        leftImg.image = [UIImage imageNamed:@"fw_left"];
         [cell addSubview:leftImg];
         
         UIImageView *rightImg = [[UIImageView alloc]init];
-        rightImg.frame = CGRectMake(Main_width/2+40, 20, 70, 10);
-        rightImg.backgroundColor = [UIColor purpleColor];
+        rightImg.frame = CGRectMake(Main_width/2+40, 25, 50, 2);
+         rightImg.image = [UIImage imageNamed:@"fw_right"];
         [cell addSubview:rightImg];
         
         labelname = [[UILabel alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(titleLab.frame), Main_width-40, 40)];
@@ -195,13 +195,13 @@
         [cell addSubview:titleLab];
         
         UIImageView *leftImg = [[UIImageView alloc]init];
-        leftImg.frame = CGRectMake(Main_width/2-110, 20, 70, 10);
-        leftImg.backgroundColor = [UIColor purpleColor];
+        leftImg.frame = CGRectMake(Main_width/2-90, 25, 50, 2);
+        leftImg.image = [UIImage imageNamed:@"fw_left"];
         [cell addSubview:leftImg];
         
         UIImageView *rightImg = [[UIImageView alloc]init];
-        rightImg.frame = CGRectMake(Main_width/2+40, 20, 70, 10);
-        rightImg.backgroundColor = [UIColor purpleColor];
+        rightImg.frame = CGRectMake(Main_width/2+40, 25, 50, 2);
+        rightImg.image = [UIImage imageNamed:@"fw_right"];
         [cell addSubview:rightImg];
         
         _textView = [[UITextView alloc]initWithFrame:CGRectMake(10, CGRectGetMaxY(titleLab.frame), Main_width-20, 180)];
@@ -295,35 +295,41 @@
     
 }
 -(void)yuYueAction:(UIButton *)sender{
-    
+  
+    NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    // 从字符串中过滤掉首尾的空格和换行, 得到一个新的字符串
+    NSString *trimmedStr = [labelcontent.text stringByTrimmingCharactersInSet:set];
+    // 判断新字符串的长度是否为0
+    if (!labelcontent.text || !trimmedStr.length) {
+        [MBProgressHUD showToastToView:self.view withText:@"请选择地址"];
+    }else{
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSLog(@"_name==%@",_name);
+
     NSDictionary *dict = [[NSDictionary alloc] init];
-    
+
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"s_id":_serviceID,@"s_tag_id":_serviceTagID,@"s_tag_cn":_serviceStr,@"price":_priceStr,@"address":labelcontent.text,@"contacts":_name,@"mobile":_phone,@"address_id":_addressid,@"description":_textView.text};
     NSLog(@"dict===%@",dict);
-    
-    
+
     NSString *urlstr = [API_NOAPK stringByAppendingString:@"/service/service/serviceReserve"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"suredingdan--success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
-        
-        SpecialAlertView *special = [[SpecialAlertView alloc]initWithTitleImage:@"chsiHeadericon" messageTitle:@"预约成功" messageString:@"请等待服务商上门服务" sureBtnTitle:@"确定" sureBtnColor:[UIColor blueColor]];
+        SpecialAlertView *special = [[SpecialAlertView alloc]initWithTitleImage:@"fw_yycg" messageTitle:@"预约成功" messageString:@"请等待服务商上门服务" sureBtnTitle:@"确定" sureBtnColor:[UIColor blueColor]];
         [special withSureClick:^(NSString *string) {
-            NSLog(@"222");
             myserviceViewController *fwddVC = [[myserviceViewController alloc]init];
             fwddVC.backStr = @"1";//1代表跳回下单界面
             [self.navigationController pushViewController:fwddVC animated:YES];
         }];
-        
+
         [_tableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
         [MBProgressHUD showToastToView:self.view withText:@"请求失败"];
     }];
+
+    }
     
 }
 @end

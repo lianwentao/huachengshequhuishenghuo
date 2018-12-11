@@ -11,7 +11,6 @@
 @interface fwDetailModel : JSONModel
 @property (nonatomic ,strong)NSDictionary *ins_info;
 @property (nonatomic ,strong)NSString *title;
-//@property (nonatomic ,strong)NSDictionary *score_info;
 @property (nonatomic ,strong)NSArray *img_list;
 @property (nonatomic ,strong)NSArray *tag_list;
 @property (nonatomic ,strong)NSString *title_img;

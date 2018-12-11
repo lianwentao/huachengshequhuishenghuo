@@ -93,31 +93,31 @@
 -(void)createdUI{
     UIView *topView = [[UIView alloc]init];
     topView.frame = CGRectMake(0, 0, Main_width, 80);
-    topView.backgroundColor = [UIColor colorWithRed:241/255.0 green:242/255.0 blue:243/255.0 alpha:1];
+    topView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
     
     UIImageView *imgView = [[UIImageView alloc]init];
-    imgView.frame = CGRectMake(10, 10, 80, 60);
-    imgView.backgroundColor = [UIColor grayColor];
+    imgView.frame = CGRectMake(10, 22.5, 60, 35);
+    imgView.image = [UIImage imageNamed:@"fw_xzfl"];
     [topView addSubview:imgView];
     
     UIButton *itemBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    itemBtn.layer.cornerRadius = 10.0;
-    itemBtn.backgroundColor = [UIColor lightGrayColor];
-    NSLog(@"_sName = %@",_sName);
+    itemBtn.layer.cornerRadius = 8.0;
+    itemBtn.backgroundColor =  [UIColor colorWithRed:217/255.0 green:217/255.0 blue:217/255.0 alpha:1];
+    itemBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [itemBtn setTitle:_sName forState:UIControlStateNormal];
     [itemBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [topView addSubview:itemBtn];
     [itemBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.left.equalTo(topView).offset(100);
+        make.left.equalTo(topView).offset(90);
         make.centerY.equalTo(topView);
         make.width.lessThanOrEqualTo(@200);
-        make.height.equalTo(@30);
+        make.height.equalTo(@25);
     }];
     [self.view addSubview:topView];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, self.view.frame.size.width, self.view.frame.size.height-80-64)style:UITableViewStylePlain ];
-    //    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
@@ -169,6 +169,8 @@
     UIImageView *imgView = [[UIImageView alloc]init];
     imgView.frame = CGRectMake(10, 10,Main_width-20, 140);
     [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.title_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    imgView.layer.cornerRadius = 5;
+    imgView.clipsToBounds = YES;
     [cell addSubview:imgView];
     
     UILabel *titleLab = [[UILabel alloc]init];

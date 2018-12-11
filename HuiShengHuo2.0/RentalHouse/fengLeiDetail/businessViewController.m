@@ -94,25 +94,26 @@
 -(void)createdUI{
     UIView *topView = [[UIView alloc]init];
     topView.frame = CGRectMake(0, 0, Main_width, 80);
-    topView.backgroundColor = [UIColor colorWithRed:241/255.0 green:242/255.0 blue:243/255.0 alpha:1];
+    topView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
     
     UIImageView *imgView = [[UIImageView alloc]init];
-    imgView.frame = CGRectMake(10, 10, 80, 60);
-    imgView.backgroundColor = [UIColor grayColor];
+    imgView.frame = CGRectMake(10, 22.5, 60, 35);
+    imgView.image = [UIImage imageNamed:@"fw_xzfl"];
     [topView addSubview:imgView];
     
     UIButton *itemBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    itemBtn.layer.cornerRadius = 10.0;
-    itemBtn.backgroundColor = [UIColor lightGrayColor];
+    itemBtn.layer.cornerRadius = 8.0;
+    itemBtn.backgroundColor =  [UIColor colorWithRed:217/255.0 green:217/255.0 blue:217/255.0 alpha:1];
     [itemBtn setTitle:_bName forState:UIControlStateNormal];
+    itemBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [itemBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [topView addSubview:itemBtn];
     [itemBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.left.equalTo(topView).offset(100);
+        make.left.equalTo(topView).offset(90);
         make.centerY.equalTo(topView);
         make.width.lessThanOrEqualTo(@200);
-        make.height.equalTo(@30);
+        make.height.equalTo(@25);
     }];
     [self.view addSubview:topView];
     
@@ -206,7 +207,7 @@
     tagList.vertSpacing = 20;
     tagList.horiSpacing = 10;
     tagList.selectedTextColor = [UIColor blackColor];
-    tagList.tagBackgroundColor = [UIColor colorWithRed:246/255.0 green:246/255.0 blue:246/255.0 alpha:1];
+    tagList.tagBackgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
     tagList.selectedTagBackgroundColor = [UIColor redColor];
     tagList.tagCornerRadius = 3;
     tagList.tagEdge = UIEdgeInsetsMake(2, 2, 2, 2);
@@ -242,18 +243,12 @@
         view.backgroundColor = [UIColor whiteColor];
         view.layer.cornerRadius = 3;
         [backscrollview addSubview:view];
-        //
-        //        UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
-        //        dianjibut.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, 150);;
-        ////        dianjibut.tag = [[[imgIDArr objectAtIndex:i] objectForKey:@"id"] longValue];
-        //        [dianjibut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
-        //        [backscrollview addSubview:dianjibut];
-        
+       
         UIImageView *imgView = [[UIImageView alloc]init];
         imgView.frame = CGRectMake(0,0 , Main_width-40, 150);
         [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:titleImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
         imgView.layer.cornerRadius = 5;
-        
+        imgView.clipsToBounds = YES;
         [view addSubview:imgView];
         
         UIButton *goodsbut = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -262,24 +257,13 @@
         [goodsbut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:goodsbut];
         
-        //        UIButton *imgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        //        imgBtn.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, 150);
-        //        NSString *imgStr = [API_img stringByAppendingString:titleImgArr[i]];
-        //        [imgBtn xr_setButtonImageWithUrl:imgStr];
-        //        imgBtn.layer.cornerRadius = 5;
-        //        imgBtn.clipsToBounds = YES;
-        //        imgBtn.tag = [imgIDArr[i] integerValue]+100;
-        //        [imgBtn addTarget:self action:@selector(iconImageViewAction:) forControlEvents:UIControlEventTouchUpInside];
-        //        [backscrollview addSubview:imgBtn];
-        
         UILabel *titleLab = [[UILabel alloc] init];
         titleLab.frame = CGRectMake(10+(i*(Main_width-30)), CGRectGetMaxY(imgView.frame), Main_width-40, 30);
         titleLab.text = titleArr[i];
         titleLab.textAlignment = NSTextAlignmentLeft;
         titleLab.font = [UIFont systemFontOfSize:18];
         [backscrollview addSubview:titleLab];
-        
-        
+
     }
     
     return cell;
