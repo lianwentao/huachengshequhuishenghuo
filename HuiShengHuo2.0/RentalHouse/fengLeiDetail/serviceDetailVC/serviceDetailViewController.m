@@ -91,7 +91,7 @@
         NSLog(@"dataStr = %@",dataStr);
         _DataDic = [[NSMutableDictionary alloc] init];
         _DataDic = [responseObject objectForKey:@"data"];
-//        NSLog(@"goods--%@",_DataDic);
+        NSLog(@"goods--%@",_DataDic);
         dataDic = responseObject[@"data"];
         dataSourceArr = [NSMutableArray array];
         fwDetailModel *model = [[fwDetailModel alloc]initWithDictionary:dataDic error:NULL];
@@ -739,7 +739,7 @@
     [mediamessage setThumbImage:image];
     
     WXWebpageObject *webobj = [WXWebpageObject object];
-    webobj.webpageUrl = [NSString stringWithFormat:@"http://test.hui-shenghuo.cn/home/shop/goods_details/id/%@?linkedme=https://lkme.cc/LQD/ONaD0BYuK&from=singlemessage",[_DataDic objectForKey:@"id"]];
+    webobj.webpageUrl = [NSString stringWithFormat:@"http://test.hui-shenghuo.cn/home/shop/goods_details/id/%@?linkedme=https://lkme.cc/LQD/ONaD0BYuK&from=singlemessage",_DataDic[@"id"]];
     mediamessage.mediaObject =  webobj;
     
     SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];

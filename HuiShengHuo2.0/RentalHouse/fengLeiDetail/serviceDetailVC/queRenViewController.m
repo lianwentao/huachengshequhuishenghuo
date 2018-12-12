@@ -61,6 +61,7 @@
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor whiteColor];
+    _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     //    _tableView.contentInset = UIEdgeInsetsMake(IMAGE_HEIGHT - [self navBarBottom], 0, 0, 0);
     [self.view addSubview:_tableView];
 }
@@ -90,7 +91,7 @@
     }else if (indexPath.section == 1){
         return 110;
     }else {
-        return 300;
+        return 220;
     }
     
     
@@ -101,7 +102,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         
-        cell.userInteractionEnabled = YES;
+//        cell.userInteractionEnabled = YES;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;    //点击的时候无效果
     }
     
@@ -315,6 +316,9 @@
 
     NSString *urlstr = [API_NOAPK stringByAppendingString:@"/service/service/serviceReserve"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSLog(@"dataStr = %@",dataStr);
         NSLog(@"suredingdan--success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
         SpecialAlertView *special = [[SpecialAlertView alloc]initWithTitleImage:@"fw_yycg" messageTitle:@"预约成功" messageString:@"请等待服务商上门服务" sureBtnTitle:@"确定" sureBtnColor:[UIColor blueColor]];
         [special withSureClick:^(NSString *string) {
