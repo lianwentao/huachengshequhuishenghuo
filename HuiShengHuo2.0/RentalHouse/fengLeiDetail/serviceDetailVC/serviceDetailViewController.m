@@ -25,7 +25,7 @@
 #import "serviceListModel.h"
 #import "VOTagList.h"
 #import "newshangjiaViewController.h"
-
+#import "LoginViewController.h"
 #import "WXApi.h"
 #import "WXApiManager.h"
 #import "activitydetailsViewController.h"
@@ -639,14 +639,21 @@
     [self.navigationController pushViewController:bdVC animated:YES];
 }
 -(void)yuYueAction:(UIButton *)sender{
-    fwDetailModel *model = dataSourceArr[0];
-    tagListModel *tModel = tagListArr[0];
-    queRenViewController *qrVC = [[queRenViewController alloc]init];
-    qrVC.serviceStr = model.title;
-    qrVC.priceStr = tModel.price;
-    qrVC.serviceID = tModel.s_id;
-    qrVC.serviceTagID = tModel.id;
-    [self.navigationController pushViewController:qrVC animated:YES];
+    NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+    NSString *str = [userdefaults objectForKey:@"token"];
+    if (str==nil) {
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self presentViewController:login animated:YES completion:nil];
+    }else{
+        fwDetailModel *model = dataSourceArr[0];
+        tagListModel *tModel = tagListArr[0];
+        queRenViewController *qrVC = [[queRenViewController alloc]init];
+        qrVC.serviceStr = model.title;
+        qrVC.priceStr = tModel.price;
+        qrVC.serviceID = tModel.s_id;
+        qrVC.serviceTagID = tModel.id;
+        [self.navigationController pushViewController:qrVC animated:YES];
+    }
 }
 -(void)plBtnAction{
     scoreInfoModel *model = scoreInfoArr[0];
