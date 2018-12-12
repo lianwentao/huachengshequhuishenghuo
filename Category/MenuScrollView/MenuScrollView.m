@@ -122,7 +122,12 @@
     
 //    [imageBtn setImageWithUrl:model.icon_small placeholder:[UIImage imageNamed:@"file_icon_hlt"] state:UIControlStateNormal];
     //[imageBtn setImage:[UIImage imageNamed:model.icon] forState:UIControlStateNormal];
-    [imageBtn sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.icon]] forState:UIControlStateNormal];
+    if ([model.icon isEqualToString:@"快捷按钮全部"]) {
+        [imageBtn setImage:[UIImage imageNamed:model.icon] forState:UIControlStateNormal];
+    }else{
+        [imageBtn sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.icon]] forState:UIControlStateNormal];
+    }
+    
     imageBtn.center = CGPointMake(view.frame.size.width/2, view.frame.size.height/2 - 10);
     [view addSubview:imageBtn];
     

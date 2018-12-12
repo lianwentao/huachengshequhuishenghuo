@@ -32,7 +32,7 @@
 #import "jiaofeiViewController.h"
 #import "AppKeFuLib.h"
 #import "MJRefresh.h"
-
+#import "myserviceViewController.h"
 #import "bangdingqianViewController.h"
 #import "MyhomeViewController.h"
 #import "selectHomeViewController.h"
@@ -912,10 +912,10 @@
         jiaofei.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:jiaofei animated:YES];
     }else if (sender.tag==2){
-        //服务订单，还未开放
-        rentalhouseViewController *rentalhouse = [[rentalhouseViewController alloc] init];
-        rentalhouse.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:rentalhouse animated:YES];
+        
+        myserviceViewController *myservice = [[myserviceViewController alloc] init];
+        myservice.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:myservice animated:YES];
     }else if (sender.tag==1){
         fuwudingdanViewController *fuwudingdan = [[fuwudingdanViewController alloc] init];
         fuwudingdan.hidesBottomBarWhenPushed = YES;
