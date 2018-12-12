@@ -13,6 +13,8 @@
 @interface newshangjiaViewController : UIViewController
 
 @property(nonatomic,copy)NSString *shangjiaid;
+@property(nonatomic,copy)NSString *titleStr;
+@property(nonatomic,copy)NSString *img;
 
 @property (nonatomic, assign) OffsetType offsetType;
 

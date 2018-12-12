@@ -112,22 +112,25 @@
     [itemBtn setTitle:_sName forState:UIControlStateNormal];
     [itemBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [topView addSubview:itemBtn];
-    [itemBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.left.equalTo(topView).offset(90);
-        make.centerY.equalTo(topView);
-        make.width.lessThanOrEqualTo(@200);
-        make.height.equalTo(@25);
-    }];
+    CGSize size = [_sName sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys: itemBtn.titleLabel.font,NSFontAttributeName, nil]];
+    CGFloat itemBtnH = size.height+10;
+    CGFloat itemBtnW = size.width+10;
+    itemBtn.frame = CGRectMake(90, 22.5, itemBtnW,itemBtnH);
+   
+//    [itemBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//
+//        make.left.equalTo(topView).offset(90);
+//        make.centerY.equalTo(topView);
+//        make.centerX.equalTo(@5);
+//        make.width.lessThanOrEqualTo(@50);
+//        make.height.equalTo(@25);
+//    }];
     [self.view addSubview:topView];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, self.view.frame.size.width, self.view.frame.size.height-80-64)style:UITableViewStylePlain ];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    _tableView.estimatedRowHeight = 0;
-    _tableView.estimatedSectionFooterHeight = 0;
-    _tableView.estimatedSectionHeaderHeight = 0;
     _tableView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:_tableView];
     
@@ -212,6 +215,7 @@
     serviceDetailViewController *sfDetailVC = [[serviceDetailViewController alloc] init];
     fwListModel *model = _dataSourceArr[indexPath.row];
     sfDetailVC.serviceID = model.id;
+    sfDetailVC.serviceTitle = model.title;
     [self.navigationController pushViewController:sfDetailVC animated:YES];
 }
 

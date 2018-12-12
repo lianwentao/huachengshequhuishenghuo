@@ -62,6 +62,7 @@
     
     NSArray *topArr;
     JKBannarView *bannerView;
+    NSString *titleStr;
 }
 
 @property (nonatomic,strong) MenuScrollView * menuScrollView;
@@ -600,13 +601,15 @@
                 imgBtn.frame = CGRectMake(0, 0, 242, 97);
                 imgBtn.tag = [[[imgarr objectAtIndex:i] objectForKey:@"id"] integerValue]+100;
                 [imgBtn addTarget:self action:@selector(imgBtnAction:) forControlEvents:UIControlEventTouchUpInside];
-                [view addSubview:imgBtn];
                 
+                [view addSubview:imgBtn];
+               
                 UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(15+242*i+10*i, 107, 242, 15)];
                 label1.text = [[imgarr objectAtIndex:i] objectForKey:@"title"];
                 label1.font = [UIFont systemFontOfSize:14];
                 label1.textAlignment = NSTextAlignmentCenter;
                 [scrollview addSubview:label1];
+                
             }
             
             UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(15, scrollview.frame.size.height+scrollview.frame.origin.y+10, Main_width-30, 0.5)];
@@ -814,6 +817,8 @@
 {
     newshangjiaViewController *shangjia = [[newshangjiaViewController alloc] init];
     shangjia.shangjiaid = [[info objectAtIndex:sender.tag] objectForKey:@"id"];
+    shangjia.titleStr = [[info objectAtIndex:sender.tag] objectForKey:@"name"];
+    shangjia.img = [[info objectAtIndex:sender.tag] objectForKey:@"logo"];
     shangjia.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:shangjia animated:YES];
 }
@@ -929,10 +934,12 @@
 }
 #pragma mark - 最受欢迎 imgActionBtn 点击跳转
 -(void)imgBtnAction:(UIButton *)sender{
+   
     serviceDetailViewController *sdVC = [[serviceDetailViewController alloc]init];
     sdVC.hidesBottomBarWhenPushed = YES;
     sdVC.serviceID =[NSString stringWithFormat:@"%ld",sender.tag-100];
-    sdVC.serviceTitle = sender.titleLabel.text;
+    sdVC.serviceTitle = titleStr;
+    NSLog(@"sender.titleLabel.text = %@",titleStr);
     [self.navigationController pushViewController:sdVC animated:YES];
 }
 #pragma mark - 更多

@@ -98,11 +98,12 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
+    static NSString *cellIndetifier = @"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndetifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         
-//        cell.userInteractionEnabled = YES;
+        cell.userInteractionEnabled = YES;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;    //点击的时候无效果
     }
     
@@ -281,8 +282,15 @@
     UIView *functionView = [[UIView alloc]initWithFrame:CGRectMake(0, contentY, Main_width, 50)];
     functionView.backgroundColor = [UIColor colorWithRed:243/255.0 green:247/255.0 blue:248/255.0 alpha:1];
     
-    UIButton *yuYueBtn = [[UIButton alloc]initWithFrame:CGRectMake((Main_width/2)-50, 10, 100, 30)];
-    yuYueBtn.backgroundColor = [UIColor colorWithRed:252/255.0 green:88/255.0 blue:48/255.0 alpha:1];
+    UIButton *yuYueBtn = [[UIButton alloc]initWithFrame:CGRectMake((Main_width/2)-50, 10, 100, 40)];
+    yuYueBtn.clipsToBounds = YES;
+    yuYueBtn.layer.cornerRadius = 10;
+    CAGradientLayer *layer = [CAGradientLayer layer];
+    layer.frame = yuYueBtn.bounds;
+    layer.startPoint = CGPointMake(0,0);
+    layer.endPoint = CGPointMake(1, 0);
+    layer.colors = @[(id)[UIColor colorWithHexString:@"FF9502"].CGColor,(id)[UIColor colorWithHexString:@"FF5722"].CGColor];
+    [yuYueBtn.layer addSublayer:layer];
     [yuYueBtn setTitle:@"确认下单" forState:UIControlStateNormal];
     [yuYueBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     //    [likeButton setTitleColor:Blue_Selected forState:UIControlStateSelected];
@@ -297,6 +305,7 @@
 }
 -(void)yuYueAction:(UIButton *)sender{
   
+   
     NSCharacterSet *set = [NSCharacterSet whitespaceAndNewlineCharacterSet];
     // 从字符串中过滤掉首尾的空格和换行, 得到一个新的字符串
     NSString *trimmedStr = [labelcontent.text stringByTrimmingCharactersInSet:set];
@@ -320,14 +329,20 @@
         NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSLog(@"dataStr = %@",dataStr);
         NSLog(@"suredingdan--success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
-        SpecialAlertView *special = [[SpecialAlertView alloc]initWithTitleImage:@"fw_yycg" messageTitle:@"预约成功" messageString:@"请等待服务商上门服务" sureBtnTitle:@"确定" sureBtnColor:[UIColor blueColor]];
-        [special withSureClick:^(NSString *string) {
-            myserviceViewController *fwddVC = [[myserviceViewController alloc]init];
-            fwddVC.backStr = @"1";//1代表跳回下单界面
-            [self.navigationController pushViewController:fwddVC animated:YES];
-        }];
+        NSInteger status = [responseObject[@"status"] integerValue];
+        if (status == 1) {
+            SpecialAlertView *special = [[SpecialAlertView alloc]initWithTitleImage:@"fw_yycg" messageTitle:@"预约成功" messageString:@"请等待服务商上门服务" sureBtnTitle:@"确定" sureBtnColor:[UIColor blueColor]];
+            [special withSureClick:^(NSString *string) {
+                myserviceViewController *fwddVC = [[myserviceViewController alloc]init];
+                fwddVC.backStr = @"1";//1代表跳回下单界面
+                [self.navigationController pushViewController:fwddVC animated:YES];
+            }];
+        }else{
+              [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+        }
 
-        [_tableView reloadData];
+
+
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
         [MBProgressHUD showToastToView:self.view withText:@"请求失败"];

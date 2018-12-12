@@ -42,7 +42,7 @@
 
 - (void)commonInit{
     self.font                       = [UIFont systemFontOfSize:14];
-    self.textColor                  = [UIColor blackColor];
+    self.textColor                  = [UIColor colorWithRed:158/255.0 green:158/255.0 blue:158/255.0 alpha:1];
     self.selectedTextColor          = [UIColor blackColor];
     self.tagBackgroundColor         = [UIColor clearColor];
     self.selectedTagBackgroundColor = [UIColor clearColor];

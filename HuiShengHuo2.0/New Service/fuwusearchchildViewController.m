@@ -38,25 +38,9 @@
     self.searchHistoriesCount = 20;
     [self createtableview];
     [self getdata];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gengxinlhestory:) name:@"searchtext" object:nil];
     // Do any additional setup after loading the view.
 }
-- (void)gengxinlhestory:(NSNotification *)user
-{
-    NSString *str = [user.userInfo objectForKey:@"searchtext"];
-    [self saveSearchCacheAndRefreshView:str];
-    
-    fuwusearchresultViewController *result = [[fuwusearchresultViewController alloc] init];
-    result.key = str;
-    if ([_shangjiaorfuwu isEqualToString:@"sj"]) {
-        result.canshu = @"i_key";
-        result.url = @"/service/institution/merchantList";
-    }else{
-        result.canshu = @"s_key";
-        result.url = @"/service/service/serviceList";
-    }
-    [self.navigationController pushViewController:result animated:YES];
-}
+
 //- (NSMutableArray *)searchHistories1
 //{
 //
@@ -317,18 +301,36 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     
+//    // 缓存数据并且刷新界面
+//    [self saveSearchCacheAndRefreshView:cell.textLabel.text];
+//    fuwusearchresultViewController *result = [[fuwusearchresultViewController alloc] init];
+//    result.key = cell.textLabel.text;
+//    if ([_shangjiaorfuwu isEqualToString:@"sj"]) {
+//        result.canshu = @"i_key";
+//        result.url = @"/service/institution/merchantList";
+//    }else{
+//        result.canshu = @"s_key";
+//        result.url = @"/service/service/serviceList";
+//    }
+//    [self.navigationController pushViewController:result animated:YES];
+    
     // 缓存数据并且刷新界面
     [self saveSearchCacheAndRefreshView:cell.textLabel.text];
-    fuwusearchresultViewController *result = [[fuwusearchresultViewController alloc] init];
-    result.key = cell.textLabel.text;
+    
     if ([_shangjiaorfuwu isEqualToString:@"sj"]) {
+        fuwusearchresultViewController *result = [[fuwusearchresultViewController alloc] init];
+        result.key = cell.textLabel.text;
         result.canshu = @"i_key";
         result.url = @"/service/institution/merchantList";
+        [self.navigationController pushViewController:result animated:YES];
     }else{
+        searchServiceViewController *result = [[searchServiceViewController alloc] init];
         result.canshu = @"s_key";
+        result.key = cell.textLabel.text;
         result.url = @"/service/service/serviceList";
+        [self.navigationController pushViewController:result animated:YES];
+        
     }
-    [self.navigationController pushViewController:result animated:YES];
 }
 - (void)closeDidClick:(UIButton *)sender
 {
@@ -360,8 +362,7 @@
 
     // 缓存数据并且刷新界面
     [self saveSearchCacheAndRefreshView:[dataarr objectAtIndex:sender.tag]];
-    fuwusearchresultViewController *result = [[fuwusearchresultViewController alloc] init];
-    result.key = [dataarr objectAtIndex:sender.tag];
+    
     if ([_shangjiaorfuwu isEqualToString:@"sj"]) {
         fuwusearchresultViewController *result = [[fuwusearchresultViewController alloc] init];
         result.key = [dataarr objectAtIndex:sender.tag];

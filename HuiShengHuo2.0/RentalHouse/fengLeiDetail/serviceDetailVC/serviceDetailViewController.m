@@ -49,8 +49,10 @@
     NSMutableArray *titleArr;
     NSMutableArray *titleImgArr;
     NSMutableArray *imgIDArr;
+    NSMutableArray *priceArr;
     NSDictionary *dataDic;
     NSMutableDictionary *_DataDic;
+    UILabel *titlelabel;
 }
 @property (nonatomic,strong)UITableView *tableView;
 @property (nonatomic ,strong) UIView *deliverView; //底部View
@@ -63,7 +65,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.title = _serviceTitle;
+
     [self getData];
     [self setupNavItems];
     //    [self CreateTableview];
@@ -191,10 +193,9 @@
     
     CGRect frame = CGRectMake(0, 0, Main_width, Main_Height-50);
     _tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
-    [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     _tableView.delegate = self;
     _tableView.dataSource = self;
-     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.contentInset = UIEdgeInsetsMake(IMAGE_HEIGHT - [self navBarBottom], 0, 0, 0);
     [self.view addSubview:_tableView];
@@ -268,7 +269,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
+    static NSString *cellIndetifier = @"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndetifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         
@@ -345,8 +347,9 @@
             imgView.image = [UIImage imageNamed:@"fw_yhpj"];
             [cell addSubview:imgView];
             
-            UIButton *plBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            kuodabuttondianjifanwei *plBtn = [kuodabuttondianjifanwei buttonWithType:UIButtonTypeCustom];
             plBtn.frame = CGRectMake(Main_width-100-20, 10, 100, 40);
+            [plBtn setEnlargeEdgeWithTop:5 right:5 bottom:5 left:Main_width-60];
             [plBtn setTitle:[NSString stringWithFormat:@"共%@条评论 >",model.score_num] forState:UIControlStateNormal];
             plBtn.titleLabel.textAlignment = NSTextAlignmentRight;
             plBtn.titleLabel.font = [UIFont systemFontOfSize:15];
@@ -437,6 +440,7 @@
         titleLab1.frame = CGRectMake(CGRectGetMaxX(logoImg.frame)+5, CGRectGetMaxY(titleLab.frame), 100, 20);
         titleLab1.font = [UIFont systemFontOfSize:12];
         titleLab1.text = [NSString stringWithFormat:@"共%@个优惠券",iiModel.coupon_num];
+        titleLab1.textColor =[UIColor colorWithRed:171/255.0 green:171/255.0 blue:171/255.0 alpha:1];
         titleLab1.textAlignment = NSTextAlignmentLeft;
         [cell addSubview:titleLab1];
         
@@ -444,6 +448,7 @@
         titleLab2.frame = CGRectMake(CGRectGetMaxX(titleLab1.frame)+5, CGRectGetMaxY(titleLab.frame), 100, 20);
         titleLab2.font = [UIFont systemFontOfSize:12];
         titleLab2.text = [NSString stringWithFormat:@"共%@个服务项",iiModel.service_num];;
+        titleLab2.textColor =[UIColor colorWithRed:171/255.0 green:171/255.0 blue:171/255.0 alpha:1];
         titleLab2.textAlignment = NSTextAlignmentLeft;
         [cell addSubview:titleLab2];
         
@@ -461,7 +466,7 @@
         tagList.vertSpacing = 20;
         tagList.horiSpacing = 10;
         tagList.selectedTextColor = [UIColor blackColor];
-        tagList.tagBackgroundColor = [UIColor colorWithRed:246/255.0 green:246/255.0 blue:246/255.0 alpha:1];
+        tagList.tagBackgroundColor = [UIColor colorWithRed:217/255.0 green:217/255.0 blue:217/255.0 alpha:1];
         tagList.selectedTagBackgroundColor = [UIColor redColor];
         tagList.tagCornerRadius = 3;
         tagList.tagEdge = UIEdgeInsetsMake(2, 2, 2, 2);
@@ -489,7 +494,12 @@
                 NSString *titleStr = [dic objectForKey:@"id"];
                 [imgIDArr addObject:titleStr];
             }
-            
+            priceArr = [NSMutableArray array];
+            for (int i = 0;  i < slArr.count; i++) {
+                NSDictionary *dic = slArr[i];
+                NSString *titleStr = [dic objectForKey:@"price"];
+                [priceArr addObject:titleStr];
+            }
             
 //            titleImgArr = [NSMutableArray array];
 //            for (int i = 0; i < slArr.count; i++) {
@@ -533,12 +543,19 @@
                 [backscrollview addSubview:imgBtn];
                 
                 UILabel *titleLab = [[UILabel alloc] init];
-                titleLab.frame = CGRectMake(10+(i*(Main_width-30)), CGRectGetMaxY(imgBtn.frame), Main_width-40, 30);
+                titleLab.frame = CGRectMake(10+(i*(Main_width-30)), CGRectGetMaxY(imgBtn.frame), Main_width/2-20, 30);
                 titleLab.text = titleArr[i];
                 titleLab.textAlignment = NSTextAlignmentLeft;
                 titleLab.font = [UIFont systemFontOfSize:18];
                 [backscrollview addSubview:titleLab];
                 
+                UILabel *priceLab = [[UILabel alloc] init];
+                priceLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame), CGRectGetMaxY(imgBtn.frame), Main_width/2-10, 30);
+                priceLab.text = priceArr[i];
+                priceLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
+                priceLab.textAlignment = NSTextAlignmentRight;
+                priceLab.font = [UIFont systemFontOfSize:18];
+                [backscrollview addSubview:priceLab];
             }
         }
         
@@ -548,8 +565,10 @@
 }
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-}
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//
+//     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+//}
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *headerView = [[UIView alloc]init];
     if (section == 5) {
@@ -577,6 +596,13 @@
     [but addTarget:self action:@selector(shareview) forControlEvents:UIControlEventTouchUpInside];
     but.backgroundColor = [UIColor clearColor];
     [view addSubview:but];
+    
+    titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(45, 5, Main_width-90, 40)];
+    NSLog(@"_serviceTitle = %@",_serviceTitle);
+    titlelabel.text = _serviceTitle;
+//    titlelabel.textAlignment = NSTextAlignmentCenter;
+    titlelabel.font = [UIFont systemFontOfSize:20];
+    [view addSubview:titlelabel];
 }
 #pragma mark - 立即预约
 - (void)loadFunctionView {
@@ -584,7 +610,8 @@
     UIView *functionView = [[UIView alloc]initWithFrame:CGRectMake(0, contentY, Main_width, 50)];
     functionView.backgroundColor = [UIColor colorWithRed:243/255.0 green:247/255.0 blue:248/255.0 alpha:1];
     
-    UIButton *callBtn = [[UIButton alloc]initWithFrame:CGRectMake(30, 10, 20, 20)];
+    kuodabuttondianjifanwei *callBtn = [[kuodabuttondianjifanwei alloc]initWithFrame:CGRectMake(30, 10, 20, 20)];
+     [callBtn setEnlargeEdgeWithTop:10 right:5 bottom:20 left:5];
     [callBtn setImage:[UIImage imageNamed:@"fw_tel"] forState:UIControlStateNormal];
     [callBtn addTarget:self action:@selector(callAction:) forControlEvents:UIControlEventTouchUpInside];
     callBtn.layer.cornerRadius = 3.0;
@@ -597,7 +624,8 @@
     [functionView addSubview:callLab];
     
     
-    UIButton *shopBtn = [[UIButton alloc]initWithFrame:CGRectMake(CGRectGetMaxX(callBtn.frame)+65, 10, 20, 20)];
+    kuodabuttondianjifanwei *shopBtn = [[kuodabuttondianjifanwei alloc]initWithFrame:CGRectMake(CGRectGetMaxX(callBtn.frame)+65, 10, 20, 20)];
+    [shopBtn setEnlargeEdgeWithTop:10 right:5 bottom:20 left:5];
      [shopBtn setImage:[UIImage imageNamed:@"fw_sp"] forState:UIControlStateNormal];
     [shopBtn addTarget:self action:@selector(shopAction:) forControlEvents:UIControlEventTouchUpInside];
     shopBtn.layer.cornerRadius = 3.0;
@@ -610,7 +638,14 @@
     [functionView addSubview:shopLab];
     
     UIButton *yuYueBtn = [[UIButton alloc]initWithFrame:CGRectMake(Main_width-10-100, 10, 100, 30)];
-    yuYueBtn.backgroundColor = [UIColor colorWithRed:252/255.0 green:88/255.0 blue:48/255.0 alpha:1];
+    yuYueBtn.clipsToBounds = YES;
+    yuYueBtn.layer.cornerRadius = 10;
+    CAGradientLayer *layer = [CAGradientLayer layer];
+    layer.frame = yuYueBtn.bounds;
+    layer.startPoint = CGPointMake(0,0);
+    layer.endPoint = CGPointMake(1, 0);
+    layer.colors = @[(id)[UIColor colorWithHexString:@"FF9502"].CGColor,(id)[UIColor colorWithHexString:@"FF5722"].CGColor];
+    [yuYueBtn.layer addSublayer:layer];
     [yuYueBtn setTitle:@"立即预约" forState:UIControlStateNormal];
     [yuYueBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     //    [likeButton setTitleColor:Blue_Selected forState:UIControlStateSelected];
@@ -739,7 +774,7 @@
     [mediamessage setThumbImage:image];
     
     WXWebpageObject *webobj = [WXWebpageObject object];
-    webobj.webpageUrl = [NSString stringWithFormat:@"http://test.hui-shenghuo.cn/home/shop/goods_details/id/%@?linkedme=https://lkme.cc/LQD/ONaD0BYuK&from=singlemessage",_DataDic[@"id"]];
+    webobj.webpageUrl = [NSString stringWithFormat:@"http://test.hui-shenghuo.cn/home/service/service_details/id/%@?linkedme=https://lkme.cc/LQD/ONaD0BYuK&from=singlemessage",_serviceID];
     mediamessage.mediaObject =  webobj;
     
     SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
