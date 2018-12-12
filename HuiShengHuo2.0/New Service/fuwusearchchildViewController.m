@@ -34,7 +34,24 @@
     self.searchHistoriesCount = 20;
     [self createtableview];
     [self getdata];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gengxinlhestory:) name:@"searchtext" object:nil];
     // Do any additional setup after loading the view.
+}
+- (void)gengxinlhestory:(NSNotification *)user
+{
+    NSString *str = [user.userInfo objectForKey:@"searchtext"];
+    [self saveSearchCacheAndRefreshView:str];
+    
+    fuwusearchresultViewController *result = [[fuwusearchresultViewController alloc] init];
+    result.key = str;
+    if ([_shangjiaorfuwu isEqualToString:@"sj"]) {
+        result.canshu = @"i_key";
+        result.url = @"/service/institution/merchantList";
+    }else{
+        result.canshu = @"s_key";
+        result.url = @"/service/service/serviceList";
+    }
+    [self.navigationController pushViewController:result animated:YES];
 }
 //- (NSMutableArray *)searchHistories1
 //{

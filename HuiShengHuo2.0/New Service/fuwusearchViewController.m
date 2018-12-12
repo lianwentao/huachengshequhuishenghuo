@@ -8,7 +8,7 @@
 
 #import "fuwusearchViewController.h"
 #import "fuwusearchchildViewController.h"
-
+#import "fuwusearchresultViewController.h"
 @interface fuwusearchViewController ()<FSPageContentViewDelegate,FSSegmentTitleViewDelegate,UITextFieldDelegate>{
     UITextField *text;
 }
@@ -76,10 +76,10 @@
 // return按钮操作
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     
-    [self.view endEditing:YES];
-    
-    WBLog(@"----1111-----");
-    
+    [text endEditing:YES];
+    NSDictionary *dic = nil;
+    dic = @{@"searchtext":text.text};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"searchtext" object:nil userInfo:dic];
     return YES;
 }
 
