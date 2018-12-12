@@ -161,7 +161,7 @@
                 
                 UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
                 but.frame = CGRectMake(15+i*width+7*i, 10, width, 40);
-                but.tag = [[[arr objectAtIndex:i+indexPath.row*3] objectForKey:@"p_id"] integerValue];
+                but.tag = [[[arr objectAtIndex:i+indexPath.row*3] objectForKey:@"id"] integerValue];
                 [but setTitle:[[arr objectAtIndex:i+indexPath.row*3] objectForKey:@"name"] forState:UIControlStateNormal];
                 but.titleLabel.font = Font(0.1);
                 [but addTarget:self action:@selector(push:) forControlEvents:UIControlEventTouchUpInside];
@@ -193,6 +193,7 @@
 {
     if (sender.tag == -1000) {
         fengLeiDetailViewController *flVC = [[fengLeiDetailViewController alloc]init];
+        flVC.fuwuid = @"";
         flVC.name = sender.titleLabel.text;
         flVC.tagStr = @"1";
         [self.navigationController pushViewController:flVC animated:YES];

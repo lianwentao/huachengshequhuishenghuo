@@ -103,7 +103,7 @@
     topView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
     
     UIImageView *imgView = [[UIImageView alloc]init];
-    imgView.frame = CGRectMake(10, 22.5, 60, 35);
+    imgView.frame = CGRectMake(10, 22.5,30*2.4, 30);
     imgView.image = [UIImage imageNamed:@"fw_xzfl"];
     [topView addSubview:imgView];
     
@@ -127,6 +127,10 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.estimatedRowHeight = 0;
+    _tableView.estimatedSectionFooterHeight = 0;
+    _tableView.estimatedSectionHeaderHeight = 0;
+    _tableView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:_tableView];
     
     WS(ws);
@@ -154,7 +158,7 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 130+(Main_width-80)/2.5;
+    return 130+(Main_width-40)/2.5;
 }
 //headview的高度和内容
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -245,20 +249,20 @@
     [cell addSubview:backscrollview];
     for (int i=0; i<titleImgArr.count; i++) {
         
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, (Main_width-80)/2.5)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, (Main_width-40)/2.5)];
         view.backgroundColor = [UIColor whiteColor];
         view.layer.cornerRadius = 3;
         [backscrollview addSubview:view];
        
         UIImageView *imgView = [[UIImageView alloc]init];
-        imgView.frame = CGRectMake(0,0 , Main_width-40, (Main_width-80)/2.5);
+        imgView.frame = CGRectMake(0,0 , Main_width-40, (Main_width-40)/2.5);
         [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:titleImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
         imgView.layer.cornerRadius = 5;
         imgView.clipsToBounds = YES;
         [view addSubview:imgView];
         
         UIButton *goodsbut = [UIButton buttonWithType:UIButtonTypeCustom];
-        goodsbut.frame = CGRectMake(0, 0, Main_width-40, (Main_width-80)/2.5);
+        goodsbut.frame = CGRectMake(0, 0, Main_width-40, (Main_width-40)/2.5);
         goodsbut.tag = [imgIDArr[i] integerValue]+100;
         [goodsbut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:goodsbut];
@@ -273,8 +277,8 @@
     }
     
     UIView *line = [[UIView alloc]init];
-    line.frame = CGRectMake(10, 129+(Main_width-80)/2.5, Main_width-20, .5);
-    line.backgroundColor = [UIColor lightGrayColor];
+    line.frame = CGRectMake(10, 129+(Main_width-40)/2.5, Main_width-20, .5);
+    line.backgroundColor = [UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1];
     [cell addSubview:line];
     
     return cell;
@@ -288,24 +292,7 @@
     shangJiaVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:shangJiaVC animated:YES];
 }
-- (void)horImageClickAction:(NSInteger)tag {
-    NSLog(@"你点击的按钮tag值为：%ld",tag);
-    
-    _textLabel.text = [NSString stringWithFormat:@"你点击的按钮tag值为：%ld",tag];
-    serviceDetailViewController *sfDetailVC = [[serviceDetailViewController alloc] init];
-    //    sfListModel *model = dataSourceArr[indexPath.row];
-    //    sfDetailVC.sfID = model.id;
-    [self.navigationController pushViewController:sfDetailVC animated:YES];
-}
--(void)iconImageViewAction:(UIButton *)sender{
-    
-    //    NSInteger index = sender.tag-100;
-    //    serviceDetailViewController *sdVC = [[serviceDetailViewController alloc]init];
-    //    sdVC.serviceID = [NSString stringWithFormat:@"%ld",index];
-    //    [self.navigationController pushViewController:sdVC animated:YES];
-    
-    NSLog(@"777777");
-}
+
 //点击事件
 
 -(void)singleTapAction:(UITapGestureRecognizer *)tap{

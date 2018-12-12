@@ -8,10 +8,14 @@
 
 #import "fuwusearchViewController.h"
 #import "fuwusearchchildViewController.h"
-@interface fuwusearchViewController ()<FSPageContentViewDelegate,FSSegmentTitleViewDelegate,UITextFieldDelegate>
+#import "fuwusearchresultViewController.h"
+@interface fuwusearchViewController ()<FSPageContentViewDelegate,FSSegmentTitleViewDelegate,UITextFieldDelegate>{
+    UITextField *text;
+}
 
 @property (nonatomic, strong) FSPageContentView *pageContentView;
 @property (nonatomic, strong) FSSegmentTitleView *titleView;
+
 
 @end
 
@@ -24,6 +28,7 @@
     [self setTitlebar];
     // Do any additional setup after loading the view.
 }
+
 -(void)setTitlebar
 {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(100, 0, self.view.frame.size.width-100, 44)];
@@ -41,7 +46,7 @@
     img.image = [UIImage imageNamed:@"common_btn_search"];
     [bgimg addSubview:img];
     
-    UITextField *text = [[UITextField alloc]initWithFrame:CGRectMake(CGRectGetMaxX(img.frame)+10, 0, bgimg.frame.size.width-20, 30)];
+    text = [[UITextField alloc]initWithFrame:CGRectMake(CGRectGetMaxX(img.frame)+10, 0, bgimg.frame.size.width-20, 30)];
     text.placeholder = @"请输入搜索内容";
     text.textColor = [UIColor blackColor];
     text.font = [UIFont systemFontOfSize:14];
@@ -51,13 +56,30 @@
     [bgimg addSubview:text];
     
 }
+/** 视图完全显示 */
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // 弹出键盘
+    [text becomeFirstResponder];
+}
+
+/** 视图即将消失 */
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    // 回收键盘
+    [text resignFirstResponder];
+}
 // return按钮操作
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     
-    [self.view endEditing:YES];
-    
-    WBLog(@"----1111-----");
-    
+    [text endEditing:YES];
+    NSDictionary *dic = nil;
+    dic = @{@"searchtext":text.text};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"searchtext" object:nil userInfo:dic];
     return YES;
 }
 

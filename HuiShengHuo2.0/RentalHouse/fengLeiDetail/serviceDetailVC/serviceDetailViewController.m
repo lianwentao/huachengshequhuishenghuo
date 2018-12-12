@@ -238,7 +238,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.section == 0) {
-        return 180;
+        return Main_width/2.5;
     }else if (indexPath.section == 4){
         if ([dataDic[@"score_info"] isKindOfClass:[NSNull class]]){
             return 0;
@@ -284,7 +284,7 @@
     if (indexPath.section == 0) {
         
         UIImageView *imgView = [[UIImageView alloc]init];
-        imgView.frame = CGRectMake(0, 0, Main_width, 180);
+        imgView.frame = CGRectMake(0, 0, Main_width, Main_width/2.5);
         [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.title_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
         [cell addSubview:imgView];
         
@@ -345,7 +345,7 @@
         if ([dataDic[@"score_info"] isKindOfClass:[NSNull class]]){}else{
             scoreInfoModel *model = scoreInfoArr[0];
             UIImageView *imgView = [[UIImageView alloc]init];
-            imgView.frame = CGRectMake(10, 10, 60, 30);
+            imgView.frame = CGRectMake(10, 10, 60, 27);
             imgView.image = [UIImage imageNamed:@"fw_yhpj"];
             [cell addSubview:imgView];
             
@@ -561,7 +561,7 @@
         headerView.frame = CGRectMake(0, 0, Main_width, 50);
         headerView.backgroundColor = [UIColor whiteColor];
         UIImageView *imgView = [[UIImageView alloc]init];
-        imgView.frame = CGRectMake(10, 10, 60, 30);
+        imgView.frame = CGRectMake(10, 10, 65, 27);
         imgView.image = [UIImage imageNamed:@"fw_xq"];
         [headerView addSubview:imgView];
     }

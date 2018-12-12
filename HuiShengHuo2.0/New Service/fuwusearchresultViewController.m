@@ -14,6 +14,8 @@
 #import "VOTagList.h"
 #import "businessVCModel.h"
 #import "serviceModel.h"
+#import "serviceDetailViewController.h"
+#import "newshangjiaViewController.h"
 #define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
 @interface fuwusearchresultViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -222,10 +224,20 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    //    shouFangDetailViewController *sfDetailVC = [[shouFangDetailViewController alloc] init];
-    //    sfListModel *model = dataSourceArr[indexPath.row];
-    //    sfDetailVC.sfID = model.id;
-    //    [self.navigationController pushViewController:sfDetailVC animated:YES];
+    businessVCModel *model = _dataSourceArr[indexPath.row];
+    newshangjiaViewController *shangJiaVC = [[newshangjiaViewController alloc] init];
+    shangJiaVC.shangjiaid = model.id;
+    shangJiaVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:shangJiaVC animated:YES];
+}
+- (void)pushgoods:(UIButton *)sender{
+    
+    NSInteger i = sender.tag-100;
+    NSLog(@"oooooo = %ld",i);
+    serviceDetailViewController *svVC = [[serviceDetailViewController alloc] init];
+    svVC.serviceID = [NSString stringWithFormat:@"%ld",i];
+    svVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:svVC animated:YES];
 }
 
 @end

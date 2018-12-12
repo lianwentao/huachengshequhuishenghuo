@@ -101,7 +101,7 @@
     topView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
     
     UIImageView *imgView = [[UIImageView alloc]init];
-    imgView.frame = CGRectMake(10, 22.5, 60, 30);
+    imgView.frame = CGRectMake(10, 22.5, 30*2.4, 30);
     imgView.image = [UIImage imageNamed:@"fw_xzfl"];
     [topView addSubview:imgView];
     
@@ -125,6 +125,10 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.estimatedRowHeight = 0;
+    _tableView.estimatedSectionFooterHeight = 0;
+    _tableView.estimatedSectionHeaderHeight = 0;
+    _tableView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:_tableView];
     
     WS(ws);
@@ -151,7 +155,7 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 40+(Main_width-80)/2.5;
+    return 40+(Main_width-40)/2.5;
 }
 //headview的高度和内容
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -172,7 +176,7 @@
     
     fwListModel *model = _dataSourceArr[indexPath.row];
     UIImageView *imgView = [[UIImageView alloc]init];
-    imgView.frame = CGRectMake(10, 10,Main_width-20, (Main_width-80)/2.5);
+    imgView.frame = CGRectMake(10, 10,Main_width-20, (Main_width-40)/2.5);
     [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.title_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
     imgView.layer.cornerRadius = 5;
     imgView.clipsToBounds = YES;
@@ -196,8 +200,8 @@
     [cell addSubview:priceLab];
     
     UIView *line = [[UIView alloc]init];
-    line.frame = CGRectMake(10, 39+(Main_width-80)/2.5, Main_width-20, .5);
-    line.backgroundColor = [UIColor lightGrayColor];
+    line.frame = CGRectMake(10, 39+(Main_width-40)/2.5, Main_width-20, .5);
+    line.backgroundColor = [UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1];
     [cell addSubview:line];
     
     return cell;
