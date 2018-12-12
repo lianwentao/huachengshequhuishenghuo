@@ -92,12 +92,14 @@
     businessViewController * businesVc = [[businessViewController alloc]init];
     businesVc.bID = _fuwuid;
     businesVc.bName = _name;
+    businesVc.bqfStr = _quFenStr;
     [self addChildViewController:businesVc];
     
     //第二个
     serviceViewController * serviceVc = [[serviceViewController alloc]init];
     serviceVc.sID = _fuwuid;
     serviceVc.sName = _name;
+    serviceVc.sqfStr = _quFenStr;
     [self addChildViewController:serviceVc];
     
     NSInteger count = self.childViewControllers.count;

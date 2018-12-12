@@ -576,6 +576,10 @@
 		846D2D3C21AB8F3500221687 /* IgnoreHeaderTouchTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846D2D3B21AB8F3500221687 /* IgnoreHeaderTouchTableView.m */; };
 		846D2D3F21AB8F8B00221687 /* IgnoreHeaderTouchAndRecognizeSimultaneousTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846D2D3E21AB8F8B00221687 /* IgnoreHeaderTouchAndRecognizeSimultaneousTableView.m */; };
 		846D2D4521ABDB0B00221687 /* pingLunViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 846D2D4421ABDB0B00221687 /* pingLunViewController.m */; };
+		847CC2C721BFB100002E241D /* searchBusinessModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 847CC2C621BFB100002E241D /* searchBusinessModel.m */; };
+		847CC2CA21BFB11F002E241D /* searchServiceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 847CC2C921BFB11F002E241D /* searchServiceModel.m */; };
+		847CC2CD21BFB84F002E241D /* searchServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 847CC2CC21BFB84F002E241D /* searchServiceViewController.m */; };
+		847CC2D021BFD472002E241D /* shopPingLunModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 847CC2CF21BFD472002E241D /* shopPingLunModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1700,6 +1704,14 @@
 		846D2D3E21AB8F8B00221687 /* IgnoreHeaderTouchAndRecognizeSimultaneousTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IgnoreHeaderTouchAndRecognizeSimultaneousTableView.m; sourceTree = "<group>"; };
 		846D2D4321ABDB0B00221687 /* pingLunViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = pingLunViewController.h; sourceTree = "<group>"; };
 		846D2D4421ABDB0B00221687 /* pingLunViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = pingLunViewController.m; sourceTree = "<group>"; };
+		847CC2C521BFB100002E241D /* searchBusinessModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = searchBusinessModel.h; sourceTree = "<group>"; };
+		847CC2C621BFB100002E241D /* searchBusinessModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = searchBusinessModel.m; sourceTree = "<group>"; };
+		847CC2C821BFB11F002E241D /* searchServiceModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = searchServiceModel.h; sourceTree = "<group>"; };
+		847CC2C921BFB11F002E241D /* searchServiceModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = searchServiceModel.m; sourceTree = "<group>"; };
+		847CC2CB21BFB84F002E241D /* searchServiceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = searchServiceViewController.h; sourceTree = "<group>"; };
+		847CC2CC21BFB84F002E241D /* searchServiceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = searchServiceViewController.m; sourceTree = "<group>"; };
+		847CC2CE21BFD472002E241D /* shopPingLunModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shopPingLunModel.h; sourceTree = "<group>"; };
+		847CC2CF21BFD472002E241D /* shopPingLunModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = shopPingLunModel.m; sourceTree = "<group>"; };
 		9574E260685FDD37C6A6D7F6 /* libPods-HuiShengHuo2.0.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HuiShengHuo2.0.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB932F50F643D19489E4B319 /* Pods-HuiShengHuo2.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HuiShengHuo2.0.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HuiShengHuo2.0/Pods-HuiShengHuo2.0.debug.xcconfig"; sourceTree = "<group>"; };
 		E0ABE08BF4F2B5658AECC41B /* Pods-HuiShengHuo2.0.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HuiShengHuo2.0.release.xcconfig"; path = "Pods/Target Support Files/Pods-HuiShengHuo2.0/Pods-HuiShengHuo2.0.release.xcconfig"; sourceTree = "<group>"; };
@@ -2044,6 +2056,8 @@
 				283841FC21BBE64000437D43 /* shangjialevelListview.m */,
 				283841FF21BBEAC500437D43 /* LWGesturePenetrationTableView.h */,
 				283841FE21BBEAC500437D43 /* LWGesturePenetrationTableView.m */,
+				847CC2CE21BFD472002E241D /* shopPingLunModel.h */,
+				847CC2CF21BFD472002E241D /* shopPingLunModel.m */,
 			);
 			path = "new shangjia";
 			sourceTree = "<group>";
@@ -2549,6 +2563,8 @@
 				2805782621BA6FC50093906C /* fuwusearchchildViewController.m */,
 				28AA78D621BF64C90007A31F /* fuwusearchresultViewController.h */,
 				28AA78D721BF64C90007A31F /* fuwusearchresultViewController.m */,
+				847CC2CB21BFB84F002E241D /* searchServiceViewController.h */,
+				847CC2CC21BFB84F002E241D /* searchServiceViewController.m */,
 				2871A3B321AB8D8100CDCCE9 /* myserviceViewController.h */,
 				2871A3B421AB8D8100CDCCE9 /* myserviceViewController.m */,
 				2871A3B621AB8F5B00CDCCE9 /* myservicechildViewController.h */,
@@ -3816,6 +3832,10 @@
 				840596FE21B121FE0052B99D /* businessVCModel.m */,
 				8405970021B12B210052B99D /* serviceModel.h */,
 				8405970121B12B210052B99D /* serviceModel.m */,
+				847CC2C521BFB100002E241D /* searchBusinessModel.h */,
+				847CC2C621BFB100002E241D /* searchBusinessModel.m */,
+				847CC2C821BFB11F002E241D /* searchServiceModel.h */,
+				847CC2C921BFB11F002E241D /* searchServiceModel.m */,
 			);
 			path = businessModel;
 			sourceTree = "<group>";
@@ -4757,8 +4777,10 @@
 				285DB5681FC6832500400EA6 /* Person.m in Sources */,
 				844605CA21B0D11400FCB09E /* fwDetailModel.m in Sources */,
 				288E8C5120C6E9EC00F9C862 /* CustomerScrollViewModel.m in Sources */,
+				847CC2C721BFB100002E241D /* searchBusinessModel.m in Sources */,
 				2828064A219ADEE300B0DD7D /* UIImage+XLExtension.m in Sources */,
 				283841F721BBE51800437D43 /* shangjiarightViewController.m in Sources */,
+				847CC2CD21BFB84F002E241D /* searchServiceViewController.m in Sources */,
 				282805BE219AD72500B0DD7D /* UIView+WebCache.m in Sources */,
 				282805BF219AD72500B0DD7D /* UIView+WebCacheOperation.m in Sources */,
 				28662D032022AB1900583093 /* GZActionSheet.m in Sources */,
@@ -4776,6 +4798,7 @@
 				845C564521A7F529002F509D /* ZJCommonKit.m in Sources */,
 				2871A3AF21AB812400CDCCE9 /* ScanViewController.m in Sources */,
 				28F5B204209461B10058AAC2 /* UIImage+XYGif.m in Sources */,
+				847CC2CA21BFB11F002E241D /* searchServiceModel.m in Sources */,
 				28A83CCC205F95E8009ED444 /* LSPTitleView.m in Sources */,
 				2880DA5B206139570096E86D /* bangdingqianViewController.m in Sources */,
 				845C563221A7F528002F509D /* UIGestureRecognizer+ZJHelperBlockKit.m in Sources */,
@@ -4828,6 +4851,7 @@
 				284F86D0206526AD0068CB0B /* LMJDropdownMenu.m in Sources */,
 				284D852E212EAE5400BF8ED2 /* afteryanzhengViewController.m in Sources */,
 				2856E11F1FD7E10000CD0DCA /* dingdandetailsViewController.m in Sources */,
+				847CC2D021BFD472002E241D /* shopPingLunModel.m in Sources */,
 				28BBB5F220086558002D3D05 /* yanzhengmalogViewController.m in Sources */,
 				2828064E219ADEE300B0DD7D /* XLZoomingScrollView.m in Sources */,
 				28A716CE20622ADE0050D446 /* fangkeyaqingViewController.m in Sources */,

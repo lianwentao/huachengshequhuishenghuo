@@ -21,6 +21,7 @@
 #import "VOTagList.h"
 #import "businessVCModel.h"
 #import "serviceModel.h"
+#import "newshangjiaViewController.h"
 #define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
 @interface businessViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -58,7 +59,12 @@
     //2.封装参数
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":_bID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+    if ([_bqfStr isEqualToString:@"0"]) {
+       dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"i_id":_bID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+    }else{
+        dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":_bID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+    }
+    
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/institution/merchantList"];
     [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
@@ -118,7 +124,7 @@
     [self.view addSubview:topView];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, self.view.frame.size.width, self.view.frame.size.height-80-64)style:UITableViewStylePlain ];
-    //    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
@@ -148,7 +154,7 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 280;
+    return 130+(Main_width-80)/2.5;
 }
 //headview的高度和内容
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -239,20 +245,20 @@
     [cell addSubview:backscrollview];
     for (int i=0; i<titleImgArr.count; i++) {
         
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, 150)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, (Main_width-80)/2.5)];
         view.backgroundColor = [UIColor whiteColor];
         view.layer.cornerRadius = 3;
         [backscrollview addSubview:view];
        
         UIImageView *imgView = [[UIImageView alloc]init];
-        imgView.frame = CGRectMake(0,0 , Main_width-40, 150);
+        imgView.frame = CGRectMake(0,0 , Main_width-40, (Main_width-80)/2.5);
         [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:titleImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
         imgView.layer.cornerRadius = 5;
         imgView.clipsToBounds = YES;
         [view addSubview:imgView];
         
         UIButton *goodsbut = [UIButton buttonWithType:UIButtonTypeCustom];
-        goodsbut.frame = CGRectMake(0, 0, Main_width-40, 150);
+        goodsbut.frame = CGRectMake(0, 0, Main_width-40, (Main_width-80)/2.5);
         goodsbut.tag = [imgIDArr[i] integerValue]+100;
         [goodsbut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:goodsbut];
@@ -266,15 +272,21 @@
 
     }
     
+    UIView *line = [[UIView alloc]init];
+    line.frame = CGRectMake(10, 129+(Main_width-80)/2.5, Main_width-20, .5);
+    line.backgroundColor = [UIColor lightGrayColor];
+    [cell addSubview:line];
+    
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    //    shouFangDetailViewController *sfDetailVC = [[shouFangDetailViewController alloc] init];
-    //    sfListModel *model = dataSourceArr[indexPath.row];
-    //    sfDetailVC.sfID = model.id;
-    //    [self.navigationController pushViewController:sfDetailVC animated:YES];
+    businessVCModel *model = _dataSourceArr[indexPath.row];
+    newshangjiaViewController *shangJiaVC = [[newshangjiaViewController alloc] init];
+    shangJiaVC.shangjiaid = model.id;
+    shangJiaVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:shangJiaVC animated:YES];
 }
 - (void)horImageClickAction:(NSInteger)tag {
     NSLog(@"你点击的按钮tag值为：%ld",tag);
@@ -300,12 +312,13 @@
     NSLog(@"rrrrr");
 }
 - (void)pushgoods:(UIButton *)sender{
+    
     NSInteger i = sender.tag-100;
     NSLog(@"oooooo = %ld",i);
-    //    GoodsDetailViewController *goods = [[GoodsDetailViewController alloc] init];
-    //    goods.IDstring = [NSString stringWithFormat:@"%lu",sender.tag];
-    //    goods.hidesBottomBarWhenPushed = YES;
-    //    [self.navigationController pushViewController:goods animated:YES];
+    serviceDetailViewController *svVC = [[serviceDetailViewController alloc] init];
+    svVC.serviceID = [NSString stringWithFormat:@"%ld",i];
+    svVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:svVC animated:YES];
 }
 
 @end

@@ -149,14 +149,14 @@
 }
 
 - (void)selectIndex:(NSUInteger)index notify:(BOOL)notify{
-    if (!self.multiSelect) {
-        [self.mutableSelectedIndexSet removeAllIndexes];
-    }
-    [self.mutableSelectedIndexSet addIndex:index];
-    [self setNeedsDisplay];
-    if (notify) {
-        [self notifyFormutableSelectedIndexSetChanged];
-    }
+//    if (!self.multiSelect) {
+//        [self.mutableSelectedIndexSet removeAllIndexes];
+//    }
+//    [self.mutableSelectedIndexSet addIndex:index];
+//    [self setNeedsDisplay];
+//    if (notify) {
+//        [self notifyFormutableSelectedIndexSetChanged];
+//    }
 }
 
 - (void)selectIndexes: (NSIndexSet *)indexSet notify:(BOOL)notify{

@@ -63,7 +63,12 @@
     //2.封装参数
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":_sID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+    if ([_sqfStr isEqualToString:@"0"]) {
+        dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"i_id":_sID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+    }else{
+        dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":_sID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+    }
+    
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/service/serviceList"];
     [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         
@@ -96,7 +101,7 @@
     topView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
     
     UIImageView *imgView = [[UIImageView alloc]init];
-    imgView.frame = CGRectMake(10, 22.5, 60, 35);
+    imgView.frame = CGRectMake(10, 22.5, 60, 30);
     imgView.image = [UIImage imageNamed:@"fw_xzfl"];
     [topView addSubview:imgView];
     
@@ -146,7 +151,7 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 180;
+    return 40+(Main_width-80)/2.5;
 }
 //headview的高度和内容
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -167,14 +172,14 @@
     
     fwListModel *model = _dataSourceArr[indexPath.row];
     UIImageView *imgView = [[UIImageView alloc]init];
-    imgView.frame = CGRectMake(10, 10,Main_width-20, 140);
+    imgView.frame = CGRectMake(10, 10,Main_width-20, (Main_width-80)/2.5);
     [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.title_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
     imgView.layer.cornerRadius = 5;
     imgView.clipsToBounds = YES;
     [cell addSubview:imgView];
     
     UILabel *titleLab = [[UILabel alloc]init];
-    titleLab.frame = CGRectMake(10, CGRectGetMaxY(imgView.frame),Main_width/2-10, 30);
+    titleLab.frame = CGRectMake(10, CGRectGetMaxY(imgView.frame),Main_width/2-20, 30);
     titleLab.text = model.title;
     titleLab.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
     titleLab.font = [UIFont systemFontOfSize:15];
@@ -189,6 +194,11 @@
     priceLab.font = [UIFont systemFontOfSize:15];
     priceLab.textAlignment = NSTextAlignmentRight;
     [cell addSubview:priceLab];
+    
+    UIView *line = [[UIView alloc]init];
+    line.frame = CGRectMake(10, 39+(Main_width-80)/2.5, Main_width-20, .5);
+    line.backgroundColor = [UIColor lightGrayColor];
+    [cell addSubview:line];
     
     return cell;
 }

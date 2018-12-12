@@ -12,4 +12,5 @@
 @property (nonatomic,copy)NSString *fuwuid;
 @property (nonatomic,copy)NSString *name;
 @property (nonatomic ,strong)NSString *tagStr;
+@property (nonatomic, copy) NSString *quFenStr;
 @end

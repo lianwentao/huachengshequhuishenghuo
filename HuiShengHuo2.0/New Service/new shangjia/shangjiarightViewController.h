@@ -12,4 +12,5 @@
 @interface shangjiarightViewController : UIViewController
 @property (nonatomic, strong, readonly) LWGesturePenetrationTableView *tableView;
 @property (nonatomic, assign) OffsetType offsetType;
+@property (nonatomic, copy) NSString *shopID;
 @end

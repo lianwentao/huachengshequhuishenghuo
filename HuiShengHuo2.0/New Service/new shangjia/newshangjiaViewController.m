@@ -10,6 +10,7 @@
 #import "shangjialevelListview.h"
 #import "shangjialeftViewController.h"
 #import "shangjiarightViewController.h"
+#import "fengLeiDetailViewController.h"
 
 @interface newshangjiaViewController ()<UITableViewDelegate,UITableViewDataSource,shangjialevelListviewDelegate>
 {
@@ -147,23 +148,41 @@
         label1.textAlignment = NSTextAlignmentCenter;
         [headerView addSubview:label1];
         
-        UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(22, 20+27+5+14+5+140, 87, 14)];
-        label2.font = Font(11);
-        label2.textColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1.0];
-        label2.text = [datadic objectForKey:@"telphone"];
-        label2.textAlignment = NSTextAlignmentCenter;
-        [headerView addSubview:label2];
+//        UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(22, 20+27+5+14+5+140, 87, 14)];
+//        label2.font = Font(11);
+//        label2.textColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1.0];
+//        label2.text = [datadic objectForKey:@"telphone"];
+//        label2.textAlignment = NSTextAlignmentCenter;
+//        [headerView addSubview:label2];
+        
+        UIButton *callBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        callBtn.frame = CGRectMake(22, 20+27+5+14+5+140, 87, 14);
+        [callBtn setTitle:[datadic objectForKey:@"telphone"] forState:UIControlStateNormal];
+        callBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+        callBtn.titleLabel.font = Font(13);
+        [callBtn setTitleColor:[UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1.0] forState:UIControlStateNormal];
+        [callBtn addTarget:self action:@selector(callBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+        [headerView addSubview:callBtn];
         
         UIImageView *imgv4 = [[UIImageView alloc] initWithFrame:CGRectMake(Main_width-27-42, 20+140, 27, 27)];
         imgv4.image = [UIImage imageNamed:@"服务"];
         [headerView addSubview:imgv4];
         
-        UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(Main_width-15-120, 20+27+15+140, 120, 15)];
-        label3.font = Font(14);
-        label3.textColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1.0];
-        label3.textAlignment = NSTextAlignmentRight;
-        label3.text = [NSString stringWithFormat:@"共%@个服务 >",[datadic objectForKey:@"serviceCount"]];
-        [headerView addSubview:label3];
+//        UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(Main_width-15-120, 20+27+15+140, 120, 15)];
+//        label3.font = Font(14);
+//        label3.textColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1.0];
+//        label3.textAlignment = NSTextAlignmentRight;
+//        label3.text = [NSString stringWithFormat:@"共%@个服务 >",[datadic objectForKey:@"serviceCount"]];
+//        [headerView addSubview:label3];
+        
+        UIButton *fuWuBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        fuWuBtn.frame = CGRectMake(Main_width-120, 20+27+15+140, 120, 15);
+        [fuWuBtn setTitle:[NSString stringWithFormat:@"共%@个服务 >",[datadic objectForKey:@"serviceCount"]] forState:UIControlStateNormal];
+        fuWuBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+        fuWuBtn.titleLabel.font = Font(14);
+        [fuWuBtn setTitleColor:[UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1.0] forState:UIControlStateNormal];
+        [fuWuBtn addTarget:self action:@selector(fuWuBtnAction:) forControlEvents:UIControlEventTouchUpInside];
+        [headerView addSubview:fuWuBtn];
     }
     return _mainTableView;
 }
@@ -214,6 +233,7 @@
         CGRect frame = self.subScrollView.bounds;
         frame.origin.x = Main_width;
         _subRightVC = [[shangjiarightViewController alloc]init];
+        _subRightVC.shopID = _shangjiaid;
         _subRightVC.view.frame =frame;
         [self addChildViewController:_subRightVC];
     }
@@ -328,19 +348,20 @@
     return self.levelListView;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(void)callBtnAction:(UIButton *)sender{
+
+    NSString *telStr = [datadic objectForKey:@"telphone"];
+    NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",telStr];
+    UIWebView *callWebview = [[UIWebView alloc] init];
+    [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+    [self.view addSubview:callWebview];
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void)fuWuBtnAction:(UIButton *)sender{
+    
+    fengLeiDetailViewController *flVC = [[fengLeiDetailViewController alloc]init];
+    flVC.name = @"全部";
+    flVC.fuwuid = [datadic objectForKey:@"id"];
+    flVC.quFenStr = @"0";
+    [self.navigationController pushViewController:flVC animated:YES];
 }
-*/
-
 @end

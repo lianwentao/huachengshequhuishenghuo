@@ -11,4 +11,5 @@
 @interface serviceViewController : UIViewController
 @property (nonatomic ,strong)NSString *sID;
 @property (nonatomic ,strong)NSString *sName;
+@property (nonatomic ,strong)NSString *sqfStr;
 @end

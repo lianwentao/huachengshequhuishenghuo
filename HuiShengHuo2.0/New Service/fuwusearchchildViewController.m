@@ -8,6 +8,7 @@
 
 #import "fuwusearchchildViewController.h"
 #import "fuwusearchresultViewController.h"
+#import "searchServiceViewController.h"
 @interface fuwusearchchildViewController ()<UITableViewDelegate,UITableViewDataSource>{
     UITableView *_TableView;
     NSArray *dataarr;
@@ -182,16 +183,22 @@
 }
 -(void)pushrelust:(UIButton *)sender
 {
-    fuwusearchresultViewController *result = [[fuwusearchresultViewController alloc] init];
-    result.key = [dataarr objectAtIndex:sender.tag];
+    
     if ([_shangjiaorfuwu isEqualToString:@"sj"]) {
+        fuwusearchresultViewController *result = [[fuwusearchresultViewController alloc] init];
+        result.key = [dataarr objectAtIndex:sender.tag];
         result.canshu = @"i_key";
         result.url = @"/service/institution/merchantList";
+         [self.navigationController pushViewController:result animated:YES];
     }else{
+        searchServiceViewController *result = [[searchServiceViewController alloc] init];
+        result.key = [dataarr objectAtIndex:sender.tag];
         result.canshu = @"s_key";
         result.url = @"/service/service/serviceList";
+        [self.navigationController pushViewController:result animated:YES];
+        
     }
-    [self.navigationController pushViewController:result animated:YES];
+   
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

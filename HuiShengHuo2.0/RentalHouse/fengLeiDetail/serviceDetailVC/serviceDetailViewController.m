@@ -24,6 +24,7 @@
 #import "insinfoModel.h"
 #import "serviceListModel.h"
 #import "VOTagList.h"
+#import "newshangjiaViewController.h"
 
 #import "WXApi.h"
 #import "WXApiManager.h"
@@ -90,7 +91,7 @@
         NSLog(@"dataStr = %@",dataStr);
         _DataDic = [[NSMutableDictionary alloc] init];
         _DataDic = [responseObject objectForKey:@"data"];
-        NSLog(@"goods--%@",_DataDic);
+//        NSLog(@"goods--%@",_DataDic);
         dataDic = responseObject[@"data"];
         dataSourceArr = [NSMutableArray array];
         fwDetailModel *model = [[fwDetailModel alloc]initWithDictionary:dataDic error:NULL];
@@ -110,10 +111,16 @@
         }
         
         imgListArr = [NSMutableArray array];
-        for (NSDictionary *imgDic in model.img_list) {
-            imgListModel *imgModel = [[imgListModel alloc]initWithDictionary:imgDic error:NULL];
-            [imgListArr addObject:imgModel.img];
+        if ([dataDic[@"img_list"] isKindOfClass:[NSNull class]]) {
+            NSLog(@"1111111111");
+        }else{
+            for (NSDictionary *imgDic in    dataDic[@"img_list"]) {
+                imgListModel *imgModel = [[imgListModel alloc]initWithDictionary:imgDic error:NULL];
+                [imgListArr addObject:imgModel.img];
+            }
         }
+       
+        NSLog(@"imgListArr--%@",imgListArr);
         imgSizeArr = [NSMutableArray array];
         for (NSDictionary *imgDic in model.img_list) {
             imgListModel *imgModel = [[imgListModel alloc]initWithDictionary:imgDic error:NULL];
@@ -630,14 +637,10 @@
     [self.view addSubview:callWebview];
 }
 -(void)shopAction:(UIButton *)sender{
-    
-    businessDetailViewController *bdVC = [[businessDetailViewController alloc]init];
+    insinfoModel *iiModel = insinfoArr[0];
+    newshangjiaViewController *bdVC = [[newshangjiaViewController alloc]init];
+    bdVC.shangjiaid = iiModel.id;
     [self.navigationController pushViewController:bdVC animated:YES];
-    //    NSString *telStr = [NSString stringWithFormat:@"%ld",sender.tag];
-    //    NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",telStr];
-    //    UIWebView *callWebview = [[UIWebView alloc] init];
-    //    [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
-    //    [self.view addSubview:callWebview];
 }
 -(void)yuYueAction:(UIButton *)sender{
     fwDetailModel *model = dataSourceArr[0];

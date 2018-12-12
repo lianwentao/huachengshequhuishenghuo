@@ -11,4 +11,6 @@
 @interface businessViewController : UIViewController
 @property (nonatomic ,strong)NSString *bID;
 @property (nonatomic ,strong)NSString *bName;
+@property (nonatomic ,strong)NSString *bqfStr;
+
 @end
