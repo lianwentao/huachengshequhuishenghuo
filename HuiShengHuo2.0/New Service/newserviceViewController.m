@@ -521,7 +521,7 @@
             model.name = @"全部";
             model.icon = @"快捷按钮全部";
             [mulu addObject:model];
-            for (int i=0; i<(category.count); i++) {
+            for (int i=0; i<category.count; i++) {
                 CustomerScrollViewModel * model1 = [[CustomerScrollViewModel alloc ] init];
                 model1.name = [[category objectAtIndex:i] objectForKey:@"name"];
                 model1.icon = [[category objectAtIndex:i] objectForKey:@"img"];
@@ -898,8 +898,8 @@
             }
             fengLeiDetailViewController *fldVC = [[fengLeiDetailViewController alloc]init];
             fldVC.hidesBottomBarWhenPushed = YES;
-            fldVC.fuwuid = IDArr[index];
-            fldVC.name = titleArr[index];
+            fldVC.fuwuid = IDArr[index-1];
+            fldVC.name = titleArr[index-1];
             [self.navigationController pushViewController:fldVC animated:YES];
         }
     }
