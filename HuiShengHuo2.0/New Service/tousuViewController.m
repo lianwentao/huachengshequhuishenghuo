@@ -150,6 +150,7 @@
                 WBLog(@"---%@--%@--%@",responseObject,[responseObject objectForKey:@"msg"],dict);
                 if ([[responseObject objectForKey:@"status"] integerValue]==1) {
                     [self.navigationController popViewControllerAnimated:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"newtousudingdan" object:nil userInfo:nil];
                 }else{
                     
                 }

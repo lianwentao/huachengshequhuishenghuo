@@ -41,6 +41,7 @@
     self.searchHistoriesCachePath2 = PYSEARCH_SEARCH_HISTORY_CACHE_PATH2;
     _searchHistories2 = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithFile:self.searchHistoriesCachePath2]];
     self.view.backgroundColor = [UIColor whiteColor];
+    self.automaticallyAdjustsScrollViewInsets = NO;
     [self setui];
     [self setTitlebar];
     self.searchHistoriesCount = 20;

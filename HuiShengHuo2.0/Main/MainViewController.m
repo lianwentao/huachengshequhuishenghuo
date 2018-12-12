@@ -912,7 +912,6 @@
         jiaofei.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:jiaofei animated:YES];
     }else if (sender.tag==2){
-        
         myserviceViewController *myservice = [[myserviceViewController alloc] init];
         myservice.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:myservice animated:YES];

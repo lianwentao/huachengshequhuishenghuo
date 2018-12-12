@@ -10,6 +10,7 @@
 #import "newfuwudingdancellTableViewCell.h"
 #import "newfuwudingdandetailsViewController.h"
 #import "newfuwudingdanmodel.h"
+
 @interface myservicechildViewController ()<UITableViewDelegate,UITableViewDataSource>{
     UITableView *_TableView;
     NSMutableArray *modelArr;

@@ -113,6 +113,11 @@ static NSString * LINKEDME_SHORT_URL;
     
     // Do any additional setup after loading the view.
 }
+- (BOOL)navigationShouldPopOnBackButton{
+    UIViewController *viewc = self.navigationController.viewControllers[self.navigationController.viewControllers.count-1];
+    [self.navigationController popToViewController:viewc animated:YES];
+    return YES;
+}
 - (void)back
 {
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];

@@ -64,7 +64,11 @@
     //    _tableView.contentInset = UIEdgeInsetsMake(IMAGE_HEIGHT - [self navBarBottom], 0, 0, 0);
     [self.view addSubview:_tableView];
 }
-
+- (BOOL)navigationShouldPopOnBackButton{
+    UIViewController *viewc = self.navigationController.viewControllers[self.navigationController.viewControllers.count-1];
+    [self.navigationController popToViewController:viewc animated:YES];
+    return YES;
+}
 #pragma mark - tableview delegate / dataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 3;
@@ -241,7 +245,7 @@
         [but setAttributedTitle:nil forState:UIControlStateNormal];
     };
     address.title = @"选择地址";
-    address.yesnoselecte = @"1";
+    address.yesnoselecte = @"0";
     [self.navigationController pushViewController:address animated:YES];
 }
 #pragma mark -UITextViewDelegate

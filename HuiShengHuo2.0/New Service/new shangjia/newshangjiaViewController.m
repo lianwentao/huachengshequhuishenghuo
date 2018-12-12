@@ -40,6 +40,11 @@
     
     [self getdata];
 }
+- (BOOL)navigationShouldPopOnBackButton{
+    UIViewController *viewc = self.navigationController.viewControllers[self.navigationController.viewControllers.count-1];
+    [self.navigationController popToViewController:viewc animated:YES];
+    return YES;
+}
 - (void)getdata
 {
     //初始化进度框，置于当前的View当中

@@ -10,6 +10,7 @@
 #import "cancledingdanViewController.h"
 #import "pingjiadingdanViewController.h"
 #import "tousuViewController.h"
+#import "serviceDetailViewController.h"
 @interface newfuwudingdandetailsViewController ()<UITableViewDelegate,UITableViewDataSource>{
     UITableView *_TableView;
     MBProgressHUD *_HUD;
@@ -26,8 +27,9 @@
     self.title = @"我的订单";
     datadic = [[NSDictionary alloc] init];
     
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getdata) name:@"newpingjiadingdan" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getdata) name:@"newquxiaodingdan" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getdata) name:@"newtousudingdan" object:nil];
     [self getdata];
     // Do any additional setup after loading the view.
 }
@@ -367,7 +369,10 @@
 }
 - (void)chakan
 {
-    
+    serviceDetailViewController *dvc = [[serviceDetailViewController alloc] init];
+    dvc.serviceID = [datadic objectForKey:@"s_id"];
+    dvc.serviceTitle = [datadic objectForKey:@"s_name"];
+    [self.navigationController pushViewController:dvc animated:YES];
 }
 - (void)tousu
 {

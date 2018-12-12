@@ -39,9 +39,24 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shauxin) name:@"newpingjiadingdan" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shauxin) name:@"newquxiaodingdan" object:nil];
-    // Do any additional setup after loading the view.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shauxin) name:@"newtousudingdan" object:nil];
+    // Do any additional setup after loading the view.newtousudingdan
 }
-
+-(BOOL)navigationShouldPopOnBackButton {
+    WBLog(@"222");
+    [self backBtnClicked];
+    
+    return YES;
+}
+- (void)backBtnClicked{
+    WBLog(@"%@",_backStr);
+//    if (_backStr.length==0) {
+//        [self.navigationController popViewControllerAnimated:YES];
+//    }else{
+//        [self.navigationController popToRootViewControllerAnimated:YES];
+//    }
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 - (void)shauxin
 {
     //1.创建会话管理者

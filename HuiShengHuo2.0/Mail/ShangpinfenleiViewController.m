@@ -52,6 +52,11 @@
     [self post];
     // Do any additional setup after loading the view.
 }
+- (BOOL)navigationShouldPopOnBackButton{
+    UIViewController *viewc = self.navigationController.viewControllers[self.navigationController.viewControllers.count-1];
+    [self.navigationController popToViewController:viewc animated:YES];
+    return YES;
+}
 #pragma mark - 自定义导航栏
 - (void)createdaohangolan
 {
