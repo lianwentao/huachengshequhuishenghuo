@@ -9,6 +9,9 @@
 #import "fuwusearchViewController.h"
 #import "fuwusearchchildViewController.h"
 #import "fuwusearchresultViewController.h"
+#import "searchServiceViewController.h"
+#define PYSEARCH_SEARCH_HISTORY_CACHE_PATH1 [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"MLSearchhistories1.plist"] // 搜索商家历史存储路径
+#define PYSEARCH_SEARCH_HISTORY_CACHE_PATH2 [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"MLSearchhistories2.plist"] // 搜索服务历史存储路径
 @interface fuwusearchViewController ()<FSPageContentViewDelegate,FSSegmentTitleViewDelegate,UITextFieldDelegate>{
     UITextField *text;
 }
@@ -16,6 +19,16 @@
 @property (nonatomic, strong) FSPageContentView *pageContentView;
 @property (nonatomic, strong) FSSegmentTitleView *titleView;
 
+/** 搜索历史 */
+@property (nonatomic, strong) NSMutableArray *searchHistories1;
+/** 搜索历史缓存保存路径, 默认为PYSEARCH_SEARCH_HISTORY_CACHE_PATH(PYSearchConst.h文件中的宏定义) */
+@property (nonatomic, copy) NSString *searchHistoriesCachePath1;
+@property (nonatomic, strong) NSMutableArray *searchHistories2;
+/** 搜索历史缓存保存路径, 默认为PYSEARCH_SEARCH_HISTORY_CACHE_PATH(PYSearchConst.h文件中的宏定义) */
+@property (nonatomic, copy) NSString *searchHistoriesCachePath2;
+
+/** 搜索历史记录缓存数量，默认为20 */
+@property (nonatomic, assign) NSUInteger searchHistoriesCount;
 
 @end
 
@@ -23,9 +36,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.searchHistoriesCachePath1 = PYSEARCH_SEARCH_HISTORY_CACHE_PATH1;
+    _searchHistories1 = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithFile:self.searchHistoriesCachePath1]];
+    self.searchHistoriesCachePath2 = PYSEARCH_SEARCH_HISTORY_CACHE_PATH2;
+    _searchHistories2 = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithFile:self.searchHistoriesCachePath2]];
     self.view.backgroundColor = [UIColor whiteColor];
     [self setui];
     [self setTitlebar];
+    self.searchHistoriesCount = 20;
     // Do any additional setup after loading the view.
 }
 
@@ -75,14 +93,70 @@
 }
 // return按钮操作
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
-    
+    WBLog(@"--%ld",self.titleView.selectIndex);
     [text endEditing:YES];
-    NSDictionary *dic = nil;
-    dic = @{@"searchtext":text.text};
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"searchtext" object:nil userInfo:dic];
+    
+    [self saveSearchCacheAndRefreshView:text.text];
+    
+    
+    if (self.titleView.selectIndex == 0) {
+        fuwusearchresultViewController *result = [[fuwusearchresultViewController alloc] init];
+        result.key = text.text;
+        result.canshu = @"i_key";
+        result.url = @"/service/institution/merchantList";
+        [self.navigationController pushViewController:result animated:YES];
+    }else{
+        searchServiceViewController *result = [[searchServiceViewController alloc] init];
+        result.key = text.text;
+        result.canshu = @"s_key";
+        result.url = @"/service/service/serviceList";
+        [self.navigationController pushViewController:result animated:YES];
+        
+    }
     return YES;
 }
-
+- (void)setSearchHistoriesCachePath:(NSString *)searchHistoriesCachePath
+{
+    if (self.titleView.selectIndex == 0) {
+        _searchHistoriesCachePath1 = [searchHistoriesCachePath copy];
+        // 刷新
+        self.searchHistories1 = nil;
+    }else{
+        _searchHistoriesCachePath2 = [searchHistoriesCachePath copy];
+        // 刷新
+        self.searchHistories2 = nil;
+    }
+    
+}
+/** 进入搜索状态调用此方法 */
+- (void)saveSearchCacheAndRefreshView:(NSString *)searchtext
+{
+    if (self.titleView.selectIndex == 0) {
+        //    // 先移除再刷新
+        [self.searchHistories1 removeObject:searchtext];
+        [self.searchHistories1 insertObject:searchtext atIndex:0];
+        
+        // 移除多余的缓存
+        if (self.searchHistories1.count > self.searchHistoriesCount) {
+            // 移除最后一条缓存
+            [self.searchHistories1 removeLastObject];
+        }
+        // 保存搜索信息
+        [NSKeyedArchiver archiveRootObject:self.searchHistories1 toFile:self.searchHistoriesCachePath1];
+    }else{
+        //    // 先移除再刷新
+        [self.searchHistories2 removeObject:searchtext];
+        [self.searchHistories2 insertObject:searchtext atIndex:0];
+        
+        // 移除多余的缓存
+        if (self.searchHistories2.count > self.searchHistoriesCount) {
+            // 移除最后一条缓存
+            [self.searchHistories2 removeLastObject];
+        }
+        // 保存搜索信息
+        [NSKeyedArchiver archiveRootObject:self.searchHistories2 toFile:self.searchHistoriesCachePath2];
+    }
+}
 
 -(void)rightmengbutClick{
     WBLog(@"asd");

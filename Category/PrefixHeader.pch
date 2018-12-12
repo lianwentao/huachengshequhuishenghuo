@@ -47,7 +47,6 @@ typedef NS_ENUM(NSInteger, OffsetType) {
     OffsetTypeMax,
 };
 
-
 #define randomColor random(arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256))
 //11.23新增
 #import "UIButton+WebCache.h"

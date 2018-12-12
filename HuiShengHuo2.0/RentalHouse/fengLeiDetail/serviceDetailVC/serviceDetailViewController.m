@@ -490,7 +490,6 @@
                 [imgIDArr addObject:titleStr];
             }
             
-            
 //            titleImgArr = [NSMutableArray array];
 //            for (int i = 0; i < slArr.count; i++) {
 //                NSDictionary *dic = slArr[i];
