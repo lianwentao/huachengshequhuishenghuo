@@ -194,11 +194,7 @@
     [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    _tableView.estimatedRowHeight = 0;
-    _tableView.estimatedSectionFooterHeight = 0;
-    _tableView.estimatedSectionHeaderHeight = 0;
-    _tableView.showsVerticalScrollIndicator = NO;
-    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.contentInset = UIEdgeInsetsMake(IMAGE_HEIGHT - [self navBarBottom], 0, 0, 0);
     [self.view addSubview:_tableView];
@@ -751,6 +747,22 @@
     }
     
     [WXApi sendReq:req];
+    
+}
+- (void)exitClick {
+    
+    NSLog(@"====");
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        self.deliverView.transform = CGAffineTransformMakeTranslation(0.01, Main_width);
+        self.deliverView.alpha = 0.2;
+        self.BGView.alpha = 0;
+        
+    } completion:^(BOOL finished) {
+        
+        [self.BGView removeFromSuperview];
+        [self.deliverView removeFromSuperview];
+    }];
     
 }
 

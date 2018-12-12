@@ -121,6 +121,16 @@
 }
 - (void)sure
 {
+    //初始化进度框，置于当前的View当中
+    MBProgressHUD *_HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:_HUD];
+    
+    //如果设置此属性则当前的view置于后台
+    //_HUD.dimBackground = YES;
+    
+    //设置对话框文字
+    _HUD.labelText = @"请求中...";
+    _HUD.labelFont = [UIFont systemFontOfSize:14];
     __weak typeof(self) weakself = self;
     NSString *tagstrimg = [[_Dataarr objectAtIndex:_tmpBtn.tag] objectForKey:@"id"];
     if (weakself.returnValueBlock) {

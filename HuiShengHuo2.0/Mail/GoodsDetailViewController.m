@@ -130,7 +130,7 @@ static NSString * LINKEDME_SHORT_URL;
 }
 - (void)gouwuchedonbghua
 {
-    
+    sleep(1);//未获取到代理返回的tagname，这里延迟一秒是为了获得返回的数据
     [self post1];
     [[PurchaseCarAnimationTool shareTool]startAnimationandView:imageview andRect:imageview.frame andFinisnRect:CGPointMake(50, ScreenHeight-49) andFinishBlock:^(BOOL finisn){
         UIView *tabbarBtn = but;
@@ -974,6 +974,7 @@ static NSString * LINKEDME_SHORT_URL;
 }
 -(void)post1{
     //1.创建会话管理者
+    NSLog(@"blocktagname--%@",blocktagname);
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
@@ -992,7 +993,7 @@ static NSString * LINKEDME_SHORT_URL;
     [dict setObject:blocktagid forKey:@"tagid"];
     [dict setObject:wupinprice forKey:@"price"];
     
-    NSLog(@"加入购物车%@",dict);
+    
     //3.发送GET请求
     /*
      第一个参数:请求路径(NSString)+ 不需要加参数
@@ -1012,7 +1013,7 @@ static NSString * LINKEDME_SHORT_URL;
         NSLog(@"failure--%@",error);
     }];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"jiarugouwuchedonghua" object:nil];
+    //[[NSNotificationCenter defaultCenter] removeObserver:self name:@"jiarugouwuchedonghua" object:nil];
 }
 -(void)postcount
 {
