@@ -121,28 +121,42 @@
 }
 - (void)onClickLeft
 {
-    [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            if (granted) {
-                //配置扫描view
-                ScanViewController *scan = [[ScanViewController alloc] init];
-                scan.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:scan animated:YES];
-            } else {
-                NSString *title = @"请在iPhone的”设置-隐私-相机“选项中，允许App访问你的相机";
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:@"" delegate:nil cancelButtonTitle:@"好" otherButtonTitles:nil];
-                [alertView show];
-            }
-            
-        });
-    }];
+    NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+    NSString *str = [userdefaults objectForKey:@"token"];
+    if (str==nil) {
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self presentViewController:login animated:YES completion:nil];
+    }else{
+        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                if (granted) {
+                    //配置扫描view
+                    ScanViewController *scan = [[ScanViewController alloc] init];
+                    scan.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:scan animated:YES];
+                } else {
+                    NSString *title = @"请在iPhone的”设置-隐私-相机“选项中，允许App访问你的相机";
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:@"" delegate:nil cancelButtonTitle:@"好" otherButtonTitles:nil];
+                    [alertView show];
+                }
+                
+            });
+        }];
+    }
 }
 - (void)onClickRight
 {
-    myserviceViewController *myservice = [[myserviceViewController alloc] init];
-    myservice.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:myservice animated:YES];
+    NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+    NSString *str = [userdefaults objectForKey:@"token"];
+    if (str==nil) {
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self presentViewController:login animated:YES completion:nil];
+    }else{
+        myserviceViewController *myservice = [[myserviceViewController alloc] init];
+        myservice.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:myservice animated:YES];
+    }
 }
 - (void)butthree
 {
