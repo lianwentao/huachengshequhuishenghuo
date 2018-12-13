@@ -34,19 +34,34 @@ typedef  NS_ENUM(NSInteger,ButtonTag)
 
 -(instancetype)initWithFrame:(CGRect)frame
 {
+    
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
-        [self createSubView];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chuandi:) name:@"chuandicount" object:nil];
+        
+        
     }
     return self;
 }
+- (void)chuandi:(NSNotification *)info
+{
+    WBLog(@"pinglunnum---%@",info.userInfo);
+    _pinglunnum = [info.userInfo objectForKey:@"num"];
+    [self createSubView];
+}
 -(void)createSubView
 {
-    
+    WBLog(@"pingluncount--%@",_pinglunnum);
     CGFloat width = 80;
     CGFloat x = self.bounds.size.width/4-width/2;
     CGFloat height = self.bounds.size.height;
+    NSString *num;
+    if ([_pinglunnum integerValue] > 0) {
+        num = [NSString stringWithFormat:@"评论%@",_pinglunnum];
+    }else{
+        num = @"评论";
+    }
     
     //button
     for (int i = 0; i < 2; i++) {
@@ -58,7 +73,8 @@ typedef  NS_ENUM(NSInteger,ButtonTag)
         //设置button其他属性
         button.frame = CGRectMake(x+(width/2+self.bounds.size.width/3)*i, 0, width, height);
         button.titleLabel.font = [UIFont systemFontOfSize:15];
-        [button setTitle:(i==0?@"服务":@"评论") forState:   UIControlStateNormal];
+        
+        [button setTitle:(i==0?@"服务":num) forState:   UIControlStateNormal];
         [button setTitleColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.54] forState: UIControlStateNormal];
         [button setTitleColor:[UIColor colorWithHexString:@"#FF5722"] forState: UIControlStateSelected];
         switch (i) {
@@ -80,9 +96,9 @@ typedef  NS_ENUM(NSInteger,ButtonTag)
     //lineView
     CGFloat  y = self.bounds.size.height - 2;
     x = _leftButton.frame.origin.x;
-    _lineView = [[UIView alloc]initWithFrame:CGRectMake(x, y, width, 2)];
-    [self addSubview:_lineView];
-    _lineView.backgroundColor = [UIColor colorWithHexString:@"#FF5722"];
+//    _lineView = [[UIView alloc]initWithFrame:CGRectMake(x, y, width, 2)];
+//    [self addSubview:_lineView];
+//    _lineView.backgroundColor = [UIColor colorWithHexString:@"#FF5722"];
     
     UIView *bottomLineView = [[UIView alloc]initWithFrame:CGRectMake(0, height-0.5, Main_width, 0.5)];
     bottomLineView.backgroundColor = [UIColor colorWithHexString:@"#cccccc"];

@@ -114,7 +114,7 @@
     }];
     //_TableView.mj_header.las = YES;
     //上拉刷新
-    //_TableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(postup)];
+    _TableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(postup)];
     [_TableView.mj_header beginRefreshing];
    [self.view addSubview:_TableView];
 }

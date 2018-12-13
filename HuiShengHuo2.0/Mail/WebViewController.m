@@ -67,6 +67,11 @@
     goodsdetail.IDstring = _id;
     [self.navigationController pushViewController:goodsdetail animated:YES];
 }
+- (BOOL)navigationShouldPopOnBackButton{
+    UIViewController *viewc = self.navigationController.viewControllers[self.navigationController.viewControllers.count-1];
+    [self.navigationController popToViewController:viewc animated:YES];
+    return YES;
+}
 - (void)back
 {
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];

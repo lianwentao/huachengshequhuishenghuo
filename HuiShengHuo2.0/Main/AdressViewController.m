@@ -132,7 +132,17 @@
             [self.navigationController popViewControllerAnimated:YES];
         }
     }else{
-        NSLog(@"矜持住！！！！");
+        __weak typeof(self) weakself = self;
+        
+        if (weakself.returnValueBlock) {
+            NSString *stringname = [[_DataArr objectAtIndex:indexPath.row] objectForKey:@"consignee_name"];
+            NSString *stringphone = [[_DataArr objectAtIndex:indexPath.row] objectForKey:@"consignee_mobile"];
+            NSString *stringaddress = [NSString stringWithFormat:@"%@ %@ %@",[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"region_cn"],[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"community_cn"],[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"doorplate"]];
+            NSString *stringaddressid = [[_DataArr objectAtIndex:indexPath.row] objectForKey:@"id"];
+            //将自己的值传出去，完成传值
+            weakself.returnValueBlock(stringname,stringphone,stringaddress,stringaddressid);
+        }
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 - (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -144,7 +154,7 @@
         NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
         dict = @{@"id":stringid,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
         [self post1];
-    }];//此处是iOS8.0以后苹果最新推出的api，
+    }];//此处是iOS8.0以后苹果最新推出的api
     UITableViewRowAction *editRowAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"编辑" handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
         NSLog(@"编辑");
         edAddressViewController *edaddress = [[edAddressViewController alloc] init];

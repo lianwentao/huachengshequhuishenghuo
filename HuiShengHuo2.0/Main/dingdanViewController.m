@@ -78,11 +78,11 @@
 }
 - (void)backBtnClicked{
     WBLog(@"%@",_but_tag);
-//    if (_but_tag.length==0) {
-//        [self.navigationController popViewControllerAnimated:YES];
-//    }else{
-//        [self.navigationController popToRootViewControllerAnimated:YES];
-//    }
+    if (_but_tag.length==0) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }else{
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 - (void)createui
 {

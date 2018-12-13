@@ -36,7 +36,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.searchHistoriesCount = 20;
-    [self createtableview];
+    
     [self getdata];
     // Do any additional setup after loading the view.
 }
@@ -160,6 +160,7 @@
             
             
         }
+        [self createtableview];
         [_TableView reloadData];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

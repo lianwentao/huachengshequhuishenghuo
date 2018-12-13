@@ -18,5 +18,6 @@
 @property(nonatomic, strong)UIButton *rightButton;
 @property(nonatomic, weak)id<shangjialevelListviewDelegate>delegate;
 @property(nonatomic, assign)NSInteger selectedIndex;
+@property(nonatomic,copy)NSString *pinglunnum;
 -(void)changeLineViewOffsetX:(CGFloat)offsetX;
 @end

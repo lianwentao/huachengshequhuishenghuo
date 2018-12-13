@@ -14,5 +14,4 @@
 
 @property (nonatomic,strong)NSString *rukoubiaoshi;
 
-- (BOOL)navigationShouldPopOnBackButton;
 @end

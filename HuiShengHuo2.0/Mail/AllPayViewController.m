@@ -163,12 +163,13 @@
                               [self chevsuess];
                           }else if ([_rukoubiaoshi isEqualToString:@"scanjiaofei"]){
                               NSLog(@"---------扫描付款");
-                              for (UIViewController *controller in self.navigationController.viewControllers) {
-                                  if ([controller isKindOfClass:[ScanViewController class]]) {
-                                      ScanViewController *scan =(ScanViewController *)controller;
-                                      [self.navigationController popToViewController:scan animated:YES];
-                                  }
-                              }
+//                              for (UIViewController *controller in self.navigationController.viewControllers) {
+//                                  if ([controller isKindOfClass:[ScanViewController class]]) {
+//                                      ScanViewController *scan =(ScanViewController *)controller;
+//                                      [self.navigationController popToViewController:scan animated:YES];
+//                                  }
+//                              }
+                              [self.navigationController popToRootViewControllerAnimated:YES];
                               [self chevsuess];
                           } else{
                               UIViewController *viewc = self.navigationController.viewControllers[1];
@@ -623,9 +624,9 @@
     }else if ([_type isEqualToString:@"facepay"]){
         urlstr = [API stringByAppendingString:@"property/pay_face_order/typename/wxpay"];
     }else if ([_type isEqualToString:@"youxianjiaofei"]){
-        urlstr = [API stringByAppendingString:@"property/pay_wired_order/typename/wxpay/wxpay"];
+        urlstr = [API stringByAppendingString:@"property/pay_wired_order/typename/wxpay"];
     }else if ([_type isEqualToString:@"newservicescan"]){
-        urlstr = [API_NOAPK stringByAppendingString:@"/service/order/pay_service_order"];
+        urlstr = [API_NOAPK stringByAppendingString:@"/service/order/pay_service_order/typename/wxpay"];
     }else{
         urlstr = [API stringByAppendingString:@"userCenter/pay_shopping_order/typename/wxpay"];
     }
@@ -650,7 +651,7 @@
             //[MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
             [WXApi sendReq:req];
         }else{
-            //[MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
@@ -674,7 +675,7 @@
     }else if ([_type isEqualToString:@"youxianjiaofei"]){
         urlstr = [API stringByAppendingString:@"property/pay_wired_order/typename/alipay"];
     }else if ([_type isEqualToString:@"newservicescan"]){
-        urlstr = [API_NOAPK stringByAppendingString:@"/service/order/pay_service_order/alipay"];
+        urlstr = [API_NOAPK stringByAppendingString:@"/service/order/pay_service_order/typename/alipay"];
     }else{
         urlstr = [API stringByAppendingString:@"userCenter/pay_shopping_order/typename/alipay"];
     }
@@ -692,7 +693,7 @@
             }];
             //[MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }else{
-            //[MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
@@ -716,7 +717,7 @@
     }else if ([_type isEqualToString:@"youxianjiaofei"]){
         urlstr = [API stringByAppendingString:@"property/pay_wired_order/typename/bestpay"];
     }else if ([_type isEqualToString:@"newservicescan"]){
-        urlstr = [API_NOAPK stringByAppendingString:@"/service/order/pay_service_order/bestpay"];
+        urlstr = [API_NOAPK stringByAppendingString:@"/service/order/pay_service_order/typename/bestpay"];
     }else{
         urlstr = [API stringByAppendingString:@"userCenter/pay_shopping_order/typename/bestpay"];
     }

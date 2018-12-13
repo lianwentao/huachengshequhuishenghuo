@@ -42,6 +42,11 @@
     }
     // Do any additional setup after loading the view.
 }
+- (BOOL)navigationShouldPopOnBackButton{
+    UIViewController *viewc = self.navigationController.viewControllers[self.navigationController.viewControllers.count-1];
+    [self.navigationController popToViewController:viewc animated:YES];
+    return YES;
+}
 - (void)createrightbutton
 {
     //自定义一个导航条右上角的一个button

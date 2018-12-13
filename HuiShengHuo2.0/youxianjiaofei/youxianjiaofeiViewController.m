@@ -49,6 +49,11 @@
     UIBarButtonItem *leftBarButtomItem = [[UIBarButtonItem alloc]initWithCustomView:issueButton];
     self.navigationItem.rightBarButtonItem = leftBarButtomItem;
 }
+- (BOOL)navigationShouldPopOnBackButton{
+    UIViewController *viewc = self.navigationController.viewControllers[self.navigationController.viewControllers.count-1];
+    [self.navigationController popToViewController:viewc animated:YES];
+    return YES;
+}
 - (void)issueBton
 {
     [self.navigationController pushViewController:[youxianjiaofeijiluViewController new] animated:YES];

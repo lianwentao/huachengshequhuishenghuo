@@ -132,7 +132,14 @@
     [view addSubview:imageBtn];
     
     UILabel *titleLable = [[UILabel alloc] initWithFrame:CGRectMake(0, view.frame.size.height - 20, view.frame.size.width, 20)];
-    titleLable.text = model.name;
+    
+    if (model.name.length>4) {
+        NSString *str =[model.name substringToIndex:4];//截取下标5之前的字符串
+        titleLable.text = [NSString stringWithFormat:@"%@...",str];
+    }else{
+        titleLable.text = model.name;
+    }
+    
     titleLable.textAlignment = NSTextAlignmentCenter;
     titleLable.font = [UIFont systemFontOfSize:13];
     [view addSubview:titleLable];
@@ -142,7 +149,6 @@
     btn.tag = index;
     [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:btn];
-
 }
 
 - (UIScrollView *)contentScrollView{
