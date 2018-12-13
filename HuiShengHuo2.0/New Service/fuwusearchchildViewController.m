@@ -314,23 +314,24 @@
 //        result.url = @"/service/service/serviceList";
 //    }
 //    [self.navigationController pushViewController:result animated:YES];
-    
-    // 缓存数据并且刷新界面
-    [self saveSearchCacheAndRefreshView:cell.textLabel.text];
-    
-    if ([_shangjiaorfuwu isEqualToString:@"sj"]) {
-        fuwusearchresultViewController *result = [[fuwusearchresultViewController alloc] init];
-        result.key = cell.textLabel.text;
-        result.canshu = @"i_key";
-        result.url = @"/service/institution/merchantList";
-        [self.navigationController pushViewController:result animated:YES];
-    }else{
-        searchServiceViewController *result = [[searchServiceViewController alloc] init];
-        result.canshu = @"s_key";
-        result.key = cell.textLabel.text;
-        result.url = @"/service/service/serviceList";
-        [self.navigationController pushViewController:result animated:YES];
+    if (indexPath.section==1) {
+        // 缓存数据并且刷新界面
+        [self saveSearchCacheAndRefreshView:cell.textLabel.text];
         
+        if ([_shangjiaorfuwu isEqualToString:@"sj"]) {
+            fuwusearchresultViewController *result = [[fuwusearchresultViewController alloc] init];
+            result.key = cell.textLabel.text;
+            result.canshu = @"i_key";
+            result.url = @"/service/institution/merchantList";
+            [self.navigationController pushViewController:result animated:YES];
+        }else{
+            searchServiceViewController *result = [[searchServiceViewController alloc] init];
+            result.canshu = @"s_key";
+            result.key = cell.textLabel.text;
+            result.url = @"/service/service/serviceList";
+            [self.navigationController pushViewController:result animated:YES];
+            
+        }
     }
 }
 - (void)closeDidClick:(UIButton *)sender

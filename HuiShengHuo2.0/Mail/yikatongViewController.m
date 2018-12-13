@@ -289,14 +289,17 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
     }];
-}//判断服务订单成功否
+}
+
+
+//判断服务订单成功否
 -(void)postfuwususess
 {
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSDictionary *dict = @{@"id":_id};
-    NSString *urlstr = [API stringByAppendingString:@"jpush/service_order_toAmountWorker_push"];
+    NSString *urlstr = [API stringByAppendingString:@"Jpush/service_order_toAmountWorker_push"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"fuwuzhifu--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

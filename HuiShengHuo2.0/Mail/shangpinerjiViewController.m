@@ -49,7 +49,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(kucunbuzu) name:@"kucunbuzu" object:nil];//liebiaojiarugouwuche
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gouwuche:) name:@"liebiaojiarugouwuche" object:nil];
 }
-
+- (BOOL)navigationShouldPopOnBackButton{
+    UIViewController *viewc = self.navigationController.viewControllers[self.navigationController.viewControllers.count-1];
+    [self.navigationController popToViewController:viewc animated:YES];
+    return YES;
+}
 - (void)bupeisong
 {
     [MBProgressHUD showToastToView:self.view withText:@"当前时间不在配送时间范围内"];

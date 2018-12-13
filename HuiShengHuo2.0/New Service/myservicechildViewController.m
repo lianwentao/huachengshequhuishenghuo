@@ -30,6 +30,8 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shauxin) name:@"newpingjiadingdan" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shauxin) name:@"newquxiaodingdan" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shauxin) name:@"newquxiaodingdan" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shauxin) name:@"newtousudingdan" object:nil];
     [self createtableview];
     // Do any additional setup after loading the view.
 }

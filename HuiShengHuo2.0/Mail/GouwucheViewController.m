@@ -38,6 +38,7 @@
 @end
 
 @implementation GouwucheViewController
+
 - (void)viewDidLayoutSubviews{
     CGFloat phoneVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
     if (phoneVersion >= 11.0) {
@@ -72,6 +73,8 @@
     //初始化显示状态
     _allSellectedButton.selected = NO;
     _totlePriceLabel.attributedText = [self DWQSetString:@"￥0.00"];
+    
+//    [self post];
 }
 #pragma mark ------联网请求---
 -(void)post{
@@ -97,7 +100,7 @@
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
-        NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+        NSLog(@"购物车success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
         NSArray *array = [[responseObject objectForKey:@"data"] objectForKey:@"list"];
         //NSArray *array = nil;
         if ([array isKindOfClass:[NSArray class]]) {
@@ -106,13 +109,18 @@
             DWQShopModel *model = [[DWQShopModel alloc]init];
             [model configGoodsArrayWithArray:array];
             [self.dataArray addObject:model];
+            
         }
         if (self.dataArray.count > 0) {
             
             [self setupCartView];
+
         } else {
             [self setupCartEmptyView];
+
         }
+        
+       
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         NSLog(@"failure--%@",error);
@@ -355,12 +363,15 @@
     }
     
     [table registerClass:[DWQTableHeaderView class] forHeaderFooterViewReuseIdentifier:@"DWQHeaderView"];
+    [self reloadTable];
+   
 }
 #pragma mark --- UITableViewDataSource & UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
+
     DWQShopModel *model = [self.dataArray objectAtIndex:section];
     return model.goodsArray.count;
+   
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

@@ -1033,7 +1033,7 @@ static NSString * LINKEDME_SHORT_URL;
         NSLog(@"failure--%@",error);
     }];
     
-    //[[NSNotificationCenter defaultCenter] removeObserver:self name:@"jiarugouwuchedonghua" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"jiarugouwuchedonghua" object:nil];
 }
 -(void)postcount
 {

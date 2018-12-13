@@ -94,6 +94,8 @@
 		284528901FF78935006F7D3D /* TimeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845288B1FF78935006F7D3D /* TimeLabel.m */; };
 		284528911FF78935006F7D3D /* TimeNumberView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845288D1FF78935006F7D3D /* TimeNumberView.m */; };
 		284528921FF78935006F7D3D /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 2845288F1FF78935006F7D3D /* UIView+Frame.m */; };
+		28453FE221C24CCC00FB47CD /* dingdanchildViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28453FE121C24CCC00FB47CD /* dingdanchildViewController.m */; };
+		28453FE521C25BE900FB47CD /* shangpinliebiaochildViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28453FE421C25BE900FB47CD /* shangpinliebiaochildViewController.m */; };
 		28457E1920B9488B00EB2C04 /* newMallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28457E1820B9488B00EB2C04 /* newMallViewController.m */; };
 		28457E1C20B94B1200EB2C04 /* xianshiqianggouViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28457E1B20B94B1200EB2C04 /* xianshiqianggouViewController.m */; };
 		2846058E1FFEFFCE00F4A508 /* xiaofeijiluTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2846058D1FFEFFCE00F4A508 /* xiaofeijiluTableViewCell.m */; };
@@ -772,6 +774,10 @@
 		2845288D1FF78935006F7D3D /* TimeNumberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeNumberView.m; sourceTree = "<group>"; };
 		2845288E1FF78935006F7D3D /* UIView+Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
 		2845288F1FF78935006F7D3D /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
+		28453FE021C24CCC00FB47CD /* dingdanchildViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dingdanchildViewController.h; sourceTree = "<group>"; };
+		28453FE121C24CCC00FB47CD /* dingdanchildViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = dingdanchildViewController.m; sourceTree = "<group>"; };
+		28453FE321C25BE900FB47CD /* shangpinliebiaochildViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shangpinliebiaochildViewController.h; sourceTree = "<group>"; };
+		28453FE421C25BE900FB47CD /* shangpinliebiaochildViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = shangpinliebiaochildViewController.m; sourceTree = "<group>"; };
 		28457E1720B9488B00EB2C04 /* newMallViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = newMallViewController.h; sourceTree = "<group>"; };
 		28457E1820B9488B00EB2C04 /* newMallViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = newMallViewController.m; sourceTree = "<group>"; };
 		28457E1A20B94B1200EB2C04 /* xianshiqianggouViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xianshiqianggouViewController.h; sourceTree = "<group>"; };
@@ -2086,6 +2092,8 @@
 				280E9B3120CC5DF300A32BBF /* xianshiqianggouerjiViewController.m */,
 				2847D81C20BD4CCD00934A8D /* shangpinliebiaoViewController.h */,
 				2847D81D20BD4CCD00934A8D /* shangpinliebiaoViewController.m */,
+				28453FE321C25BE900FB47CD /* shangpinliebiaochildViewController.h */,
+				28453FE421C25BE900FB47CD /* shangpinliebiaochildViewController.m */,
 				28F2C176216CF014001E0EB7 /* newxianshiqianggouViewController.h */,
 				28F2C177216CF014001E0EB7 /* newxianshiqianggouViewController.m */,
 			);
@@ -3622,6 +3630,8 @@
 				28B19067200A06EF00CD8651 /* changepasswordViewController.m */,
 				28A8E8281FD78152005DC96B /* dingdanViewController.h */,
 				28A8E8291FD78152005DC96B /* dingdanViewController.m */,
+				28453FE021C24CCC00FB47CD /* dingdanchildViewController.h */,
+				28453FE121C24CCC00FB47CD /* dingdanchildViewController.m */,
 				2856E11D1FD7E10000CD0DCA /* dingdandetailsViewController.h */,
 				2856E11E1FD7E10000CD0DCA /* dingdandetailsViewController.m */,
 				287D63A52012F0580099EF3C /* pingjiaViewController.h */,
@@ -4667,6 +4677,8 @@
 				28854E1520526B9E0097B201 /* shuidianfeiViewController.m in Sources */,
 				845D363221AE258D00CBDF04 /* fwflViewController.m in Sources */,
 				28D759F020A0058F0008A07D /* gamesViewController.m in Sources */,
+				28453FE221C24CCC00FB47CD /* dingdanchildViewController.m in Sources */,
+				28453FE521C25BE900FB47CD /* shangpinliebiaochildViewController.m in Sources */,
 				28A650941FEBA9D30091E0AC /* yikatongViewController.m in Sources */,
 				845C562221A7F528002F509D /* JSONAPI.m in Sources */,
 				282805A7219AD72500B0DD7D /* SDAnimatedImageRep.m in Sources */,
