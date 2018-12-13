@@ -78,7 +78,7 @@
         dict = @{@"id":_shangjiaid};
         NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/institution/merchantDetails"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            WBLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
+            WBLog(@"responseObject---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
             datadic = [[NSDictionary alloc] init];
             if ([[responseObject objectForKey:@"status"] integerValue]==1) {
                 datadic = [responseObject objectForKey:@"data"];
@@ -169,7 +169,7 @@
 //        [headerView addSubview:label2];
         
         kuodabuttondianjifanwei *callBtn = [kuodabuttondianjifanwei buttonWithType:UIButtonTypeCustom];
-        callBtn.frame = CGRectMake(22, 20+27+5+14+5+140, 87, 14);
+        callBtn.frame = CGRectMake(22, 20+27+5+14+5+140, 100, 14);
         [callBtn setEnlargeEdgeWithTop:50 right:0 bottom:5 left:0];
         [callBtn setTitle:[datadic objectForKey:@"telphone"] forState:UIControlStateNormal];
         callBtn.titleLabel.textAlignment = NSTextAlignmentCenter;

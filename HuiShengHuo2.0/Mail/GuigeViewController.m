@@ -31,12 +31,22 @@
     long height;
     
     UILabel *twolabel;
+    CGFloat height1;
 }
 
 @end
 
 @implementation GuigeViewController
-
+- (void)viewDidLayoutSubviews{
+    CGFloat phoneVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (phoneVersion >= 11.0) {
+        height1 = self.view.safeAreaInsets.bottom;
+    }else{
+        height1 = 0;
+    }
+    WBLog(@"h = %lf",height1);
+    [self createui];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"选择商品规格";
@@ -112,7 +122,7 @@
     UIButton *butsure = [UIButton buttonWithType:UIButtonTypeCustom];
     [butsure setTitle:@"确定" forState:UIControlStateNormal];
     [self.view addSubview:butsure];
-    butsure.frame = CGRectMake(0, screen_Height-49, screen_Width, 49);
+    butsure.frame = CGRectMake(0, screen_Height-49-height1, screen_Width, 49);
     butsure.backgroundColor = QIColor;
     [butsure addTarget:self action:@selector(sure) forControlEvents:UIControlEventTouchUpInside];
     

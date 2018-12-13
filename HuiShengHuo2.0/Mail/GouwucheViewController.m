@@ -28,6 +28,7 @@
     NSDictionary *goodsdict;
     
     NSArray *_DataArr;
+    CGFloat height;
 }
 @property (strong,nonatomic)NSMutableArray *dataArray;
 @property (strong,nonatomic)NSMutableArray *selectedArray;
@@ -37,7 +38,16 @@
 @end
 
 @implementation GouwucheViewController
-
+- (void)viewDidLayoutSubviews{
+    CGFloat phoneVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (phoneVersion >= 11.0) {
+        height = self.view.safeAreaInsets.bottom;
+    }else{
+        height = 0;
+    }
+    WBLog(@"h = %lf",height);
+    [self setupCustomBottomView];
+}
 #pragma mark - viewController life cicle
 - (void)viewWillAppear:(BOOL)animated {
     
@@ -230,9 +240,9 @@
     
     //当有tabBarController时,在tabBar的上面
     if (_isHasTabBarController == YES) {
-        backgroundView.frame = CGRectMake(0, DWQSCREEN_HEIGHT -  2*DWQTabBarHeight, DWQSCREEN_WIDTH, DWQTabBarHeight);
+        backgroundView.frame = CGRectMake(0, DWQSCREEN_HEIGHT -  2*DWQTabBarHeight-height, DWQSCREEN_WIDTH, DWQTabBarHeight);
     } else {
-        backgroundView.frame = CGRectMake(0, DWQSCREEN_HEIGHT -  DWQTabBarHeight, DWQSCREEN_WIDTH, DWQTabBarHeight);
+        backgroundView.frame = CGRectMake(0, DWQSCREEN_HEIGHT -  DWQTabBarHeight-height, DWQSCREEN_WIDTH, DWQTabBarHeight);
     }
     
     UIView *lineView = [[UIView alloc]init];
@@ -339,9 +349,9 @@
     self.myTableView = table;
     
     if (_isHasTabBarController) {
-        table.frame = CGRectMake(0, DWQNaigationBarHeight, DWQSCREEN_WIDTH, DWQSCREEN_HEIGHT - DWQNaigationBarHeight - 2*DWQTabBarHeight);
+        table.frame = CGRectMake(0, DWQNaigationBarHeight, DWQSCREEN_WIDTH, DWQSCREEN_HEIGHT - DWQNaigationBarHeight - 2*DWQTabBarHeight-height);
     } else {
-        table.frame = CGRectMake(0, DWQNaigationBarHeight, DWQSCREEN_WIDTH, DWQSCREEN_HEIGHT - DWQNaigationBarHeight - DWQTabBarHeight);
+        table.frame = CGRectMake(0, DWQNaigationBarHeight, DWQSCREEN_WIDTH, DWQSCREEN_HEIGHT - DWQNaigationBarHeight - DWQTabBarHeight-height);
     }
     
     [table registerClass:[DWQTableHeaderView class] forHeaderFooterViewReuseIdentifier:@"DWQHeaderView"];

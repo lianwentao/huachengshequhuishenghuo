@@ -53,6 +53,7 @@
     NSDictionary *dataDic;
     NSMutableDictionary *_DataDic;
     UILabel *titlelabel;
+    CGFloat height;
 }
 @property (nonatomic,strong)UITableView *tableView;
 @property (nonatomic ,strong) UIView *deliverView; //底部View
@@ -61,18 +62,27 @@
 @end
 
 @implementation serviceDetailViewController
-
+- (void)viewDidLayoutSubviews{
+    CGFloat phoneVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (phoneVersion >= 11.0) {
+        height = self.view.safeAreaInsets.bottom;
+    }else{
+        height = 0;
+    }
+    WBLog(@"h = %lf",height);
+    [self loadFunctionView];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
 
     [self getData];
     [self setupNavItems];
-    //    [self CreateTableview];
-    [self loadFunctionView];
+//    [self viewDidLayoutSubviews];
+    
     [self wr_setNavBarBarTintColor:BackColor];
     [self wr_setNavBarBackgroundAlpha:0];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitClick) name:@"shareSuccess" object:nil];
 }
 - (BOOL)navigationShouldPopOnBackButton{
     UIViewController *viewc = self.navigationController.viewControllers[self.navigationController.viewControllers.count-1];
@@ -195,7 +205,7 @@
 }
 -(void)CreateTableview{
     
-    CGRect frame = CGRectMake(0, 0, Main_width, Main_Height-50);
+    CGRect frame = CGRectMake(0, 0, Main_width, Main_Height-50-height);
     _tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -340,7 +350,7 @@
         [flLab sizeToFit];//使用sizeToFit
         flLab.center = CGPointMake(self.view.bounds.size.width/3, 25) ;
         flLab.textColor=[UIColor whiteColor];
-        flLab.backgroundColor=[UIColor redColor];
+        flLab.backgroundColor=[UIColor orangeColor];
         [cell addSubview:flLab];
         
     }else if (indexPath.section == 4){
@@ -541,6 +551,7 @@
                 imgBtn.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, (Main_width-40)/2.5);
                 NSString *imgStr = [API_img stringByAppendingString:titleImgArr[i]];
                 [imgBtn xr_setButtonImageWithUrl:imgStr];
+                imgBtn.titleLabel.text = titleArr[i];
                 imgBtn.layer.cornerRadius = 5;
                 imgBtn.clipsToBounds = YES;
                 imgBtn.tag = [imgIDArr[i] integerValue]+100;
@@ -609,14 +620,16 @@
     titlelabel.font = [UIFont systemFontOfSize:20];
     [view addSubview:titlelabel];
 }
+
 #pragma mark - 立即预约
 - (void)loadFunctionView {
-    CGFloat contentY = Main_Height-50;
-    UIView *functionView = [[UIView alloc]initWithFrame:CGRectMake(0, contentY, Main_width, 50)];
-    functionView.backgroundColor = [UIColor colorWithRed:243/255.0 green:247/255.0 blue:248/255.0 alpha:1];
-    
+
+    UIView *functionView = [[UIView alloc]init];
+    CGFloat contentY = Main_Height-50-height;
+    functionView.frame = CGRectMake(0, contentY, Main_width, 50);
+    functionView.backgroundColor = [UIColor whiteColor];
     kuodabuttondianjifanwei *callBtn = [[kuodabuttondianjifanwei alloc]initWithFrame:CGRectMake(50, 10, 20, 20)];
-     [callBtn setEnlargeEdgeWithTop:10 right:5 bottom:20 left:5];
+    [callBtn setEnlargeEdgeWithTop:10 right:5 bottom:20 left:5];
     [callBtn setImage:[UIImage imageNamed:@"fw_tel"] forState:UIControlStateNormal];
     [callBtn addTarget:self action:@selector(callAction:) forControlEvents:UIControlEventTouchUpInside];
     callBtn.layer.cornerRadius = 3.0;
@@ -631,7 +644,7 @@
     
     kuodabuttondianjifanwei *shopBtn = [[kuodabuttondianjifanwei alloc]initWithFrame:CGRectMake(CGRectGetMaxX(callBtn.frame)+65, 10, 20, 20)];
     [shopBtn setEnlargeEdgeWithTop:10 right:5 bottom:20 left:5];
-     [shopBtn setImage:[UIImage imageNamed:@"fw_sp"] forState:UIControlStateNormal];
+    [shopBtn setImage:[UIImage imageNamed:@"fw_sp"] forState:UIControlStateNormal];
     [shopBtn addTarget:self action:@selector(shopAction:) forControlEvents:UIControlEventTouchUpInside];
     shopBtn.layer.cornerRadius = 3.0;
     [functionView addSubview:shopBtn];
@@ -644,7 +657,7 @@
     
     UIButton *yuYueBtn = [[UIButton alloc]initWithFrame:CGRectMake(Main_width-30-100, 5, 100, 40)];
     yuYueBtn.clipsToBounds = YES;
-    yuYueBtn.layer.cornerRadius = 10;
+    yuYueBtn.layer.cornerRadius = 5;
     CAGradientLayer *layer = [CAGradientLayer layer];
     layer.frame = yuYueBtn.bounds;
     layer.startPoint = CGPointMake(0,0);
@@ -706,6 +719,7 @@
     NSInteger index = sender.tag-100;
     serviceDetailViewController *sdVC = [[serviceDetailViewController alloc]init];
     sdVC.serviceID = [NSString stringWithFormat:@"%ld",index];
+    sdVC.serviceTitle = sender.titleLabel.text;
     [self.navigationController pushViewController:sdVC animated:YES];
 }
 - (void)shareview{
