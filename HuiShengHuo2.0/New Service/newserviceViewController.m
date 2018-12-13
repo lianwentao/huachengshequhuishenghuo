@@ -651,6 +651,7 @@
                 
                 UIImageView *imgview1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 158, 80)];
                 [imgview1 sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[info objectAtIndex:i] objectForKey:@"index_img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                imgview1.contentMode = UIViewContentModeScaleAspectFill;
                 [backview addSubview:imgview1];
                 
                 UIView *view = [[UIView alloc] initWithFrame:CGRectMake(55, 50, 48, 48)];
@@ -774,10 +775,47 @@
             [touxiang sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[item objectAtIndex:indexPath.row-1] objectForKey:@"logo"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
             [cell.contentView addSubview:touxiang];
             
-            UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(15+20+7, label1.frame.size.height+label1.frame.origin.y+15, Main_width-30, 20)];
+            UILabel *label2 = [[UILabel alloc] init];
             label2.text = [[item objectAtIndex:indexPath.row-1] objectForKey:@"i_name"];
             label2.font = [UIFont systemFontOfSize:11];
+            label2.alpha = 0.54;
+            CGSize size = [label2 sizeThatFits:CGSizeMake(MAXFLOAT, 20)];
+            label2.frame = CGRectMake(15+20+7, label1.frame.size.height+label1.frame.origin.y+15, size.width, 20);
             [cell.contentView addSubview:label2];
+            
+            
+            NSArray *arr = [NSArray array];
+            arr = [[item objectAtIndex:indexPath.row-1] objectForKey:@"category"];
+            float butX = 15+20+7+25+size.width;
+            float butY = label1.frame.size.height+label1.frame.origin.y+15;
+            long arrcount;
+            if (arr.count>2) {
+                arrcount = 2;
+            }else{
+                arrcount = arr.count;
+            }
+            for(int i = 0; i < arrcount; i++){
+                
+                //宽度自适应
+                NSDictionary *fontDict = @{NSFontAttributeName:[UIFont systemFontOfSize:10]};
+                CGRect frame_W = [[arr[i] objectForKey:@"category_cn"] boundingRectWithSize:CGSizeMake(MAXFLOAT, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:fontDict context:nil];
+                
+                if (butX+frame_W.size.width>Main_width-15-20-7-25-size.width) {
+                    
+                    //butX += 10;
+                    
+                    //butY += 20;
+                }
+                
+                UIButton *but = [[UIButton alloc]initWithFrame:CGRectMake(butX, butY, frame_W.size.width+20, 20)];
+                [but setTitle:[arr[i] objectForKey:@"category_cn"] forState:UIControlStateNormal];
+                [but setTitleColor:[UIColor darkTextColor] forState:UIControlStateNormal];
+                but.titleLabel.font = [UIFont systemFontOfSize:10];
+                but.alpha = 0.54;
+                but.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.1];
+                [cell.contentView addSubview:but];
+                butX = CGRectGetMaxX(but.frame)+10;
+            }
             
             UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(15, label2.frame.size.height+label2.frame.origin.y+10, Main_width-30, 0.5)];
             lineview.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.05];

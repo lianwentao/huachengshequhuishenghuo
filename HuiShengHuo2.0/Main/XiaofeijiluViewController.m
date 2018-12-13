@@ -67,7 +67,8 @@
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSDictionary *dict = @{@"p":[NSString stringWithFormat:@"%d",_pnum]};
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict = @{@"p":[NSString stringWithFormat:@"%d",_pnum],@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
     NSString *urlstr = [API stringByAppendingString:@"userCenter/my_wallet"];
     [manager GET:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString *stringnumber = [[_DataArr objectAtIndex:0] objectForKey:@"total_Pages"];
@@ -113,14 +114,6 @@
         //[_TableView.mj_header endRefreshing];
         [self post];
     });
-}
-#pragma mark - TableView 占位图
-- (UIImage *)xy_noDataViewImage {
-    return [UIImage imageNamed:@"pinglunweikong"];
-}
-
-- (NSString *)xy_noDataViewMessage {
-    return @"暂无数据";
 }
 - (UIColor *)xy_noDataViewMessageColor {
     return [UIColor blackColor];

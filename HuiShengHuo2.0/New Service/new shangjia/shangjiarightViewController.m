@@ -26,7 +26,7 @@
     [super viewDidLoad];
     
     [self post];
-//    [self CreateTableview];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chuandi:) name:@"chuandititlearr" object:nil];
     // Do any additional setup after loading the view.
 }
@@ -93,8 +93,8 @@
             }
         }
         
-         [self CreateTableview];
-
+        
+        [self CreateTableview];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
