@@ -11,7 +11,16 @@
 #import "shangjialeftViewController.h"
 #import "shangjiarightViewController.h"
 #import "fengLeiDetailViewController.h"
-
+#import "WXApi.h"
+#import "WXApiManager.h"
+#import "activitydetailsViewController.h"
+#define NAVBAR_COLORCHANGE_POINT (-IMAGE_HEIGHT + NAV_HEIGHT)
+#define NAV_HEIGHT 64
+#define IMAGE_HEIGHT 0
+#define SCROLL_DOWN_LIMIT 70
+#define kScreenWidth [UIScreen mainScreen].bounds.size.width
+#define kScreenHeight [UIScreen mainScreen].bounds.size.height
+#define LIMIT_OFFSET_Y -(IMAGE_HEIGHT + SCROLL_DOWN_LIMIT)
 @interface newshangjiaViewController ()<UITableViewDelegate,UITableViewDataSource,shangjialevelListviewDelegate>
 {
     NSDictionary *datadic;
@@ -22,6 +31,9 @@
 @property(nonatomic, strong)shangjialeftViewController *subLeftVC;
 @property(nonatomic, strong)shangjiarightViewController *subRightVC;
 @property(nonatomic, strong)shangjialevelListview *levelListView;
+@property (nonatomic ,strong) UIView *deliverView; //底部View
+@property (nonatomic ,strong) UIView *BGView; //遮罩
+
 
 @end
 
@@ -30,14 +42,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    
-    
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
-    
-
-    // Do any additional setup after loading the view.
-    
+    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareview)];
+    self.navigationItem.rightBarButtonItem = rightBarItem;
     [self getdata];
 }
 - (BOOL)navigationShouldPopOnBackButton{
@@ -160,8 +167,9 @@
 //        label2.textAlignment = NSTextAlignmentCenter;
 //        [headerView addSubview:label2];
         
-        UIButton *callBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        kuodabuttondianjifanwei *callBtn = [kuodabuttondianjifanwei buttonWithType:UIButtonTypeCustom];
         callBtn.frame = CGRectMake(22, 20+27+5+14+5+140, 87, 14);
+        [callBtn setEnlargeEdgeWithTop:50 right:0 bottom:5 left:0];
         [callBtn setTitle:[datadic objectForKey:@"telphone"] forState:UIControlStateNormal];
         callBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
         callBtn.titleLabel.font = Font(13);
@@ -180,8 +188,9 @@
 //        label3.text = [NSString stringWithFormat:@"共%@个服务 >",[datadic objectForKey:@"serviceCount"]];
 //        [headerView addSubview:label3];
         
-        UIButton *fuWuBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        kuodabuttondianjifanwei *fuWuBtn = [kuodabuttondianjifanwei buttonWithType:UIButtonTypeCustom];
         fuWuBtn.frame = CGRectMake(Main_width-120, 20+27+15+140, 120, 15);
+        [fuWuBtn setEnlargeEdgeWithTop:50 right:0 bottom:5 left:0];
         [fuWuBtn setTitle:[NSString stringWithFormat:@"共%@个服务 >",[datadic objectForKey:@"serviceCount"]] forState:UIControlStateNormal];
         fuWuBtn.titleLabel.textAlignment = NSTextAlignmentRight;
         fuWuBtn.titleLabel.font = Font(14);
@@ -373,4 +382,110 @@
     flVC.quFenStr = @"0";
     [self.navigationController pushViewController:flVC animated:YES];
 }
+
+- (void)shareview{
+    // ------全屏遮罩
+    self.BGView                 = [[UIView alloc] init];
+    self.BGView.frame           = [[UIScreen mainScreen] bounds];
+    self.BGView.tag             = 100;
+    self.BGView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.0];
+    self.BGView.opaque = NO;
+    
+    //--UIWindow的优先级最高，Window包含了所有视图，在这之上添加视图，可以保证添加在最上面
+    UIWindow *appWindow = [[UIApplication sharedApplication] keyWindow];
+    [appWindow addSubview:self.BGView];
+    
+    // ------给全屏遮罩添加的点击事件
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(exitClick)];
+    gesture.numberOfTapsRequired = 1;
+    gesture.cancelsTouchesInView = NO;
+    [self.BGView addGestureRecognizer:gesture];
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        self.BGView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.2];
+        
+    }];
+    
+    // ------底部弹出的View
+    self.deliverView                 = [[UIView alloc] init];
+    self.deliverView.frame           = CGRectMake(0, Main_Height-120, Main_width, 120);
+    self.deliverView.backgroundColor = [UIColor whiteColor];
+    [appWindow addSubview:self.deliverView];
+    
+    NSArray *arr = @[@"shortVideo_share_weixin",@"shortVideo_share_friend"];
+    NSArray *labelarr = @[@"微信",@"朋友圈"];
+    for (int i=0; i<2; i++) {
+        UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(22.5+90*i, 15, 45, 45)];
+        imageview.image = [UIImage imageNamed:[arr objectAtIndex:i]];
+        [self.deliverView addSubview:imageview];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15+90*i, 75, 60, 10)];
+        label.font = font15;
+        label.textAlignment = NSTextAlignmentCenter;
+        label.text = [labelarr objectAtIndex:i];
+        [self.deliverView addSubview:label];
+        
+        UIButton *sharebut = [UIButton buttonWithType:UIButtonTypeCustom];
+        sharebut.frame = CGRectMake(15+90*i, 15, 90, 90);
+        //[sharebut setImage:[UIImage imageNamed:[arr objectAtIndex:i]] forState:UIControlStateNormal];
+        sharebut.tag = i;
+        [sharebut addTarget:self action:@selector(sharegoods:) forControlEvents:UIControlEventTouchUpInside];
+        [self.deliverView addSubview:sharebut];
+    }
+    
+    // ------View出现动画
+    self.deliverView.transform = CGAffineTransformMakeTranslation(0.01, Main_width);
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        self.deliverView.transform = CGAffineTransformMakeTranslation(0.01, 0.01);
+        
+    }];
+}
+- (void)sharegoods:(UIButton *)sender
+{
+    WXMediaMessage *mediamessage = [WXMediaMessage message];
+    mediamessage.title = _titleStr;
+    mediamessage.description = @"我在社区慧生活发现了一个优质商家，快过来看看吧";
+    NSString *urlString = [API_img stringByAppendingString:_img];
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL  URLWithString:urlString]];
+    UIImage *image = [UIImage imageWithData:data];
+    
+    [mediamessage setThumbImage:image];
+    
+    WXWebpageObject *webobj = [WXWebpageObject object];
+    webobj.webpageUrl = [NSString stringWithFormat:@"http://test.hui-shenghuo.cn/home/service/ins_details/id/%@?linkedme=https://lkme.cc/LQD/ONaD0BYuK&from=singlemessage",_shangjiaid];
+    mediamessage.mediaObject =  webobj;
+    
+    SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
+    req.bText = NO;
+    req.message = mediamessage;
+    if (sender.tag==0) {
+        req.scene = WXSceneSession;
+        NSLog(@"0");
+    }else{
+        NSLog(@"1");
+        req.scene = WXSceneTimeline;//朋友圈
+    }
+    
+    [WXApi sendReq:req];
+    
+}
+- (void)exitClick {
+    
+    NSLog(@"====");
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        self.deliverView.transform = CGAffineTransformMakeTranslation(0.01, Main_width);
+        self.deliverView.alpha = 0.2;
+        self.BGView.alpha = 0;
+        
+    } completion:^(BOOL finished) {
+        
+        [self.BGView removeFromSuperview];
+        [self.deliverView removeFromSuperview];
+    }];
+    
+}
+
 @end
