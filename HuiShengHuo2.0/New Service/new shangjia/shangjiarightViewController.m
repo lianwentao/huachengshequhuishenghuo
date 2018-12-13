@@ -10,6 +10,10 @@
 #import "newshangjiaViewController.h"
 #import "UIImageView+WebCache.h"
 #import "shopPingLunModel.h"
+
+#import "MJRefresh.h"
+#define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
+
 @interface shangjiarightViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     UITableView *_TableView;
@@ -26,7 +30,9 @@
     [super viewDidLoad];
     
     [self post];
-    
+
+    [self CreateTableview];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chuandi:) name:@"chuandititlearr" object:nil];
     // Do any additional setup after loading the view.
 }
@@ -63,7 +69,7 @@
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSDictionary *dict = @{@"id":_shopID,@"p":@1};
+    NSDictionary *dict = @{@"id":_shopID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
     NSLog(@"评论 == %@",dict);
     
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/institution/merchantComments"];
@@ -86,15 +92,20 @@
         }else{
 
             NSArray *dataArr = responseObject[@"data"];
-            dataSourceArr = [NSMutableArray array];
-            for (NSDictionary *dic in dataArr) {
-                shopPingLunModel *model = [[shopPingLunModel alloc]initWithDictionary:dic error:NULL];
-                [dataSourceArr addObject:model];
+            
+            if (dataArr == nil) {
+                NSLog(@"1111") ;
+            }else{
+                [_tableView.mj_footer endRefreshing];
+                dataSourceArr = [NSMutableArray array];
+                for (NSDictionary *dic in dataArr) {
+                    shopPingLunModel *model = [[shopPingLunModel alloc]initWithDictionary:dic error:NULL];
+                    [dataSourceArr addObject:model];
+                }
+                [_tableView reloadData];
             }
+            
         }
-        
-        
-        [self CreateTableview];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -110,6 +121,21 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
+    
+    WS(ws);
+    dataSourceArr = [[NSMutableArray alloc] init];
+//    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+//        [ws.tableView.mj_footer endRefreshing];
+//        pageNum = 1;
+//        [ws post];
+//
+//    }];
+    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        [ws.tableView.mj_header endRefreshing];
+        pageNum = pageNum+1;
+        [ws post];
+    }];
+    [self.tableView.mj_header beginRefreshing];
 }
 #pragma mark - TableView的代理方法
 

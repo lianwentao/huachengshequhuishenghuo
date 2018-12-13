@@ -46,6 +46,7 @@
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareview)];
     self.navigationItem.rightBarButtonItem = rightBarItem;
     [self getdata];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitClick) name:@"shareSuccess" object:nil];
 }
 - (BOOL)navigationShouldPopOnBackButton{
     UIViewController *viewc = self.navigationController.viewControllers[self.navigationController.viewControllers.count-1];

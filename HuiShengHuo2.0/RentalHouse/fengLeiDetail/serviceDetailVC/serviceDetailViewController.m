@@ -548,18 +548,18 @@
                 [backscrollview addSubview:imgBtn];
                 
                 UILabel *titleLab = [[UILabel alloc] init];
-                titleLab.frame = CGRectMake(10+(i*(Main_width-30)), CGRectGetMaxY(imgBtn.frame), Main_width/2-20, 30);
+                titleLab.frame = CGRectMake(10+(i*(Main_width-30)), CGRectGetMaxY(imgBtn.frame), Main_width/2-30, 30);
                 titleLab.text = titleArr[i];
                 titleLab.textAlignment = NSTextAlignmentLeft;
-                titleLab.font = [UIFont systemFontOfSize:18];
+                titleLab.font = [UIFont systemFontOfSize:15 ];
                 [backscrollview addSubview:titleLab];
                 
                 UILabel *priceLab = [[UILabel alloc] init];
                 priceLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame), CGRectGetMaxY(imgBtn.frame), Main_width/2-10, 30);
-                priceLab.text = priceArr[i];
+                priceLab.text = [NSString stringWithFormat:@"￥%@",priceArr[i]];
                 priceLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
                 priceLab.textAlignment = NSTextAlignmentRight;
-                priceLab.font = [UIFont systemFontOfSize:18];
+                priceLab.font = [UIFont systemFontOfSize:15];
                 [backscrollview addSubview:priceLab];
             }
         }
@@ -602,10 +602,10 @@
     but.backgroundColor = [UIColor clearColor];
     [view addSubview:but];
     
-    titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(45, 5, Main_width-90, 40)];
+    titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, Main_width-90, 40)];
     NSLog(@"_serviceTitle = %@",_serviceTitle);
     titlelabel.text = _serviceTitle;
-//    titlelabel.textAlignment = NSTextAlignmentCenter;
+    titlelabel.textAlignment = NSTextAlignmentCenter;
     titlelabel.font = [UIFont systemFontOfSize:20];
     [view addSubview:titlelabel];
 }
@@ -615,14 +615,14 @@
     UIView *functionView = [[UIView alloc]initWithFrame:CGRectMake(0, contentY, Main_width, 50)];
     functionView.backgroundColor = [UIColor colorWithRed:243/255.0 green:247/255.0 blue:248/255.0 alpha:1];
     
-    kuodabuttondianjifanwei *callBtn = [[kuodabuttondianjifanwei alloc]initWithFrame:CGRectMake(30, 10, 20, 20)];
+    kuodabuttondianjifanwei *callBtn = [[kuodabuttondianjifanwei alloc]initWithFrame:CGRectMake(50, 10, 20, 20)];
      [callBtn setEnlargeEdgeWithTop:10 right:5 bottom:20 left:5];
     [callBtn setImage:[UIImage imageNamed:@"fw_tel"] forState:UIControlStateNormal];
     [callBtn addTarget:self action:@selector(callAction:) forControlEvents:UIControlEventTouchUpInside];
     callBtn.layer.cornerRadius = 3.0;
     [functionView addSubview:callBtn];
     UILabel *callLab = [[UILabel alloc]init];
-    callLab.frame = CGRectMake(10, CGRectGetMaxY(callBtn.frame), 60, 20);
+    callLab.frame = CGRectMake(30, CGRectGetMaxY(callBtn.frame), 60, 20);
     callLab.text = @"联系商家";
     callLab.font = [UIFont systemFontOfSize:13];
     callLab.textAlignment = NSTextAlignmentCenter;
@@ -642,7 +642,7 @@
     shopLab.textAlignment = NSTextAlignmentCenter;
     [functionView addSubview:shopLab];
     
-    UIButton *yuYueBtn = [[UIButton alloc]initWithFrame:CGRectMake(Main_width-10-100, 10, 100, 30)];
+    UIButton *yuYueBtn = [[UIButton alloc]initWithFrame:CGRectMake(Main_width-30-100, 5, 100, 40)];
     yuYueBtn.clipsToBounds = YES;
     yuYueBtn.layer.cornerRadius = 10;
     CAGradientLayer *layer = [CAGradientLayer layer];

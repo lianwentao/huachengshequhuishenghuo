@@ -492,7 +492,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             
             
         } else{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"shareSuccess" object:@"postShare"];
             return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
+           
+            
         }
     }else{
         if ([url.host isEqualToString:@"pay"]) {
