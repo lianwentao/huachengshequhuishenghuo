@@ -22,6 +22,7 @@
 @interface searchServiceViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     NSInteger pageNum;
+    UILabel *titlelabel;
 }
 @property (nonatomic,strong)UITableView         *tableView;
 @property (nonatomic,strong)NSMutableArray         *dataSourceArr;
@@ -32,6 +33,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+     self.title = @"搜索结果";
     [self getdata];
     [self createdUI];
 }
@@ -59,6 +61,7 @@
             }
             
             [_tableView reloadData];
+//            [self setupNavItems];
             
         }else{
             
@@ -67,6 +70,19 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
     }];
+}
+- (void)setupNavItems{
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Main_width, 44)];
+    [self.navigationItem setTitleView:view];
+    
+    fwListModel *model = _dataSourceArr[0];
+    titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, Main_width-90, 40)];
+    NSLog(@"%@",model.title);
+    titlelabel.text = model.title;
+    titlelabel.textAlignment = NSTextAlignmentCenter;
+    titlelabel.font = [UIFont systemFontOfSize:20];
+    [view addSubview:titlelabel];
 }
 -(void)createdUI{
    

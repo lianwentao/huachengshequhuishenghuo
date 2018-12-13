@@ -259,7 +259,7 @@
                 [self creategengxinview:@"1" : [[responseObject objectForKey:@"data"] objectForKey:@"mgs"]:[[responseObject objectForKey:@"data"] objectForKey:@"version"]:path];
             }
         }else{
-            
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         

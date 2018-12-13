@@ -32,25 +32,68 @@
     NSMutableArray *tagListArr;
     NSMutableArray *scoreInfoArr;
     NSMutableArray *imgListArr;
+    CGFloat height;
+    NSString *statusMe;
 }
 @property (nonatomic,strong)UITableView *tableView;
 @property (nonatomic,strong)UITextView *textView;
 @property (nonatomic,strong)UILabel *textViewPlaceLable;
+@property (nonatomic,strong)NSMutableDictionary *addressDic;
+
 
 @end
 
 @implementation queRenViewController
-
+- (void)viewDidLayoutSubviews{
+    CGFloat phoneVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (phoneVersion >= 11.0) {
+        height = self.view.safeAreaInsets.bottom;
+    }else{
+        height = 0;
+    }
+    WBLog(@"h = %lf",height);
+    [self loadFunctionView];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"确认服务信息";
-    [self createTableView];
-    [self loadFunctionView];
+    [self getData];
+//    [self createTableView];
+//    [self loadFunctionView];
+    
+}
+-(void)getData{
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    NSLog(@"dict = %@",dict);
+   
+    NSString *strurl = [API stringByAppendingString:@"property/submit_repair_before/"];
+    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSString *status = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"status"]];
+        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSLog(@"fffdic = %@",dataStr);
+        if ([status isEqualToString:@"1"]) {
+          
+            _addressDic = responseObject[@"data"];
+            
+        }else{
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+        }
+        [self createTableView];
+        //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
+        NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"failure--%@",error);
+    }];
     
 }
 -(void)createTableView{
-    CGRect frame = CGRectMake(0, 0, Main_width, Main_Height-50);
+    CGRect frame = CGRectMake(0, 0, Main_width, Main_Height-50-height);
     _tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
     [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     _tableView.delegate = self;
@@ -134,8 +177,9 @@
         bgView.frame = CGRectMake(10, CGRectGetMaxY(titleLab.frame), Main_width-20, 50);
         bgView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
         UILabel *xmLab = [[UILabel alloc]init];
-        xmLab.frame = CGRectMake(10, 0, (bgView.frame.size.width-20)/2, 60);
+        xmLab.frame = CGRectMake(10, 0, (bgView.frame.size.width-20)-100, 60);
         xmLab.text = _serviceStr;
+        xmLab.font = Font(15);
         xmLab.textAlignment = NSTextAlignmentLeft;
         [bgView addSubview:xmLab];
         
@@ -165,31 +209,48 @@
          rightImg.image = [UIImage imageNamed:@"fw_right"];
         [cell addSubview:rightImg];
         
-        labelname = [[UILabel alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(titleLab.frame), Main_width-40, 40)];
-        labelname.font = [UIFont systemFontOfSize:18];
-        [cell.contentView addSubview:labelname];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
-        labelcontent = [[UILabel alloc] initWithFrame:CGRectMake(20, 57, Main_width-40-5, 60)];
-        labelcontent.numberOfLines = 2;
-        labelcontent.font = [UIFont systemFontOfSize:15];
-        [cell.contentView addSubview:labelcontent];
-        //labelcontent.text = @"选择一个地址";
-        
-        but = [UIButton buttonWithType:UIButtonTypeCustom];
-        but.frame = CGRectMake(20, 0, Main_width-40, 110);
-        but.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:@"请选择地址"];
-        
-        NSTextAttachment *attch = [[NSTextAttachment alloc] init];
-        attch.image = [UIImage imageNamed:@"iv_address"];
-        attch.bounds = CGRectMake(0, -5, 20, 20);
-        NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
-        [attri insertAttributedString:string atIndex:0];
-        [but setAttributedTitle:attri forState:UIControlStateNormal];
-        [but setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [cell.contentView addSubview:but];
-        [but addTarget:self action:@selector(seleectaddress) forControlEvents:UIControlEventTouchUpInside];
+        if (![_addressDic isKindOfClass:[NSDictionary class]]) {
+            
+            labelname = [[UILabel alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(titleLab.frame), Main_width-40, 40)];
+            labelname.font = [UIFont systemFontOfSize:18];
+            [cell.contentView addSubview:labelname];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            
+            labelcontent = [[UILabel alloc] initWithFrame:CGRectMake(20, 57, Main_width-40-5, 60)];
+            labelcontent.numberOfLines = 2;
+            labelcontent.font = [UIFont systemFontOfSize:15];
+            [cell.contentView addSubview:labelcontent];
+            //labelcontent.text = @"选择一个地址";
+            
+            but = [UIButton buttonWithType:UIButtonTypeCustom];
+            but.frame = CGRectMake(20, 0, Main_width-40, 110);
+            but.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+            NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:@"请选择地址"];
+            
+            NSTextAttachment *attch = [[NSTextAttachment alloc] init];
+            attch.image = [UIImage imageNamed:@"iv_address"];
+            attch.bounds = CGRectMake(0, -5, 20, 20);
+            NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
+            [attri insertAttributedString:string atIndex:0];
+            [but setAttributedTitle:attri forState:UIControlStateNormal];
+            [but setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [cell.contentView addSubview:but];
+            [but addTarget:self action:@selector(seleectaddress) forControlEvents:UIControlEventTouchUpInside];
+        }else{
+            labelname = [[UILabel alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(titleLab.frame), Main_width-40, 40)];
+            labelname.text = [NSString stringWithFormat:@"%@ %@",_addressDic[@"contact"],_addressDic[@"mobile"]];
+            labelname.font = [UIFont systemFontOfSize:18];
+            [cell.contentView addSubview:labelname];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            
+            labelcontent = [[UILabel alloc] initWithFrame:CGRectMake(20, 57, Main_width-40-5, 60)];
+            labelcontent.numberOfLines = 2;
+            labelcontent.text = [NSString stringWithFormat:@"%@",_addressDic[@"address"]];
+            labelcontent.font = [UIFont systemFontOfSize:15];
+            [cell.contentView addSubview:labelcontent];
+        }
+       
         
     }else{
         
@@ -230,6 +291,14 @@
     
     return cell;
     
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section == 1) {
+        [self seleectaddress];
+        statusMe = @"1";
+    }
 }
 - (void)seleectaddress{
     
@@ -282,11 +351,13 @@
 
 #pragma mark - 确认下单
 - (void)loadFunctionView {
-    CGFloat contentY = Main_Height-50;
-    UIView *functionView = [[UIView alloc]initWithFrame:CGRectMake(0, contentY, Main_width, 50)];
-    functionView.backgroundColor = [UIColor colorWithRed:243/255.0 green:247/255.0 blue:248/255.0 alpha:1];
     
-    UIButton *yuYueBtn = [[UIButton alloc]initWithFrame:CGRectMake((Main_width/2)-50, 10, 100, 40)];
+    UIView *functionView = [[UIView alloc]init];
+    CGFloat contentY = Main_Height-50-height;
+    functionView.frame = CGRectMake(0, contentY, Main_width, 50);
+    functionView.backgroundColor = [UIColor whiteColor];
+    
+    UIButton *yuYueBtn = [[UIButton alloc]initWithFrame:CGRectMake((Main_width/2)-50, 5, 100, 40)];
     yuYueBtn.clipsToBounds = YES;
     yuYueBtn.layer.cornerRadius = 10;
     CAGradientLayer *layer = [CAGradientLayer layer];
@@ -324,8 +395,16 @@
     NSDictionary *dict = [[NSDictionary alloc] init];
 
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"s_id":_serviceID,@"s_tag_id":_serviceTagID,@"s_tag_cn":_serviceStr,@"price":_priceStr,@"address":labelcontent.text,@"contacts":_name,@"mobile":_phone,@"address_id":_addressid,@"description":_textView.text};
-    NSLog(@"dict===%@",dict);
+        NSInteger stMe = [statusMe integerValue];
+        if (![_addressDic isKindOfClass:[NSDictionary class]] || stMe == 1 ) {
+            
+            dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"s_id":_serviceID,@"s_tag_id":_serviceTagID,@"s_tag_cn":_serviceStr,@"price":_priceStr,@"address":labelcontent.text,@"contacts":_name,@"mobile":_phone,@"address_id":_addressid,@"description":_textView.text};
+            NSLog(@"dict===%@",dict);
+        }else{
+            dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"s_id":_serviceID,@"s_tag_id":_serviceTagID,@"s_tag_cn":_serviceStr,@"price":_priceStr,@"address":_addressDic[@"address"],@"contacts":_addressDic[@"contact"],@"mobile":_addressDic[@"mobile"],@"address_id":_addressDic[@"address_id"],@"description":_textView.text};
+            NSLog(@"dict===%@",dict);
+        }
+   
 
     NSString *urlstr = [API_NOAPK stringByAppendingString:@"/service/service/serviceReserve"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

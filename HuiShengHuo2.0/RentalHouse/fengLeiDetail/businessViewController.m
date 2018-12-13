@@ -7,6 +7,7 @@
 //
 
 #import "businessViewController.h"
+#import "WRNavigationBar.h"
 #import "View+MASAdditions.h"
 //cell 滑动
 #import "UIImageView+WebCache.h"
@@ -22,6 +23,8 @@
 #import "businessVCModel.h"
 #import "serviceModel.h"
 #import "newshangjiaViewController.h"
+#import "fwflViewController.h"
+#define IMAGE_HEIGHT 0
 #define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
 @interface businessViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
@@ -47,6 +50,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor whiteColor];
     [self getData];
     [self createdUI];
@@ -98,6 +102,7 @@
     
 }
 -(void)createdUI{
+    
     UIView *topView = [[UIView alloc]init];
     topView.frame = CGRectMake(0, 0, Main_width, 80);
     topView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
@@ -118,13 +123,15 @@
     CGFloat itemBtnH = size.height+10;
     CGFloat itemBtnW = size.width+10;
     itemBtn.frame = CGRectMake(90, 22.5, itemBtnW,itemBtnH);
+    [itemBtn addTarget:self action:@selector(itemAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:topView];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, self.view.frame.size.width, self.view.frame.size.height-80-64)style:UITableViewStylePlain ];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 80, self.view.frame.size.width,  Main_Height-80-64)style:UITableViewStylePlain ];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.showsVerticalScrollIndicator = NO;
+    _tableView.contentInset = UIEdgeInsetsMake(IMAGE_HEIGHT - [self navBarBottom]+80, 0, 0, 0);
     [self.view addSubview:_tableView];
     
     WS(ws);
@@ -143,6 +150,18 @@
     [self.tableView.mj_header beginRefreshing];
 }
 
+-(void)itemAction{
+    fwflViewController *fVC = [[fwflViewController alloc]init];
+    [self.navigationController pushViewController:fVC animated:YES];
+}
+- (int)navBarBottom
+{
+    if ([WRNavigationBar isIphoneX]) {
+        return 88;
+    } else {
+        return 64;
+    }
+}
 
 #pragma mark - TableView的代理方法
 //cell 的数量

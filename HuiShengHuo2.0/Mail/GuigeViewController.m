@@ -31,12 +31,22 @@
     long height;
     
     UILabel *twolabel;
+    CGFloat height1;
 }
 
 @end
 
 @implementation GuigeViewController
-
+- (void)viewDidLayoutSubviews{
+    CGFloat phoneVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (phoneVersion >= 11.0) {
+        height1 = self.view.safeAreaInsets.bottom;
+    }else{
+        height1 = 0;
+    }
+    WBLog(@"h = %lf",height1);
+//    [self createui];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"选择商品规格";
@@ -112,7 +122,7 @@
     UIButton *butsure = [UIButton buttonWithType:UIButtonTypeCustom];
     [butsure setTitle:@"确定" forState:UIControlStateNormal];
     [self.view addSubview:butsure];
-    butsure.frame = CGRectMake(0, screen_Height-49, screen_Width, 49);
+    butsure.frame = CGRectMake(0, screen_Height-49-height1, screen_Width, 49);
     butsure.backgroundColor = QIColor;
     [butsure addTarget:self action:@selector(sure) forControlEvents:UIControlEventTouchUpInside];
     
@@ -201,7 +211,7 @@
     NSString *strurl = [API stringByAppendingString:@"shop/check_shop_limit"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"111---success--%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
-        if ([[responseObject objectForKey:@"status"] integerValue]==2) {
+        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
             _Limit = [[[responseObject objectForKey:@"data"] objectForKey:@"limit"] integerValue];
             long cartnum = [[[responseObject objectForKey:@"data"] objectForKey:@"cart_num"] integerValue];
             long ordernum = [[[responseObject objectForKey:@"data"] objectForKey:@"order_num"] integerValue];

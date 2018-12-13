@@ -44,12 +44,23 @@
     NSString *amountprice;
     NSString *_youhuiquanname;
     NSString *_youhuiquanid;
+    
+    CGFloat height;
 }
 
 @end
 
 @implementation SuredingdanViewController
-
+- (void)viewDidLayoutSubviews{
+    CGFloat phoneVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (phoneVersion >= 11.0) {
+        height = self.view.safeAreaInsets.bottom;
+    }else{
+        height = 0;
+    }
+    WBLog(@"h = %lf",height);
+    [self createbottomview];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"确认订单";
@@ -115,7 +126,7 @@
 }
 - (void)createtableview
 {
-    _TableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, screen_Height-64)];
+    _TableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, screen_Height-64-height)];
     _TableView.delegate = self;
     _TableView.bounces = NO;
     _TableView.dataSource = self;
@@ -123,7 +134,7 @@
 }
 - (void)createbottomview
 {
-    UIView *bottomview = [[UIView alloc] initWithFrame:CGRectMake(0, screen_Height-64, screen_Width, 64)];
+    UIView *bottomview = [[UIView alloc] initWithFrame:CGRectMake(0, screen_Height-64-height, screen_Width, 64)];
     bottomview.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:bottomview];
     

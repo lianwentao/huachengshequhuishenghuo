@@ -25,6 +25,7 @@
     NSMutableArray *titleArr;
     NSMutableArray *titleImgArr;
     NSMutableArray *imgIDArr;
+    UILabel *titlelabel;
 }
 @property (nonatomic,strong)UITableView         *tableView;
 @property (nonatomic,strong)NSMutableArray         *dataSourceArr;
@@ -35,7 +36,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    self.title = @"搜索结果";
     [self getdata];
+//    [self setupNavItems];
     [self createdUI];
 }
 - (void)getdata
@@ -61,7 +64,7 @@
             }
            
             [_tableView reloadData];
-            
+
         }else{
             
         }
@@ -152,19 +155,24 @@
         NSString *labStr = [dic objectForKey:@"category_cn"];
         [labelArr addObject:labStr];
     }
-    VOTagList *tagList = [[VOTagList alloc] initWithTags:labelArr];
-    tagList.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(titleLab.frame), Main_width-20-5-60, 20);
-    tagList.multiLine = YES;
-    tagList.multiSelect = YES;
-    tagList.allowNoSelection = YES;
-    tagList.vertSpacing = 20;
-    tagList.horiSpacing = 10;
-    tagList.selectedTextColor = [UIColor blackColor];
-    tagList.tagBackgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
-    tagList.selectedTagBackgroundColor = [UIColor redColor];
-    tagList.tagCornerRadius = 3;
-    tagList.tagEdge = UIEdgeInsetsMake(2, 2, 2, 2);
-    [cell addSubview:tagList];
+    if (labelArr == nil) {
+        
+    }else{
+        VOTagList *tagList = [[VOTagList alloc] initWithTags:labelArr];
+        tagList.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(titleLab.frame), Main_width-20-5-60, 20);
+        tagList.multiLine = YES;
+        tagList.multiSelect = YES;
+        tagList.allowNoSelection = YES;
+        tagList.vertSpacing = 20;
+        tagList.horiSpacing = 10;
+        tagList.selectedTextColor = [UIColor blackColor];
+        tagList.tagBackgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
+        tagList.selectedTagBackgroundColor = [UIColor redColor];
+        tagList.tagCornerRadius = 3;
+        tagList.tagEdge = UIEdgeInsetsMake(2, 2, 2, 2);
+        [cell addSubview:tagList];
+    }
+    
 
     titleImgArr = [NSMutableArray array];
     for (int i = 0; i < model.service.count; i++) {
@@ -184,40 +192,45 @@
         NSString *titleStr = [dic objectForKey:@"id"];
         [imgIDArr addObject:titleStr];
     }
-    UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 80, Main_width, 180)];
-    backscrollview.contentSize = CGSizeMake((Main_width-40)*titleImgArr.count+16*(titleImgArr.count-1), 180);
-    backscrollview.showsVerticalScrollIndicator = NO;
-    backscrollview.showsHorizontalScrollIndicator = NO;
-    backscrollview.userInteractionEnabled = YES;
-    [cell addSubview:backscrollview];
-    for (int i=0; i<titleImgArr.count; i++) {
-
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(10+(i*(Main_width-30)),0 , Main_width-80, (Main_width-80)/2.5)];
-        view.backgroundColor = [UIColor whiteColor];
-        view.layer.cornerRadius = 3;
-        [backscrollview addSubview:view];
-
-        UIImageView *imgView = [[UIImageView alloc]init];
-        imgView.frame = CGRectMake(0,0 , Main_width-40, (Main_width-80)/2.5);
-        [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:titleImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-        imgView.layer.cornerRadius = 5;
-        imgView.clipsToBounds = YES;
-        [view addSubview:imgView];
-
-        UIButton *goodsbut = [UIButton buttonWithType:UIButtonTypeCustom];
-        goodsbut.frame = CGRectMake(0, 0, Main_width-40, (Main_width-80)/2.5);
-        goodsbut.tag = [imgIDArr[i] integerValue]+100;
-        [goodsbut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
-        [view addSubview:goodsbut];
-
-        UILabel *titleLab = [[UILabel alloc] init];
-        titleLab.frame = CGRectMake(10+(i*(Main_width-30)), CGRectGetMaxY(imgView.frame), Main_width-40, 30);
-        titleLab.text = titleArr[i];
-        titleLab.textAlignment = NSTextAlignmentLeft;
-        titleLab.font = [UIFont systemFontOfSize:18];
-        [backscrollview addSubview:titleLab];
-
+    if (titleImgArr == nil || titleArr == nil || imgIDArr == nil) {
+        
+    }else{
+        UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 80, Main_width, 180)];
+        backscrollview.contentSize = CGSizeMake((Main_width-40)*titleImgArr.count+16*(titleImgArr.count-1), 180);
+        backscrollview.showsVerticalScrollIndicator = NO;
+        backscrollview.showsHorizontalScrollIndicator = NO;
+        backscrollview.userInteractionEnabled = YES;
+        [cell addSubview:backscrollview];
+        for (int i=0; i<titleImgArr.count; i++) {
+            
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(10+(i*(Main_width-30)),0 , Main_width-80, (Main_width-80)/2.5)];
+            view.backgroundColor = [UIColor whiteColor];
+            view.layer.cornerRadius = 3;
+            [backscrollview addSubview:view];
+            
+            UIImageView *imgView = [[UIImageView alloc]init];
+            imgView.frame = CGRectMake(0,0 , Main_width-40, (Main_width-80)/2.5);
+            [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:titleImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            imgView.layer.cornerRadius = 5;
+            imgView.clipsToBounds = YES;
+            [view addSubview:imgView];
+            
+            UIButton *goodsbut = [UIButton buttonWithType:UIButtonTypeCustom];
+            goodsbut.frame = CGRectMake(0, 0, Main_width-40, (Main_width-80)/2.5);
+            goodsbut.tag = [imgIDArr[i] integerValue]+100;
+            [goodsbut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
+            [view addSubview:goodsbut];
+            
+            UILabel *titleLab = [[UILabel alloc] init];
+            titleLab.frame = CGRectMake(10+(i*(Main_width-30)), CGRectGetMaxY(imgView.frame), Main_width-40, 30);
+            titleLab.text = titleArr[i];
+            titleLab.textAlignment = NSTextAlignmentLeft;
+            titleLab.font = [UIFont systemFontOfSize:18];
+            [backscrollview addSubview:titleLab];
+            
+        }
     }
+   
 
     return cell;
 }

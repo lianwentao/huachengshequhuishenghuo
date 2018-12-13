@@ -83,9 +83,19 @@ static NSString * LINKEDME_SHORT_URL;
     NSString *title;
     NSArray *arr;
     NSString * H5_LIVE_URL;
+    CGFloat height;
 }
 
-
+- (void)viewDidLayoutSubviews{
+    CGFloat phoneVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (phoneVersion >= 11.0) {
+        height = self.view.safeAreaInsets.bottom;
+    }else{
+        height = 0;
+    }
+    WBLog(@"h = %lf",height);
+    [self CreateView];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"%@",_IDstring);
@@ -151,7 +161,7 @@ static NSString * LINKEDME_SHORT_URL;
     NSLog(@"timeout*******%@",_timeout);
     if ([shaopcate_id isEqualToString:@"1"]) {
         if ([_timeout isEqualToString:@"0"]) {
-            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-64, self.view.frame.size.width, 64)];
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-64-height, self.view.frame.size.width, 64)];
             view.backgroundColor = HColor(244, 247, 248);
             [self.view addSubview:view];
             
@@ -161,7 +171,7 @@ static NSString * LINKEDME_SHORT_URL;
             label.font = [UIFont systemFontOfSize:20];
             [view addSubview:label];
         }else if ([_timeout isEqualToString:@"2"]){
-            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-64, self.view.frame.size.width, 64)];
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-64-height, self.view.frame.size.width, 64)];
             view.backgroundColor = HColor(244, 247, 248);
             [self.view addSubview:view];
             
@@ -171,7 +181,7 @@ static NSString * LINKEDME_SHORT_URL;
             label.font = [UIFont systemFontOfSize:20];
             [view addSubview:label];
         } else{
-            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-64, self.view.frame.size.width, 64)];
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-64-height, self.view.frame.size.width, 64)];
             view.backgroundColor = [UIColor whiteColor];
             [self.view addSubview:view];
             
@@ -207,7 +217,7 @@ static NSString * LINKEDME_SHORT_URL;
             [view addSubview:redcountimage];
         }
     }else{
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-64, self.view.frame.size.width, 64)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height-64-height, self.view.frame.size.width, 64)];
         view.backgroundColor = [UIColor whiteColor];
         [self.view addSubview:view];
         
@@ -325,9 +335,13 @@ static NSString * LINKEDME_SHORT_URL;
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     NSString *price = [jiarugouwuchedict objectForKey:@"price"];
     NSDictionary *dict = @{@"m_id":[userinfo objectForKey:@"community_id"],@"para_amount":price,@"products":jsonString,@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    NSLog(@"dict = %@",dict);
     NSString *strurl = [API stringByAppendingString:@"shop/submit_order_before"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString *status = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"status"]];
+        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSLog(@"dataStr = %@",dataStr);
         if ([status isEqualToString:@"1"]) {
             SuredingdanViewController *sure = [[SuredingdanViewController alloc] init];
             sure.Dic = [responseObject objectForKey:@"data"];
@@ -363,7 +377,7 @@ static NSString * LINKEDME_SHORT_URL;
 #pragma mark - 创建tableview
 - (void)CreateTableview
 {
-    _TableView = [[UITableView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44, self.view.bounds.size.width, self.view.bounds.size.height-RECTSTATUS.size.height-44-64)];
+    _TableView = [[UITableView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44, self.view.bounds.size.width, self.view.bounds.size.height-RECTSTATUS.size.height-44-64-height)];
     //_TableView.estimatedRowHeight = 0;
     _TableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _TableView.delegate = self;

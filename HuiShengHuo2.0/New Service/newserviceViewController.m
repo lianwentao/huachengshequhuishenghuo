@@ -1004,7 +1004,9 @@
     fengLeiDetailViewController *fldVC = [[fengLeiDetailViewController alloc]init];
     fldVC.hidesBottomBarWhenPushed = YES;
     fldVC.fuwuid =[NSString stringWithFormat:@"%ld",sender.tag-100];
-    fldVC.name = sender.titleLabel.text;
+    NSString *uuu = sender.titleLabel.text;
+    NSString *cccc = [uuu substringToIndex:[uuu length] - 1];
+    fldVC.name = cccc;
     [self.navigationController pushViewController:fldVC animated:YES];
 }
 #pragma mark - 最受欢迎 imgActionBtn 点击跳转
