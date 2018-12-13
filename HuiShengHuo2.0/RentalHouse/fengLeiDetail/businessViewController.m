@@ -258,6 +258,7 @@
         UIButton *goodsbut = [UIButton buttonWithType:UIButtonTypeCustom];
         goodsbut.frame = CGRectMake(0, 0, Main_width-40, (Main_width-40)/2.5);
         goodsbut.tag = [imgIDArr[i] integerValue]+100;
+        goodsbut.titleLabel.text = titleArr[i];
         [goodsbut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:goodsbut];
         
@@ -298,6 +299,7 @@
     NSLog(@"oooooo = %ld",i);
     serviceDetailViewController *svVC = [[serviceDetailViewController alloc] init];
     svVC.serviceID = [NSString stringWithFormat:@"%ld",i];
+    svVC.serviceTitle = sender.titleLabel.text;
     svVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:svVC animated:YES];
 }

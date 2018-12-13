@@ -600,6 +600,7 @@
                 UIButton *imgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
                 imgBtn.frame = CGRectMake(0, 0, 242, 97);
                 imgBtn.tag = [[[imgarr objectAtIndex:i] objectForKey:@"id"] integerValue]+100;
+                imgBtn.titleLabel.text = [[imgarr objectAtIndex:i] objectForKey:@"title"];
                 [imgBtn addTarget:self action:@selector(imgBtnAction:) forControlEvents:UIControlEventTouchUpInside];
                 
                 [view addSubview:imgBtn];
@@ -938,7 +939,7 @@
     serviceDetailViewController *sdVC = [[serviceDetailViewController alloc]init];
     sdVC.hidesBottomBarWhenPushed = YES;
     sdVC.serviceID =[NSString stringWithFormat:@"%ld",sender.tag-100];
-    sdVC.serviceTitle = titleStr;
+    sdVC.serviceTitle = sender.titleLabel.text;
     NSLog(@"sender.titleLabel.text = %@",titleStr);
     [self.navigationController pushViewController:sdVC animated:YES];
 }
