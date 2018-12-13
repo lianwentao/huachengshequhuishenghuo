@@ -211,17 +211,40 @@
     NSString *strurl = [API stringByAppendingString:@"shop/check_shop_limit"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"111---success--%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
-        _Limit = [[[responseObject objectForKey:@"data"] objectForKey:@"limit"] integerValue];
-        long cartnum = [[[responseObject objectForKey:@"data"] objectForKey:@"cart_num"] integerValue];
-        long ordernum = [[[responseObject objectForKey:@"data"] objectForKey:@"order_num"] integerValue];
-        _limtcart = cartnum;
-        _limitord = ordernum;
-        _LimitAll = cartnum+ordernum;
-        if (_LimitAll==_Limit&&_Limit>0) {
-            labelnum.text = @"0";
+        if ([[responseObject objectForKey:@"status"] integerValue]==2) {
+            _Limit = [[[responseObject objectForKey:@"data"] objectForKey:@"limit"] integerValue];
+            long cartnum = [[[responseObject objectForKey:@"data"] objectForKey:@"cart_num"] integerValue];
+            long ordernum = [[[responseObject objectForKey:@"data"] objectForKey:@"order_num"] integerValue];
+            _limtcart = cartnum;
+            _limitord = ordernum;
+            _LimitAll = cartnum+ordernum;
+            if (_LimitAll==_Limit&&_Limit>0) {
+                labelnum.text = @"0";
+            }else{
+                labelnum.text = @"1";
+            }
+        }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            [userinfo removeObjectForKey:@"username"];
+            [userinfo removeObjectForKey:@"phone_type"];
+            [userinfo removeObjectForKey:@"uid"];
+            [userinfo removeObjectForKey:@"pwd"];
+            [userinfo removeObjectForKey:@"is_bind_property"];
+            [userinfo removeObjectForKey:@"Cookie"];
+            [userinfo removeObjectForKey:@"is_new"];
+            [userinfo removeObjectForKey:@"token"];
+            [userinfo removeObjectForKey:@"tokenSecret"];
+            NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+            NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+            for (NSHTTPCookie *cookie in cookieStorage) {
+                [manager deleteCookie:cookie];
+            }
+            //                [self logout];
         }else{
-            labelnum.text = @"1";
+            
         }
+       
         
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

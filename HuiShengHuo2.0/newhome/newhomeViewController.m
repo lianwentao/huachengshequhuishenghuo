@@ -788,6 +788,8 @@
                                 NSDictionary *dict = @{@"apk_token":uid_username,@"room_id":[[arrrrr objectAtIndex:0] objectForKey:@"room_id"],@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
                                 NSString *strurl = [API stringByAppendingString:@"property/checkIsAjb"];
                                 [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                                    
+                        
                                     NSLog(@"%@-11111-%@",[responseObject objectForKey:@"msg"],responseObject);
                                     NSDictionary *dicccc = [[NSDictionary alloc] init];
                                     if ([[responseObject objectForKey:@"status"] integerValue]==1) {
@@ -800,6 +802,24 @@
                                         }else{
                                             [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
                                         }
+                                    }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
+                                        [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                                        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                                        [userinfo removeObjectForKey:@"username"];
+                                        [userinfo removeObjectForKey:@"phone_type"];
+                                        [userinfo removeObjectForKey:@"uid"];
+                                        [userinfo removeObjectForKey:@"pwd"];
+                                        [userinfo removeObjectForKey:@"is_bind_property"];
+                                        [userinfo removeObjectForKey:@"Cookie"];
+                                        [userinfo removeObjectForKey:@"is_new"];
+                                        [userinfo removeObjectForKey:@"token"];
+                                        [userinfo removeObjectForKey:@"tokenSecret"];
+                                        NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+                                        NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+                                        for (NSHTTPCookie *cookie in cookieStorage) {
+                                            [manager deleteCookie:cookie];
+                                        }
+//                                        [self logout];
                                     }else{
                                         [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
                                     }
@@ -809,6 +829,24 @@
                             }
                             [defaults setObject:@"2" forKey:@"is_bind_property"];
                             [userdf synchronize];
+                        }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
+                            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                            [userinfo removeObjectForKey:@"username"];
+                            [userinfo removeObjectForKey:@"phone_type"];
+                            [userinfo removeObjectForKey:@"uid"];
+                            [userinfo removeObjectForKey:@"pwd"];
+                            [userinfo removeObjectForKey:@"is_bind_property"];
+                            [userinfo removeObjectForKey:@"Cookie"];
+                            [userinfo removeObjectForKey:@"is_new"];
+                            [userinfo removeObjectForKey:@"token"];
+                            [userinfo removeObjectForKey:@"tokenSecret"];
+                            NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+                            NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+                            for (NSHTTPCookie *cookie in cookieStorage) {
+                                [manager deleteCookie:cookie];
+                            }
+//                            [self logout];
                         }else{
                             bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
                             bangding.hidesBottomBarWhenPushed = YES;
@@ -1410,6 +1448,24 @@
                 }
                 [defaults setObject:@"2" forKey:@"is_bind_property"];
                 [userdf synchronize];
+            }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
+                [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                [userinfo removeObjectForKey:@"username"];
+                [userinfo removeObjectForKey:@"phone_type"];
+                [userinfo removeObjectForKey:@"uid"];
+                [userinfo removeObjectForKey:@"pwd"];
+                [userinfo removeObjectForKey:@"is_bind_property"];
+                [userinfo removeObjectForKey:@"Cookie"];
+                [userinfo removeObjectForKey:@"is_new"];
+                [userinfo removeObjectForKey:@"token"];
+                [userinfo removeObjectForKey:@"tokenSecret"];
+                NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+                NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+                for (NSHTTPCookie *cookie in cookieStorage) {
+                    [manager deleteCookie:cookie];
+                }
+//                [self logout];
             }else{
                 bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
                 bangding.hidesBottomBarWhenPushed = YES;
@@ -1471,6 +1527,24 @@
                 }
                 [defaults setObject:@"2" forKey:@"is_bind_property"];
                 [userdf synchronize];
+            }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
+                [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                [userinfo removeObjectForKey:@"username"];
+                [userinfo removeObjectForKey:@"phone_type"];
+                [userinfo removeObjectForKey:@"uid"];
+                [userinfo removeObjectForKey:@"pwd"];
+                [userinfo removeObjectForKey:@"is_bind_property"];
+                [userinfo removeObjectForKey:@"Cookie"];
+                [userinfo removeObjectForKey:@"is_new"];
+                [userinfo removeObjectForKey:@"token"];
+                [userinfo removeObjectForKey:@"tokenSecret"];
+                NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+                NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+                for (NSHTTPCookie *cookie in cookieStorage) {
+                    [manager deleteCookie:cookie];
+                }
+//                [self logout];
             }else{
                 bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
                 bangding.hidesBottomBarWhenPushed = YES;
@@ -1566,8 +1640,32 @@
      */
     NSString *strurl = [API stringByAppendingString:@"shop/add_shopping_cart"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-        NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+        
+        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+            NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+        }
+        else if ([[responseObject objectForKey:@"status"] integerValue]==2){
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            [userinfo removeObjectForKey:@"username"];
+            [userinfo removeObjectForKey:@"phone_type"];
+            [userinfo removeObjectForKey:@"uid"];
+            [userinfo removeObjectForKey:@"pwd"];
+            [userinfo removeObjectForKey:@"is_bind_property"];
+            [userinfo removeObjectForKey:@"Cookie"];
+            [userinfo removeObjectForKey:@"is_new"];
+            [userinfo removeObjectForKey:@"token"];
+            [userinfo removeObjectForKey:@"tokenSecret"];
+            NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+            NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+            for (NSHTTPCookie *cookie in cookieStorage) {
+                [manager deleteCookie:cookie];
+            }
+//            [self logout];
+        }else{
+            
+        }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
     }];
@@ -1797,6 +1895,24 @@
                 }
                 [defaults setObject:@"2" forKey:@"is_bind_property"];
                 [userdf synchronize];
+            }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
+                [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                [userinfo removeObjectForKey:@"username"];
+                [userinfo removeObjectForKey:@"phone_type"];
+                [userinfo removeObjectForKey:@"uid"];
+                [userinfo removeObjectForKey:@"pwd"];
+                [userinfo removeObjectForKey:@"is_bind_property"];
+                [userinfo removeObjectForKey:@"Cookie"];
+                [userinfo removeObjectForKey:@"is_new"];
+                [userinfo removeObjectForKey:@"token"];
+                [userinfo removeObjectForKey:@"tokenSecret"];
+                NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+                NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+                for (NSHTTPCookie *cookie in cookieStorage) {
+                    [manager deleteCookie:cookie];
+                }
+//                [self logout];
             }else{
 //                bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
 //                bangding.hidesBottomBarWhenPushed = YES;
