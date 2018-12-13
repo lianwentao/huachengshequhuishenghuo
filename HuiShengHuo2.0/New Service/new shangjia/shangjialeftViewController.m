@@ -30,9 +30,13 @@
     NSString *totalpage;
     
     UIView *butsView;
+    FSSegmentTitleView *titleView;
+    
+    UIButton *_tmpBtn;
 }
 @property(nonatomic, strong)LWGesturePenetrationTableView *rightTableView;
 @property(nonatomic, strong)UITableView *leftTableView;
+@property (nonatomic ,strong) UIView *BGView; //遮罩
 @end
 
 @implementation shangjialeftViewController
@@ -298,14 +302,36 @@
     for (int i=0; i<categoryarr.count; i++) {
         [arr addObject:[[categoryarr objectAtIndex:i] objectForKey:@"category_cn"]];
     }
-    FSSegmentTitleView *titleView = [[FSSegmentTitleView alloc]initWithFrame:CGRectMake(0, 0, Main_width-60, 50) titles:arr delegate:nil indicatorType:3];
+    titleView = [[FSSegmentTitleView alloc]initWithFrame:CGRectMake(0, 0, Main_width-60, 50) titles:arr delegate:nil indicatorType:3];
     
     titleView.delegate = self;
     titleView.titleSelectFont = [UIFont systemFontOfSize:15.5];
     titleView.selectIndex = titleselect;
     [headview addSubview:titleView];
     
-    butsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Main_width, 0)];
+    
+    self.BGView                 = [[UIView alloc] init];
+    self.BGView.frame           = [[UIScreen mainScreen] bounds];
+    self.BGView.tag             = 100;
+    self.BGView.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.2];
+    //self.BGView.opaque = NO;
+    
+    [_TableView addSubview:self.BGView];
+    
+    
+    // ------给全屏遮罩添加的点击事件
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(exitClick)];
+//    gesture.numberOfTapsRequired = 1;
+//    gesture.cancelsTouchesInView = NO;
+    [self.BGView addGestureRecognizer:gesture];
+    
+//    [UIView animateWithDuration:0.3 animations:^{
+//
+//        self.BGView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.2];
+//
+//    }];
+    
+    butsView = [[UIView alloc] init];
     butsView.backgroundColor = [UIColor whiteColor];
     float butX = 10;
     float butY = 10;
@@ -327,35 +353,78 @@
         [but setTitle:arr[i] forState:UIControlStateNormal];
         but.layer.masksToBounds = YES;
         but.layer.cornerRadius = 15;
-        [but setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [but setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
         but.titleLabel.font = [UIFont systemFontOfSize:15];
         but.tag = i;
+        [but setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [but setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+        [but setBackgroundImage:[self createImageWithColor:[UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.1]] forState:UIControlStateNormal];
+        [but setBackgroundImage:[self createImageWithColor:QIColor] forState:UIControlStateSelected];
+        
         [but addTarget:self action:@selector(xuanzefenlei:) forControlEvents:UIControlEventTouchUpInside];
-        but.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.1];
         [butsView addSubview:but];
         
         butX = CGRectGetMaxX(but.frame)+10;
     }
     butsView.frame = CGRectMake(0, 0, Main_width, butY+40);
-    butsView.hidden = YES;
-    [headview addSubview:butsView];
+    [self.BGView addSubview:butsView];
+    self.BGView.hidden = YES;
     
-//    UIButton *but1 = [UIButton buttonWithType:UIButtonTypeCustom];
-//    but1.frame = CGRectMake(Main_width-60, 0, 60, 50);
-//    [but1 addTarget:self action:@selector(dianjishowbut) forControlEvents:UIControlEventTouchUpInside];
-//    [headview addSubview:but1];
+    UIButton *but1 = [UIButton buttonWithType:UIButtonTypeCustom];
+    but1.frame = CGRectMake(Main_width-60, 0, 60, 50);
+    [but1 setImage:[UIImage imageNamed:@"下拉"] forState:UIControlStateNormal];
+    [but1 addTarget:self action:@selector(dianjishowbut) forControlEvents:UIControlEventTouchUpInside];
+    [headview addSubview:but1];
+    
+    headview.frame = CGRectMake(0, 0, Main_width, butY+40);
     return headview;
+}
+-(UIImage*) createImageWithColor:(UIColor*) color
+{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
+}
+- (void)exitClick
+{
+    WBLog(@"sxitlog");
+    [self.BGView setHidden:YES];
 }
 - (void)xuanzefenlei:(UIButton *)sender
 {
-    butsView.hidden = YES;
-    titleselect = sender.tag;
-    [_TableView reloadData];
+    
+    self.BGView.hidden = YES;
+//    titleselect = sender.tag;
+    [self FSSegmentTitleView:titleView startIndex:0 endIndex:sender.tag];
+    if (_tmpBtn == nil){
+        
+        sender.selected = YES;
+        
+        _tmpBtn = sender;
+        //_tmpBtn.backgroundColor = QIColor;
+    }
+    else if (_tmpBtn !=nil && _tmpBtn == sender){
+        
+        //_tmpBtn.backgroundColor = QIColor;
+        sender.selected = YES;
+        
+    }
+    else if (_tmpBtn!= sender && _tmpBtn!=nil){
+        
+        
+        _tmpBtn.selected = NO;
+        sender.selected = YES;
+        _tmpBtn = sender;
+    }
+    
 }
 - (void)dianjishowbut
 {
-    butsView.hidden = NO;
+    self.BGView.hidden = NO;
 }
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {

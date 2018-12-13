@@ -175,14 +175,14 @@
         NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
             _DataArr = [responseObject objectForKey:@"data"];
-            [LoadingView stopAnimating];
-            LoadingView.hidden = YES;
+            
             [self createtableview];
         }else{
             [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
             _DataArr = nil;
         }
-        
+        [LoadingView stopAnimating];
+        LoadingView.hidden = YES;
         [_TableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
