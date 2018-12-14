@@ -1819,7 +1819,7 @@
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"apk_token":uid_username,@"id":[user objectForKey:@"community_id"]};
+    NSDictionary *dict = @{@"id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      */
