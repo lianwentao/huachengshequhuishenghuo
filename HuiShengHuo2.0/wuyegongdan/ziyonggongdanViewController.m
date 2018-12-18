@@ -56,7 +56,7 @@
         //        _manager.configuration.reverseDate = YES;
         _manager.configuration.showDateSectionHeader = NO;
         _manager.configuration.selectTogether = NO;
-        _manager.configuration.rowCount = 4;
+        _manager.configuration.rowCount = 3;
         _manager.configuration.movableCropBox = YES;
         _manager.configuration.movableCropBoxEditSize = YES;
         _manager.configuration.movableCropBoxCustomRatio = CGPointMake(1, 1);
@@ -180,7 +180,7 @@
         cell.backgroundColor = BackColor;
         tableView.rowHeight = 8;
     }else if (indexPath.row==1){
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, Main_width-40, 50)];
         label.text = [NSString stringWithFormat:@"保修类型  %@",_type];
         label.font = Font(15);
@@ -234,14 +234,14 @@
         cell.backgroundColor = BackColor;
         tableView.rowHeight = 8;
     }else if (indexPath.row==5){
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, Main_width-40, 50)];
         label.text = @"选择房屋";
         label.font = Font(15);
         [cell.contentView addSubview:label];
         
         UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-        but.frame = label.frame;
+        but.frame = CGRectMake(0, 0, Main_width, 50);
         [but addTarget:self action:@selector(xuanzedizhi) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:but];
         tableView.rowHeight = 50;

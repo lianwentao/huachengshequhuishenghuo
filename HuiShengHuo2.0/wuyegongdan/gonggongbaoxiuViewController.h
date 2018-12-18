@@ -10,4 +10,7 @@
 
 @interface gonggongbaoxiuViewController : UIViewController
 
+
+@property (nonatomic,copy)NSString *type_id;
+@property (nonatomic,copy)NSString *type;
 @end

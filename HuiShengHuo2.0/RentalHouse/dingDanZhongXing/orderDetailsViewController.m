@@ -109,11 +109,11 @@
     }else if ([_stateStr isEqualToString:@"待付款"]){
         //    待付款+已付款
         UIButton *rightBtn2 = [UIButton buttonWithType:UIButtonTypeSystem];
-        rightBtn2.frame = CGRectMake(0, 0, 40, 20);
+        rightBtn2.frame = CGRectMake(0, 0, 58, 35);
         [rightBtn2 setTitle:@"付款" forState:UIControlStateNormal];
-        rightBtn2.titleLabel.font = [UIFont systemFontOfSize:14];
+        rightBtn2.titleLabel.font = [UIFont systemFontOfSize:18];
         [rightBtn2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        rightBtn2.backgroundColor = [UIColor colorWithRed:248/255.0 green:87/255.0 blue:47/255.0 alpha:1];
+        rightBtn2.backgroundColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
         rightBtn2.layer.cornerRadius = 5.0;
         //    rightBtn2.layer.borderColor = [UIColor colorWithRed:241/255.0 green:241/255.0 blue:241/255.0 alpha:1].CGColor;
         //    rightBtn2.layer.borderWidth = 1.0f;
@@ -128,7 +128,7 @@
         [rightBtn3 setTitle:@"评价" forState:UIControlStateNormal];
         rightBtn3.titleLabel.font = [UIFont systemFontOfSize:14];
         [rightBtn3 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        rightBtn3.backgroundColor = [UIColor colorWithRed:248/255.0 green:87/255.0 blue:47/255.0 alpha:1];
+        rightBtn3.backgroundColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
         rightBtn3.layer.cornerRadius = 5.0;
         [rightBtn3 addTarget:self action:@selector(rightBtn3Clicked) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *rightItem3 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn3];

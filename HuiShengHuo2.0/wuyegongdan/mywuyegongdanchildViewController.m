@@ -67,13 +67,12 @@
         }else{
             [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }
+        
         [_TableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         WBLog(@"failure--%@",error);
         [MBProgressHUD showToastToView:self.view withText:@"加载失败"];
     }];
-    
-    
 }
 - (void)createtableview
 {
@@ -81,6 +80,7 @@
     _TableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _TableView.delegate = self;
     _TableView.dataSource = self;
+    _TableView.backgroundColor = BackColor;
     //_TableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(post1)];
     __weak typeof(self) weakSelf = self;
     _TableView.mj_header  = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
@@ -127,7 +127,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 93;
+    return 111;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

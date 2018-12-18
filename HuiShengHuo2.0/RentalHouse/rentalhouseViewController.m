@@ -80,7 +80,7 @@
 - (void)click1:(UIButton *)sender
 {
     if (sender.tag == 0){
-        [self.navigationController pushViewController:[ziyonggongdanViewController new] animated:YES];
+        //[self.navigationController pushViewController:[ziyonggongdanViewController new] animated:YES];
     }else if (sender.tag == 1){
         [self.navigationController pushViewController:[gonggongbaoxiuViewController new] animated:YES];
     }else{
