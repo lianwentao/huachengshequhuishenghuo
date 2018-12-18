@@ -1005,12 +1005,9 @@
         jiaofei.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:jiaofei animated:YES];
     }else if (sender.tag==2){
-//        myserviceViewController *myservice = [[myserviceViewController alloc] init];
-//        myservice.hidesBottomBarWhenPushed = YES;
-//        [self.navigationController pushViewController:myservice animated:YES];
-        rentalhouseViewController *rl = [[rentalhouseViewController alloc] init];
-        rl.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:rl animated:YES];
+        myserviceViewController *myservice = [[myserviceViewController alloc] init];
+        myservice.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:myservice animated:YES];
     }else if (sender.tag==1){
         rentalhouseViewController *fuwudingdan = [[rentalhouseViewController alloc] init];
         fuwudingdan.hidesBottomBarWhenPushed = YES;
