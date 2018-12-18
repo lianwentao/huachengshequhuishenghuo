@@ -15,4 +15,5 @@
 @property(nonatomic,copy)NSString *status;
 @property(nonatomic,copy)NSString *status_cn;
 @property(nonatomic,copy)NSString *time;
+@property(nonatomic,copy)NSString *evaluate_status;
 @end

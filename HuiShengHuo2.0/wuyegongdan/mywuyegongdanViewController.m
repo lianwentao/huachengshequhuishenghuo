@@ -26,6 +26,17 @@
     //[self getdata];
     [self setui];
     // Do any additional setup after loading the view.
+    
+}
+
+-(BOOL)navigationShouldPopOnBackButton {
+    [self backBtnClicked];
+    
+    return YES;
+}
+- (void)backBtnClicked
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 - (void)getdata
 {

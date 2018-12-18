@@ -365,14 +365,14 @@ static const CGFloat kPhotoViewMargin = 230;
                     [_Imagearr addObject:image];
                 }
             }
-            NSLog(@"imgarr----%@--%d",_Imagearr,_Imagearr.count);
+            NSLog(@"imgarr----%@--%ld",_Imagearr,_Imagearr.count);
             [weakSelf.view handleLoading];
             
             
             AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
             manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", @"multipart/form-data", @"application/json", @"text/html", @"image/jpeg", @"image/png", @"application/octet-stream", @"text/json", nil];
             //formData: 专门用于拼接需要上传的数据,在此位置生成一个要上传的数据体
-            NSString *imfnumstr = [NSString stringWithFormat:@"%d",_Imagearr.count];
+            NSString *imfnumstr = [NSString stringWithFormat:@"%ld",_Imagearr.count];
             NSData *nsdata = [_inputView.text
                               dataUsingEncoding:NSUTF8StringEncoding];
             NSString *base64Encoded = [nsdata base64EncodedStringWithOptions:0];

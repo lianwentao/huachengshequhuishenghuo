@@ -62,8 +62,21 @@
         _label3.textColor = [UIColor colorWithHexString:@"#FE3939"];
     }else if ([model.status isEqualToString:@"1"]){
         _label3.textColor = [UIColor colorWithHexString:@"#FF9F22"];
-    }else{
+    }else if ([model.status isEqualToString:@"2"]){
         _label3.textColor = [UIColor colorWithHexString:@"#27C432"];
+    }else if ([model.status isEqualToString:@"3"]){
+        _label3.textColor = [UIColor colorWithHexString:@"#FE3939"];
+    }else if ([model.status isEqualToString:@"4"]){
+        _label3.textColor = [UIColor colorWithHexString:@"#6983FD"];
+    }else if ([model.status isEqualToString:@"5"]){
+        if ([model.evaluate_status isEqualToString:@"1"]) {
+            _label3.textColor = [UIColor colorWithHexString:@"#28CA43"];
+        }else{
+            _label3.textColor = [UIColor colorWithHexString:@"#FEA439"];
+        }
+        
+    }else{
+        _label3.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
     }
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
