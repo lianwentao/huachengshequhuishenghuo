@@ -98,29 +98,48 @@
      */
     NSString *strurl = [API stringByAppendingString:@"shop/shopping_cart"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
-        NSLog(@"购物车success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
-        NSArray *array = [[responseObject objectForKey:@"data"] objectForKey:@"list"];
-        //NSArray *array = nil;
-        if ([array isKindOfClass:[NSArray class]]) {
-            _DataArr = [[NSArray alloc] init];
-            _DataArr = array;
-            DWQShopModel *model = [[DWQShopModel alloc]init];
-            [model configGoodsArrayWithArray:array];
-            [self.dataArray addObject:model];
+        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+            //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
+            NSLog(@"购物车success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+            NSArray *array = [[responseObject objectForKey:@"data"] objectForKey:@"list"];
+            //NSArray *array = nil;
+            if ([array isKindOfClass:[NSArray class]]) {
+                _DataArr = [[NSArray alloc] init];
+                _DataArr = array;
+                DWQShopModel *model = [[DWQShopModel alloc]init];
+                [model configGoodsArrayWithArray:array];
+                [self.dataArray addObject:model];
+                
+            }
+            if (self.dataArray.count > 0) {
+                
+                [self setupCartView];
+                
+            } else {
+                [self setupCartEmptyView];
+                
+            }
+        }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            [userinfo removeObjectForKey:@"username"];
+            [userinfo removeObjectForKey:@"phone_type"];
+            [userinfo removeObjectForKey:@"uid"];
+            [userinfo removeObjectForKey:@"pwd"];
+            [userinfo removeObjectForKey:@"is_bind_property"];
+            [userinfo removeObjectForKey:@"Cookie"];
+            [userinfo removeObjectForKey:@"is_new"];
+            [userinfo removeObjectForKey:@"token"];
+            [userinfo removeObjectForKey:@"tokenSecret"];
+            NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+            NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+            for (NSHTTPCookie *cookie in cookieStorage) {
+                [manager deleteCookie:cookie];
+            }
+            //                [self logout];
+        }else{
             
         }
-        if (self.dataArray.count > 0) {
-            
-            [self setupCartView];
-
-        } else {
-            [self setupCartEmptyView];
-
-        }
-        
-       
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         NSLog(@"failure--%@",error);
