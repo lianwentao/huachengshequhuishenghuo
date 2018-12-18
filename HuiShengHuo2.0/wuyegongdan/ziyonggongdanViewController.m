@@ -127,7 +127,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyHiden:) name:UIKeyboardWillHideNotification object:nil];
 
     [self createtableview];
     // Do any additional setup after loading the view.
@@ -470,44 +470,36 @@
 //文本输入框开始输入时调用
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyHiden:) name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyWillAppear:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    //[self keyHiden];
+    [self keyWillAppear];
 }
 #pragma mark-键盘出现隐藏事件
 -(void)keyHiden:(NSNotification *)notification
 {
     WBLog(@"键盘下滑");
     // 键盘动画时间
-    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    double duration = 0.25;
     
     //视图下沉恢复原状
     [UIView animateWithDuration:duration animations:^{
         _TableView.frame = CGRectMake(0, 0, _TableView.frame.size.width, _TableView.frame.size.height);
     }];
 }
--(void)keyWillAppear:(NSNotification *)notification
+-(void)keyWillAppear
 {
-    //获取键盘高度，在不同设备上，以及中英文下是不同的
-    CGFloat kbHeight = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
-//    CGRect rect= [[notification.userInfo objectForKey:@"UIKeyboardFrameEndUserInfoKey"]CGRectValue];
-    //计算出键盘顶端到inputTextView panel底端的距离(加上自定义的缓冲距离INTERVAL_KEYBOARD)
-    //float height =
-    CGFloat offset = kbHeight;
-    NSLog(@"offset---%f",offset);
-    // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
-    double duration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+//    //获取键盘高度，在不同设备上，以及中英文下是不同的
+//    CGFloat kbHeight = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+////    CGRect rect= [[notification.userInfo objectForKey:@"UIKeyboardFrameEndUserInfoKey"]CGRectValue];
+//    //计算出键盘顶端到inputTextView panel底端的距离(加上自定义的缓冲距离INTERVAL_KEYBOARD)
+//    //float height =
     
-    //将视图上移计算好的偏移
-    if(offset > 0) {
-        [UIView animateWithDuration:duration animations:^{
-            _TableView.frame = CGRectMake(0.0f, -offset, _TableView.frame.size.width, _TableView.frame.size.height);
-        }];
-    }else{
-        //        [UIView animateWithDuration:duration animations:^{
-        //            _View.transform = CGAffineTransformMakeTranslation(0, -([UIScreen mainScreen].bounds.size.height-rect.origin.y));
-        //            self.view.frame = CGRectMake(0.0f, -offset, self.view.frame.size.width, self.view.frame.size.height);
-        //        }];
-    }
+    
+    // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
+    double duration = 0.25;
+    [UIView animateWithDuration:duration animations:^{
+        _TableView.frame = CGRectMake(0.0f, -290, _TableView.frame.size.width, _TableView.frame.size.height);
+    }];
+   
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -902,8 +902,8 @@
         NSLog(@"*********----newservicescan");
         myserviceViewController *myserve = [[myserviceViewController alloc] init];
         [self.navigationController pushViewController:myserve animated:YES];
-    }else if ([_type isEqualToString:@"wuyegongdanyufukuan"]){
-        NSLog(@"*********----wuyegongdanyufukuan");
+    }else if ([_type isEqualToString:@"wuyegongdanfukuan"]){
+        NSLog(@"*********----wuyegongdanfukuan");
         mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else{

@@ -9,7 +9,7 @@
 #import "fabushoufangViewController.h"
 #import <AFNetworking.h>
 #import "MBProgressHUD+TVAssistant.h"
-@interface fabushoufangViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface fabushoufangViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 {
     UITableView *TabbleView;
 }
@@ -22,6 +22,7 @@
     [super viewDidLoad];
     self.title = @"发布房源信息";
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyHiden:) name:UIKeyboardWillHideNotification object:nil];
     [self CreateTableView];
     // Do any additional setup after loading the view.
 }
@@ -40,6 +41,7 @@
     TabbleView.showsVerticalScrollIndicator = YES;
     /** 去掉分割线 */
     TabbleView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    TabbleView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     TabbleView.delegate = self;
     TabbleView.dataSource = self;
     [self.view addSubview:TabbleView];
@@ -95,6 +97,8 @@
         UITextField *textfield = [[UITextField alloc] initWithFrame:CGRectMake(125, 24, Main_width-30-140, 30)];
         textfield.placeholder = @"请输入联系人姓名";
         textfield.font = font15;
+        textfield.tag = 0;
+        textfield.delegate = self;
         [cell.contentView addSubview:textfield];
     }else if (indexPath.row==1){
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 24, 70, 30)];
@@ -104,6 +108,8 @@
         
         UITextField *textfield = [[UITextField alloc] initWithFrame:CGRectMake(125, 24, Main_width-30-140, 30)];
         textfield.placeholder = @"请输入手机号码";
+        textfield.tag = 1;
+        textfield.delegate = self;
         textfield.font = font15;
         [cell.contentView addSubview:textfield];
     }else if (indexPath.row==2){
@@ -114,6 +120,8 @@
         
         UITextField *textfield = [[UITextField alloc] initWithFrame:CGRectMake(125, 24, Main_width-30-140, 30)];
         textfield.placeholder = @"请输入小区名称";
+        textfield.tag = 2;
+        textfield.delegate = self;
         textfield.font = font15;
         [cell.contentView addSubview:textfield];
     }else if (indexPath.row==3){
@@ -129,6 +137,8 @@
         
         UITextField *textfield = [[UITextField alloc] initWithFrame:CGRectMake(125, 24, Main_width-30-140, 30)];
         textfield.placeholder = @"请输入楼层";
+        textfield.tag = 3;
+        textfield.delegate = self;
         textfield.font = font15;
         [cell.contentView addSubview:textfield];
         
@@ -145,6 +155,8 @@
         
         UITextField *textfield = [[UITextField alloc] initWithFrame:CGRectMake(125, 24, Main_width-30-140, 30)];
         textfield.placeholder = @"请输入总楼层";
+        textfield.tag = 4;
+        textfield.delegate = self;
         textfield.font = font15;
         [cell.contentView addSubview:textfield];
         
@@ -161,12 +173,15 @@
         
         UITextField *textfield = [[UITextField alloc] initWithFrame:CGRectMake(125, 24, Main_width-30-140, 30)];
         textfield.placeholder = @"请输入房屋面积";
+        textfield.tag = 5;
+        textfield.delegate = self;
         textfield.font = font15;
         [cell.contentView addSubview:textfield];
         
         UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(Main_width-90, 24, 75, 30)];
         label1.text = @"平方米";
         label1.font = font15;
+        
         label1.textAlignment = NSTextAlignmentRight;
         [cell.contentView addSubview:label1];
     }else if (indexPath.row==7){
@@ -177,6 +192,8 @@
         
         UITextField *textfield = [[UITextField alloc] initWithFrame:CGRectMake(125, 24, Main_width-30-140, 30)];
         textfield.placeholder = @"请输入出售单价";
+        textfield.tag = 6;
+        textfield.delegate = self;
         textfield.font = font15;
         [cell.contentView addSubview:textfield];
         
@@ -236,6 +253,42 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
     }];
+}
+//文本输入框开始输入时调用
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    //[self keyHiden];
+    if (textField.tag>4) {
+        [self keyWillAppear];
+    }
+    
+}
+#pragma mark-键盘出现隐藏事件
+-(void)keyHiden:(NSNotification *)notification
+{
+    WBLog(@"键盘下滑");
+    // 键盘动画时间
+    double duration = 0.25;
+    
+    //视图下沉恢复原状
+    [UIView animateWithDuration:duration animations:^{
+        TabbleView.frame = CGRectMake(0, 0, TabbleView.frame.size.width, TabbleView.frame.size.height);
+    }];
+}
+-(void)keyWillAppear
+{
+    //    //获取键盘高度，在不同设备上，以及中英文下是不同的
+    //    CGFloat kbHeight = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+    ////    CGRect rect= [[notification.userInfo objectForKey:@"UIKeyboardFrameEndUserInfoKey"]CGRectValue];
+    //    //计算出键盘顶端到inputTextView panel底端的距离(加上自定义的缓冲距离INTERVAL_KEYBOARD)
+    //    //float height =
+    
+    // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
+    double duration = 0.25;
+    [UIView animateWithDuration:duration animations:^{
+        TabbleView.frame = CGRectMake(0.0f, -290, TabbleView.frame.size.width, TabbleView.frame.size.height);
+    }];
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
