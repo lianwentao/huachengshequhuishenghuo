@@ -243,7 +243,8 @@
 - (void)send
 {
     if ([_type isEqualToString:@"2"]) {
-        if ([_shuidianfei isEqualToString:@"shuidianfei"]) {
+        if ([_shuidianfei
+             isEqualToString:@"shuidianfei"]) {
             for (UIViewController *controller in self.navigationController.viewControllers) {
                 if ([controller isKindOfClass:[shuidianfeiViewController class]]) {
                     shuidianfeiViewController *revise =(shuidianfeiViewController *)controller;
