@@ -1,12 +1,13 @@
 //
-//  pingjiaViewController.m
+//  evaluateViewController.m
 //  HuiShengHuo2.0
 //
-//  Created by 晋中华晟 on 2018/1/20.
+//  Created by admin on 2018/12/17.
 //  Copyright © 2018年 晋中华晟. All rights reserved.
 //
 
-#import "pingjiaViewController.h"
+#import "evaluateViewController.h"
+#import "SpecialAlertView.h"
 #import <AFNetworking.h>
 #import "UIImageView+WebCache.h"
 #import "WPhotoViewController.h"
@@ -14,7 +15,7 @@
 #define kScreen_Height   ([UIScreen mainScreen].bounds.size.height)
 #define kScreen_Width    ([UIScreen mainScreen].bounds.size.width)
 #import "PrefixHeader.pch"
-@interface pingjiaViewController ()
+@interface evaluateViewController ()
 {
     UITextView *_textview;
     
@@ -30,40 +31,45 @@
     
     NSString *_score;
 }
-
-
 @end
-
-@implementation pingjiaViewController
-
+@implementation evaluateViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"评价";
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithRed:248/255.0 green:248/255.0 blue:248/255.0 alpha:1];
     
     [self createui];
     
-    // Do any additional setup after loading the view.
 }
+
 - (void)createui{
-    backview = [[UIView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44, kScreen_Width, kScreen_Height)];
+    
+    backview = [[UIView alloc] initWithFrame:CGRectMake(0, 84, kScreen_Width, 300)];
+    backview.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:backview];
     
-    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-    NSString *strurl = [API_img stringByAppendingString:_imageurl];
-    [imageview sd_setImageWithURL:[NSURL URLWithString: strurl]];
-    [backview addSubview:imageview];
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(  110, 15, kScreen_Width-120, 25)];
-    label.text = _name;
-    [backview addSubview:label];
+//    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+//    NSString *strurl = [API_img stringByAppendingString:_imageurl];
+//    [imageview sd_setImageWithURL:[NSURL URLWithString: strurl]];
+//    [backview addSubview:imageview];
+//
+//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(  110, 15, kScreen_Width-120, 25)];
+//    label.text = _name;
+//    [backview addSubview:label];
+    UILabel *titleLab = [[UILabel alloc]init];
+    titleLab.frame = CGRectMake(10, 10, Main_width/2, 20);
+    titleLab.text = @"服务评价";
+    titleLab.textAlignment = NSTextAlignmentLeft;
+    titleLab.font = [UIFont systemFontOfSize:15];
+    titleLab.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
+    [backview addSubview:titleLab];
     
     butarr = [[NSMutableArray alloc] init];
     for (int i = 0; i<5; i++) {
         starbut = [UIButton buttonWithType:UIButtonTypeCustom];
-        starbut.frame = CGRectMake(120+35*i, 60, 30, 30);
-        [starbut setImage:[UIImage imageNamed:@"circle_icon_xingxing_dianjiqian"] forState:UIControlStateNormal];
-        [starbut setImage:[UIImage imageNamed:@"circle_icon_xingxing_dianjihou"] forState:UIControlStateSelected];
+        starbut.frame = CGRectMake(10+35*i, CGRectGetMaxY(titleLab.frame)+10, 30, 30);
+        [starbut setImage:[UIImage imageNamed:@"pingjiahui1"] forState:UIControlStateNormal];
+        [starbut setImage:[UIImage imageNamed:@"pingjia1"] forState:UIControlStateSelected];
         starbut.tag = i+2;
         [starbut addTarget:self action:@selector(score:) forControlEvents:UIControlEventTouchUpInside];
         [backview addSubview:starbut];
@@ -71,8 +77,11 @@
     }
     
     _textview = [[UITextView alloc] initWithFrame:CGRectMake(10, 110, kScreen_Width-20, 150)];
+    _textview.layer.borderColor = [UIColor colorWithRed:234/255.0 green:234/255.0 blue:234/255.0 alpha:1].CGColor;
+    _textview.layer.borderWidth =1.0;
+    _textview.layer.cornerRadius =5.0;
     _textview.tag=1000;
-    [_textview setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
+    [_textview setBackgroundColor:[UIColor whiteColor]];
     
     // _placeholderLabel
     UILabel *placeHolderLabel = [[UILabel alloc] init];
@@ -94,23 +103,17 @@
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionDown)];
     [[self view] addGestureRecognizer:recognizer];
     
-    _AddBut = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    _AddBut.frame = CGRectMake(7.5, 270, (kScreen_Width-15-15)/4, (kScreen_Width-15-15)/4);
-    [_AddBut setImage:[UIImage imageNamed:@"tianjia"] forState:UIControlStateNormal];
-    [_AddBut addTarget:self action:@selector(Addphotos) forControlEvents:UIControlEventTouchUpInside];
-    [backview addSubview:_AddBut];
-    
+   
     UIButton *tijiaobut = [UIButton buttonWithType:UIButtonTypeCustom];
-    tijiaobut.frame = CGRectMake(kScreen_Width/2-((kScreen_Width-15-15)/3)/2, 270+(kScreen_Width-15-15)/4+40, (kScreen_Width-15-15)/3, 50);
+    tijiaobut.frame = CGRectMake(40,420, Main_width-80, 40);
+    tijiaobut.backgroundColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
     tijiaobut.layer.cornerRadius = 15;
-    [tijiaobut.layer setBorderWidth:0.6];
-    [tijiaobut.titleLabel setFont:[UIFont systemFontOfSize:10]];
+    [tijiaobut.titleLabel setFont:[UIFont systemFontOfSize:18]];
     [tijiaobut setTitle:@"提交" forState:UIControlStateNormal];
-    [tijiaobut setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [tijiaobut setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [tijiaobut.layer setBorderColor:[[UIColor blackColor]CGColor]];
     [tijiaobut addTarget:self action:@selector(tijiao) forControlEvents:UIControlEventTouchUpInside];
-    [backview addSubview:tijiaobut];
+    [self.view addSubview:tijiaobut];
 }
 - (void)Addphotos
 {
@@ -119,8 +122,8 @@
     Wphotovc.selectPhotoOfMax = 4;
     [Wphotovc setSelectPhotosBack:^(NSMutableArray *phostsArr) {
         _photosArr = phostsArr;
-//        [_TableView reloadData];
-//        _DataArr = nil;
+        //        [_TableView reloadData];
+        //        _DataArr = nil;
         for (int i=0; i<_photosArr.count; i++) {
             _imageview = [[UIImageView alloc] initWithFrame:CGRectMake(i*(kScreen_Width-15-15)/4+5+5*i, 270, (kScreen_Width-15-15)/4, (kScreen_Width-15-15)/4)];
             _imageview.image = [[_photosArr objectAtIndex:i] objectForKey:@"image"];
@@ -170,61 +173,33 @@
 {
     [self post];
 }
--(void)post
-{
+-(void)post{
+    NSLog(@"_score = %@",_score);
+   
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"oid":_oid,@"order_info_id":_order_info_id,@"p_id":_p_id,@"score":_score,@"description":_textview.text,@"pic_num":[NSString stringWithFormat:@"%ld",_photosArr.count],@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
-    NSLog(@"%@",_score);
-    NSString *urlstr = [API stringByAppendingString:@"userCenter/shopping_order_score"];
-    [manager POST:urlstr parameters:dict constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-        for (int i=0; i<_photosArr.count; i++)
-        {
-            UIImageView *imageview = [[UIImageView alloc] init];
-            imageview.image = [[_photosArr objectAtIndex:i] objectForKey:@"image"];
-            UIImage *image = imageview.image;
-            NSData *imageData = UIImageJPEGRepresentation(image, 0.1);
-
-            NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-            formatter.dateFormat =@"yyyyMMddHHmmss";
-            NSString *str = [formatter stringFromDate:[NSDate date]];
-            NSString *fileName = [NSString stringWithFormat:@"%@.jpg", str];
-            [formData  appendPartWithFileData:imageData name:[NSString stringWithFormat:@"scoreimg%d",i] fileName:fileName mimeType:@"jpg/png/jpeg"];
-        }
-    } progress:^(NSProgress * _Nonnull uploadProgress) {
-
+    NSDictionary *dict = @{@"id":_orderID,@"level":_score,@"evaluate_content":_textview.text,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    NSLog(@"dict = %@",dict);
+    NSString *urlstr = [API stringByAppendingString:@"propertyWork/WorkScore"];
+    [manager POST:urlstr parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-
-        NSLog(@"%@==%@",[responseObject objectForKey:@"data"], [responseObject objectForKey:@"msg"]);
-        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"changepingjiatuikuanzhuangtai" object:nil userInfo:nil];
-            [self.navigationController popViewControllerAnimated:YES];
-            //[MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-        }else{
-
-            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+        
+        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSLog(@"dataStr = %@",dataStr);
+        
+        NSInteger status = [responseObject[@"status"] integerValue];
+        if (status == 1) {
+           
+             SpecialAlertView *pjwcView = [[SpecialAlertView alloc]initWithImage:@"xiaolian" messageTitle:@"谢谢您的评价" messageString:@"您的评价是我们最大的动力" messageString1:@"会继续努力滴" sureBtnTitle:@"返回订单" sureBtnColor:nil];
         }
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-
-        NSLog(@"上传失败：%@", error);
+        
     }];
 }
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

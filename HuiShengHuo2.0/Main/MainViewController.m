@@ -1004,7 +1004,7 @@
         myservice.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:myservice animated:YES];
     }else if (sender.tag==1){
-        fuwudingdanViewController *fuwudingdan = [[fuwudingdanViewController alloc] init];
+        rentalhouseViewController *fuwudingdan = [[rentalhouseViewController alloc] init];
         fuwudingdan.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:fuwudingdan animated:YES];
     }else{

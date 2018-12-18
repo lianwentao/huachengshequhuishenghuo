@@ -13,6 +13,7 @@
 #import "fengLeiDetailViewController.h"
 #import "fuWuFengLeiViewController.h"
 #import "fwflViewController.h"
+#import "orderDetailsViewController.h"
 @interface rentalhouseViewController ()
 
 @end
@@ -22,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    NSArray *arr = @[@"租房",@"售房",@"发布房源",@"服务item",@"服务分类"];
+    NSArray *arr = @[@"租房",@"售房",@"发布房源",@"服务item",@"服务分类",@"订单详情"];
     for (int i = 0; i < arr.count ; i ++) {
         UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
         but.backgroundColor = QIColor;
@@ -48,24 +49,15 @@
     }else if (sender.tag == 3){
         fengLeiDetailViewController *zushouweituo = [[fengLeiDetailViewController alloc] init];
         [self.navigationController pushViewController:zushouweituo animated:YES];
-    }else{
+    }else if (sender.tag == 4){
         fwflViewController *zushouweituo = [[fwflViewController alloc] init];
+        [self.navigationController pushViewController:zushouweituo animated:YES];
+    }else{
+        orderDetailsViewController *zushouweituo = [[orderDetailsViewController alloc] init];
+        zushouweituo.stateStr = @"待派单";
         [self.navigationController pushViewController:zushouweituo animated:YES];
     }
 }
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

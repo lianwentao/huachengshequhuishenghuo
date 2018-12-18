@@ -210,7 +210,7 @@
         [cell addSubview:rightImg];
         
         
-        if (![_addressDic isKindOfClass:[NSDictionary class]]) {
+        if (![_addressDic isKindOfClass:[NSDictionary class]] || [_addressDic[@"address"] isEqualToString:@""]) {
             
             labelname = [[UILabel alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(titleLab.frame), Main_width-40, 40)];
             labelname.font = [UIFont systemFontOfSize:18];

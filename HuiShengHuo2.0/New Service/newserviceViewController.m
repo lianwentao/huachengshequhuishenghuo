@@ -54,6 +54,8 @@
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight [UIScreen mainScreen].bounds.size.height
 #define LIMIT_OFFSET_Y -(IMAGE_HEIGHT + SCROLL_DOWN_LIMIT)
+
+
 @interface newserviceViewController ()<UITableViewDelegate,UITableViewDataSource,MenuScrollViewDeleagte,AVCaptureMetadataOutputObjectsDelegate>{
     NSArray *category;
     NSArray *category_service;

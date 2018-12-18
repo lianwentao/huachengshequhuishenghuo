@@ -341,16 +341,20 @@
         [cell addSubview:titleLab];
         
         UILabel *flLab = [[UILabel alloc]init];
-        flLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame), 10, Main_width-20-60, 30);
+//        flLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame), 10, Main_width-20-60, 30);
         flLab.layer.cornerRadius = 5;
         flLab.clipsToBounds = YES;
         flLab.adjustsFontSizeToFitWidth = YES;
         flLab.text= model.tagname;
         flLab.textAlignment = NSTextAlignmentCenter;
-        [flLab sizeToFit];//使用sizeToFit
-        flLab.center = CGPointMake(self.view.bounds.size.width/3, 25) ;
-        flLab.textColor=[UIColor whiteColor];
-        flLab.backgroundColor=[UIColor orangeColor];
+        CGSize size = [model.tagname sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys: flLab.font,NSFontAttributeName, nil]];
+        CGFloat itemBtnH = size.height+10;
+        CGFloat itemBtnW = size.width+10;
+        flLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame), 10, itemBtnW,itemBtnH);
+//        [flLab sizeToFit];//使用sizeToFit
+//        flLab.center = CGPointMake(self.view.bounds.size.width/3, 25) ;
+        flLab.textColor = [UIColor whiteColor];
+        flLab.backgroundColor=[UIColor colorWithRed:252/255.0 green:90/255.0 blue:47/255.0 alpha:1];
         [cell addSubview:flLab];
         
     }else if (indexPath.section == 4){
@@ -431,7 +435,7 @@
             }else{
                 Y = height-(Main_width-20)/[imgSizeArr[i] floatValue];
             }
-            imgView.frame = CGRectMake(10, Y, Main_width-20, (Main_width-20)/[imgSizeArr[i] floatValue]);
+            imgView.frame = CGRectMake(0, Y, Main_width, (Main_width-20)/[imgSizeArr[i] floatValue]);
             [cell addSubview:imgView];
         }
         
@@ -479,11 +483,11 @@
         tagList.multiSelect = YES;
         tagList.allowNoSelection = YES;
         tagList.vertSpacing = 20;
-        tagList.horiSpacing = 10;
+        tagList.horiSpacing = 20;
         tagList.selectedTextColor = [UIColor blackColor];
-        tagList.tagBackgroundColor = [UIColor colorWithRed:217/255.0 green:217/255.0 blue:217/255.0 alpha:1];
+        tagList.tagBackgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
         tagList.selectedTagBackgroundColor = [UIColor redColor];
-        tagList.tagCornerRadius = 3;
+//        tagList.tagCornerRadius = 3;
         tagList.tagEdge = UIEdgeInsetsMake(2, 2, 2, 2);
 //        [tagList addTarget:self action:@selector(selectedTagsChanged:) forControlEvents:UIControlEventValueChanged];
         [cell addSubview:tagList];
@@ -562,7 +566,8 @@
                 titleLab.frame = CGRectMake(10+(i*(Main_width-30)), CGRectGetMaxY(imgBtn.frame), Main_width/2-30, 30);
                 titleLab.text = titleArr[i];
                 titleLab.textAlignment = NSTextAlignmentLeft;
-                titleLab.font = [UIFont systemFontOfSize:15 ];
+                titleLab.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
+                titleLab.font = [UIFont systemFontOfSize:14];
                 [backscrollview addSubview:titleLab];
                 
                 UILabel *priceLab = [[UILabel alloc] init];
@@ -570,7 +575,7 @@
                 priceLab.text = [NSString stringWithFormat:@"￥%@",priceArr[i]];
                 priceLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
                 priceLab.textAlignment = NSTextAlignmentRight;
-                priceLab.font = [UIFont systemFontOfSize:15];
+                priceLab.font = [UIFont systemFontOfSize:14];
                 [backscrollview addSubview:priceLab];
             }
         }

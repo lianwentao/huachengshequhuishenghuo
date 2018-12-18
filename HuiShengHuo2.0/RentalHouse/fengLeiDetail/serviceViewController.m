@@ -176,7 +176,7 @@
     titleLab.frame = CGRectMake(10, CGRectGetMaxY(imgView.frame),Main_width/2-20, 30);
     titleLab.text = model.title;
     titleLab.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
-    titleLab.font = [UIFont systemFontOfSize:15];
+    titleLab.font = [UIFont systemFontOfSize:14];
     titleLab.numberOfLines = 2;
     titleLab.textAlignment = NSTextAlignmentLeft;
     [cell addSubview:titleLab];

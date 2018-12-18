@@ -223,16 +223,16 @@
         [labelArr addObject:labStr];
     }
     VOTagList *tagList = [[VOTagList alloc] initWithTags:labelArr];
-    tagList.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(titleLab.frame), Main_width-20-5-60, 20);
+    tagList.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(titleLab.frame), Main_width-20-5-60, 25);
     tagList.multiLine = YES;
     tagList.multiSelect = YES;
     tagList.allowNoSelection = YES;
     tagList.vertSpacing = 20;
-    tagList.horiSpacing = 10;
+    tagList.horiSpacing = 20;
     tagList.selectedTextColor = [UIColor blackColor];
     tagList.tagBackgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
-    tagList.selectedTagBackgroundColor = [UIColor redColor];
-    tagList.tagCornerRadius = 3;
+//    tagList.selectedTagBackgroundColor = [UIColor redColor];
+//    tagList.tagCornerRadius = 3;
     tagList.tagEdge = UIEdgeInsetsMake(2, 2, 2, 2);
     [cell addSubview:tagList];
     
@@ -285,7 +285,8 @@
         titleLab.frame = CGRectMake(10+(i*(Main_width-30)), CGRectGetMaxY(imgView.frame), Main_width-40, 30);
         titleLab.text = titleArr[i];
         titleLab.textAlignment = NSTextAlignmentLeft;
-        titleLab.font = [UIFont systemFontOfSize:18];
+        titleLab.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
+        titleLab.font = [UIFont systemFontOfSize:14];
         [backscrollview addSubview:titleLab];
 
     }
