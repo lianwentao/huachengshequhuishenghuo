@@ -62,7 +62,7 @@ typedef NS_ENUM(NSInteger, OffsetType) {
 #import "UIColor+ColorHex.h"
 #import "TooBox.h"
 #import "UIImage+GIF.h"
-
+#import "SpecialAlertView.h"
 #define Image1080                @"thumb_1080_1920_"
 #define Image800               @"thumb_800_1280_"
 #define Image480                @"thumb_480_800_"

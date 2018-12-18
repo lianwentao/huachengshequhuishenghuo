@@ -27,6 +27,15 @@
     [self setui];
     // Do any additional setup after loading the view.
 }
+-(BOOL)navigationShouldPopOnBackButton {
+    [self backBtnClicked];
+    
+    return YES;
+}
+- (void)backBtnClicked
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 - (void)getdata
 {
     //初始化进度框，置于当前的View当中

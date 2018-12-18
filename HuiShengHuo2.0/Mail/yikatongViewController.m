@@ -181,7 +181,6 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict = @{@"key":_key,@"cardno":_textFieldcard.text,@"price":_price,@"order_id":_id,@"rand":_textFieldregion.text,@"otype":_otype,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
-    NSString *url = [API stringByAppendingString:@"userCenter/pay_shopping_check/cardno/600000011730/price/0.1/order_id/1/otype/gw/rand/312433"];
     NSString *_url = [API stringByAppendingString:@"userCenter/pay_shopping_check"];
     [manager POST:_url parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"%@",responseObject);
@@ -258,6 +257,8 @@
         type = @"wired";
     }else if ([_otype isEqualToString:@"se"]){
         type = @"serve";
+    }else if ([_otype isEqualToString:@"wo"]){
+        type = @"work";
     }else{
         type = @"shop";
     }
@@ -279,6 +280,8 @@
                 
             }else if ([_otype isEqualToString:@"se"]){
                 [self postfuwususess];
+            }else if ([_otype isEqualToString:@"se"]){
+                
             }else{
                 [self postsusess];
                 [self postsusess1];
@@ -326,7 +329,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSDictionary *dict = @{@"oid":_id};
-    NSString *urlstr = [API_NOAPK stringByAppendingString:@"Jpush/distribution_push"];
+    NSString *urlstr = [API stringByAppendingString:@"Jpush/distribution_push"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"zhifu1--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

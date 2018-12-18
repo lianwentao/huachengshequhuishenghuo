@@ -10,4 +10,5 @@
 
 @interface mywuyegongdanViewController : UIViewController
 
+@property (nonatomic,copy)NSString *rukoubiaoshi;//判断从个人中心进入 还是付款失败后进入
 @end

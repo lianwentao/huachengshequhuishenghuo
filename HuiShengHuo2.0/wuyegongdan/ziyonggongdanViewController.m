@@ -11,6 +11,7 @@
 #import "HXPhotoPicker.h"
 #import "gongdanadressViewController.h"
 #import "mywuyegongdanViewController.h"
+#import "AllPayViewController.h"
 @interface ziyonggongdanViewController ()<HXPhotoViewDelegate,UIImagePickerControllerDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>{
     UITableView *_TableView;
     CMInputView *TextView;
@@ -301,102 +302,121 @@
 }
 - (void)suer
 {
-    _Imagearr = [NSMutableArray arrayWithCapacity:0];
-    NSString *content = TextView.text;
-    NSString *name = Textfield1.text;
-    NSString *phone = Textfield2.text;
-    //初始化进度框，置于当前的View当中
-    static MBProgressHUD *_HUD;
-    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:_HUD];
-    
-    //如果设置此属性则当前的view置于后台
-    //_HUD.dimBackground = YES;
-    
-    //设置对话框文字
-    _HUD.labelText = @"发布中...";
-    _HUD.labelFont = [UIFont systemFontOfSize:14];
-    
-    //显示对话框
-    [_HUD showAnimated:YES whileExecutingBlock:^{
-        __weak typeof(self) weakSelf = self;
-        HXDatePhotoToolManagerRequestType requestType;
-        if (self.original) {
-            requestType = HXDatePhotoToolManagerRequestTypeOriginal;
-        }else {
-            requestType = HXDatePhotoToolManagerRequestTypeHD;
-        }
-        [self.toolManager writeSelectModelListToTempPathWithList:self.selectList requestType:requestType success:^(NSArray<NSURL *> *allURL, NSArray<NSURL *> *photoURL, NSArray<NSURL *> *videoURL) {
-            NSLog(@"\nall : %@ \nimage : %@ \nvideo : %@",allURL,photoURL,videoURL);
-            
-            for (int i=0; i<photoURL.count; i++) {
-                NSURL *url = [photoURL objectAtIndex:i];
-                if (url) {
-                    UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
-                    NSLog(@"%@",image);
-                    [_Imagearr addObject:image];
-                }
+    if (homelabel.text.length == 0) {
+        [MBProgressHUD showToastToView:self.view withText:@"请选择房屋"];
+    }else{
+        _Imagearr = [NSMutableArray arrayWithCapacity:0];
+        NSString *content = TextView.text;
+        NSString *name = Textfield1.text;
+        NSString *phone = Textfield2.text;
+        //初始化进度框，置于当前的View当中
+        static MBProgressHUD *_HUD;
+        _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:_HUD];
+        
+        //如果设置此属性则当前的view置于后台
+        //_HUD.dimBackground = YES;
+        
+        //设置对话框文字
+        _HUD.labelText = @"发布中...";
+        _HUD.labelFont = [UIFont systemFontOfSize:14];
+        
+        //显示对话框
+        [_HUD showAnimated:YES whileExecutingBlock:^{
+            __weak typeof(self) weakSelf = self;
+            HXDatePhotoToolManagerRequestType requestType;
+            if (self.original) {
+                requestType = HXDatePhotoToolManagerRequestTypeOriginal;
+            }else {
+                requestType = HXDatePhotoToolManagerRequestTypeHD;
             }
-            NSLog(@"imgarr----%@--%ld",_Imagearr,_Imagearr.count);
-            [weakSelf.view handleLoading];
-            
-            
-            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", @"multipart/form-data", @"application/json", @"text/html", @"image/jpeg", @"image/png", @"application/octet-stream", @"text/json", nil];
-            //formData: 专门用于拼接需要上传的数据,在此位置生成一个要上传的数据体
-            NSString *imfnumstr = [NSString stringWithFormat:@"%ld",_Imagearr.count];
-            NSString *string2 = [NSString stringWithFormat:@"%@%@%@%@",[blockdic objectForKey:@"community_name"],[blockdic objectForKey:@"building_name"],[blockdic objectForKey:@"unit"],[blockdic objectForKey:@"code"]];
-            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-            NSDictionary *dic = @{@"work_type":@"1",@"type_id":_type_id,@"type_name":_type,@"community_id":[blockdic objectForKey:@"community_id"],@"room_id":[blockdic objectForKey:@"room_id"],@"company_id":[blockdic objectForKey:@"company_id"],@"contact":name,@"userphone":phone,@"address":string2,@"type_pid":_type_pid,@"img_num":imfnumstr,@"content":content,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-            NSLog(@"%@",dic);
-            NSString *url = [API stringByAppendingString:@"propertyWork/workSave"];
-            [manager POST:url parameters:dic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-                for (int i=0; i<_Imagearr.count; i++)
-                {
-                    UIImageView *imageview = [[UIImageView alloc] init];
-                    imageview.image = [_Imagearr objectAtIndex:i];
-                    UIImage *image = imageview.image;
-                    NSData *imageData = UIImageJPEGRepresentation(image, 0.1);
+            [self.toolManager writeSelectModelListToTempPathWithList:self.selectList requestType:requestType success:^(NSArray<NSURL *> *allURL, NSArray<NSURL *> *photoURL, NSArray<NSURL *> *videoURL) {
+                NSLog(@"\nall : %@ \nimage : %@ \nvideo : %@",allURL,photoURL,videoURL);
+                
+                for (int i=0; i<photoURL.count; i++) {
+                    NSURL *url = [photoURL objectAtIndex:i];
+                    if (url) {
+                        UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:url]];
+                        NSLog(@"%@",image);
+                        [_Imagearr addObject:image];
+                    }
+                }
+                NSLog(@"imgarr----%@--%ld",_Imagearr,_Imagearr.count);
+                [weakSelf.view handleLoading];
+                
+                
+                AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain", @"multipart/form-data", @"application/json", @"text/html", @"image/jpeg", @"image/png", @"application/octet-stream", @"text/json", nil];
+                //formData: 专门用于拼接需要上传的数据,在此位置生成一个要上传的数据体
+                NSString *imfnumstr = [NSString stringWithFormat:@"%ld",_Imagearr.count];
+                NSString *string2 = [NSString stringWithFormat:@"%@%@%@%@",[blockdic objectForKey:@"community_name"],[blockdic objectForKey:@"building_name"],[blockdic objectForKey:@"unit"],[blockdic objectForKey:@"code"]];
+                NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                NSDictionary *dic = @{@"work_type":@"1",@"type_id":_type_id,@"type_name":_type,@"community_id":[blockdic objectForKey:@"community_id"],@"room_id":[blockdic objectForKey:@"room_id"],@"company_id":[blockdic objectForKey:@"company_id"],@"contact":name,@"userphone":phone,@"address":string2,@"type_pid":_type_pid,@"img_num":imfnumstr,@"content":content,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+                NSLog(@"%@",dic);
+                NSString *url = [API stringByAppendingString:@"propertyWork/workSave"];
+                [manager POST:url parameters:dic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+                    for (int i=0; i<_Imagearr.count; i++)
+                    {
+                        UIImageView *imageview = [[UIImageView alloc] init];
+                        imageview.image = [_Imagearr objectAtIndex:i];
+                        UIImage *image = imageview.image;
+                        NSData *imageData = UIImageJPEGRepresentation(image, 0.1);
+                        
+                        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+                        formatter.dateFormat =@"yyyyMMddHHmmss";
+                        NSString *str = [formatter stringFromDate:[NSDate date]];
+                        NSString *fileName = [NSString stringWithFormat:@"%@.jpg", str];
+                        [formData  appendPartWithFileData:imageData name:[NSString stringWithFormat:@"img%d",i] fileName:fileName mimeType:@"jpg/png/jpeg"];
+                    }
+                } progress:^(NSProgress * _Nonnull uploadProgress) {
                     
-                    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-                    formatter.dateFormat =@"yyyyMMddHHmmss";
-                    NSString *str = [formatter stringFromDate:[NSDate date]];
-                    NSString *fileName = [NSString stringWithFormat:@"%@.jpg", str];
-                    [formData  appendPartWithFileData:imageData name:[NSString stringWithFormat:@"img%d",i] fileName:fileName mimeType:@"jpg/png/jpeg"];
-                }
-            } progress:^(NSProgress * _Nonnull uploadProgress) {
+                } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                    
+                    NSLog(@"%@==%@",responseObject, [responseObject objectForKey:@"msg"]);
+                    NSString *status = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"status"]];
+                    if ([status isEqualToString:@"1"]) {
+                        [self zhiFuAction:[[responseObject objectForKey:@"data"] objectForKey:@"id"]:[[responseObject objectForKey:@"data"] objectForKey:@"entry_fee"]];
+                    }else{
+                        [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                    }
+                    
+                    
+                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                    
+                    NSLog(@"上传失败：%@", error);
+                    
+                    [MBProgressHUD showToastToView:self.view withText:@"发布失败"];
+                }];
                 
-            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                
-                NSLog(@"%@==%@",responseObject, [responseObject objectForKey:@"msg"]);
-                NSString *status = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"status"]];
-                if ([status isEqualToString:@"1"]) {
-                    mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
-                    [self.navigationController pushViewController:vc animated:YES];
-                }else{
-                    [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-                }
-                
-                
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                
-                NSLog(@"上传失败：%@", error);
-                
-                [MBProgressHUD showToastToView:self.view withText:@"发布失败"];
+            } failed:^{
+                [weakSelf.view handleLoading];
+                [weakSelf.view showImageHUDText:@"写入失败"];
+                NSSLog(@"写入失败");
             }];
             
-        } failed:^{
-            [weakSelf.view handleLoading];
-            [weakSelf.view showImageHUDText:@"写入失败"];
-            NSSLog(@"写入失败");
-        }];
-        
-    }// 在HUD被隐藏后的回调
-       completionBlock:^{
-           //操作执行完后取消对话框
-           [_HUD removeFromSuperview];
-           _HUD = nil;
-       }];
+        }// 在HUD被隐藏后的回调
+           completionBlock:^{
+               //操作执行完后取消对话框
+               [_HUD removeFromSuperview];
+               _HUD = nil;
+           }];
+    }
+}
+#pragma mark - 支付预付款
+-(void)zhiFuAction:(NSString *)ordid :(NSString *)price
+{
+    NSString *str = price;
+    NSArray *array = [str componentsSeparatedByString:@"."]; //从字符.中分隔成2个元素的数组
+    SpecialAlertView *fuKuan = [[SpecialAlertView alloc]initWithMessageTitle:@"您需要支付预付费用" messageString:[NSString stringWithFormat:@"%@.",array[0]] messageString1:array[1]  sureBtnTitle:@"立即支付" sureBtnColor:[UIColor blueColor]];
+    [fuKuan withSureClick:^(NSString *string) {
+        AllPayViewController *allpay = [[AllPayViewController alloc] init];
+        allpay.order_id = ordid;
+        allpay.type = @"wuyegongdanfukuan";
+        allpay.rukoubiaoshi = @"wuyegongdanfukuan";
+        allpay.price = price;
+        allpay.prepay = @"1";//预付款
+        [self.navigationController pushViewController:allpay animated:YES];
+    }];
 }
 - (void)xuanzedizhi
 {

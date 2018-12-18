@@ -33,6 +33,7 @@
 #import "youxianjiaofeiViewController.h"
 #import "youxianjiaofeijiluViewController.h"
 #import "newwuyejiaofeijiluViewController.h"
+#import "mywuyegongdanViewController.h"
 #define kScreen_Height   ([UIScreen mainScreen].bounds.size.height)
 #define kScreen_Width    ([UIScreen mainScreen].bounds.size.width)
 #import "PrefixHeader.pch"
@@ -171,6 +172,10 @@
 //                              }
                               [self.navigationController popToRootViewControllerAnimated:YES];
                               [self chevsuess];
+                          }else if ([_rukoubiaoshi isEqualToString:@"wuyegongdanfukuan"]){
+                              NSLog(@"---------物业工单预付款");
+                              mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
+                              [self.navigationController pushViewController:vc animated:YES];
                           } else{
                               UIViewController *viewc = self.navigationController.viewControllers[1];
                               [[NSNotificationCenter defaultCenter] postNotificationName:@"shuaxingouwuche" object:nil userInfo:nil];
@@ -181,52 +186,8 @@
     [self presentViewController:alert
                        animated:YES completion:nil];
 }
-//- (BOOL)navigationShouldPopOnBackButton{
-//    UIAlertController*alert = [UIAlertController
-//                               alertControllerWithTitle: nil
-//                               message: @"是否确认放弃付款"
-//                               preferredStyle:UIAlertControllerStyleAlert];
-//    [alert addAction:[UIAlertAction
-//                      actionWithTitle:@"取消"
-//                      style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
-//                      {
-//
-//                      }]];
-//    [alert addAction:[UIAlertAction
-//                      actionWithTitle:@"确定"
-//                      style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
-//                      {
-//                          if ([_rukoubiaoshi isEqualToString:@"jiatingzhangdan"]) {
-//                              //shuidianfei
-//                              [self.navigationController popViewControllerAnimated:YES];
-//                          }else if ([_rukoubiaoshi isEqualToString:@"shuidianfei"]){
-//                              for (UIViewController *controller in self.navigationController.viewControllers) {
-//                                  if ([controller isKindOfClass:[shuidianfeiViewController class]]) {
-//                                      shuidianfeiViewController *revise =(shuidianfeiViewController *)controller;
-//                                      [self.navigationController popToViewController:revise animated:YES];
-//                                  }
-//                              }
-//                              [self chevsuess];
-//                          }else if ([_rukoubiaoshi isEqualToString:@"facepay"]){
-//                              NSLog(@"---------facepay");
-//                              for (UIViewController *controller in self.navigationController.viewControllers) {
-//                                  if ([controller isKindOfClass:[FacePayViewController class]]) {
-//                                      FacePayViewController *facepay =(FacePayViewController *)controller;
-//                                      [self.navigationController popToViewController:facepay animated:YES];
-//                                  }
-//                              }
-//                              [self chevsuess];
-//                          } else{
-//                              UIViewController *viewc = self.navigationController.viewControllers[1];
-//                              [[NSNotificationCenter defaultCenter] postNotificationName:@"shuaxingouwuche" object:nil userInfo:nil];
-//                              [self.navigationController popToViewController:viewc animated:YES];
-//                          }
-//                      }]];
-//    //弹出提示框
-//    [self presentViewController:alert
-//                       animated:YES completion:nil];
-//    return YES;
-//}
+
+
 - (void)change
 {
     //[MBProgressHUD showToastToView:self.view withText:@"支付成功"];
@@ -256,6 +217,10 @@
         NSLog(@"*********----newservicescan");
         myserviceViewController *myserve = [[myserviceViewController alloc] init];
         [self.navigationController pushViewController:myserve animated:YES];
+    }else if ([_type isEqualToString:@"wuyegongdanfukuan"]){
+        NSLog(@"*********----wuyegongdanfukuan");
+        mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }else{
         dingdanViewController *dingdan = [[dingdanViewController alloc] init];
         dingdan.but_tag = @"2";
@@ -297,6 +262,10 @@
                 [self.navigationController popToViewController:revise animated:YES];
             }
         }
+    }else if ([_type isEqualToString:@"wuyegongdanfukuan"]){
+        NSLog(@"*********----wuyegongdanfukuan");
+        mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }else{
         
     }
@@ -337,6 +306,10 @@
         NSLog(@"*********----newservicescan");
         myserviceViewController *myserve = [[myserviceViewController alloc] init];
         [self.navigationController pushViewController:myserve animated:YES];
+    }else if ([_type isEqualToString:@"wuyegongdanfukuan"]){
+        NSLog(@"*********----wuyegongdanfukuan");
+        mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }else{
         dingdanViewController *dingdan = [[dingdanViewController alloc] init];
         dingdan.but_tag = @"2";
@@ -386,6 +359,8 @@
         type = @"wired";
     }else if ([_type isEqualToString:@"newservicescan"]){
         type = @"serve";
+    }else if ([_type isEqualToString:@"wuyegongdanfukuan"]){
+        type = @"work";
     }else{
         type = @"shop";
     }
@@ -409,6 +384,8 @@
                 
             }else if ([_type isEqualToString:@"newservicescan"]){
                 [self postfuwususess];
+            }else if ([_type isEqualToString:@"wuyegongdanyufukuan"]){
+                
             }else{
                 [self postsusess];
                 [self postsusess1];
@@ -460,6 +437,10 @@
         }
     }else if ([_type isEqualToString:@"newservicescan"]){
         
+    }else if ([_type isEqualToString:@"wuyegongdanyufukuan"]){
+        NSLog(@"*********----wuyegongdanyufukuan");
+        mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }else{
         
     }
@@ -503,7 +484,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSDictionary *dict = @{@"oid":_order_id};
-    NSString *urlstr = [API_NOAPK stringByAppendingString:@"Jpush/distribution_push"];
+    NSString *urlstr = [API stringByAppendingString:@"Jpush/distribution_push"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"zhifu1--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -596,6 +577,8 @@
             yikatong.otype = @"yx";
         }else if ([_type isEqualToString:@"newservicescan"]){
             yikatong.otype = @"se";
+        }else if ([_type isEqualToString:@"wuyegongdanfukuan"]){
+             yikatong.otype = @"wo";
         }else{
             yikatong.otype = @"gw";
         }
@@ -616,7 +599,12 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = [[NSDictionary alloc] init];
-    dict = @{@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    if ([_prepay isEqualToString:@"1"]) {
+        dict = @{@"prepay":_prepay,@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    }else{
+        dict = @{@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    }
+    
     
     NSString *urlstr;
     if ([_type isEqualToString:@"aciti"]) {
@@ -629,7 +617,9 @@
         urlstr = [API stringByAppendingString:@"property/pay_wired_order/typename/wxpay"];
     }else if ([_type isEqualToString:@"newservicescan"]){
         urlstr = [API_NOAPK stringByAppendingString:@"/service/order/pay_service_order/typename/wxpay"];
-    }else{
+    }else if ([_type isEqualToString:@"wuyegongdanfukuan"]){
+        urlstr = [API stringByAppendingString:@"propertyWork/pay_work_order/typename/wxpay"];
+    }else{//
         urlstr = [API stringByAppendingString:@"userCenter/pay_shopping_order/typename/wxpay"];
     }
     
@@ -666,7 +656,13 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"id":_order_id,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    NSDictionary *dict;
+    if ([_prepay isEqualToString:@"1"]) {
+        dict = @{@"prepay":_prepay,@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    }else{
+        dict = @{@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    }
+//     = @{@"id":_order_id,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
     NSString *urlstr;
     if ([_type isEqualToString:@"aciti"]) {
         urlstr = [API stringByAppendingString:@"activity/pay_activity_order/typename/alipay"];
@@ -678,6 +674,8 @@
         urlstr = [API stringByAppendingString:@"property/pay_wired_order/typename/alipay"];
     }else if ([_type isEqualToString:@"newservicescan"]){
         urlstr = [API_NOAPK stringByAppendingString:@"/service/order/pay_service_order/typename/alipay"];
+    }else if ([_type isEqualToString:@"wuyegongdanfukuan"]){
+        urlstr = [API stringByAppendingString:@"propertyWork/pay_work_order/typename/alipay"];
     }else{
         urlstr = [API stringByAppendingString:@"userCenter/pay_shopping_order/typename/alipay"];
     }
@@ -708,7 +706,12 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"id":_order_id,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    NSDictionary *dict;
+    if ([_prepay isEqualToString:@"1"]) {
+        dict = @{@"prepay":_prepay,@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    }else{
+        dict = @{@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    }
     NSString *urlstr;
     if ([_type isEqualToString:@"aciti"]) {
         urlstr = [API stringByAppendingString:@"activity/pay_activity_order/typename/bestpay"];
@@ -720,6 +723,8 @@
         urlstr = [API stringByAppendingString:@"property/pay_wired_order/typename/bestpay"];
     }else if ([_type isEqualToString:@"newservicescan"]){
         urlstr = [API_NOAPK stringByAppendingString:@"/service/order/pay_service_order/typename/bestpay"];
+    }else if ([_type isEqualToString:@"wuyegongdanfukuan"]){
+        urlstr = [API stringByAppendingString:@"propertyWork/pay_work_order/typename/bestpay"];
     }else{
         urlstr = [API stringByAppendingString:@"userCenter/pay_shopping_order/typename/bestpay"];
     }
@@ -884,6 +889,10 @@
         NSLog(@"*********----newservicescan");
         myserviceViewController *myserve = [[myserviceViewController alloc] init];
         [self.navigationController pushViewController:myserve animated:YES];
+    }else if ([_type isEqualToString:@"wuyegongdanyufukuan"]){
+        NSLog(@"*********----wuyegongdanyufukuan");
+        mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     } else{
         dingdanViewController *dingdan = [[dingdanViewController alloc] init];
         dingdan.but_tag = @"2";

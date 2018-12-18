@@ -61,6 +61,7 @@
                 model.erjitype = [[arr objectAtIndex:i] objectForKey:@"work_type_cn"];
                 model.status = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"work_status"]];
                 model.status_cn = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"work_status_cn"]];
+                model.evaluate_status = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"evaluate_status"]];
                 [modelArr addObject:model];
             }
             [_dataArr addObjectsFromArray:arr];
