@@ -48,7 +48,7 @@
     self.view.backgroundColor = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:239/255.0 alpha:1];
     [self loadData];
 //    [self loadTableView];
-    [self setRightBtn];
+//    [self setRightBtn];
 }
 -(void)loadData{
     //1.创建会话管理者
@@ -85,6 +85,7 @@
             if ([model.work_status isEqualToString:@"0"]) {
                 [self loadFunctionView];
             }
+            [self setRightBtn];
             
         }
         
@@ -150,7 +151,7 @@
     
     orderDetailModel *model = _dataSourceArr[0];
     CGFloat headerViewH = 0;
-    if([model.work_status isEqualToString:@"1"]) {
+    if([model.work_status isEqualToString:@"1"] || [model.work_status isEqualToString:@"0"] || [model.work_status isEqualToString:@"2"]) {
         headerViewH = 50;
     }else{
         headerViewH = 100;
