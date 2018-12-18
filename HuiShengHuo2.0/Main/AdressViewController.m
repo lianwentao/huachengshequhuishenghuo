@@ -127,7 +127,7 @@
                 NSString *stringaddress = [NSString stringWithFormat:@"%@ %@ %@",[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"region_cn"],[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"community_cn"],[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"doorplate"]];
                 NSString *stringaddressid = [[_DataArr objectAtIndex:indexPath.row] objectForKey:@"id"];
                 //将自己的值传出去，完成传值
-                weakself.returnValueBlock(stringname,stringphone,stringaddress,stringaddressid);
+                weakself.returnValueBlock(stringname,stringphone,stringaddress,stringaddressid,[_DataArr objectAtIndex:indexPath.row]);
             }
             [self.navigationController popViewControllerAnimated:YES];
         }
@@ -140,7 +140,7 @@
             NSString *stringaddress = [NSString stringWithFormat:@"%@ %@ %@",[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"region_cn"],[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"community_cn"],[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"doorplate"]];
             NSString *stringaddressid = [[_DataArr objectAtIndex:indexPath.row] objectForKey:@"id"];
             //将自己的值传出去，完成传值
-            weakself.returnValueBlock(stringname,stringphone,stringaddress,stringaddressid);
+            weakself.returnValueBlock(stringname,stringphone,stringaddress,stringaddressid,[_DataArr objectAtIndex:indexPath.row]);
         }
         [self.navigationController popViewControllerAnimated:YES];
     }

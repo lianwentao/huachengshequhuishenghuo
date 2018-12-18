@@ -159,50 +159,55 @@
 #pragma mark ------联网请求---
 -(void)post
 {
-    //1.创建会话管理者
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    NSLog(@"token--%@--%@",[defaults objectForKey:@"token"],[defaults objectForKey:@"tokenSecret"]);
-    NSDictionary *dict = @{@"c_id":[defaults objectForKey:@"community_id"],@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
-    NSString *strurl = [API stringByAppendingString:@"userCenter/index_40"];
-    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        _Datadic = [[NSMutableDictionary alloc] init];
+    if ([defaults objectForKey:@"tokenSecret"] == nil) {
         
-        NSLog(@"%@###%@",[responseObject objectForKey:@"msg"],responseObject);
-        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-            _Datadic = [responseObject objectForKey:@"data"];
+    }else{
+        //1.创建会话管理者
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+        
+        
+        NSLog(@"token--%@--%@",[defaults objectForKey:@"token"],[defaults objectForKey:@"tokenSecret"]);
+        NSDictionary *dict = @{@"c_id":[defaults objectForKey:@"community_id"],@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+        NSString *strurl = [API stringByAppendingString:@"userCenter/index_40"];
+        [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            _Datadic = [[NSMutableDictionary alloc] init];
             
-        }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
-            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-            [userinfo removeObjectForKey:@"username"];
-            [userinfo removeObjectForKey:@"phone_type"];
-            [userinfo removeObjectForKey:@"uid"];
-            [userinfo removeObjectForKey:@"pwd"];
-            [userinfo removeObjectForKey:@"is_bind_property"];
-            [userinfo removeObjectForKey:@"Cookie"];
-            [userinfo removeObjectForKey:@"is_new"];
-            [userinfo removeObjectForKey:@"token"];
-            [userinfo removeObjectForKey:@"tokenSecret"];
-            NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-            NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-            for (NSHTTPCookie *cookie in cookieStorage) {
-                [manager deleteCookie:cookie];
+            NSLog(@"%@###%@",[responseObject objectForKey:@"msg"],responseObject);
+            if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                _Datadic = [responseObject objectForKey:@"data"];
+                
+            }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
+                [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                [userinfo removeObjectForKey:@"username"];
+                [userinfo removeObjectForKey:@"phone_type"];
+                [userinfo removeObjectForKey:@"uid"];
+                [userinfo removeObjectForKey:@"pwd"];
+                [userinfo removeObjectForKey:@"is_bind_property"];
+                [userinfo removeObjectForKey:@"Cookie"];
+                [userinfo removeObjectForKey:@"is_new"];
+                [userinfo removeObjectForKey:@"token"];
+                [userinfo removeObjectForKey:@"tokenSecret"];
+                NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+                NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+                for (NSHTTPCookie *cookie in cookieStorage) {
+                    [manager deleteCookie:cookie];
+                }
+                [self logout];
+            }else{
+                
             }
-            [self logout];
-        }else{
-            
-        }
-        [LoadingView stopAnimating];
-        LoadingView.hidden = YES;
-        [self CreateTableView];
-        [_Hometableview reloadData];
-        [_Hometableview.mj_header endRefreshing];
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"failure--%@",error);
-    }];
+            [LoadingView stopAnimating];
+            LoadingView.hidden = YES;
+            [self CreateTableView];
+            [_Hometableview reloadData];
+            [_Hometableview.mj_header endRefreshing];
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"failure--%@",error);
+        }];
+    }
 }
 - (void)logout
 {
@@ -1000,9 +1005,12 @@
         jiaofei.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:jiaofei animated:YES];
     }else if (sender.tag==2){
-        myserviceViewController *myservice = [[myserviceViewController alloc] init];
-        myservice.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:myservice animated:YES];
+//        myserviceViewController *myservice = [[myserviceViewController alloc] init];
+//        myservice.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:myservice animated:YES];
+        rentalhouseViewController *rl = [[rentalhouseViewController alloc] init];
+        rl.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:rl animated:YES];
     }else if (sender.tag==1){
         fuwudingdanViewController *fuwudingdan = [[fuwudingdanViewController alloc] init];
         fuwudingdan.hidesBottomBarWhenPushed = YES;
@@ -1018,7 +1026,7 @@
 {
     if (sender.tag==0) {
         NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
-        NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
+        //NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
         
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
