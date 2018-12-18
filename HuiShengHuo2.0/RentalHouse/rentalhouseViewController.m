@@ -13,7 +13,13 @@
 #import "fengLeiDetailViewController.h"
 #import "fuWuFengLeiViewController.h"
 #import "fwflViewController.h"
+
 #import "orderDetailsViewController.h"
+
+#import "gonggongbaoxiuViewController.h"
+#import "ziyongliebiaoViewController.h"
+#import "ziyonggongdanViewController.h"
+
 @interface rentalhouseViewController ()
 
 @end
@@ -23,7 +29,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+
     NSArray *arr = @[@"租房",@"售房",@"发布房源",@"服务item",@"服务分类",@"订单详情"];
+
     for (int i = 0; i < arr.count ; i ++) {
         UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
         but.backgroundColor = QIColor;
@@ -31,6 +39,16 @@
         [but setTitle:[arr objectAtIndex:i] forState:UIControlStateNormal];
         but.tag = i;
         [but addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:but];
+    }
+    NSArray *arr1 = @[@"自用",@"公共",@"订单"];
+    for (int i = 0; i < arr1.count ; i ++) {
+        UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+        but.backgroundColor = QIColor;
+        but.frame = CGRectMake(250, 100+80*i, 100, 50);
+        [but setTitle:[arr1 objectAtIndex:i] forState:UIControlStateNormal];
+        but.tag = i;
+        [but addTarget:self action:@selector(click1:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:but];
     }
     // Do any additional setup after loading the view.
@@ -47,6 +65,7 @@
         shouFangViewController *zushouweituo = [[shouFangViewController alloc] init];
         [self.navigationController pushViewController:zushouweituo animated:YES];
     }else if (sender.tag == 3){
+
         fengLeiDetailViewController *zushouweituo = [[fengLeiDetailViewController alloc] init];
         [self.navigationController pushViewController:zushouweituo animated:YES];
     }else if (sender.tag == 4){
@@ -54,8 +73,21 @@
         [self.navigationController pushViewController:zushouweituo animated:YES];
     }else{
         orderDetailsViewController *zushouweituo = [[orderDetailsViewController alloc] init];
-        zushouweituo.stateStr = @"待派单";
         [self.navigationController pushViewController:zushouweituo animated:YES];
+        
+    }
+}
+- (void)click1:(UIButton *)sender
+{
+    if (sender.tag == 0){
+        [self.navigationController pushViewController:[ziyonggongdanViewController new] animated:YES];
+    }else if (sender.tag == 1){
+        [self.navigationController pushViewController:[gonggongbaoxiuViewController new] animated:YES];
+    }else{
+        
+        ziyongliebiaoViewController *ziyong = [[ziyongliebiaoViewController alloc] init];
+        [self.navigationController pushViewController:ziyong animated:YES];
+
     }
 }
 

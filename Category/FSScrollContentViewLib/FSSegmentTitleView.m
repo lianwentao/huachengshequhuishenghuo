@@ -76,7 +76,13 @@
         }
     }
     if (totalBtnWidth <= CGRectGetWidth(self.bounds)) {//不能滑动
-        CGFloat itemBtnWidth = CGRectGetWidth(self.bounds)/self.itemBtnArr.count;
+        CGFloat itemBtnWidth;
+        if (_itemBtnArr.count==1) {
+            itemBtnWidth = CGRectGetWidth(self.bounds)/4;
+        }else{
+            itemBtnWidth = CGRectGetWidth(self.bounds)/_itemBtnArr.count;
+        }
+        
         CGFloat itemBtnHeight = CGRectGetHeight(self.bounds);
         [self.itemBtnArr enumerateObjectsUsingBlock:^(UIButton * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             obj.frame = CGRectMake(idx * itemBtnWidth, 0, itemBtnWidth, itemBtnHeight);

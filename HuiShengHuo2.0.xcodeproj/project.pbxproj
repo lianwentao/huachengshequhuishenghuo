@@ -11,6 +11,10 @@
 		2805782421BA6E6C0093906C /* fuwusearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2805782321BA6E6C0093906C /* fuwusearchViewController.m */; };
 		2805782721BA6FC50093906C /* fuwusearchchildViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2805782621BA6FC50093906C /* fuwusearchchildViewController.m */; };
 		280E9B3220CC5DF300A32BBF /* xianshiqianggouerjiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 280E9B3120CC5DF300A32BBF /* xianshiqianggouerjiViewController.m */; };
+		2810CA4F21C4F64800587324 /* ziyonggongdanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2810CA4E21C4F64800587324 /* ziyonggongdanViewController.m */; };
+		2810CA5221C4F67300587324 /* gonggongbaoxiuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2810CA5121C4F67300587324 /* gonggongbaoxiuViewController.m */; };
+		2810CA5521C4F68300587324 /* ziyongliebiaoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2810CA5421C4F68300587324 /* ziyongliebiaoViewController.m */; };
+		2810CA5821C4F6FB00587324 /* mywuyegongdanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2810CA5721C4F6FB00587324 /* mywuyegongdanViewController.m */; };
 		281D000420591D3C00C732D0 /* TagsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281DFFFE20591D3A00C732D0 /* TagsTableViewController.m */; };
 		281D000520591D3C00C732D0 /* TagsChangeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281D000020591D3B00C732D0 /* TagsChangeTableViewController.m */; };
 		281D000620591D3C00C732D0 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281D000220591D3C00C732D0 /* SettingsViewController.m */; };
@@ -311,6 +315,7 @@
 		2898B04C2047D8AC002A5F03 /* EAccountSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2898B04A2047D8AB002A5F03 /* EAccountSDK.framework */; };
 		2898B04D2047D8AC002A5F03 /* HTMLResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2898B04B2047D8AC002A5F03 /* HTMLResource.bundle */; };
 		2898B04F2047D96F002A5F03 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2898B04E2047D96F002A5F03 /* libsqlite3.tbd */; };
+		289D223721C878B50081B0E8 /* gongdanadressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289D223621C878B50081B0E8 /* gongdanadressViewController.m */; };
 		289E392F2058FEC300A248A0 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 289E392E2058FEC300A248A0 /* libxml2.tbd */; };
 		289E39312058FEF600A248A0 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 289E39302058FEF600A248A0 /* CoreData.framework */; };
 		289F4D591FEA5128002C9012 /* joinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289F4D581FEA5128002C9012 /* joinViewController.m */; };
@@ -419,6 +424,10 @@
 		28C74134206647050018E19F /* showtongxingzhengViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C74133206647050018E19F /* showtongxingzhengViewController.m */; };
 		28C9DFD01FCBED7000BA39C5 /* SuredingdanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C9DFCF1FCBED7000BA39C5 /* SuredingdanViewController.m */; };
 		28C9DFDA1FCC169B00BA39C5 /* AllPayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C9DFD91FCC169B00BA39C5 /* AllPayViewController.m */; };
+		28D64A8121C77F530077FFCA /* ziyongliebiaochildViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D64A8021C77F530077FFCA /* ziyongliebiaochildViewController.m */; };
+		28D64A8421C7B8220077FFCA /* mywuyegongdanchildViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D64A8321C7B8220077FFCA /* mywuyegongdanchildViewController.m */; };
+		28D64A8721C7BD790077FFCA /* wuyegongdanTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D64A8621C7BD790077FFCA /* wuyegongdanTableViewCell.m */; };
+		28D64A8B21C7BDAE0077FFCA /* wuyegongdanmodel.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D64A8A21C7BDAE0077FFCA /* wuyegongdanmodel.m */; };
 		28D759F020A0058F0008A07D /* gamesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D759EF20A0058F0008A07D /* gamesViewController.m */; };
 		28D759F420A009B70008A07D /* tanchishechichichiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D759F320A009B70008A07D /* tanchishechichichiViewController.m */; };
 		28D759FA20A00AF00008A07D /* background.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D759F920A00AF00008A07D /* background.m */; };
@@ -611,6 +620,14 @@
 		2805782621BA6FC50093906C /* fuwusearchchildViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = fuwusearchchildViewController.m; sourceTree = "<group>"; };
 		280E9B3020CC5DF300A32BBF /* xianshiqianggouerjiViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xianshiqianggouerjiViewController.h; sourceTree = "<group>"; };
 		280E9B3120CC5DF300A32BBF /* xianshiqianggouerjiViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = xianshiqianggouerjiViewController.m; sourceTree = "<group>"; };
+		2810CA4D21C4F64800587324 /* ziyonggongdanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ziyonggongdanViewController.h; sourceTree = "<group>"; };
+		2810CA4E21C4F64800587324 /* ziyonggongdanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ziyonggongdanViewController.m; sourceTree = "<group>"; };
+		2810CA5021C4F67300587324 /* gonggongbaoxiuViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gonggongbaoxiuViewController.h; sourceTree = "<group>"; };
+		2810CA5121C4F67300587324 /* gonggongbaoxiuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = gonggongbaoxiuViewController.m; sourceTree = "<group>"; };
+		2810CA5321C4F68300587324 /* ziyongliebiaoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ziyongliebiaoViewController.h; sourceTree = "<group>"; };
+		2810CA5421C4F68300587324 /* ziyongliebiaoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ziyongliebiaoViewController.m; sourceTree = "<group>"; };
+		2810CA5621C4F6FB00587324 /* mywuyegongdanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mywuyegongdanViewController.h; sourceTree = "<group>"; };
+		2810CA5721C4F6FB00587324 /* mywuyegongdanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = mywuyegongdanViewController.m; sourceTree = "<group>"; };
 		281D000020591D3B00C732D0 /* TagsChangeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagsChangeTableViewController.m; sourceTree = "<group>"; };
 		281D000120591D3B00C732D0 /* TagsChangeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagsChangeTableViewController.h; sourceTree = "<group>"; };
 		281D000220591D3C00C732D0 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
@@ -1172,6 +1189,8 @@
 		2898B04A2047D8AB002A5F03 /* EAccountSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EAccountSDK.framework; sourceTree = "<group>"; };
 		2898B04B2047D8AC002A5F03 /* HTMLResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HTMLResource.bundle; sourceTree = "<group>"; };
 		2898B04E2047D96F002A5F03 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		289D223521C878B50081B0E8 /* gongdanadressViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gongdanadressViewController.h; sourceTree = "<group>"; };
+		289D223621C878B50081B0E8 /* gongdanadressViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = gongdanadressViewController.m; sourceTree = "<group>"; };
 		289E392E2058FEC300A248A0 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		289E39302058FEF600A248A0 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		289E3936205902C200A248A0 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -1423,6 +1442,14 @@
 		28C9DFE51FCC1A2500BA39C5 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		28C9DFE71FCC1A3C00BA39C5 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		28C9DFE91FCC1A5300BA39C5 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		28D64A7F21C77F530077FFCA /* ziyongliebiaochildViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ziyongliebiaochildViewController.h; sourceTree = "<group>"; };
+		28D64A8021C77F530077FFCA /* ziyongliebiaochildViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ziyongliebiaochildViewController.m; sourceTree = "<group>"; };
+		28D64A8221C7B8220077FFCA /* mywuyegongdanchildViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mywuyegongdanchildViewController.h; sourceTree = "<group>"; };
+		28D64A8321C7B8220077FFCA /* mywuyegongdanchildViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = mywuyegongdanchildViewController.m; sourceTree = "<group>"; };
+		28D64A8521C7BD790077FFCA /* wuyegongdanTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wuyegongdanTableViewCell.h; sourceTree = "<group>"; };
+		28D64A8621C7BD790077FFCA /* wuyegongdanTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = wuyegongdanTableViewCell.m; sourceTree = "<group>"; };
+		28D64A8921C7BDAE0077FFCA /* wuyegongdanmodel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wuyegongdanmodel.h; sourceTree = "<group>"; };
+		28D64A8A21C7BDAE0077FFCA /* wuyegongdanmodel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = wuyegongdanmodel.m; sourceTree = "<group>"; };
 		28D759EE20A0058F0008A07D /* gamesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gamesViewController.h; sourceTree = "<group>"; };
 		28D759EF20A0058F0008A07D /* gamesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = gamesViewController.m; sourceTree = "<group>"; };
 		28D759F220A009B70008A07D /* tanchishechichichiViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tanchishechichichiViewController.h; sourceTree = "<group>"; };
@@ -1809,6 +1836,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2810CA4C21C4E94200587324 /* wuyegongdan */ = {
+			isa = PBXGroup;
+			children = (
+				2810CA4D21C4F64800587324 /* ziyonggongdanViewController.h */,
+				2810CA4E21C4F64800587324 /* ziyonggongdanViewController.m */,
+				2810CA5021C4F67300587324 /* gonggongbaoxiuViewController.h */,
+				2810CA5121C4F67300587324 /* gonggongbaoxiuViewController.m */,
+				2810CA5321C4F68300587324 /* ziyongliebiaoViewController.h */,
+				2810CA5421C4F68300587324 /* ziyongliebiaoViewController.m */,
+				28D64A7F21C77F530077FFCA /* ziyongliebiaochildViewController.h */,
+				28D64A8021C77F530077FFCA /* ziyongliebiaochildViewController.m */,
+				2810CA5621C4F6FB00587324 /* mywuyegongdanViewController.h */,
+				2810CA5721C4F6FB00587324 /* mywuyegongdanViewController.m */,
+				28D64A8221C7B8220077FFCA /* mywuyegongdanchildViewController.h */,
+				28D64A8321C7B8220077FFCA /* mywuyegongdanchildViewController.m */,
+				289D223521C878B50081B0E8 /* gongdanadressViewController.h */,
+				289D223621C878B50081B0E8 /* gongdanadressViewController.m */,
+			);
+			path = wuyegongdan;
+			sourceTree = "<group>";
+		};
 		281D494820078D180020D2DB /* XPFPickerView */ = {
 			isa = PBXGroup;
 			children = (
@@ -3338,6 +3386,17 @@
 			path = " LSXInputAlertView";
 			sourceTree = "<group>";
 		};
+		28D64A8821C7BD850077FFCA /* wuyegongdan */ = {
+			isa = PBXGroup;
+			children = (
+				28D64A8521C7BD790077FFCA /* wuyegongdanTableViewCell.h */,
+				28D64A8621C7BD790077FFCA /* wuyegongdanTableViewCell.m */,
+				28D64A8921C7BDAE0077FFCA /* wuyegongdanmodel.h */,
+				28D64A8A21C7BDAE0077FFCA /* wuyegongdanmodel.m */,
+			);
+			path = wuyegongdan;
+			sourceTree = "<group>";
+		};
 		28D759ED20A005690008A07D /* gemes */ = {
 			isa = PBXGroup;
 			children = (
@@ -3457,6 +3516,7 @@
 		28D75DB31FBD0B82000BD4A1 /* HuiShengHuo2.0 */ = {
 			isa = PBXGroup;
 			children = (
+				2810CA4C21C4E94200587324 /* wuyegongdan */,
 				286C924921A78D630055F187 /* New Service */,
 				28851947219CF5CD0068EA6B /* RentalHouse */,
 				284D852B212EADF000BF8ED2 /* wuyejiaofei */,
@@ -3787,6 +3847,7 @@
 		28FE4CCE1FBFBEFA00C0A277 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				28D64A8821C7BD850077FFCA /* wuyegongdan */,
 				2871A3B921AB9FFE00CDCCE9 /* newfuwudingdancell */,
 				28C15A8521A509FC00BE2EAB /* UIViewController+BackButtonHandler.h */,
 				28C15A8621A509FC00BE2EAB /* UIViewController+BackButtonHandler.m */,
@@ -4564,6 +4625,7 @@
 				28C7412D20663B8A0018E19F /* UIColor+YMHex.m in Sources */,
 				28D75A0720A0330D0008A07D /* SudoModel.m in Sources */,
 				28B19068200A06EF00CD8651 /* changepasswordViewController.m in Sources */,
+				2810CA4F21C4F64800587324 /* ziyonggongdanViewController.m in Sources */,
 				845C561821A7F528002F509D /* businessViewController.m in Sources */,
 				285DED801FD2810E00B0812F /* CMInputView.m in Sources */,
 				28E96D8B20BC1811007E353B /* WRNavigationBar.m in Sources */,
@@ -4575,6 +4637,7 @@
 				2805782721BA6FC50093906C /* fuwusearchchildViewController.m in Sources */,
 				28E9FBFC20BE3CD700B017E9 /* liebiaomodel.m in Sources */,
 				28A83CAC205F4634009ED444 /* HXPhoto3DTouchViewController.m in Sources */,
+				28D64A8121C77F530077FFCA /* ziyongliebiaochildViewController.m in Sources */,
 				845C565121A7F529002F509D /* shouFangViewController.m in Sources */,
 				28E1FFCC1FF3E7EC00E4AE5C /* HWPopTool.m in Sources */,
 				282805A4219AD72500B0DD7D /* NSButton+WebCache.m in Sources */,
@@ -4696,6 +4759,7 @@
 				283AD2011FF8FDB90022C846 /* CustomActivity.m in Sources */,
 				845C562921A7F528002F509D /* KMTag.m in Sources */,
 				28A83CAE205F4634009ED444 /* HXPhotoCustomNavigationBar.m in Sources */,
+				289D223721C878B50081B0E8 /* gongdanadressViewController.m in Sources */,
 				28855DDC201C759E005B249B /* UIColor+PYSearchExtension.m in Sources */,
 				28854E1520526B9E0097B201 /* shuidianfeiViewController.m in Sources */,
 				845D363221AE258D00CBDF04 /* fwflViewController.m in Sources */,
@@ -4826,6 +4890,7 @@
 				284F85F82064DCCA0068CB0B /* showerweimaViewController.m in Sources */,
 				285DED731FD2537800B0812F /* MJRefreshGifHeader.m in Sources */,
 				28A4F0841FD67B5D00DF4AED /* edAddressViewController.m in Sources */,
+				2810CA5821C4F6FB00587324 /* mywuyegongdanViewController.m in Sources */,
 				28821AC61FE3B77100C31E68 /* wuyeTableViewCell.m in Sources */,
 				2828064D219ADEE300B0DD7D /* XLProgressView.m in Sources */,
 				845C563E21A7F529002F509D /* zftjListModel.m in Sources */,
@@ -4850,6 +4915,7 @@
 				285DED701FD2537800B0812F /* MJRefreshBackGifFooter.m in Sources */,
 				285371551FC910B100D0376E /* DWQCartTableViewCell.m in Sources */,
 				28966FB3205CFB6C00073667 /* pengyouquanmodel.m in Sources */,
+				2810CA5221C4F67300587324 /* gonggongbaoxiuViewController.m in Sources */,
 				28280612219ADE5600B0DD7D /* WKWebViewJavascriptBridge.m in Sources */,
 				845C563F21A7F529002F509D /* ZJButton.m in Sources */,
 				2885194D219CF7450068EA6B /* rentalhouseViewController.m in Sources */,
@@ -4858,8 +4924,10 @@
 				285DED991FD28C3000B0812F /* WPhotoViewController.m in Sources */,
 				282805B8219AD72500B0DD7D /* UIImage+ForceDecode.m in Sources */,
 				2859429A1FD4F9A100B4077A /* acivityTableViewCell.m in Sources */,
+				28D64A8B21C7BDAE0077FFCA /* wuyegongdanmodel.m in Sources */,
 				2832103B213EB88D007EA72A /* newjiaofeiTableViewCell.m in Sources */,
 				282805AE219AD72500B0DD7D /* SDWebImageDownloader.m in Sources */,
+				28D64A8421C7B8220077FFCA /* mywuyegongdanchildViewController.m in Sources */,
 				285DED7A1FD2537800B0812F /* UIScrollView+MJRefresh.m in Sources */,
 				288E8C4E20C6E9B500F9C862 /* MenuScrollView.m in Sources */,
 				845C564C21A7F529002F509D /* sfHuoDongDetailViewController.m in Sources */,
@@ -4869,6 +4937,7 @@
 				28A83CB2205F4634009ED444 /* HXPhotoTools.m in Sources */,
 				28A967E220D1F8EC00C626D3 /* youxianjiaofeimodel.m in Sources */,
 				28280613219ADE5600B0DD7D /* WebViewJavascriptBridge.m in Sources */,
+				28D64A8721C7BD790077FFCA /* wuyegongdanTableViewCell.m in Sources */,
 				282805C0219AD72500B0DD7D /* DACircularProgressView.m in Sources */,
 				2880DA522060E2930096E86D /* YBPopupMenu.m in Sources */,
 				288EB2B920AEB6DC0033C09C /* youxianjiaofeijiluViewController.m in Sources */,
@@ -4896,6 +4965,7 @@
 				285DED781FD2537800B0812F /* NSBundle+MJRefresh.m in Sources */,
 				281D494B20078D180020D2DB /* XPFPickerView.m in Sources */,
 				282805A3219AD72500B0DD7D /* MKAnnotationView+WebCache.m in Sources */,
+				2810CA5521C4F68300587324 /* ziyongliebiaoViewController.m in Sources */,
 				28A716C52061F1FD0050D446 /* PGIndexBannerSubiew.m in Sources */,
 				287E56F5206A344800252463 /* xinfangshouceCell.m in Sources */,
 				2859126021AD4B1800498BBE /* kuodabuttondianjifanwei.m in Sources */,

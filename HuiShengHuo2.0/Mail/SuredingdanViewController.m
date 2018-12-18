@@ -352,7 +352,7 @@
     AdressViewController *address = [[AdressViewController alloc] init];
     
     //赋值Block，并将捕获的值赋值给UILabel
-    address.returnValueBlock = ^(NSString *name,NSString *phone,NSString *address,NSString *addressid){
+    address.returnValueBlock = ^(NSString *name,NSString *phone,NSString *address,NSString *addressid,NSDictionary *datadic){
         labelcontent.text = address;
         labelname.text = [NSString stringWithFormat:@"%@ %@",name,phone];
 

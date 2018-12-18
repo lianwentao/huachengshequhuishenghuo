@@ -870,6 +870,14 @@
                     xinfangshouceViewController *xinfang = [[xinfangshouceViewController alloc] init];
                     xinfang.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:xinfang animated:YES];
+                }if ([url_type isEqualToString:@"22"]){
+                    
+                }if ([url_type isEqualToString:@"23"]){
+                    
+                }if ([url_type isEqualToString:@"24"]){
+                    
+                }if ([url_type isEqualToString:@"25"]){
+                    
                 }
             }];
             tableView.rowHeight = Main_width/1.87;

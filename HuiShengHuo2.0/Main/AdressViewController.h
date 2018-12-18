@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void(^ReturnString) (NSString *phone,NSString *name,NSString *address,NSString *addressid);
+typedef void(^ReturnString) (NSString *phone,NSString *name,NSString *address,NSString *addressid,NSDictionary *datadic);
 @interface AdressViewController : UIViewController
 
 @property (nonatomic,strong) NSString *yesnoselecte;

@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface orderDetailsViewController : UIViewController
-@property (nonatomic , strong)NSString *stateStr;
+@property (nonatomic , assign)NSInteger status;
+@property (nonatomic , assign)NSString *stateStr;
+@property (nonatomic , assign)NSInteger evaluate_status;
 @property (nonatomic , strong)NSString *workOrderID;
 @end
