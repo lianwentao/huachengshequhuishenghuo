@@ -15,6 +15,7 @@
 #define kScreen_Height   ([UIScreen mainScreen].bounds.size.height)
 #define kScreen_Width    ([UIScreen mainScreen].bounds.size.width)
 #import "PrefixHeader.pch"
+#import "orderDetailsViewController.h"
 @interface evaluateViewController ()
 {
     UITextView *_textview;
@@ -174,7 +175,6 @@
     [self post];
 }
 -(void)post{
-    NSLog(@"_score = %@",_score);
    
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -195,6 +195,15 @@
         if (status == 1) {
            
              SpecialAlertView *pjwcView = [[SpecialAlertView alloc]initWithImage:@"xiaolian" messageTitle:@"谢谢您的评价" messageString:@"您的评价是我们最大的动力" messageString1:@"会继续努力滴" sureBtnTitle:@"返回订单" sureBtnColor:nil];
+            [pjwcView withSureClick:^(NSString *string) {
+                for (UIViewController *controller in self.navigationController.viewControllers) {
+                    if ([controller isKindOfClass:[orderDetailsViewController class]]) {
+                        orderDetailsViewController *vc =(orderDetailsViewController *)controller;
+                        [self.navigationController popToViewController:vc animated:YES];
+                    }
+                }
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"shuaxinwuyegongdanxiangqing" object:nil userInfo:nil];
+            }];
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

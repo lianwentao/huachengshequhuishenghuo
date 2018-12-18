@@ -26,8 +26,9 @@
 @property (nonatomic , strong)NSMutableArray *dataSourceArr ;
 @property (nonatomic , strong)NSMutableArray *repairImgArr ;
 @property (nonatomic , strong)NSMutableArray *distributeUserArr ;
+@property (nonatomic , strong)NSMutableArray *distributeUserImgArr ;
 @property (nonatomic , strong)NSMutableArray *completeImgArr ;
-@property (nonatomic , strong)NSString *score ;
+@property (nonatomic , strong)NSDictionary *score ;
 @property (nonatomic , assign)CGFloat backscrollviewH;
 @end
 
@@ -49,6 +50,9 @@
     self.view.backgroundColor = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:239/255.0 alpha:1];
     [self loadData];
 //    [self loadTableView];
+
+//    [self setRightBtn];
+
     [self setRightBtn];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shauxin) name:@"shuaxinwuyegongdanxiangqing" object:nil];
@@ -77,12 +81,13 @@
         
             NSDictionary *dataDic = responseObject[@"data"];
             NSLog(@"dataDic = %@",dataDic);
-            if ([dataDic[@"score"] isKindOfClass:[NSString class]]) {
+            if ([dataDic[@"score"] isKindOfClass:[NSDictionary class]]) {
                 
                 _score = dataDic[@"score"];
             }else{
-                _score = @"0";
+                _score = nil;
             }
+            NSLog(@"_score = %@",_score);
             _dataSourceArr = [NSMutableArray array];
             orderDetailModel *model = [[orderDetailModel alloc]initWithDictionary:dataDic error:NULL];
             [_dataSourceArr addObject:model];
@@ -91,6 +96,7 @@
             if ([model.work_status isEqualToString:@"0"]) {
                 [self loadFunctionView];
             }
+            [self setRightBtn];
             
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -126,7 +132,7 @@
         UIBarButtonItem *rightItem2 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn2];
         self.navigationItem.rightBarButtonItem = rightItem2;
         
-    }else if ([model.work_status isEqualToString:@"5"]){
+    }else if ([model.work_status isEqualToString:@"5"] && ![_score isKindOfClass:[NSDictionary class]] ){
         //已完成
         UIButton *rightBtn3 = [UIButton buttonWithType:UIButtonTypeSystem];
         rightBtn3.frame = CGRectMake(0, 0, 58, 35);
@@ -155,7 +161,7 @@
     
     orderDetailModel *model = _dataSourceArr[0];
     CGFloat headerViewH = 0;
-    if([model.work_status isEqualToString:@"1"]) {
+    if([model.work_status isEqualToString:@"1"] || [model.work_status isEqualToString:@"0"] || [model.work_status isEqualToString:@"2"]) {
         headerViewH = 50;
     }else{
         headerViewH = 100;
@@ -255,14 +261,14 @@
              return 160;
         }else if ([model.work_status isEqualToString:@"3"] || [model.work_status isEqualToString:@"0"] ){//待付款
             
-            if (model.completeImg.count == 0) {
+            if (model.distributeUser.count == 0) {
                 return 110;
             }else{
                 return 200;
             }
            
         }else if ([model.work_status isEqualToString:@"4"]){//待完工
-            if (model.completeImg.count == 0) {
+            if (model.distributeUser.count == 0) {
                 return 90;
             }else{
                 return 180;
@@ -413,14 +419,20 @@
 
     }else if(indexPath.section == 3){
         orderDetailModel *model = _dataSourceArr[0];
-        if ([model.work_status isEqualToString:@"1"]) {//待派单
+        if ([model.work_status isEqualToString:@"1"] || [model.work_status isEqualToString:@"0"]) {//待派单
             UILabel *timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake(10,19, Main_width-20, 15)];
-            NSTimeInterval time=[model.release_at doubleValue]+28800;
+            NSTimeInterval time=[model.release_at doubleValue];
             NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
             NSLog(@"date:%@",[detaildate description]);
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
             NSString *currentDateStr = [dateFormatter stringFromDate: detaildate];
+//            NSString *timestring = [[arr objectAtIndex:i] objectForKey:@"release_at"];
+//            NSTimeInterval interval   =[timestring doubleValue];
+//            NSDate *date               = [NSDate dateWithTimeIntervalSince1970:interval];
+//            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//            [formatter setDateFormat:@"MM/dd HH:mm"];
+//            NSString *dateString = [formatter stringFromDate: date];
             NSString *timeStr1 = currentDateStr;
             timeLab1.text = [NSString stringWithFormat:@"下单时间:%@",timeStr1];
             timeLab1.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
@@ -498,18 +510,25 @@
 
             //待付款
            
-            if ([model.completeImg isKindOfClass:[NSNull class]]){}else{
-                NSArray *cImgArr = model.completeImg;
-                _completeImgArr = [NSMutableArray array];
+            if ([model.distributeUser isKindOfClass:[NSNull class]]){}else{
+                NSArray *cImgArr = model.distributeUser;
+                _distributeUserArr = [NSMutableArray array];
                 for (int i = 0; i < cImgArr.count; i++) {
                     NSDictionary *dic = cImgArr[i];
-                    NSString *img_path = [dic objectForKey:@"img_path"];
-                    NSString *img_name = [dic objectForKey:@"img_name"];
-                    NSString *newImg = [img_path stringByAppendingString:img_name];
-                    [_completeImgArr addObject:newImg];
+                    NSString *name = [dic objectForKey:@"name"];
+                    [_distributeUserArr addObject:name];
                 }
             }
-            if (_completeImgArr.count == 0) {
+            if ([model.distributeUser isKindOfClass:[NSNull class]]){}else{
+                NSArray *cImgArr = model.distributeUser;
+                _distributeUserImgArr = [NSMutableArray array];
+                for (int i = 0; i < cImgArr.count; i++) {
+                    NSDictionary *dic = cImgArr[i];
+                    NSString *head_img = [dic objectForKey:@"head_img"];
+                    [_distributeUserImgArr addObject:head_img];
+                }
+            }
+            if (_distributeUserArr.count == 0) {
                 
                 _backscrollviewH = 0;
             }else{
@@ -521,12 +540,12 @@
             backscrollview.showsHorizontalScrollIndicator = NO;
             backscrollview.userInteractionEnabled = YES;
             [cell addSubview:backscrollview];
-            for (int i=0; i<_completeImgArr.count; i++) {
+            for (int i=0; i<_distributeUserArr.count; i++) {
 
                 UIImageView *imgView = [[UIImageView alloc]init];
                 imgView.frame = CGRectMake(10+(i*90),16, 50, 50);
                 imgView.backgroundColor = [UIColor yellowColor];
-                [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_completeImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_distributeUserImgArr[i]]] placeholderImage:[UIImage imageNamed:@"头像"]];
                 imgView.layer.cornerRadius = 25;
                 imgView.clipsToBounds = YES;
                 [backscrollview addSubview:imgView];
@@ -550,7 +569,7 @@
 
                 UILabel *nameLab = [[UILabel alloc]init];
                 nameLab.frame = CGRectMake(10+(i*90),CGRectGetMaxY(imgView.frame)+5, 50, 13);
-                NSString *timeStr3 = @"李小三";
+                NSString *timeStr3 = _distributeUserArr[i];
                 nameLab.text = [NSString stringWithFormat:@"%@",timeStr3];
                 nameLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
                 nameLab.font = [UIFont systemFontOfSize:13];
@@ -598,35 +617,41 @@
                 timeLab2.textAlignment = NSTextAlignmentLeft;
                 [cell addSubview:timeLab2];
 
-                if ([model.completeImg isKindOfClass:[NSNull class]]){}else{
-                    NSArray *cImgArr = model.completeImg;
-                    _completeImgArr = [NSMutableArray array];
+                if ([model.distributeUser isKindOfClass:[NSNull class]]){}else{
+                    NSArray *cImgArr = model.distributeUser;
+                    _distributeUserArr = [NSMutableArray array];
                     for (int i = 0; i < cImgArr.count; i++) {
                         NSDictionary *dic = cImgArr[i];
-                        NSString *img_path = [dic objectForKey:@"img_path"];
-                        NSString *img_name = [dic objectForKey:@"img_name"];
-                        NSString *newImg = [img_path stringByAppendingString:img_name];
-                        [_completeImgArr addObject:newImg];
+                        NSString *name = [dic objectForKey:@"name"];
+                        [_distributeUserArr addObject:name];
                     }
                 }
-                if (_completeImgArr.count == 0) {
+                if ([model.distributeUser isKindOfClass:[NSNull class]]){}else{
+                    NSArray *cImgArr = model.distributeUser;
+                    _distributeUserImgArr = [NSMutableArray array];
+                    for (int i = 0; i < cImgArr.count; i++) {
+                        NSDictionary *dic = cImgArr[i];
+                        NSString *head_img = [dic objectForKey:@"head_img"];
+                        [_distributeUserImgArr addObject:head_img];
+                    }
+                }
+                if (_distributeUserArr.count == 0) {
                     
                     _backscrollviewH = 0;
                 }else{
                     _backscrollviewH = 90;
                 }
                 UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(timeLab2.frame), Main_width, _backscrollviewH)];
-                backscrollview.contentSize = CGSizeMake(50*_completeImgArr.count+16*(_completeImgArr.count-1), 50);
+                backscrollview.contentSize = CGSizeMake(50*_distributeUserArr.count+16*(_distributeUserArr.count-1), 50);
                 backscrollview.showsVerticalScrollIndicator = NO;
                 backscrollview.showsHorizontalScrollIndicator = NO;
                 backscrollview.userInteractionEnabled = YES;
                 [cell addSubview:backscrollview];
-                for (int i=0; i<_completeImgArr.count; i++) {
+                for (int i=0; i<_distributeUserArr.count; i++) {
                     
                     UIImageView *imgView = [[UIImageView alloc]init];
                     imgView.frame = CGRectMake(10+(i*90),16, 50, 50);
-                    imgView.backgroundColor = [UIColor yellowColor];
-                    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_completeImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_distributeUserImgArr[i]]] placeholderImage:[UIImage imageNamed:@"头像"]];
                     imgView.layer.cornerRadius = 25;
                     imgView.clipsToBounds = YES;
                     [backscrollview addSubview:imgView];
@@ -650,7 +675,7 @@
 
                     UILabel *nameLab = [[UILabel alloc]init];
                     nameLab.frame = CGRectMake(10+(i*90),CGRectGetMaxY(imgView.frame)+5, 50, 13);
-                    NSString *timeStr3 = @"李小三";
+                    NSString *timeStr3 = _distributeUserArr[i];
                     nameLab.text = [NSString stringWithFormat:@"%@",timeStr3];
                     nameLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
                     nameLab.font = [UIFont systemFontOfSize:13];
@@ -700,34 +725,41 @@
                 timeLab2.textAlignment = NSTextAlignmentLeft;
                 [cell addSubview:timeLab2];
 
-                if ([model.completeImg isKindOfClass:[NSNull class]]){}else{
-                    NSArray *cImgArr = model.completeImg;
-                    _completeImgArr = [NSMutableArray array];
+                if ([model.distributeUser isKindOfClass:[NSNull class]]){}else{
+                    NSArray *cImgArr = model.distributeUser;
+                    _distributeUserArr = [NSMutableArray array];
                     for (int i = 0; i < cImgArr.count; i++) {
                         NSDictionary *dic = cImgArr[i];
-                        NSString *img_path = [dic objectForKey:@"img_path"];
-                        NSString *img_name = [dic objectForKey:@"img_name"];
-                        NSString *newImg = [img_path stringByAppendingString:img_name];
-                        [_completeImgArr addObject:newImg];
+                        NSString *name = [dic objectForKey:@"name"];
+                        [_distributeUserArr addObject:name];
                     }
                 }
-                if (_completeImgArr.count == 0) {
+                if ([model.distributeUser isKindOfClass:[NSNull class]]){}else{
+                    NSArray *cImgArr = model.distributeUser;
+                    _distributeUserImgArr = [NSMutableArray array];
+                    for (int i = 0; i < cImgArr.count; i++) {
+                        NSDictionary *dic = cImgArr[i];
+                        NSString *head_img = [dic objectForKey:@"head_img"];
+                        [_distributeUserImgArr addObject:head_img];
+                    }
+                }
+                if (_distributeUserArr.count == 0) {
                     
                     _backscrollviewH = 0;
                 }else{
                     _backscrollviewH = 90;
                 }
                 UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(timeLab2.frame), Main_width, _backscrollviewH)];
-                backscrollview.contentSize = CGSizeMake(50*_completeImgArr.count+16*(_completeImgArr.count-1), 50);
+                backscrollview.contentSize = CGSizeMake(50*_distributeUserArr.count+16*(_distributeUserArr.count-1), 50);
                 backscrollview.showsVerticalScrollIndicator = NO;
                 backscrollview.showsHorizontalScrollIndicator = NO;
                 backscrollview.userInteractionEnabled = YES;
                 [cell addSubview:backscrollview];
-                for (int i=0; i<_completeImgArr.count; i++) {
+                for (int i=0; i<_distributeUserArr.count; i++) {
                     
                     UIImageView *imgView = [[UIImageView alloc]init];
                     imgView.frame = CGRectMake(10+(i*90),16, 50, 50);
-                    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_completeImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_distributeUserImgArr[i]]] placeholderImage:[UIImage imageNamed:@"头像"]];
                     imgView.layer.cornerRadius = 25;
                     imgView.clipsToBounds = YES;
                     [backscrollview addSubview:imgView];
@@ -751,7 +783,7 @@
 
                     UILabel *nameLab = [[UILabel alloc]init];
                     nameLab.frame = CGRectMake(10+(i*90),CGRectGetMaxY(imgView.frame)+5, 50, 13);
-                    NSString *timeStr3 = @"李小三";
+                    NSString *timeStr3 = _distributeUserArr[i];
                     nameLab.text = [NSString stringWithFormat:@"%@",timeStr3];
                     nameLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
                     nameLab.font = [UIFont systemFontOfSize:13];
@@ -869,7 +901,7 @@
         orderDetailModel *model = _dataSourceArr[0];
          if ([model.work_status isEqualToString:@"5"]) { //已完工
              UILabel *timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake(10,19, Main_width-20, 15)];
-             NSTimeInterval time=[model.order_time doubleValue]+28800;
+             NSTimeInterval time=[model.order_time doubleValue];
              NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
              NSLog(@"date:%@",[detaildate description]);
              NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -883,7 +915,7 @@
              [cell addSubview:timeLab1];
 
              UILabel *timeLab2 = [[UILabel alloc] initWithFrame:CGRectMake(10,CGRectGetMaxY(timeLab1.frame)+10, Main_width-20, 15)];
-             NSTimeInterval time2=[model.order_total_time doubleValue]+28800;
+             NSTimeInterval time2=[model.order_total_time doubleValue];
              NSDate *detaildate2=[NSDate dateWithTimeIntervalSince1970:time2];
              NSLog(@"date:%@",[detaildate2 description]);
              NSDateFormatter *dateFormatter2 = [[NSDateFormatter alloc] init];
@@ -918,85 +950,19 @@
                  UIImageView *imgView = [[UIImageView alloc]init];
                  imgView.frame = CGRectMake(10+(i*90),16, 50, 50);
                  [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_completeImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                 imgView.layer.cornerRadius = 25;
-                 imgView.clipsToBounds = YES;
+//                 imgView.layer.cornerRadius = 25;
+//                 imgView.clipsToBounds = YES;
                  [backscrollview addSubview:imgView];
 
              }
              UILabel *beiZhuLab = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(backscrollview.frame), Main_width-20, 60)];
              beiZhuLab.numberOfLines = 2;
-             beiZhuLab.text = @"备注：还记得刚的哈萨克和阿萨德回来圣诞节爱丽丝按实际的话拉动和啊啊数据库的好看打开";
+             beiZhuLab.text = model.complete_content;
              beiZhuLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
              beiZhuLab.font = [UIFont systemFontOfSize:13];
              beiZhuLab.textAlignment = NSTextAlignmentLeft;
              [cell addSubview:beiZhuLab];
-
-
-         }else if(_evaluate_status == 1) { //已评价
-
-             UILabel *timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake(10,19, Main_width-20, 15)];
-             NSTimeInterval time=[model.order_time doubleValue]+28800;
-             NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
-             NSLog(@"date:%@",[detaildate description]);
-             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-             NSString *currentDateStr = [dateFormatter stringFromDate: detaildate];
-             NSString *timeStr1 = currentDateStr;
-             timeLab1.text = [NSString stringWithFormat:@"服务用时:%@",timeStr1];
-             timeLab1.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
-             timeLab1.font = [UIFont systemFontOfSize:15];
-             timeLab1.textAlignment = NSTextAlignmentLeft;
-             [cell addSubview:timeLab1];
-
-             UILabel *timeLab2 = [[UILabel alloc] initWithFrame:CGRectMake(10,CGRectGetMaxY(timeLab1.frame)+10, Main_width-20, 15)];
-             NSTimeInterval time2=[model.order_total_time doubleValue]+28800;
-             NSDate *detaildate2=[NSDate dateWithTimeIntervalSince1970:time2];
-             NSLog(@"date:%@",[detaildate2 description]);
-             NSDateFormatter *dateFormatter2 = [[NSDateFormatter alloc] init];
-             [dateFormatter2 setDateFormat:@"yyyy-MM-dd HH:mm"];
-             NSString *currentDateStr2 = [dateFormatter stringFromDate: detaildate2];
-             NSString *timeStr2 = currentDateStr2;
-             timeLab2.text = [NSString stringWithFormat:@"订单完成:%@",timeStr2];
-             timeLab2.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
-             timeLab2.font = [UIFont systemFontOfSize:15];
-             timeLab2.textAlignment = NSTextAlignmentLeft;
-             [cell addSubview:timeLab2];
-
-             if ([model.completeImg isKindOfClass:[NSNull class]]){}else{
-                 NSArray *cImgArr = model.completeImg;
-                 _completeImgArr = [NSMutableArray array];
-                 for (int i = 0; i < cImgArr.count; i++) {
-                     NSDictionary *dic = cImgArr[i];
-                     NSString *img_path = [dic objectForKey:@"img_path"];
-                     NSString *img_name = [dic objectForKey:@"img_name"];
-                     NSString *newImg = [img_path stringByAppendingString:img_name];
-                     [_completeImgArr addObject:newImg];
-                 }
-             }
-             UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(timeLab2.frame), Main_width, 90)];
-             backscrollview.contentSize = CGSizeMake(50*_completeImgArr.count+16*(_completeImgArr.count-1), 50);
-             backscrollview.showsVerticalScrollIndicator = NO;
-             backscrollview.showsHorizontalScrollIndicator = NO;
-             backscrollview.userInteractionEnabled = YES;
-             [cell addSubview:backscrollview];
-             for (int i=0; i<_completeImgArr.count; i++) {
-                 
-                 UIImageView *imgView = [[UIImageView alloc]init];
-                 imgView.frame = CGRectMake(10+(i*90),16, 50, 50);
-                 [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_completeImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                 imgView.layer.cornerRadius = 25;
-                 imgView.clipsToBounds = YES;
-                 [backscrollview addSubview:imgView];
-                 
-             }
-             UILabel *beiZhuLab = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(backscrollview.frame), Main_width-20, 60)];
-             beiZhuLab.numberOfLines = 2;
-             beiZhuLab.text = @"备注：还记得刚的哈萨克和阿萨德回来圣诞节爱丽丝按实际的话拉动和啊啊数据库的好看打开";
-             beiZhuLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
-             beiZhuLab.font = [UIFont systemFontOfSize:13];
-             beiZhuLab.textAlignment = NSTextAlignmentLeft;
-             [cell addSubview:beiZhuLab];
-
+             
              //评价评分
              UILabel *pingJiaLab = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(beiZhuLab.frame)+10, 70, 15)];
              pingJiaLab.numberOfLines = 2;
@@ -1005,25 +971,119 @@
              pingJiaLab.font = [UIFont systemFontOfSize:15];
              pingJiaLab.textAlignment = NSTextAlignmentCenter;
              [cell addSubview:pingJiaLab];
-
-             int i = [_score intValue];
+        
+        if([_score isKindOfClass:[NSDictionary class]]) { //已评价
+             int i = [_score[@"level"] intValue];
              for (int j = 0; j<i; j++) {
                  UIImageView *starView = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(pingJiaLab.frame)+10+j*20, CGRectGetMaxY(beiZhuLab.frame)+10, 15, 15)];
                  starView.image = [UIImage imageNamed:@"pingjia1"];
                  [cell.contentView addSubview:starView];
              }
-
+             
+            
              UILabel *pjTitleLab = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(pingJiaLab.frame)+10, CGRectGetMaxY(pingJiaLab.frame), Main_width-20-80, 60)];
              pjTitleLab.numberOfLines = 2;
-             pjTitleLab.text = @"服务态度不错，小区物业服务很贴心细致";
+             pjTitleLab.text = _score[@"evaluate_content"];
              pjTitleLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
              pjTitleLab.font = [UIFont systemFontOfSize:13];
              pjTitleLab.textAlignment = NSTextAlignmentLeft;
              [cell addSubview:pjTitleLab];
+            }
 
-         }else{
 
          }
+//         else if([_score isKindOfClass:[NSDictionary class]]) { //已评价
+//
+//             UILabel *timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake(10,19, Main_width-20, 15)];
+//             NSTimeInterval time=[model.order_time doubleValue]+28800;
+//             NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
+//             NSLog(@"date:%@",[detaildate description]);
+//             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//             [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+//             NSString *currentDateStr = [dateFormatter stringFromDate: detaildate];
+//             NSString *timeStr1 = currentDateStr;
+//             timeLab1.text = [NSString stringWithFormat:@"服务用时:%@",timeStr1];
+//             timeLab1.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
+//             timeLab1.font = [UIFont systemFontOfSize:15];
+//             timeLab1.textAlignment = NSTextAlignmentLeft;
+//             [cell addSubview:timeLab1];
+//
+//             UILabel *timeLab2 = [[UILabel alloc] initWithFrame:CGRectMake(10,CGRectGetMaxY(timeLab1.frame)+10, Main_width-20, 15)];
+//             NSTimeInterval time2=[model.order_total_time doubleValue]+28800;
+//             NSDate *detaildate2=[NSDate dateWithTimeIntervalSince1970:time2];
+//             NSLog(@"date:%@",[detaildate2 description]);
+//             NSDateFormatter *dateFormatter2 = [[NSDateFormatter alloc] init];
+//             [dateFormatter2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+//             NSString *currentDateStr2 = [dateFormatter stringFromDate: detaildate2];
+//             NSString *timeStr2 = currentDateStr2;
+//             timeLab2.text = [NSString stringWithFormat:@"订单完成:%@",timeStr2];
+//             timeLab2.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
+//             timeLab2.font = [UIFont systemFontOfSize:15];
+//             timeLab2.textAlignment = NSTextAlignmentLeft;
+//             [cell addSubview:timeLab2];
+//
+//             if ([model.completeImg isKindOfClass:[NSNull class]]){}else{
+//                 NSArray *cImgArr = model.completeImg;
+//                 _completeImgArr = [NSMutableArray array];
+//                 for (int i = 0; i < cImgArr.count; i++) {
+//                     NSDictionary *dic = cImgArr[i];
+//                     NSString *img_path = [dic objectForKey:@"img_path"];
+//                     NSString *img_name = [dic objectForKey:@"img_name"];
+//                     NSString *newImg = [img_path stringByAppendingString:img_name];
+//                     [_completeImgArr addObject:newImg];
+//                 }
+//             }
+//             UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(timeLab2.frame), Main_width, 90)];
+//             backscrollview.contentSize = CGSizeMake(50*_completeImgArr.count+16*(_completeImgArr.count-1), 50);
+//             backscrollview.showsVerticalScrollIndicator = NO;
+//             backscrollview.showsHorizontalScrollIndicator = NO;
+//             backscrollview.userInteractionEnabled = YES;
+//             [cell addSubview:backscrollview];
+//             for (int i=0; i<_completeImgArr.count; i++) {
+//
+//                 UIImageView *imgView = [[UIImageView alloc]init];
+//                 imgView.frame = CGRectMake(10+(i*90),16, 50, 50);
+//                 [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_completeImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+//                 imgView.layer.cornerRadius = 25;
+//                 imgView.clipsToBounds = YES;
+//                 [backscrollview addSubview:imgView];
+//
+//             }
+//             UILabel *beiZhuLab = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(backscrollview.frame), Main_width-20, 60)];
+//             beiZhuLab.numberOfLines = 2;
+//             beiZhuLab.text = model.complete_content;
+//             beiZhuLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
+//             beiZhuLab.font = [UIFont systemFontOfSize:13];
+//             beiZhuLab.textAlignment = NSTextAlignmentLeft;
+//             [cell addSubview:beiZhuLab];
+//
+//             //评价评分
+//             UILabel *pingJiaLab = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(beiZhuLab.frame)+10, 70, 15)];
+//             pingJiaLab.numberOfLines = 2;
+//             pingJiaLab.text = @"服务评分:";
+//             pingJiaLab.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:1/255.0 alpha:1];
+//             pingJiaLab.font = [UIFont systemFontOfSize:15];
+//             pingJiaLab.textAlignment = NSTextAlignmentCenter;
+//             [cell addSubview:pingJiaLab];
+//
+//             int i = [_score[@"level"] intValue];
+//             for (int j = 0; j<i; j++) {
+//                 UIImageView *starView = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(pingJiaLab.frame)+10+j*20, CGRectGetMaxY(beiZhuLab.frame)+10, 15, 15)];
+//                 starView.image = [UIImage imageNamed:@"pingjia1"];
+//                 [cell.contentView addSubview:starView];
+//             }
+//
+//             UILabel *pjTitleLab = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(pingJiaLab.frame)+10, CGRectGetMaxY(pingJiaLab.frame), Main_width-20-80, 60)];
+//             pjTitleLab.numberOfLines = 2;
+//             pjTitleLab.text = _score[@"evaluate_content"];
+//             pjTitleLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
+//             pjTitleLab.font = [UIFont systemFontOfSize:13];
+//             pjTitleLab.textAlignment = NSTextAlignmentLeft;
+//             [cell addSubview:pjTitleLab];
+//
+//         }else{
+//
+//         }
 
 
     }
@@ -1078,12 +1138,13 @@
 }
 #pragma mark - 取消订单
 -(void)rightBtn1Clicked{
+    orderDetailModel *model = _dataSourceArr[0];
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"id":_workOrderID};
+    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"id":model.id};
 
     NSString *strurl = [API stringByAppendingString:@"propertyWork/WorkCancel"];
     [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -1095,11 +1156,13 @@
         NSLog(@"dataStr = %@",dataStr);
         NSInteger status = [responseObject[@"status"] integerValue];
         if (status == 1) {
-
-            _stateStr = @"已评价";
-            mywuyegongdanViewController *mmVC = [[mywuyegongdanViewController alloc]init];
-            [self.navigationController pushViewController:mmVC animated:YES];
-            [_tableView reloadData];
+            
+            for (UIViewController *controller in self.navigationController.viewControllers) {
+                if ([controller isKindOfClass:[mywuyegongdanViewController class]]) {
+                    mywuyegongdanViewController *vc =(mywuyegongdanViewController *)controller;
+                    [self.navigationController popToViewController:vc animated:YES];
+                }
+            }
         }
 
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -1143,9 +1206,9 @@
 }
 #pragma mark - 评价
 -(void)rightBtn3Clicked{
-    
+    orderDetailModel *model = _dataSourceArr[0];
     evaluateViewController *pjVC = [[evaluateViewController alloc]init];
-    pjVC.orderID = _workOrderID;
+    pjVC.orderID = model.id;
     [self.navigationController pushViewController:pjVC animated:YES];
  
 }

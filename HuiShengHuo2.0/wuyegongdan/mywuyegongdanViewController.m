@@ -26,7 +26,9 @@
     //[self getdata];
     [self setui];
     // Do any additional setup after loading the view.
+    
 }
+
 -(BOOL)navigationShouldPopOnBackButton {
     [self backBtnClicked];
     
