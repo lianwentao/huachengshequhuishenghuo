@@ -28,6 +28,7 @@
 @property (nonatomic , strong)NSMutableArray *distributeUserArr ;
 @property (nonatomic , strong)NSMutableArray *completeImgArr ;
 @property (nonatomic , strong)NSString *score ;
+@property (nonatomic , assign)CGFloat backscrollviewH;
 @end
 
 @implementation orderDetailsViewController
@@ -49,6 +50,11 @@
     [self loadData];
 //    [self loadTableView];
     [self setRightBtn];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shauxin) name:@"shuaxinwuyegongdanxiangqing" object:nil];
+}
+- (void)shauxin{
+    [self loadData];
 }
 -(void)loadData{
     //1.创建会话管理者
@@ -82,10 +88,8 @@
             [_dataSourceArr addObject:model];
             NSLog(@"_dataSourceArr = %@",_dataSourceArr);
             [self loadTableView];
-            if ([model.work_status isEqualToString:@"1"]) {
-                
-            }else{
-               [self loadFunctionView];
+            if ([model.work_status isEqualToString:@"0"]) {
+                [self loadFunctionView];
             }
             
         }
@@ -95,7 +99,8 @@
     }];
 }
 -(void)setRightBtn{
-    if ([_stateStr isEqualToString:@"待派单"] || [_stateStr isEqualToString:@"待服务"]) {
+    orderDetailModel *model = _dataSourceArr[0];
+    if ([model.work_status isEqualToString:@"1"] || [model.work_status isEqualToString:@"2"]) {
         //等待派单
         UIButton *rightBtn1 = [UIButton buttonWithType:UIButtonTypeSystem];
         rightBtn1.frame = CGRectMake(0, 0, 80, 30);
@@ -107,7 +112,7 @@
         [rightBtn1 addTarget:self action:@selector(rightBtn1Clicked) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *rightItem1 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn1];
         self.navigationItem.rightBarButtonItem = rightItem1;
-    }else if ([_stateStr isEqualToString:@"待付款"]){
+    }else if ([model.work_status isEqualToString:@"3"]){
         //    待付款+已付款
         UIButton *rightBtn2 = [UIButton buttonWithType:UIButtonTypeSystem];
         rightBtn2.frame = CGRectMake(0, 0, 58, 35);
@@ -122,10 +127,10 @@
         UIBarButtonItem *rightItem2 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn2];
         self.navigationItem.rightBarButtonItem = rightItem2;
         
-    }else if ([_stateStr isEqualToString:@"已完成"]){
+    }else if ([model.work_status isEqualToString:@"5"]){
         //已完成
         UIButton *rightBtn3 = [UIButton buttonWithType:UIButtonTypeSystem];
-        rightBtn3.frame = CGRectMake(0, 0, 40, 20);
+        rightBtn3.frame = CGRectMake(0, 0, 58, 35);
         [rightBtn3 setTitle:@"评价" forState:UIControlStateNormal];
         rightBtn3.titleLabel.font = [UIFont systemFontOfSize:14];
         [rightBtn3 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -135,20 +140,69 @@
         UIBarButtonItem *rightItem3 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn3];
         self.navigationItem.rightBarButtonItem = rightItem3;
     }
-   
-
-   
-    
+  
 }
 -(void)loadTableView{
     
-    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, Main_width,  Main_Height-50) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(10, 0, Main_width-20,  Main_Height-50) style:UITableViewStylePlain];
     _tableView.backgroundColor = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:239/255.0 alpha:1];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
+    _tableView.showsVerticalScrollIndicator = NO;
+//    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 //    _tableView.contentInset = UIEdgeInsetsMake(IMAGE_HEIGHT - [self navBarBottom], 0, 0, 0);
     [self.view addSubview:_tableView];
+    
+    orderDetailModel *model = _dataSourceArr[0];
+    CGFloat headerViewH = 0;
+    if([model.work_status isEqualToString:@"1"]) {
+        headerViewH = 50;
+    }else{
+        headerViewH = 100;
+    }
+//    if([_stateStr isEqualToString:@"待付款"] || [_stateStr isEqualToString:@"待完工"] || [_stateStr isEqualToString:@"已完工"] || [_stateStr isEqualToString:@"已评价"]) {
+//        headerViewH = 100;
+//    }else{
+//        headerViewH = 50;
+//    }
+   
+    UIView *headerView = [[UIView alloc]init];
+    headerView.frame = CGRectMake(0, 0, Main_width, headerViewH);
+    headerView.backgroundColor = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:239/255.0 alpha:1];
+        
+    //待服务
+    UILabel *orderNumberLab = [[UILabel alloc]init];
+    orderNumberLab.frame = CGRectMake(10, 10, Main_width-20, 30);
+    NSString *textStr = model.order_number;
+    orderNumberLab.text = [NSString stringWithFormat:@"订单编号:%@",textStr];
+    orderNumberLab.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
+    orderNumberLab.font = [UIFont systemFontOfSize:15];
+    orderNumberLab.textAlignment = NSTextAlignmentLeft;
+    [headerView addSubview:orderNumberLab];
+        
+    //待付款
+    if([model.work_status isEqualToString:@"3"]) {
+        UILabel *payLab = [[UILabel alloc]init];
+        payLab.frame = CGRectMake(10, CGRectGetMaxY(orderNumberLab.frame)+10, Main_width-20, 30);
+        NSString *payStr = @"190";
+        payLab.text = [NSString stringWithFormat:@"未付: ￥%@",payStr];
+        payLab.textColor = [UIColor colorWithRed:254/255.0 green:57/255.0 blue:57/255.0 alpha:1];
+        [payLab setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
+        payLab.textAlignment = NSTextAlignmentLeft;
+        [headerView addSubview:payLab];
+    }else if ([model.work_status isEqualToString:@"4"] || [model.work_status isEqualToString:@"5"] || _evaluate_status == 1){//已付款
+        UILabel *payLab = [[UILabel alloc]init];
+        payLab.frame = CGRectMake(10, CGRectGetMaxY(orderNumberLab.frame)+10, Main_width-20, 30);
+        NSString *payStr = @"190";
+        payLab.text = [NSString stringWithFormat:@"已付: ￥%@",payStr];
+        payLab.textColor = [UIColor colorWithRed:80/255.0 green:204/255.0 blue:51/255.0 alpha:1];
+        [payLab setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
+        payLab.textAlignment = NSTextAlignmentLeft;
+        [headerView addSubview:payLab];
+    }
+    _tableView.tableHeaderView = headerView;
+
 }
 - (int)navBarBottom
 {
@@ -164,18 +218,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        
-        if([_stateStr isEqualToString:@"待付款"] || [_stateStr isEqualToString:@"已付款"] || [_stateStr isEqualToString:@"已完成"] || [_stateStr isEqualToString:@"已评价"]) {
-            return 100;
-        }else{
-           return  50;
-        }
-    }else{
-        return 1;
-    }
-}
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     return 0.001;
 }
@@ -186,42 +228,90 @@
         return 50;
         
     }else if (indexPath.section ==2){
-        return 150;
+        orderDetailModel *model = _dataSourceArr[0];
+        if (model.repairImg.count == 0) {
+            if ([model.content isEqualToString:@""]) {
+                return 0;
+            }else{
+                return 60;
+            }
+            
+        }else{
+            
+            if ([model.content isEqualToString:@""]) {
+                return 90;
+            }else{
+                return 150;
+            }
+           
+        }
+       
         
     }else if (indexPath.section ==3){
         orderDetailModel *model = _dataSourceArr[0];
 
-        if ([_stateStr isEqualToString:@"待派单"]) {
+        if ([model.work_status isEqualToString:@"1"]) {//待派单
              return 160;
-        }else if ([_stateStr isEqualToString:@"待服务"]){
+        }else if ([model.work_status isEqualToString:@"2"]){//待服务
              return 160;
-        }else if ([_stateStr isEqualToString:@"待付款"]){
-            return 200;
-        }else if ([_stateStr isEqualToString:@"已付款"]){
-            return 180;
-        }else if ([_stateStr isEqualToString:@"已完成"]){
-            return 180;
-        }else if ([_stateStr isEqualToString:@"已评价"]){
-            return 200;
-        }else if ([_stateStr isEqualToString:@"已取消"]){
+        }else if ([model.work_status isEqualToString:@"3"] || [model.work_status isEqualToString:@"0"] ){//待付款
+            
+            if (model.completeImg.count == 0) {
+                return 110;
+            }else{
+                return 200;
+            }
+           
+        }else if ([model.work_status isEqualToString:@"4"]){//待完工
+            if (model.completeImg.count == 0) {
+                return 90;
+            }else{
+                return 180;
+            }
+        }else if ([model.work_status isEqualToString:@"5"]){//已完工
+            
+            if (model.completeImg.count == 0) {
+                return 90;
+            }else{
+                return 180;
+            }
+//            if (_evaluate_status == 1) {
+//                return 200;
+//            }else{
+//                return 180;
+//            }
+            
+        }else if ([model.work_status isEqualToString:@"6"]){
             return 120;
         }else{
              return 0;
         }
         
     }else{
-        if ([_stateStr isEqualToString:@"待派单"]) {
+        orderDetailModel *model = _dataSourceArr[0];
+        if ([model.work_status isEqualToString:@"1"]) {//待派单
             return 0;
-        }else if ([_stateStr isEqualToString:@"待服务"]){
+        }else if ([model.work_status isEqualToString:@"2"]){//待服务
             return 0;
-        }else if ([_stateStr isEqualToString:@"待付款"]){
+        }else if ([model.work_status isEqualToString:@"3"] || [model.work_status isEqualToString:@"0"] ){//待付款
             return 0;
-        }else if ([_stateStr isEqualToString:@"已付款"]){
+        }else if ([model.work_status isEqualToString:@"4"]){//待完工
             return 0;
-        }else if ([_stateStr isEqualToString:@"已完成"]){
-            return 260;
-        }else if ([_stateStr isEqualToString:@"已评价"]){
-            return 300;
+        }else if ([model.work_status isEqualToString:@"5"]){//已完工
+            if (model.completeImg.count == 0) {
+               
+                if (_evaluate_status == 1) {
+                    return 210;
+                }else{
+                    return 170;
+                }
+            }else{
+                if (_evaluate_status == 1) {
+                    return 300;
+                }else{
+                    return 260;
+                }
+            }
         }else{
            return 0;
         }
@@ -230,13 +320,12 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *cellIndetifier = @"cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndetifier];
-    cell.backgroundColor = [UIColor whiteColor];
+    cell.backgroundColor = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:239/255.0 alpha:1];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
 
         cell.userInteractionEnabled = YES;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;    //点击的时候无效果
-//        cell.frame = CGRectMake(10, 0, Main_width-20, Main_Height-50);
     }
 
     if (indexPath.section == 0) {
@@ -257,6 +346,11 @@
         nameLab.font = [UIFont systemFontOfSize:18];
         nameLab.textAlignment = NSTextAlignmentLeft;
         [cell addSubview:nameLab];
+        
+        UIView *line = [[UIView alloc]init];
+        line.frame = CGRectMake(10, CGRectGetMaxY(nameLab.frame)-0.5, Main_width-40, .5);
+        line.backgroundColor = [UIColor colorWithRed:222/255.0 green:222/255.0 blue:222/255.0 alpha:1];
+        [cell addSubview:line];
 
     }else if (indexPath.section == 1){
         orderDetailModel *model = _dataSourceArr[0];
@@ -267,6 +361,7 @@
         projectLab.font = [UIFont systemFontOfSize:15];
         projectLab.textAlignment = NSTextAlignmentLeft;
         [cell addSubview:projectLab];
+        
 
     }else if(indexPath.section == 2){
         orderDetailModel *model = _dataSourceArr[0];
@@ -281,7 +376,13 @@
                 [_repairImgArr addObject:newImg];
             }
         }
-        UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, Main_width, 90)];
+        if (_repairImgArr.count == 0) {
+            
+            _backscrollviewH = 0;
+        }else{
+            _backscrollviewH = 90;
+        }
+        UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, Main_width, _backscrollviewH)];
         backscrollview.contentSize = CGSizeMake(60*_repairImgArr.count+16*(_repairImgArr.count-1), 60);
         backscrollview.showsVerticalScrollIndicator = NO;
         backscrollview.showsHorizontalScrollIndicator = NO;
@@ -296,8 +397,14 @@
             imgView.clipsToBounds = YES;
             [backscrollview addSubview:imgView];
         }
-
-        UILabel *beiZhuLab = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(backscrollview.frame), Main_width-20, 60)];
+        
+        CGFloat beiZhuLabH = 0;
+        if ([model.content isEqualToString:@""]) {
+            beiZhuLabH = 0;
+        }else{
+            beiZhuLabH = 60;
+        }
+        UILabel *beiZhuLab = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(backscrollview.frame), Main_width-20, beiZhuLabH)];
         beiZhuLab.numberOfLines = 2;
         beiZhuLab.text = model.content;
         beiZhuLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
@@ -307,7 +414,7 @@
 
     }else if(indexPath.section == 3){
         orderDetailModel *model = _dataSourceArr[0];
-        if ([_stateStr isEqualToString:@"待派单"]) {
+        if ([model.work_status isEqualToString:@"1"]) {//待派单
             UILabel *timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake(10,19, Main_width-20, 15)];
             NSTimeInterval time=[model.release_at doubleValue]+28800;
             NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
@@ -321,7 +428,7 @@
             timeLab1.font = [UIFont systemFontOfSize:15];
             timeLab1.textAlignment = NSTextAlignmentLeft;
             [cell addSubview:timeLab1];
-        }else if ([_stateStr isEqualToString:@"待服务"]){ //待服务
+        }else if ([model.work_status isEqualToString:@"2"]){ //待服务
 
             UILabel *timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake(10,19, Main_width-20, 15)];
             NSTimeInterval time=[model.release_at doubleValue]+28800;
@@ -360,7 +467,7 @@
             timeLab3.textAlignment = NSTextAlignmentLeft;
             [cell addSubview:timeLab3];
 
-        }else if ([_stateStr isEqualToString:@"待付款"]){//待付款
+        }else if ([model.work_status isEqualToString:@"3"] || [model.work_status isEqualToString:@"0"]){//待付款
 
             UILabel *timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake(10,19, Main_width-20, 15)];
             NSTimeInterval time=[model.release_at doubleValue]+28800;
@@ -391,6 +498,7 @@
             [cell addSubview:timeLab2];
 
             //待付款
+           
             if ([model.completeImg isKindOfClass:[NSNull class]]){}else{
                 NSArray *cImgArr = model.completeImg;
                 _completeImgArr = [NSMutableArray array];
@@ -402,7 +510,13 @@
                     [_completeImgArr addObject:newImg];
                 }
             }
-            UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(timeLab2.frame), Main_width, 90)];
+            if (_completeImgArr.count == 0) {
+                
+                _backscrollviewH = 0;
+            }else{
+                _backscrollviewH = 90;
+            }
+            UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(timeLab2.frame), Main_width, _backscrollviewH)];
             backscrollview.contentSize = CGSizeMake(50*_completeImgArr.count+16*(_completeImgArr.count-1), 50);
             backscrollview.showsVerticalScrollIndicator = NO;
             backscrollview.showsHorizontalScrollIndicator = NO;
@@ -455,7 +569,7 @@
             timeLab3.textAlignment = NSTextAlignmentLeft;
             [cell addSubview:timeLab3];
 
-            }else if([_stateStr isEqualToString:@"已付款"]){//已付款
+            }else if([model.work_status isEqualToString:@"4"]){//待完工
 
                 UILabel *timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake(10,19, Main_width-20, 15)];
                 NSTimeInterval time=[model.release_at doubleValue]+28800;
@@ -496,7 +610,13 @@
                         [_completeImgArr addObject:newImg];
                     }
                 }
-                UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(timeLab2.frame), Main_width, 90)];
+                if (_completeImgArr.count == 0) {
+                    
+                    _backscrollviewH = 0;
+                }else{
+                    _backscrollviewH = 90;
+                }
+                UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(timeLab2.frame), Main_width, _backscrollviewH)];
                 backscrollview.contentSize = CGSizeMake(50*_completeImgArr.count+16*(_completeImgArr.count-1), 50);
                 backscrollview.showsVerticalScrollIndicator = NO;
                 backscrollview.showsHorizontalScrollIndicator = NO;
@@ -540,7 +660,7 @@
 
                 }
 
-                if ([_stateStr isEqualToString:@"已付款"]) {
+                if ([model.work_status isEqualToString:@"4"]) {
                     UILabel *timeLab3 = [[UILabel alloc] init];
                     timeLab3.frame = CGRectMake(10,CGRectGetMaxY(backscrollview.frame)+10, Main_width-20, 13);
                     NSString *timeStr5 = @"等待完工...";
@@ -551,7 +671,97 @@
                     [cell addSubview:timeLab3];
                 }
 
-            }else if ([_stateStr isEqualToString:@"已完成"]){
+            }else if ([model.work_status isEqualToString:@"5"]){
+
+                UILabel *timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake(10,19, Main_width-20, 15)];
+                NSTimeInterval time=[model.release_at doubleValue]+28800;
+                NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
+                NSLog(@"date:%@",[detaildate description]);
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+                NSString *currentDateStr = [dateFormatter stringFromDate: detaildate];
+                NSString *timeStr1 = currentDateStr;
+                timeLab1.text = [NSString stringWithFormat:@"下单时间:%@",timeStr1];
+                timeLab1.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
+                timeLab1.font = [UIFont systemFontOfSize:15];
+                timeLab1.textAlignment = NSTextAlignmentLeft;
+                [cell addSubview:timeLab1];
+
+                UILabel *timeLab2 = [[UILabel alloc] initWithFrame:CGRectMake(10,CGRectGetMaxY(timeLab1.frame)+10, Main_width-20, 15)];
+                NSTimeInterval time2=[model.distribute_at doubleValue]+28800;
+                NSDate *detaildate2=[NSDate dateWithTimeIntervalSince1970:time2];
+                NSLog(@"date:%@",[detaildate2 description]);
+                NSDateFormatter *dateFormatter2 = [[NSDateFormatter alloc] init];
+                [dateFormatter2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+                NSString *currentDateStr2 = [dateFormatter stringFromDate: detaildate2];
+                NSString *timeStr2 = currentDateStr2;
+                timeLab2.text = [NSString stringWithFormat:@"派单时间:%@",timeStr2];
+                timeLab2.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
+                timeLab2.font = [UIFont systemFontOfSize:15];
+                timeLab2.textAlignment = NSTextAlignmentLeft;
+                [cell addSubview:timeLab2];
+
+                if ([model.completeImg isKindOfClass:[NSNull class]]){}else{
+                    NSArray *cImgArr = model.completeImg;
+                    _completeImgArr = [NSMutableArray array];
+                    for (int i = 0; i < cImgArr.count; i++) {
+                        NSDictionary *dic = cImgArr[i];
+                        NSString *img_path = [dic objectForKey:@"img_path"];
+                        NSString *img_name = [dic objectForKey:@"img_name"];
+                        NSString *newImg = [img_path stringByAppendingString:img_name];
+                        [_completeImgArr addObject:newImg];
+                    }
+                }
+                if (_completeImgArr.count == 0) {
+                    
+                    _backscrollviewH = 0;
+                }else{
+                    _backscrollviewH = 90;
+                }
+                UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(timeLab2.frame), Main_width, _backscrollviewH)];
+                backscrollview.contentSize = CGSizeMake(50*_completeImgArr.count+16*(_completeImgArr.count-1), 50);
+                backscrollview.showsVerticalScrollIndicator = NO;
+                backscrollview.showsHorizontalScrollIndicator = NO;
+                backscrollview.userInteractionEnabled = YES;
+                [cell addSubview:backscrollview];
+                for (int i=0; i<_completeImgArr.count; i++) {
+                    
+                    UIImageView *imgView = [[UIImageView alloc]init];
+                    imgView.frame = CGRectMake(10+(i*90),16, 50, 50);
+                    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_completeImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    imgView.layer.cornerRadius = 25;
+                    imgView.clipsToBounds = YES;
+                    [backscrollview addSubview:imgView];
+
+                    UILabel *queRenLab = [[UILabel alloc]init];
+                    queRenLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)-10, 10, 41, 16);
+                    NSString *timeStr2 = @"已确认";
+                    queRenLab.text = [NSString stringWithFormat:@"%@",timeStr2];
+                    queRenLab.textColor = [UIColor whiteColor];
+                    queRenLab.backgroundColor = [UIColor colorWithRed:80/255.0 green:204/255.0 blue:51/255.0 alpha:1];
+                    queRenLab.font = [UIFont systemFontOfSize:10];
+                    queRenLab.textAlignment = NSTextAlignmentCenter;
+                    [backscrollview addSubview:queRenLab];
+
+                    kuodabuttondianjifanwei *callBtn = [[kuodabuttondianjifanwei alloc]initWithFrame:CGRectMake(CGRectGetMaxX(imgView.frame)-10, CGRectGetMaxY(imgView.frame)-14, 14, 14)];
+                    [callBtn setEnlargeEdgeWithTop:20 right:0 bottom:10 left:30];
+                    [callBtn setImage:[UIImage imageNamed:@"ydianhua"] forState:UIControlStateNormal];
+                    [callBtn addTarget:self action:@selector(callAction:) forControlEvents:UIControlEventTouchUpInside];
+                    callBtn.layer.cornerRadius = 7.0;
+                    [backscrollview addSubview:callBtn];
+
+                    UILabel *nameLab = [[UILabel alloc]init];
+                    nameLab.frame = CGRectMake(10+(i*90),CGRectGetMaxY(imgView.frame)+5, 50, 13);
+                    NSString *timeStr3 = @"李小三";
+                    nameLab.text = [NSString stringWithFormat:@"%@",timeStr3];
+                    nameLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
+                    nameLab.font = [UIFont systemFontOfSize:13];
+                    nameLab.textAlignment = NSTextAlignmentCenter;
+                    [backscrollview addSubview:nameLab];
+
+                }
+
+            }else if (_evaluate_status == 1){
 
                 UILabel *timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake(10,19, Main_width-20, 15)];
                 NSTimeInterval time=[model.release_at doubleValue]+28800;
@@ -635,91 +845,7 @@
 
                 }
 
-            }else if ([_stateStr isEqualToString:@"已评价"]){
-
-                UILabel *timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake(10,19, Main_width-20, 15)];
-                NSTimeInterval time=[model.release_at doubleValue]+28800;
-                NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
-                NSLog(@"date:%@",[detaildate description]);
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
-                NSString *currentDateStr = [dateFormatter stringFromDate: detaildate];
-                NSString *timeStr1 = currentDateStr;
-                timeLab1.text = [NSString stringWithFormat:@"下单时间:%@",timeStr1];
-                timeLab1.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
-                timeLab1.font = [UIFont systemFontOfSize:15];
-                timeLab1.textAlignment = NSTextAlignmentLeft;
-                [cell addSubview:timeLab1];
-
-                UILabel *timeLab2 = [[UILabel alloc] initWithFrame:CGRectMake(10,CGRectGetMaxY(timeLab1.frame)+10, Main_width-20, 15)];
-                NSTimeInterval time2=[model.distribute_at doubleValue]+28800;
-                NSDate *detaildate2=[NSDate dateWithTimeIntervalSince1970:time2];
-                NSLog(@"date:%@",[detaildate2 description]);
-                NSDateFormatter *dateFormatter2 = [[NSDateFormatter alloc] init];
-                [dateFormatter2 setDateFormat:@"yyyy-MM-dd HH:mm"];
-                NSString *currentDateStr2 = [dateFormatter stringFromDate: detaildate2];
-                NSString *timeStr2 = currentDateStr2;
-                timeLab2.text = [NSString stringWithFormat:@"派单时间:%@",timeStr2];
-                timeLab2.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
-                timeLab2.font = [UIFont systemFontOfSize:15];
-                timeLab2.textAlignment = NSTextAlignmentLeft;
-                [cell addSubview:timeLab2];
-
-                if ([model.completeImg isKindOfClass:[NSNull class]]){}else{
-                    NSArray *cImgArr = model.completeImg;
-                    _completeImgArr = [NSMutableArray array];
-                    for (int i = 0; i < cImgArr.count; i++) {
-                        NSDictionary *dic = cImgArr[i];
-                        NSString *img_path = [dic objectForKey:@"img_path"];
-                        NSString *img_name = [dic objectForKey:@"img_name"];
-                        NSString *newImg = [img_path stringByAppendingString:img_name];
-                        [_completeImgArr addObject:newImg];
-                    }
-                }
-                UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(timeLab2.frame), Main_width, 90)];
-                backscrollview.contentSize = CGSizeMake(50*_completeImgArr.count+16*(_completeImgArr.count-1), 50);
-                backscrollview.showsVerticalScrollIndicator = NO;
-                backscrollview.showsHorizontalScrollIndicator = NO;
-                backscrollview.userInteractionEnabled = YES;
-                [cell addSubview:backscrollview];
-                for (int i=0; i<_completeImgArr.count; i++) {
-                    
-                    UIImageView *imgView = [[UIImageView alloc]init];
-                    imgView.frame = CGRectMake(10+(i*90),16, 50, 50);
-                    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_completeImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                    imgView.layer.cornerRadius = 25;
-                    imgView.clipsToBounds = YES;
-                    [backscrollview addSubview:imgView];
-
-                    UILabel *queRenLab = [[UILabel alloc]init];
-                    queRenLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)-10, 10, 41, 16);
-                    NSString *timeStr2 = @"已确认";
-                    queRenLab.text = [NSString stringWithFormat:@"%@",timeStr2];
-                    queRenLab.textColor = [UIColor whiteColor];
-                    queRenLab.backgroundColor = [UIColor colorWithRed:80/255.0 green:204/255.0 blue:51/255.0 alpha:1];
-                    queRenLab.font = [UIFont systemFontOfSize:10];
-                    queRenLab.textAlignment = NSTextAlignmentCenter;
-                    [backscrollview addSubview:queRenLab];
-
-                    kuodabuttondianjifanwei *callBtn = [[kuodabuttondianjifanwei alloc]initWithFrame:CGRectMake(CGRectGetMaxX(imgView.frame)-10, CGRectGetMaxY(imgView.frame)-14, 14, 14)];
-                    [callBtn setEnlargeEdgeWithTop:20 right:0 bottom:10 left:30];
-                    [callBtn setImage:[UIImage imageNamed:@"ydianhua"] forState:UIControlStateNormal];
-                    [callBtn addTarget:self action:@selector(callAction:) forControlEvents:UIControlEventTouchUpInside];
-                    callBtn.layer.cornerRadius = 7.0;
-                    [backscrollview addSubview:callBtn];
-
-                    UILabel *nameLab = [[UILabel alloc]init];
-                    nameLab.frame = CGRectMake(10+(i*90),CGRectGetMaxY(imgView.frame)+5, 50, 13);
-                    NSString *timeStr3 = @"李小三";
-                    nameLab.text = [NSString stringWithFormat:@"%@",timeStr3];
-                    nameLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
-                    nameLab.font = [UIFont systemFontOfSize:13];
-                    nameLab.textAlignment = NSTextAlignmentCenter;
-                    [backscrollview addSubview:nameLab];
-
-                }
-
-            }else if ([_stateStr isEqualToString:@"已取消"]){
+            }else if ([model.work_status isEqualToString:@"6"]){//已取消
                 //取消订单
                 UILabel *quXiaoLab = [[UILabel alloc] initWithFrame:CGRectMake(10,19, Main_width-20, 15)];
                 NSString *timeStr6 = @"订单已取消";
@@ -742,7 +868,7 @@
     }else {
 
         orderDetailModel *model = _dataSourceArr[0];
-         if ([_stateStr isEqualToString:@"已完成"]) { //已完成
+         if ([model.work_status isEqualToString:@"5"]) { //已完工
              UILabel *timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake(10,19, Main_width-20, 15)];
              NSTimeInterval time=[model.order_time doubleValue]+28800;
              NSDate *detaildate=[NSDate dateWithTimeIntervalSince1970:time];
@@ -807,7 +933,7 @@
              [cell addSubview:beiZhuLab];
 
 
-         }else if([_stateStr isEqualToString:@"已评价"]) { //已评价
+         }else if(_evaluate_status == 1) { //已评价
 
              UILabel *timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake(10,19, Main_width-20, 15)];
              NSTimeInterval time=[model.order_time doubleValue]+28800;
@@ -905,54 +1031,6 @@
 
      return cell;
 
-}
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *headerView = [[UIView alloc]init];
-    orderDetailModel *model = _dataSourceArr[0];
-    if (section == 0) {
-
-        headerView.frame = CGRectMake(0, 0, Main_width, 50);
-        headerView.backgroundColor = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:239/255.0 alpha:1];
-
-        //待服务
-        UILabel *orderNumberLab = [[UILabel alloc]init];
-        orderNumberLab.frame = CGRectMake(10, 10, Main_width-20, 30);
-        NSString *textStr = model.order_number;
-        orderNumberLab.text = [NSString stringWithFormat:@"订单编号:%@",textStr];
-        orderNumberLab.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
-        orderNumberLab.font = [UIFont systemFontOfSize:15];
-        orderNumberLab.textAlignment = NSTextAlignmentLeft;
-        [headerView addSubview:orderNumberLab];
-
-        //待付款
-        if([_stateStr isEqualToString:@"待付款"]) {
-
-            UILabel *payLab = [[UILabel alloc]init];
-            payLab.frame = CGRectMake(10, CGRectGetMaxY(orderNumberLab.frame)+10, Main_width-20, 30);
-            NSString *payStr = @"190";
-            payLab.text = [NSString stringWithFormat:@"未付: ￥%@",payStr];
-            payLab.textColor = [UIColor colorWithRed:254/255.0 green:57/255.0 blue:57/255.0 alpha:1];
-            [payLab setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
-            payLab.textAlignment = NSTextAlignmentLeft;
-            [headerView addSubview:payLab];
-        }else if ([_stateStr isEqualToString:@"已付款"] || [_stateStr isEqualToString:@"已完成"] || [_stateStr isEqualToString:@"已评价"]){//已付款
-
-            UILabel *payLab = [[UILabel alloc]init];
-            payLab.frame = CGRectMake(10, CGRectGetMaxY(orderNumberLab.frame)+10, Main_width-20, 30);
-            NSString *payStr = @"190";
-            payLab.text = [NSString stringWithFormat:@"已付: ￥%@",payStr];
-            payLab.textColor = [UIColor colorWithRed:80/255.0 green:204/255.0 blue:51/255.0 alpha:1];
-            [payLab setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
-            payLab.textAlignment = NSTextAlignmentLeft;
-            [headerView addSubview:payLab];
-        }
-
-
-
-
-    }
-
-    return headerView;
 }
 
 #pragma mark - 支付预付款

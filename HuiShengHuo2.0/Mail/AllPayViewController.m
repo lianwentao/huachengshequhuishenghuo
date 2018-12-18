@@ -34,6 +34,7 @@
 #import "youxianjiaofeijiluViewController.h"
 #import "newwuyejiaofeijiluViewController.h"
 #import "mywuyegongdanViewController.h"
+#import "orderDetailsViewController.h"
 #define kScreen_Height   ([UIScreen mainScreen].bounds.size.height)
 #define kScreen_Width    ([UIScreen mainScreen].bounds.size.width)
 #import "PrefixHeader.pch"
@@ -174,8 +175,19 @@
                               [self chevsuess];
                           }else if ([_rukoubiaoshi isEqualToString:@"wuyegongdanfukuan"]){
                               NSLog(@"---------物业工单预付款");
-                              mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
-                              [self.navigationController pushViewController:vc animated:YES];
+                              
+                              if ([_prepayrukou isEqualToString:@"1"]) {
+                                  for (UIViewController *controller in self.navigationController.viewControllers) {
+                                      if ([controller isKindOfClass:[orderDetailsViewController class]]) {
+                                          orderDetailsViewController *vc =(orderDetailsViewController *)controller;
+                                          [self.navigationController popToViewController:vc animated:YES];
+                                      }
+                                  }
+                                  [[NSNotificationCenter defaultCenter] postNotificationName:@"shuaxinwuyegongdanxiangqing" object:nil userInfo:nil];
+                              }else{
+                                  mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
+                                  [self.navigationController pushViewController:vc animated:YES];
+                              }
                           } else{
                               UIViewController *viewc = self.navigationController.viewControllers[1];
                               [[NSNotificationCenter defaultCenter] postNotificationName:@"shuaxingouwuche" object:nil userInfo:nil];

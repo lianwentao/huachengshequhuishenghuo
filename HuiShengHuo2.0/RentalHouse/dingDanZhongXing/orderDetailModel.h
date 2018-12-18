@@ -14,7 +14,7 @@
 @property (nonatomic , strong)NSString *content;
 @property (nonatomic , strong)NSString *degree;
 @property (nonatomic , strong)NSString *distribute_at;
-@property (nonatomic , strong)NSString *entry_fee;
+@property (nonatomic , strong)NSString *entry_fee;//预支付
 @property (nonatomic , strong)NSString *id;
 
 @property (nonatomic , strong)NSString *labor_cost;
@@ -27,7 +27,7 @@
 
 @property (nonatomic , strong)NSString *send_at;
 @property (nonatomic , strong)NSString *send_content;
-@property (nonatomic , strong)NSString *total_fee;
+@property (nonatomic , strong)NSString *total_fee;//总价
 @property (nonatomic , strong)NSString *total_fee_at;
 
 @property (nonatomic , strong)NSString *total_fee_content;
