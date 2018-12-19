@@ -14,7 +14,7 @@
     UITableView *_TableView;
     NSMutableArray *modelArr;
     NSMutableArray *_dataArr;
-    int _pnum;
+    int _pagenum;
 }
 
 @end
@@ -30,6 +30,7 @@
 }
 - (void)getdata
 {
+    _pagenum = 1;
     modelArr = [NSMutableArray arrayWithCapacity:0];
     _dataArr = [NSMutableArray arrayWithCapacity:0];
     //1.创建会话管理者
@@ -75,6 +76,66 @@
         [MBProgressHUD showToastToView:self.view withText:@"加载失败"];
     }];
 }
+- (void)postup
+{
+    _pagenum = _pagenum+1;
+    //1.创建会话管理者
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    //2.封装参数
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict = @{@"state":_state,@"p":[NSString stringWithFormat:@"%d",_pagenum],@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    //3.发送GET请求
+    /*
+     第一个参数:请求路径(NSString)+ 不需要加参数
+     第二个参数:发送给服务器的参数数据
+     第三个参数:progress 进度回调
+     第四个参数:success  成功之后的回调(此处的成功或者是失败指的是整个请求)
+     task:请求任务
+     responseObject:注意!!!响应体信息--->(json--->oc))
+     task.response: 响应头信息
+     第五个参数:failure 失败之后的回调
+     */
+    NSString *strurl = [API stringByAppendingString:@"propertyWork/getWorkList"];
+    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+        //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
+        NSLog(@"center---success--%@--%@",[responseObject class],responseObject);
+        
+        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+            arr = [[responseObject objectForKey:@"data"] objectForKey:@"list"];
+            NSString *stringnumber = [[responseObject objectForKey:@"data"] objectForKey:@"CountPage"];
+            NSInteger i = [stringnumber integerValue];
+            if (_pagenum>i) {
+                _TableView.mj_footer.state = MJRefreshStateNoMoreData;
+                [_TableView.mj_footer resetNoMoreData];
+            }else{
+                for (int i=0; i<arr.count; i++) {
+                    wuyegongdanmodel *model = [[wuyegongdanmodel alloc] init];
+                    model.type = [[arr objectAtIndex:i] objectForKey:@"type_name"];
+                    NSString *timestring = [[arr objectAtIndex:i] objectForKey:@"release_at"];
+                    NSTimeInterval interval   =[timestring doubleValue];
+                    NSDate *date               = [NSDate dateWithTimeIntervalSince1970:interval];
+                    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                    [formatter setDateFormat:@"MM/dd HH:mm"];
+                    NSString *dateString = [formatter stringFromDate: date];
+                    model.time = dateString;
+                    model.erjitype = [[arr objectAtIndex:i] objectForKey:@"work_type_cn"];
+                    model.status = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"work_status"]];
+                    model.status_cn = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"work_status_cn"]];
+                    model.evaluate_status = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"evaluate_status"]];
+                    [modelArr addObject:model];
+                }
+                [_dataArr addObjectsFromArray:arr];
+            }
+            [_TableView.mj_footer endRefreshing];
+            [_TableView reloadData];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"failure--%@",error);
+    }];
+}
 - (void)createtableview
 {
     _TableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width, Main_Height-RECTSTATUS.size.height-44-50)];
@@ -82,7 +143,7 @@
     _TableView.delegate = self;
     _TableView.dataSource = self;
     _TableView.backgroundColor = BackColor;
-    //_TableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(post1)];
+    _TableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(postup)];
     __weak typeof(self) weakSelf = self;
     _TableView.mj_header  = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [weakSelf loadData];

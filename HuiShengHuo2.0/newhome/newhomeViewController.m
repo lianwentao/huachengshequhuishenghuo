@@ -50,7 +50,7 @@
 #import "selectxiaoquViewController.h"
 #import "afteryanzhengViewController.h"
 #import "huodongwebviewViewController.h"
-
+#import "serviceDetailViewController.h"
 #import <UIKit/UIKit.h>
 #define NAVBAR_COLORCHANGE_POINT (-IMAGE_HEIGHT + NAV_HEIGHT)
 #define NAV_HEIGHT 64
@@ -873,6 +873,13 @@
                 }if ([url_type isEqualToString:@"22"]){
                     
                 }if ([url_type isEqualToString:@"23"]){
+                    NSString *type_name = [[topArr objectAtIndex:index] objectForKey:@"type_name"];
+                    NSRange range = [type_name rangeOfString:@"id/"]; //现获取要截取的字符串位置
+                    NSString * result = [urltypename substringFromIndex:range.location+3]; //截取字符串
+                    serviceDetailViewController *vc = [[serviceDetailViewController alloc] init];
+                    vc.serviceID = result;
+                    vc.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
                     
                 }if ([url_type isEqualToString:@"24"]){
                     
@@ -884,7 +891,6 @@
         }else{
             tableView.rowHeight = RECTSTATUS.size.height+44;
         }
-        
     }else if(indexPath.section==2){
         if (indexPath.row==0) {
             if ([tieziarr isKindOfClass:[NSArray class]]) {

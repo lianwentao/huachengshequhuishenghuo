@@ -12,7 +12,7 @@
 #import "gongdanadressViewController.h"
 #import "mywuyegongdanViewController.h"
 #import "AllPayViewController.h"
-@interface ziyonggongdanViewController ()<HXPhotoViewDelegate,UIImagePickerControllerDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>{
+@interface ziyonggongdanViewController ()<HXPhotoViewDelegate,UIImagePickerControllerDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UITextFieldDelegate>{
     UITableView *_TableView;
     CMInputView *TextView;
     UITextField *Textfield1;
@@ -26,6 +26,8 @@
     NSDictionary *blockdic;
     
     NSMutableArray*_Imagearr;
+    
+    float borkeyheight;
 }
 @property (strong, nonatomic) HXPhotoManager *manager;
 @property (strong, nonatomic) HXPhotoView *photoView;
@@ -125,6 +127,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyHiden:) name:UIKeyboardWillHideNotification object:nil];
+
     [self createtableview];
     // Do any additional setup after loading the view.
 }
@@ -231,6 +235,7 @@
         label2.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
         [cell.contentView addSubview:label2];
         tableView.rowHeight = label2.frame.size.height+label2.frame.origin.y+10;
+        WBLog(@"%f",label1.frame.size.height+label1.frame.origin.y+10+15+25);
     }else if (indexPath.row==4){
         cell.backgroundColor = BackColor;
         tableView.rowHeight = 8;
@@ -258,6 +263,7 @@
         Textfield1.layer.borderWidth = 1;
         Textfield1.layer.cornerRadius = 5;
         Textfield1.font = Font(15);
+        Textfield1.delegate = self;
         Textfield1.layer.borderColor = [UIColor colorWithHexString:@"#D2D2D2"].CGColor;
         [cell.contentView addSubview:Textfield1];
         
@@ -271,6 +277,7 @@
         Textfield2.layer.cornerRadius = 5;
         Textfield2.layer.borderWidth = 1;
         Textfield2.font = Font(15);
+        Textfield2.delegate = self;
         Textfield2.layer.borderColor = [UIColor colorWithHexString:@"#D2D2D2"].CGColor;
         [cell.contentView addSubview:Textfield2];
         
@@ -459,6 +466,40 @@
 
 - (void)photoView:(HXPhotoView *)photoView currentDeleteModel:(HXPhotoModel *)model currentIndex:(NSInteger)index {
     NSLog(@"%@ --> index - %ld",model,index);
+}
+//文本输入框开始输入时调用
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    //[self keyHiden];
+    [self keyWillAppear];
+}
+#pragma mark-键盘出现隐藏事件
+-(void)keyHiden:(NSNotification *)notification
+{
+    WBLog(@"键盘下滑");
+    // 键盘动画时间
+    double duration = 0.25;
+    
+    //视图下沉恢复原状
+    [UIView animateWithDuration:duration animations:^{
+        _TableView.frame = CGRectMake(0, 0, _TableView.frame.size.width, _TableView.frame.size.height);
+    }];
+}
+-(void)keyWillAppear
+{
+//    //获取键盘高度，在不同设备上，以及中英文下是不同的
+//    CGFloat kbHeight = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+////    CGRect rect= [[notification.userInfo objectForKey:@"UIKeyboardFrameEndUserInfoKey"]CGRectValue];
+//    //计算出键盘顶端到inputTextView panel底端的距离(加上自定义的缓冲距离INTERVAL_KEYBOARD)
+//    //float height =
+    
+    
+    // 取得键盘的动画时间，这样可以在视图上移的时候更连贯
+    double duration = 0.25;
+    [UIView animateWithDuration:duration animations:^{
+        _TableView.frame = CGRectMake(0.0f, -290, _TableView.frame.size.width, _TableView.frame.size.height);
+    }];
+   
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

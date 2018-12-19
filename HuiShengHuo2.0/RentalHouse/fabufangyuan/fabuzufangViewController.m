@@ -39,6 +39,7 @@
     TabbleView.showsVerticalScrollIndicator = YES;
     /** 去掉分割线 */
     TabbleView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    TabbleView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     TabbleView.delegate = self;
     TabbleView.dataSource = self;
     [self.view addSubview:TabbleView];

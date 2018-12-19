@@ -243,7 +243,8 @@
 - (void)send
 {
     if ([_type isEqualToString:@"2"]) {
-        if ([_shuidianfei isEqualToString:@"shuidianfei"]) {
+        if ([_shuidianfei
+             isEqualToString:@"shuidianfei"]) {
             for (UIViewController *controller in self.navigationController.viewControllers) {
                 if ([controller isKindOfClass:[shuidianfeiViewController class]]) {
                     shuidianfeiViewController *revise =(shuidianfeiViewController *)controller;
@@ -901,8 +902,8 @@
         NSLog(@"*********----newservicescan");
         myserviceViewController *myserve = [[myserviceViewController alloc] init];
         [self.navigationController pushViewController:myserve animated:YES];
-    }else if ([_type isEqualToString:@"wuyegongdanyufukuan"]){
-        NSLog(@"*********----wuyegongdanyufukuan");
+    }else if ([_type isEqualToString:@"wuyegongdanfukuan"]){
+        NSLog(@"*********----wuyegongdanfukuan");
         mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else{
