@@ -91,85 +91,109 @@
 }
 - (void)getData{
     
-    //1.创建会话管理者
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    //2.封装参数
-    NSDictionary *dict = nil;
-    dict = @{@"id":_serviceID};
-    NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/service/serviceDetails"];
-    [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSLog(@"dataStr = %@",dataStr);
-        _DataDic = [[NSMutableDictionary alloc] init];
-        _DataDic = [responseObject objectForKey:@"data"];
-        NSLog(@"goods--%@",_DataDic);
-        dataDic = responseObject[@"data"];
-        dataSourceArr = [NSMutableArray array];
-        fwDetailModel *model = [[fwDetailModel alloc]initWithDictionary:dataDic error:NULL];
-        [dataSourceArr addObject:model];
-        tagListArr = [NSMutableArray array];
-        for (NSDictionary *tagListDic in model.tag_list) {
-            tagListModel *tModel = [[tagListModel alloc]initWithDictionary:tagListDic error:NULL];
-            [tagListArr addObject:tModel];
-        }
-        
-        scoreInfoArr = [NSMutableArray array];
-        if ([dataDic[@"score_info"] isKindOfClass:[NSNull class]]) {
-            NSLog(@"1111111111");
-        }else{
-            scoreInfoModel *sModel = [[scoreInfoModel alloc]initWithDictionary:dataDic[@"score_info"] error:NULL];
-            [scoreInfoArr addObject:sModel];
-        }
-        
-        imgListArr = [NSMutableArray array];
-        if ([dataDic[@"img_list"] isKindOfClass:[NSNull class]]) {
-            NSLog(@"1111111111");
-        }else{
-            for (NSDictionary *imgDic in    dataDic[@"img_list"]) {
-                imgListModel *imgModel = [[imgListModel alloc]initWithDictionary:imgDic error:NULL];
-                [imgListArr addObject:imgModel.img];
-            }
-        }
-       
-        NSLog(@"imgListArr--%@",imgListArr);
-        imgSizeArr = [NSMutableArray array];
-        for (NSDictionary *imgDic in model.img_list) {
-            imgListModel *imgModel = [[imgListModel alloc]initWithDictionary:imgDic error:NULL];
-            [imgSizeArr addObject:imgModel.img_size];
-        }
-        
-        insinfoArr = [NSMutableArray array];
-        insinfoModel *iiModel = [[insinfoModel alloc]initWithDictionary:model.ins_info error:NULL];
-        [insinfoArr addObject:iiModel];
-        
-        serviceListArr = [NSMutableArray array];
-        
-        if ([dataDic[@"ins_info"][@"service_list"] isKindOfClass:[NSNull class]]) {
-            NSLog(@"1111111111");
-        }else{
+    //初始化进度框，置于当前的View当中
+    static MBProgressHUD *_HUD;
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:_HUD];
     
-            for (NSDictionary *serviceListDic in dataDic[@"ins_info"][@"service_list"]) {
-                serviceListModel *slModel = [[serviceListModel alloc]initWithDictionary:serviceListDic error:NULL];
-                [serviceListArr addObject:slModel];
+    //如果设置此属性则当前的view置于后台
+    //_HUD.dimBackground = YES;
+    
+    //设置对话框文字
+    _HUD.labelText = @"加载中...";
+    _HUD.labelFont = [UIFont systemFontOfSize:14];
+    
+    //显示对话框
+    [_HUD showAnimated:YES whileExecutingBlock:^{
+        //对话框显示时需要执行的操作
+        //1.创建会话管理者
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+        //2.封装参数
+        NSDictionary *dict = nil;
+        dict = @{@"id":_serviceID};
+        NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/service/serviceDetails"];
+        [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+            
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            
+            NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+            NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            NSLog(@"dataStr = %@",dataStr);
+            _DataDic = [[NSMutableDictionary alloc] init];
+            _DataDic = [responseObject objectForKey:@"data"];
+            NSLog(@"goods--%@",_DataDic);
+            dataDic = responseObject[@"data"];
+            dataSourceArr = [NSMutableArray array];
+            fwDetailModel *model = [[fwDetailModel alloc]initWithDictionary:dataDic error:NULL];
+            [dataSourceArr addObject:model];
+            tagListArr = [NSMutableArray array];
+            for (NSDictionary *tagListDic in model.tag_list) {
+                tagListModel *tModel = [[tagListModel alloc]initWithDictionary:tagListDic error:NULL];
+                [tagListArr addObject:tModel];
             }
-
-        }
+            
+            scoreInfoArr = [NSMutableArray array];
+            if ([dataDic[@"score_info"] isKindOfClass:[NSNull class]]) {
+                NSLog(@"1111111111");
+            }else{
+                scoreInfoModel *sModel = [[scoreInfoModel alloc]initWithDictionary:dataDic[@"score_info"] error:NULL];
+                [scoreInfoArr addObject:sModel];
+            }
+            
+            imgListArr = [NSMutableArray array];
+            if ([dataDic[@"img_list"] isKindOfClass:[NSNull class]]) {
+                NSLog(@"1111111111");
+            }else{
+                for (NSDictionary *imgDic in    dataDic[@"img_list"]) {
+                    imgListModel *imgModel = [[imgListModel alloc]initWithDictionary:imgDic error:NULL];
+                    [imgListArr addObject:imgModel.img];
+                }
+            }
+            
+            NSLog(@"imgListArr--%@",imgListArr);
+            imgSizeArr = [NSMutableArray array];
+            for (NSDictionary *imgDic in model.img_list) {
+                imgListModel *imgModel = [[imgListModel alloc]initWithDictionary:imgDic error:NULL];
+                [imgSizeArr addObject:imgModel.img_size];
+            }
+            
+            insinfoArr = [NSMutableArray array];
+            insinfoModel *iiModel = [[insinfoModel alloc]initWithDictionary:model.ins_info error:NULL];
+            [insinfoArr addObject:iiModel];
+            
+            serviceListArr = [NSMutableArray array];
+            
+            if ([dataDic[@"ins_info"][@"service_list"] isKindOfClass:[NSNull class]]) {
+                NSLog(@"1111111111");
+            }else{
+                
+                for (NSDictionary *serviceListDic in dataDic[@"ins_info"][@"service_list"]) {
+                    serviceListModel *slModel = [[serviceListModel alloc]initWithDictionary:serviceListDic error:NULL];
+                    [serviceListArr addObject:slModel];
+                }
+                
+            }
+            
+            //        for (NSDictionary *serviceListDic in model.ins_info[@"service_list"]) {
+            //            serviceListModel *slModel = [[serviceListModel alloc]initWithDictionary:serviceListDic error:NULL];
+            //            [serviceListArr addObject:slModel];
+            //        }
+            
+            [self CreateTableview];
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+        }];
         
-//        for (NSDictionary *serviceListDic in model.ins_info[@"service_list"]) {
-//            serviceListModel *slModel = [[serviceListModel alloc]initWithDictionary:serviceListDic error:NULL];
-//            [serviceListArr addObject:slModel];
-//        }
-        
-        [self CreateTableview];
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-    }];
+    }// 在HUD被隐藏后的回调
+       completionBlock:^{
+           //操作执行完后取消对话框
+           [_HUD removeFromSuperview];
+           _HUD = nil;
+       }];
+    
+    
     
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
