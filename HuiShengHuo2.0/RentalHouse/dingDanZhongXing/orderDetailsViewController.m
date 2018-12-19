@@ -16,6 +16,7 @@
 #define SCROLL_DOWN_LIMIT 70
 #import "orderDetailModel.h"
 #import "mywuyegongdanViewController.h"
+#import "XLPhotoBrowser.h"
 @interface orderDetailsViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     NSMutableArray *dataSourceArr;
@@ -30,6 +31,8 @@
 @property (nonatomic , strong)NSMutableArray *completeImgArr ;
 @property (nonatomic , strong)NSDictionary *score ;
 @property (nonatomic , assign)CGFloat backscrollviewH;
+@property (nonatomic , strong)NSMutableArray  *cArr;
+@property (nonatomic , strong)NSMutableArray  *rArr;
 @end
 
 @implementation orderDetailsViewController
@@ -149,8 +152,14 @@
   
 }
 -(void)loadTableView{
-    
-    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(10, 0, Main_width-20,  Main_Height-50) style:UITableViewStylePlain];
+    orderDetailModel *model = _dataSourceArr[0];
+    CGFloat tableViewH;
+    if ([model.work_status isEqualToString:@"0"]) {
+        tableViewH = Main_Height-50;
+    }else{
+        tableViewH = Main_Height;
+    }
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(10, 0, Main_width-20,  tableViewH) style:UITableViewStylePlain];
     _tableView.backgroundColor = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:239/255.0 alpha:1];
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -160,7 +169,7 @@
 //    _tableView.contentInset = UIEdgeInsetsMake(IMAGE_HEIGHT - [self navBarBottom], 0, 0, 0);
     [self.view addSubview:_tableView];
     
-    orderDetailModel *model = _dataSourceArr[0];
+    
     CGFloat headerViewH = 0;
     if([model.work_status isEqualToString:@"1"] || [model.work_status isEqualToString:@"0"] || [model.work_status isEqualToString:@"2"]) {
         headerViewH = 50;
@@ -191,7 +200,7 @@
     if([model.work_status isEqualToString:@"3"]) {
         UILabel *payLab = [[UILabel alloc]init];
         payLab.frame = CGRectMake(10, CGRectGetMaxY(orderNumberLab.frame)+10, Main_width-20, 30);
-        NSString *payStr = @"190";
+        NSString *payStr = model.total_fee;
         payLab.text = [NSString stringWithFormat:@"未付: ￥%@",payStr];
         payLab.textColor = [UIColor colorWithRed:254/255.0 green:57/255.0 blue:57/255.0 alpha:1];
         [payLab setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
@@ -200,7 +209,7 @@
     }else if ([model.work_status isEqualToString:@"4"] || [model.work_status isEqualToString:@"5"] || _evaluate_status == 1){//已付款
         UILabel *payLab = [[UILabel alloc]init];
         payLab.frame = CGRectMake(10, CGRectGetMaxY(orderNumberLab.frame)+10, Main_width-20, 30);
-        NSString *payStr = @"190";
+        NSString *payStr = model.total_fee;
         payLab.text = [NSString stringWithFormat:@"已付: ￥%@",payStr];
         payLab.textColor = [UIColor colorWithRed:80/255.0 green:204/255.0 blue:51/255.0 alpha:1];
         [payLab setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
@@ -381,6 +390,16 @@
                 NSString *newImg = [img_path stringByAppendingString:img_name];
                 [_repairImgArr addObject:newImg];
             }
+            
+            _rArr = [NSMutableArray array];
+            for (int j=0; j< imgArr.count; j++) {
+                NSDictionary *dic = imgArr[j];
+                NSString *img_path = [dic objectForKey:@"img_path"];
+                NSString *img_name = [dic objectForKey:@"img_name"];
+                NSString *newImg = [img_path stringByAppendingString:img_name];
+                NSString *imgurl = [API_img stringByAppendingString:newImg];
+                [_rArr addObject:imgurl];
+            }
         }
         if (_repairImgArr.count == 0) {
             
@@ -401,6 +420,11 @@
             [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_repairImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
             imgView.layer.cornerRadius = 5;
             imgView.clipsToBounds = YES;
+            imgView.contentMode = UIViewContentModeScaleToFill;
+            imgView.tag = i;
+            imgView.userInteractionEnabled = YES;
+            UITapGestureRecognizer * tap1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(browerImage1:)];
+            [imgView addGestureRecognizer:tap1];
             [backscrollview addSubview:imgView];
         }
         
@@ -412,7 +436,7 @@
         }
         UILabel *beiZhuLab = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(backscrollview.frame), Main_width-20, beiZhuLabH)];
         beiZhuLab.numberOfLines = 2;
-        beiZhuLab.text = model.content;
+        beiZhuLab.text = [NSString stringWithFormat:@"维修备注:%@",model.content];
         beiZhuLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
         beiZhuLab.font = [UIFont systemFontOfSize:13];
         beiZhuLab.textAlignment = NSTextAlignmentLeft;
@@ -909,21 +933,21 @@
              [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm"];
              NSString *currentDateStr = [dateFormatter stringFromDate: detaildate];
              NSString *timeStr1 = currentDateStr;
-             timeLab1.text = [NSString stringWithFormat:@"服务用时:%@",timeStr1];
+             timeLab1.text = [NSString stringWithFormat:@"服务用时:%@",model.order_time];
              timeLab1.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
              timeLab1.font = [UIFont systemFontOfSize:15];
              timeLab1.textAlignment = NSTextAlignmentLeft;
              [cell addSubview:timeLab1];
 
              UILabel *timeLab2 = [[UILabel alloc] initWithFrame:CGRectMake(10,CGRectGetMaxY(timeLab1.frame)+10, Main_width-20, 15)];
-             NSTimeInterval time2=[model.order_total_time doubleValue];
-             NSDate *detaildate2=[NSDate dateWithTimeIntervalSince1970:time2];
-             NSLog(@"date:%@",[detaildate2 description]);
-             NSDateFormatter *dateFormatter2 = [[NSDateFormatter alloc] init];
-             [dateFormatter2 setDateFormat:@"yyyy-MM-dd HH:mm"];
-             NSString *currentDateStr2 = [dateFormatter stringFromDate: detaildate2];
-             NSString *timeStr2 = currentDateStr2;
-             timeLab2.text = [NSString stringWithFormat:@"订单完成:%@",timeStr2];
+//             NSTimeInterval time2=[model.order_total_time doubleValue];
+//             NSDate *detaildate2=[NSDate dateWithTimeIntervalSince1970:time2];
+//             NSLog(@"date:%@",[detaildate2 description]);
+//             NSDateFormatter *dateFormatter2 = [[NSDateFormatter alloc] init];
+//             [dateFormatter2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+//             NSString *currentDateStr2 = [dateFormatter stringFromDate: detaildate2];
+//             NSString *timeStr2 = currentDateStr2;
+             timeLab2.text = [NSString stringWithFormat:@"订单完成:%@",model.order_total_time];
              timeLab2.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
              timeLab2.font = [UIFont systemFontOfSize:15];
              timeLab2.textAlignment = NSTextAlignmentLeft;
@@ -939,6 +963,15 @@
                      NSString *newImg = [img_path stringByAppendingString:img_name];
                      [_completeImgArr addObject:newImg];
                  }
+                 _cArr = [NSMutableArray array];
+                 for (int j=0; j< cImgArr.count; j++) {
+                     NSDictionary *dic = cImgArr[j];
+                     NSString *img_path = [dic objectForKey:@"img_path"];
+                     NSString *img_name = [dic objectForKey:@"img_name"];
+                     NSString *newImg = [img_path stringByAppendingString:img_name];
+                     NSString *imgurl = [API_img stringByAppendingString:newImg];
+                     [_cArr addObject:imgurl];
+                 }
              }
              UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(timeLab2.frame), Main_width, 90)];
              backscrollview.contentSize = CGSizeMake(50*_completeImgArr.count+16*(_completeImgArr.count-1), 50);
@@ -950,15 +983,20 @@
                  
                  UIImageView *imgView = [[UIImageView alloc]init];
                  imgView.frame = CGRectMake(10+(i*90),16, 50, 50);
-                 [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_completeImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                 [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_completeImgArr[i]]] placeholderImage:[UIImage imageNamed:@"头像"]];
 //                 imgView.layer.cornerRadius = 25;
 //                 imgView.clipsToBounds = YES;
+                 imgView.contentMode = UIViewContentModeScaleToFill;
+                 imgView.tag = i;
+                 imgView.userInteractionEnabled = YES;
+                 UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(browerImage:)];
+                 [imgView addGestureRecognizer:tap];
                  [backscrollview addSubview:imgView];
 
              }
              UILabel *beiZhuLab = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(backscrollview.frame), Main_width-20, 60)];
              beiZhuLab.numberOfLines = 2;
-             beiZhuLab.text = model.complete_content;
+             beiZhuLab.text = [NSString stringWithFormat:@"完工备注:%@",model.complete_content];
              beiZhuLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
              beiZhuLab.font = [UIFont systemFontOfSize:13];
              beiZhuLab.textAlignment = NSTextAlignmentLeft;
@@ -1212,5 +1250,16 @@
     pjVC.orderID = model.id;
     [self.navigationController pushViewController:pjVC animated:YES];
  
+}
+#pragma mark - 图片点击
+- (void)browerImage:(UITapGestureRecognizer *)tap
+{
+    XLPhotoBrowser *browser = [XLPhotoBrowser showPhotoBrowserWithImages:_cArr currentImageIndex:tap.view.tag];
+    browser.browserStyle = XLPhotoBrowserStylePageControl;
+}
+- (void)browerImage1:(UITapGestureRecognizer *)tap1
+{
+    XLPhotoBrowser *browser = [XLPhotoBrowser showPhotoBrowserWithImages:_rArr currentImageIndex:tap1.view.tag];
+    browser.browserStyle = XLPhotoBrowserStylePageControl;
 }
 @end
