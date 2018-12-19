@@ -94,8 +94,8 @@
         if (backImage) {
             UIImageView *titleImage = [[UIImageView alloc]initWithFrame:CGRectMake((self.alertView.frame.size.width/2)-75, 150, 150, 150)];
             titleImage.layer.cornerRadius=75;
-            titleImage.backgroundColor = [UIColor yellowColor];
-//            titleImage.image = [UIImage imageNamed:backImage];
+//            titleImage.backgroundColor = [UIColor yellowColor];
+            titleImage.image = [UIImage imageNamed:backImage];
             [self.alertView addSubview:titleImage];
         }
         if (titleStr) {
