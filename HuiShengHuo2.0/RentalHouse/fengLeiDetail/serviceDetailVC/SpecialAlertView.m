@@ -194,7 +194,7 @@
         if (contentStr1) {
             UILabel *contentLab1 = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(contentLab.frame), CGRectGetMaxY(contentLab.frame)-70, self.alertView.frame.size.width/2, 50)];
             contentLab1.text = contentStr1;
-            contentLab1.font = [UIFont fontWithName:@"Helvetica-Bold" size:40];
+            contentLab1.font = [UIFont fontWithName:@"Helvetica-Bold" size:35];
             contentLab1.numberOfLines = 0;
             contentLab1.textAlignment = NSTextAlignmentLeft;
             contentLab1.textColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];

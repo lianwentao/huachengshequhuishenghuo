@@ -110,7 +110,7 @@
     }else{
         NSArray *arr = [[NSArray alloc] init];
         arr = [[dataArr objectAtIndex:section-1] objectForKey:@"list"];
-        return (arr.count+3)/4;
+        return (arr.count+2)/3;
     }
 }
 

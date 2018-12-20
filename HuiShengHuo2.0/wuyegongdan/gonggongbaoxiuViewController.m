@@ -130,10 +130,17 @@
     self.title = @"公共报修";
     self.view.backgroundColor = [UIColor whiteColor];
     
+    UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:@"订单中心" style:UIBarButtonItemStylePlain target:self action:@selector(dingdanzhongxin)];
+    self.navigationItem.rightBarButtonItem = rightBarItem;
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyHiden:) name:UIKeyboardWillHideNotification object:nil];
     [self getdata];
     
     // Do any additional setup after loading the view.
+}
+- (void)dingdanzhongxin{
+    mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)getdata
 {
@@ -257,6 +264,10 @@
         [cell.contentView addSubview:labeltype];
         tableView.rowHeight = 50;
         
+        UIImageView *vc = [[UIImageView alloc] initWithFrame:CGRectMake(Main_width-40, 10, 20, 20)];
+        vc.image = [UIImage imageNamed:@"xiala"];
+        [cell.contentView addSubview:vc];
+        
         UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
         but.frame = CGRectMake(0, 0, Main_width, 50);
         but.backgroundColor = [UIColor clearColor];
@@ -310,6 +321,9 @@
         label.text = @"选择房屋";
         label.font = Font(15);
         [cell.contentView addSubview:label];
+        UIImageView *vc = [[UIImageView alloc] initWithFrame:CGRectMake(Main_width-40, 10, 20, 20)];
+        vc.image = [UIImage imageNamed:@"gengduo"];
+        [cell.contentView addSubview:vc];
         
         UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
         but.frame = CGRectMake(0, 0, Main_width, 50);
@@ -330,6 +344,7 @@
         Textfield1.font = Font(15);
         Textfield1.delegate = self;
         Textfield1.layer.borderColor = [UIColor colorWithHexString:@"#D2D2D2"].CGColor;
+        [Textfield1 setValue:[NSNumber numberWithInt:5] forKey:@"paddingLeft"];
         [cell.contentView addSubview:Textfield1];
         
         UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(12, label1.frame.size.height+label1.frame.origin.y+30, 60, 15)];
@@ -343,6 +358,7 @@
         Textfield2.layer.borderWidth = 1;
         Textfield2.font = Font(15);
         Textfield2.delegate = self;
+        [Textfield2 setValue:[NSNumber numberWithInt:5] forKey:@"paddingLeft"];
         Textfield2.layer.borderColor = [UIColor colorWithHexString:@"#D2D2D2"].CGColor;
         [cell.contentView addSubview:Textfield2];
         

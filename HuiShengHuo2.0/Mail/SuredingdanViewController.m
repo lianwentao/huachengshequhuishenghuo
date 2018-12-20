@@ -403,11 +403,11 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSString *is_coupon = [NSString stringWithFormat:@"%@",[_Dic objectForKey:@"is_coupon"]];
     if ([[_Dic objectForKey:@"address"] isEqualToString:@""]) {
-        if ([is_coupon isEqualToString:@"0"]) {
+        if ([is_coupon isEqualToString:@"0"]||_youhuiquanid.length==0) {
             dict = @{@"products":_jsonstring,@"address":labelcontent.text,@"contact":_name,@"mobile":_phone,@"type":string,@"address_id":_addressid,@"apk_token":uid_username,@"description":textfield.text,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
         }else{dict = @{@"products":_jsonstring,@"address":labelcontent.text,@"contact":_name,@"mobile":_phone,@"type":string,@"address_id":_addressid,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"m_c_id":_youhuiquanid,@"m_c_name":_youhuiquanname,@"m_c_amount":amountprice,@"description":textfield.text};}
     }else{
-        if ([is_coupon isEqualToString:@"0"]) {
+        if ([is_coupon isEqualToString:@"0"]||_youhuiquanid.length==0) {
         dict = @{@"products":_jsonstring,@"address":labelcontent.text,@"contact":_name,@"mobile":_phone,@"type":string,@"address_id":_addressid,@"apk_token":uid_username,@"description":textfield.text,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
         }else{
             dict = @{@"products":_jsonstring,@"address":labelcontent.text,@"contact":_name,@"mobile":_phone,@"type":string,@"address_id":_addressid,@"apk_token":uid_username,@"m_c_id":_youhuiquanid,@"m_c_name":_youhuiquanname,@"m_c_amount":amountprice,@"description":textfield.text,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};

@@ -978,6 +978,38 @@
                     [backscrollview addSubview:nameLab];
 
                 }
+                
+                UIView *line = [[UIView alloc]init];
+                if ([model.work_status isEqualToString:@"1"]) {//待派单
+                    line.frame = CGRectMake(10, 160-0.5, Main_width-40, .5);
+                }else if ([model.work_status isEqualToString:@"2"]){//待服务
+                   line.frame = CGRectMake(10, 160-0.5, Main_width-40, .5);
+                }else if ([model.work_status isEqualToString:@"3"] || [model.work_status isEqualToString:@"0"] ){//待付款
+                    if (model.distributeUser.count == 0) {
+                        line.frame = CGRectMake(10, 110-0.5, Main_width-40, .5);
+                    }else{
+                        line.frame = CGRectMake(10, 200-0.5, Main_width-40, .5);
+                    }  
+                }else if ([model.work_status isEqualToString:@"4"]){//待完工
+                    if (model.distributeUser.count == 0) {
+                         line.frame = CGRectMake(10, 90-0.5, Main_width-40, .5);
+                    }else{
+                        line.frame = CGRectMake(10, 180-0.5, Main_width-40, .5);
+                    }
+                }else if ([model.work_status isEqualToString:@"5"]){//已完工
+                    
+                    if (model.completeImg.count == 0) {
+                         line.frame = CGRectMake(10, 90-0.5, Main_width-40, .5);
+                    }else{
+                         line.frame = CGRectMake(10, 180-0.5, Main_width-40, .5);
+                    }
+                   
+                }else{
+                    return 0;
+                }
+                
+                line.backgroundColor = [UIColor colorWithRed:222/255.0 green:222/255.0 blue:222/255.0 alpha:1];
+                [cell addSubview:line];
 
             }else if ([model.work_status isEqualToString:@"6"]){//已取消
                 //取消订单
@@ -996,6 +1028,13 @@
                 quXiaoLab1.font = [UIFont systemFontOfSize:13];
                 quXiaoLab1.textAlignment = NSTextAlignmentLeft;
                 [cell addSubview:quXiaoLab1];
+                
+                UIView *line = [[UIView alloc]init];
+                if ([model.work_status isEqualToString:@"6"]){
+                    line.frame = CGRectMake(10, 120-0.5, Main_width-40, .5);
+                }
+                line.backgroundColor = [UIColor colorWithRed:222/255.0 green:222/255.0 blue:222/255.0 alpha:1];
+                [cell addSubview:line];
 
             }
 
@@ -1317,7 +1356,7 @@
     orderDetailModel *model = _dataSourceArr[0];
     NSString *str = model.entry_fee;
     NSArray *array = [str componentsSeparatedByString:@"."]; //从字符.中分隔成2个元素的数组
-     SpecialAlertView *fuKuan = [[SpecialAlertView alloc]initWithMessageTitle:@"您需要支付预付费用" messageString:[NSString stringWithFormat:@"%@.",array[0]] messageString1:array[1]  sureBtnTitle:@"立即支付" sureBtnColor:[UIColor blueColor]];
+     SpecialAlertView *fuKuan = [[SpecialAlertView alloc]initWithMessageTitle:@"您需要支付预付费用" messageString:[NSString stringWithFormat:@"¥%@.",array[0]] messageString1:array[1]  sureBtnTitle:@"立即支付" sureBtnColor:[UIColor blueColor]];
     [fuKuan withSureClick:^(NSString *string) {
         AllPayViewController *allpay = [[AllPayViewController alloc] init];
         allpay.order_id = model.id;
@@ -1332,10 +1371,10 @@
 #pragma mark - 付款
 -(void)rightBtn2Clicked{
     orderDetailModel *model = _dataSourceArr[0];
-    NSString *str = [NSString stringWithFormat:@"%f",[model.total_fee floatValue]-[model.entry_fee floatValue]];
+    NSString *str = [NSString stringWithFormat:@"%.2f",[model.total_fee floatValue]-[model.entry_fee floatValue]];
     NSArray *array = [str componentsSeparatedByString:@"."]; //从字符.中分隔成2个元素的数组
-    SpecialAlertView *fuKuan = [[SpecialAlertView alloc]initWithMessageTitle:@"付款金额" messageString:[NSString stringWithFormat:@"%@.",array[0]] messageString1:array[1] messageString2:[NSString stringWithFormat:@"已扣除预付费用%@元",model.entry_fee]  messageString3:@"温馨提示" messageString4:@"请确认服务完成后再付款" sureBtnTitle:@"确定" sureBtnColor:[UIColor blueColor]];
-    
+    SpecialAlertView *fuKuan = [[SpecialAlertView alloc]initWithMessageTitle:@"付款金额" messageString:[NSString stringWithFormat:@"¥%@.",array[0]] messageString1:array[1] messageString2:[NSString stringWithFormat:@"已扣除预付费用%@元",model.entry_fee]  messageString3:@"温馨提示" messageString4:@"请确认服务完成后再付款" sureBtnTitle:@"确定" sureBtnColor:[UIColor blueColor]];
+    WBLog(@"%@--%@",array[0],array[1]);
     [fuKuan withSureClick:^(NSString *string) {
         
         AllPayViewController *allpay = [[AllPayViewController alloc] init];

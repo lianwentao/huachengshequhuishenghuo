@@ -96,7 +96,7 @@
 {
     ziyonggongdanViewController *vc = [[ziyonggongdanViewController alloc] init];
     
-    vc.title = @"家用保修";
+    vc.title = @"家用报修";
     vc.type = [[_arr objectAtIndex:indexPath.row] objectForKey:@"type_name"];
     vc.entry_fee = [[_arr objectAtIndex:indexPath.row] objectForKey:@"entry_fee"];
     vc.type_id = [[_arr objectAtIndex:indexPath.row] objectForKey:@"id"];

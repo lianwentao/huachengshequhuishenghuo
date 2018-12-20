@@ -13,4 +13,5 @@
 @property (nonatomic,strong)NSString *id;
 @property (nonatomic,strong)NSString *price;
 @property (nonatomic,strong)NSString *otype;
+@property (nonatomic,copy)NSString *prepay;//判断物业工单是否为预付款  1为预付款
 @end

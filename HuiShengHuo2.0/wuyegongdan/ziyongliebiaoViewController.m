@@ -22,7 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"家用保修";
+    self.title = @"家用报修";
     self.view.backgroundColor = [UIColor whiteColor];
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:@"订单中心" style:UIBarButtonItemStylePlain target:self action:@selector(dingdanzhongxin)];
     self.navigationItem.rightBarButtonItem = rightBarItem;
