@@ -22,6 +22,8 @@
     NSMutableArray *dataSourceArr;
     
     CGFloat height;
+    
+    UIImageView *starView ;
 }
 @property (nonatomic , strong)UITableView *tableView;
 @property (nonatomic , strong)NSMutableArray *dataSourceArr ;
@@ -97,13 +99,8 @@
                 
                 NSDictionary *dataDic = responseObject[@"data"];
                 NSLog(@"dataDic = %@",dataDic);
-                if ([dataDic[@"score"] isKindOfClass:[NSDictionary class]]) {
-                    
-                    _score = dataDic[@"score"];
-                }else{
-                    _score = nil;
-                }
-                NSLog(@"_score = %@",_score);
+                _score = dataDic[@"score"];
+                NSLog(@"_score = %@",[dataDic[@"score"] class]);
                 _dataSourceArr = [NSMutableArray array];
                 orderDetailModel *model = [[orderDetailModel alloc]initWithDictionary:dataDic error:NULL];
                 [_dataSourceArr addObject:model];
@@ -156,18 +153,22 @@
         UIBarButtonItem *rightItem2 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn2];
         self.navigationItem.rightBarButtonItem = rightItem2;
         
-    }else if ([model.work_status isEqualToString:@"5"] && ![_score isKindOfClass:[NSDictionary class]] ){
-        //已完成
-        UIButton *rightBtn3 = [UIButton buttonWithType:UIButtonTypeSystem];
-        rightBtn3.frame = CGRectMake(0, 0, 58, 35);
-        [rightBtn3 setTitle:@"评价" forState:UIControlStateNormal];
-        rightBtn3.titleLabel.font = [UIFont systemFontOfSize:14];
-        [rightBtn3 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        rightBtn3.backgroundColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
-        rightBtn3.layer.cornerRadius = 5.0;
-        [rightBtn3 addTarget:self action:@selector(rightBtn3Clicked) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *rightItem3 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn3];
-        self.navigationItem.rightBarButtonItem = rightItem3;
+    }else if ([model.work_status isEqualToString:@"5"]){
+        if ([_score isKindOfClass:[NSNull class]]) {
+            UIButton *rightBtn3 = [UIButton buttonWithType:UIButtonTypeSystem];
+            rightBtn3.frame = CGRectMake(0, 0, 58, 35);
+            [rightBtn3 setTitle:@"评价" forState:UIControlStateNormal];
+            rightBtn3.titleLabel.font = [UIFont systemFontOfSize:14];
+            [rightBtn3 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            rightBtn3.backgroundColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
+            rightBtn3.layer.cornerRadius = 5.0;
+            [rightBtn3 addTarget:self action:@selector(rightBtn3Clicked) forControlEvents:UIControlEventTouchUpInside];
+            UIBarButtonItem *rightItem3 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn3];
+            self.navigationItem.rightBarButtonItem = rightItem3;
+        }
+        
+    }else{
+        
     }
   
 }
@@ -191,7 +192,7 @@
     
     
     CGFloat headerViewH = 0;
-    if([model.work_status isEqualToString:@"1"] || [model.work_status isEqualToString:@"0"] || [model.work_status isEqualToString:@"2"]) {
+    if([model.work_status isEqualToString:@"1"] || [model.work_status isEqualToString:@"0"] || [model.work_status isEqualToString:@"2"] || [model.work_status isEqualToString:@"6"]) {
         headerViewH = 50;
     }else{
         headerViewH = 100;
@@ -258,7 +259,7 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        return 100;
+        return 70;
     }else if (indexPath.section ==1){
         return 50;
         
@@ -291,7 +292,7 @@
                 CGSize size = [model.content boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
 //                WBLog(@"size.height = %lf",size.height+90);
                 if (size.height < 20) {
-                    return 90;
+                    return 90+10;
                 }else{
                     return 90+10+size.height;
                 }
@@ -329,12 +330,7 @@
             }else{
                 return 180;
             }
-//            if (_evaluate_status == 1) {
-//                return 200;
-//            }else{
-//                return 180;
-//            }
-            
+
         }else if ([model.work_status isEqualToString:@"6"]){
             return 120;
         }else{
@@ -354,16 +350,35 @@
         }else if ([model.work_status isEqualToString:@"5"]){//已完工
             if (model.completeImg.count == 0) {
                
-                if (_evaluate_status == 1) {
-                    return 210;
-                }else{
+                if ([_score isKindOfClass:[NSNull class]]) {
                     return 170;
+                }else{
+                    
+                    // 计算文字占据的高度
+                    NSDictionary *attrs = @{NSFontAttributeName : [UIFont systemFontOfSize:13]};
+                    CGSize maxSize = CGSizeMake(Main_width-80, MAXFLOAT);
+                    CGSize size = [_score[@"evaluate_content"] boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
+                    //                WBLog(@"size.height = %lf",size.height+90);
+                    if (size.height < 20) {
+                        return 210;
+                    }else{
+                        return 210+size.height;
+                    }
                 }
             }else{
-                if (_evaluate_status == 1) {
-                    return 300;
-                }else{
+                if ([_score isKindOfClass:[NSNull class]]) {
                     return 260;
+                }else{
+                    // 计算文字占据的高度
+                    NSDictionary *attrs = @{NSFontAttributeName : [UIFont systemFontOfSize:13]};
+                    CGSize maxSize = CGSizeMake(Main_width-80, MAXFLOAT);
+                    CGSize size = [_score[@"evaluate_content"] boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
+                    //                WBLog(@"size.height = %lf",size.height+90);
+                    if (size.height < 20) {
+                        return 300;
+                    }else{
+                        return 300+size.height;
+                    }
                 }
             }
         }else{
@@ -384,8 +399,8 @@
 
     if (indexPath.section == 0) {
         orderDetailModel *model = _dataSourceArr[0];
-        UILabel *addressLab = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 60)];
-        addressLab.numberOfLines = 2;
+        UILabel *addressLab = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 30)];
+        addressLab.numberOfLines = 0;
         addressLab.text = model.address;
         addressLab.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
         addressLab.font = [UIFont systemFontOfSize:15];
@@ -978,38 +993,6 @@
                     [backscrollview addSubview:nameLab];
 
                 }
-                
-                UIView *line = [[UIView alloc]init];
-                if ([model.work_status isEqualToString:@"1"]) {//待派单
-                    line.frame = CGRectMake(10, 160-0.5, Main_width-40, .5);
-                }else if ([model.work_status isEqualToString:@"2"]){//待服务
-                   line.frame = CGRectMake(10, 160-0.5, Main_width-40, .5);
-                }else if ([model.work_status isEqualToString:@"3"] || [model.work_status isEqualToString:@"0"] ){//待付款
-                    if (model.distributeUser.count == 0) {
-                        line.frame = CGRectMake(10, 110-0.5, Main_width-40, .5);
-                    }else{
-                        line.frame = CGRectMake(10, 200-0.5, Main_width-40, .5);
-                    }  
-                }else if ([model.work_status isEqualToString:@"4"]){//待完工
-                    if (model.distributeUser.count == 0) {
-                         line.frame = CGRectMake(10, 90-0.5, Main_width-40, .5);
-                    }else{
-                        line.frame = CGRectMake(10, 180-0.5, Main_width-40, .5);
-                    }
-                }else if ([model.work_status isEqualToString:@"5"]){//已完工
-                    
-                    if (model.completeImg.count == 0) {
-                         line.frame = CGRectMake(10, 90-0.5, Main_width-40, .5);
-                    }else{
-                         line.frame = CGRectMake(10, 180-0.5, Main_width-40, .5);
-                    }
-                   
-                }else{
-                    return 0;
-                }
-                
-                line.backgroundColor = [UIColor colorWithRed:222/255.0 green:222/255.0 blue:222/255.0 alpha:1];
-                [cell addSubview:line];
 
             }else if ([model.work_status isEqualToString:@"6"]){//已取消
                 //取消订单
@@ -1028,15 +1011,42 @@
                 quXiaoLab1.font = [UIFont systemFontOfSize:13];
                 quXiaoLab1.textAlignment = NSTextAlignmentLeft;
                 [cell addSubview:quXiaoLab1];
-                
-                UIView *line = [[UIView alloc]init];
-                if ([model.work_status isEqualToString:@"6"]){
-                    line.frame = CGRectMake(10, 120-0.5, Main_width-40, .5);
-                }
-                line.backgroundColor = [UIColor colorWithRed:222/255.0 green:222/255.0 blue:222/255.0 alpha:1];
-                [cell addSubview:line];
 
             }
+        
+        UIView *line = [[UIView alloc]init];
+        if ([model.work_status isEqualToString:@"1"]) {//待派单
+            line.frame = CGRectMake(10, 160-0.5, Main_width-40, .5);
+        }else if ([model.work_status isEqualToString:@"2"]){//待服务
+            line.frame = CGRectMake(10, 160-0.5, Main_width-40, .5);
+        }else if ([model.work_status isEqualToString:@"3"] || [model.work_status isEqualToString:@"0"] ){//待付款
+            if (model.distributeUser.count == 0) {
+                line.frame = CGRectMake(10, 110-0.5, Main_width-40, .5);
+            }else{
+                line.frame = CGRectMake(10, 200-0.5, Main_width-40, .5);
+            }
+        }else if ([model.work_status isEqualToString:@"4"]){//待完工
+            if (model.distributeUser.count == 0) {
+                line.frame = CGRectMake(10, 90-0.5, Main_width-40, .5);
+            }else{
+                line.frame = CGRectMake(10, 180-0.5, Main_width-40, .5);
+            }
+        }else if ([model.work_status isEqualToString:@"5"]){//已完工
+            
+            if (model.completeImg.count == 0) {
+                line.frame = CGRectMake(10, 90-0.5, Main_width-40, .5);
+            }else{
+                line.frame = CGRectMake(10, 180-0.5, Main_width-40, .5);
+            }
+            
+        }else if ([model.work_status isEqualToString:@"6"]){
+            line.frame = CGRectMake(10, 120-0.5, Main_width-40, .5);
+        }else{
+            return 0;
+        }
+        
+        line.backgroundColor = [UIColor colorWithRed:222/255.0 green:222/255.0 blue:222/255.0 alpha:1];
+        [cell addSubview:line];
 
     }else {
 
@@ -1132,22 +1142,36 @@
             [cell addSubview:pingJiaLab];
             
              int i = [_score[@"level"] intValue];
+
              for (int j = 0; j<i; j++) {
-                 UIImageView *starView = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(pingJiaLab.frame)+10+j*20, CGRectGetMaxY(beiZhuLab.frame)+10, 15, 15)];
+                 starView = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(pingJiaLab.frame)+10+j*20, CGRectGetMaxY(beiZhuLab.frame)+10, 15, 15)];
                  starView.image = [UIImage imageNamed:@"pingjia1"];
                  [cell.contentView addSubview:starView];
-             }
+                 
+            }
+            UILabel *pjTitleLab = [[UILabel alloc] init];
+            // 计算文字占据的高度
+            NSDictionary *attrs = @{NSFontAttributeName : [UIFont systemFontOfSize:13]};
+            CGSize maxSize = CGSizeMake(Main_width-80, MAXFLOAT);
+            CGSize size = [_score[@"evaluate_content"] boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
+            pjTitleLab.numberOfLines = 0;
+            pjTitleLab.text = _score[@"evaluate_content"];
+            pjTitleLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
+            pjTitleLab.font = [UIFont systemFontOfSize:13];
+            pjTitleLab.textAlignment = NSTextAlignmentLeft;
+            if ([_score[@"evaluate_content"] isEqualToString:@""]) {
+                pjTitleLab.frame = CGRectMake(10, CGRectGetMaxY(starView.frame), Main_width-40, 0);
+                
+            }else{
+                pjTitleLab.frame = CGRectMake(10, CGRectGetMaxY(starView.frame), Main_width-40, size.height);
+            }
+            [cell addSubview:pjTitleLab];
+            
+        }
+
              
             
-             UILabel *pjTitleLab = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(pingJiaLab.frame)+10, CGRectGetMaxY(pingJiaLab.frame), Main_width-20-80, 60)];
-             pjTitleLab.numberOfLines = 2;
-             pjTitleLab.text = _score[@"evaluate_content"];
-             pjTitleLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
-             pjTitleLab.font = [UIFont systemFontOfSize:13];
-             pjTitleLab.textAlignment = NSTextAlignmentLeft;
-             [cell addSubview:pjTitleLab];
-            }
-
+            
 
          }
 //         else if([_score isKindOfClass:[NSDictionary class]]) { //已评价
