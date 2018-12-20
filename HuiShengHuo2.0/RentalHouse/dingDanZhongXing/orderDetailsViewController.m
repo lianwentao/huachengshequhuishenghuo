@@ -1114,8 +1114,8 @@
                      [_cArr addObject:imgurl];
                  }
              }
-             UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(timeLab2.frame), Main_width, 90)];
-             backscrollview.contentSize = CGSizeMake(50*_completeImgArr.count+16*(_completeImgArr.count-1), 50);
+             UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(timeLab2.frame), Main_width, 80)];
+             backscrollview.contentSize = CGSizeMake(80*_completeImgArr.count+16*(_completeImgArr.count-1), 80);
              backscrollview.showsVerticalScrollIndicator = NO;
              backscrollview.showsHorizontalScrollIndicator = NO;
              backscrollview.userInteractionEnabled = YES;
@@ -1123,9 +1123,9 @@
              for (int i=0; i<_completeImgArr.count; i++) {
                  
                  UIImageView *imgView = [[UIImageView alloc]init];
-                 imgView.frame = CGRectMake(10+(i*90),16, 50, 50);
+                 imgView.frame = CGRectMake(10+(i*70),16, 60, 60);
                  [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_completeImgArr[i]]] placeholderImage:[UIImage imageNamed:@"头像"]];
-                 imgView.layer.cornerRadius = 5;
+//                 imgView.layer.cornerRadius = 5;
                  imgView.clipsToBounds = YES;
                  imgView.contentMode = UIViewContentModeScaleAspectFill;;
                  imgView.tag = i;
