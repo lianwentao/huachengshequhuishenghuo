@@ -58,7 +58,7 @@
                 NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
                 [formatter setDateFormat:@"MM/dd HH:mm"];
                 NSString *dateString = [formatter stringFromDate: date];
-                model.time = dateString;
+                model.time = [NSString stringWithFormat:@"下单时间:%@",dateString];
                 model.erjitype = [[arr objectAtIndex:i] objectForKey:@"work_type_cn"];
                 model.status = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"work_status"]];
                 model.status_cn = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"work_status_cn"]];
@@ -120,7 +120,7 @@
                     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
                     [formatter setDateFormat:@"MM/dd HH:mm"];
                     NSString *dateString = [formatter stringFromDate: date];
-                    model.time = dateString;
+                    model.time = [NSString stringWithFormat:@"下单时间:%@",dateString];
                     model.erjitype = [[arr objectAtIndex:i] objectForKey:@"work_type_cn"];
                     model.status = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"work_status"]];
                     model.status_cn = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"work_status_cn"]];
