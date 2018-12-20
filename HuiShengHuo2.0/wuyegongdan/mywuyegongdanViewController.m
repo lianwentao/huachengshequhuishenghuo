@@ -86,6 +86,9 @@
 }
 - (void)setui
 {
+    
+    
+    
     NSMutableArray *childVCs = [[NSMutableArray alloc]init];
     for (int i=0; i<3; i++) {
         mywuyegongdanchildViewController *vc = [[mywuyegongdanchildViewController alloc] init];
@@ -97,13 +100,21 @@
     self.titleView.titleSelectFont = [UIFont systemFontOfSize:17];
     self.titleView.backgroundColor = [UIColor colorWithRed:(244)/255.0 green:(247)/255.0 blue:(248)/255.0 alpha:0.54];
     self.titleView.titleNormalColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.54];
-    self.titleView.selectIndex = 0;
+    
     [self.view addSubview:_titleView];
     
     self.pageContentView = [[FSPageContentView alloc]initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44+50, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) - 90) childVCs:childVCs parentVC:self delegate:self];
-    self.pageContentView.contentViewCurrentIndex = 0;
+    
     //self.pageContentView.contentViewCanScroll = YES;//设置滑动属性
     [self.view addSubview:_pageContentView];
+    
+    if (_titleselect==nil) {
+        self.titleView.selectIndex = 0;
+        self.pageContentView.contentViewCurrentIndex = 0;
+    }else{
+        self.titleView.selectIndex = [_titleselect integerValue];
+        self.pageContentView.contentViewCurrentIndex = [_titleselect integerValue];
+    }
 }
 #pragma mark --
 - (void)FSSegmentTitleView:(FSSegmentTitleView *)titleView startIndex:(NSInteger)startIndex endIndex:(NSInteger)endIndex

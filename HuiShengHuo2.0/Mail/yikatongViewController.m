@@ -11,6 +11,7 @@
 #import "MBProgressHUD+TVAssistant.h"
 #import "FacepayjiluViewController.h"
 #import "youxianjiaofeijiluViewController.h"
+#import "mywuyegongdanViewController.h"
 #define kScreen_Height   ([UIScreen mainScreen].bounds.size.height)
 #define kScreen_Width    ([UIScreen mainScreen].bounds.size.width)
 #import "PrefixHeader.pch"
@@ -200,6 +201,14 @@
             }else if ([_otype isEqualToString:@"se"]){
                 myserviceViewController *mtse = [[myserviceViewController alloc] init];
                 [self.navigationController pushViewController:mtse animated:YES];
+            }else if ([_otype isEqualToString:@"wo"]){
+                mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
+                if ([_prepay isEqualToString:@"1"]) {
+                    vc.titleselect = @"0";
+                }else{
+                    vc.titleselect = @"1";
+                }
+                [self.navigationController pushViewController:vc animated:YES];
             }else{
                 [self.navigationController popToRootViewControllerAnimated:YES];
             }

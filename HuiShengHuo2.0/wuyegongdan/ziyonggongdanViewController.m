@@ -187,7 +187,7 @@
     }else if (indexPath.row==1){
         //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, Main_width-40, 50)];
-        label.text = [NSString stringWithFormat:@"保修类型  %@",_type];
+        label.text = [NSString stringWithFormat:@"报修类型  %@",_type];
         label.font = Font(15);
         [cell.contentView addSubview:label];
         tableView.rowHeight = 50;
@@ -246,6 +246,10 @@
         label.font = Font(15);
         [cell.contentView addSubview:label];
         
+        UIImageView *vc = [[UIImageView alloc] initWithFrame:CGRectMake(Main_width-40, 10, 20, 20)];
+        vc.image = [UIImage imageNamed:@"gengduo"];
+        [cell.contentView addSubview:vc];
+        
         UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
         but.frame = CGRectMake(0, 0, Main_width, 50);
         [but addTarget:self action:@selector(xuanzedizhi) forControlEvents:UIControlEventTouchUpInside];
@@ -264,6 +268,7 @@
         Textfield1.layer.cornerRadius = 5;
         Textfield1.font = Font(15);
         Textfield1.delegate = self;
+        [Textfield1 setValue:[NSNumber numberWithInt:5] forKey:@"paddingLeft"];
         Textfield1.layer.borderColor = [UIColor colorWithHexString:@"#D2D2D2"].CGColor;
         [cell.contentView addSubview:Textfield1];
         
@@ -278,6 +283,7 @@
         Textfield2.layer.borderWidth = 1;
         Textfield2.font = Font(15);
         Textfield2.delegate = self;
+        [Textfield2 setValue:[NSNumber numberWithInt:5] forKey:@"paddingLeft"];
         Textfield2.layer.borderColor = [UIColor colorWithHexString:@"#D2D2D2"].CGColor;
         [cell.contentView addSubview:Textfield2];
         
@@ -414,7 +420,7 @@
 {
     NSString *str = price;
     NSArray *array = [str componentsSeparatedByString:@"."]; //从字符.中分隔成2个元素的数组
-    SpecialAlertView *fuKuan = [[SpecialAlertView alloc]initWithMessageTitle:@"您需要支付预付费用" messageString:[NSString stringWithFormat:@"%@.",array[0]] messageString1:array[1]  sureBtnTitle:@"立即支付" sureBtnColor:[UIColor blueColor]];
+    SpecialAlertView *fuKuan = [[SpecialAlertView alloc]initWithMessageTitle:@"您需要支付预付费用" messageString:[NSString stringWithFormat:@"¥%@.",array[0]] messageString1:array[1]  sureBtnTitle:@"立即支付" sureBtnColor:[UIColor blueColor]];
     [fuKuan withSureClick:^(NSString *string) {
         AllPayViewController *allpay = [[AllPayViewController alloc] init];
         allpay.order_id = ordid;

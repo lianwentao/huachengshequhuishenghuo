@@ -1212,7 +1212,7 @@
     orderDetailModel *model = _dataSourceArr[0];
     NSString *str = model.entry_fee;
     NSArray *array = [str componentsSeparatedByString:@"."]; //从字符.中分隔成2个元素的数组
-     SpecialAlertView *fuKuan = [[SpecialAlertView alloc]initWithMessageTitle:@"您需要支付预付费用" messageString:[NSString stringWithFormat:@"%@.",array[0]] messageString1:array[1]  sureBtnTitle:@"立即支付" sureBtnColor:[UIColor blueColor]];
+     SpecialAlertView *fuKuan = [[SpecialAlertView alloc]initWithMessageTitle:@"您需要支付预付费用" messageString:[NSString stringWithFormat:@"¥%@.",array[0]] messageString1:array[1]  sureBtnTitle:@"立即支付" sureBtnColor:[UIColor blueColor]];
     [fuKuan withSureClick:^(NSString *string) {
         AllPayViewController *allpay = [[AllPayViewController alloc] init];
         allpay.order_id = model.id;
@@ -1227,10 +1227,10 @@
 #pragma mark - 付款
 -(void)rightBtn2Clicked{
     orderDetailModel *model = _dataSourceArr[0];
-    NSString *str = [NSString stringWithFormat:@"%f",[model.total_fee floatValue]-[model.entry_fee floatValue]];
+    NSString *str = [NSString stringWithFormat:@"%.2f",[model.total_fee floatValue]-[model.entry_fee floatValue]];
     NSArray *array = [str componentsSeparatedByString:@"."]; //从字符.中分隔成2个元素的数组
-    SpecialAlertView *fuKuan = [[SpecialAlertView alloc]initWithMessageTitle:@"付款金额" messageString:[NSString stringWithFormat:@"%@.",array[0]] messageString1:array[1] messageString2:[NSString stringWithFormat:@"已扣除预付费用%@元",model.entry_fee]  messageString3:@"温馨提示" messageString4:@"请确认服务完成后再付款" sureBtnTitle:@"确定" sureBtnColor:[UIColor blueColor]];
-    
+    SpecialAlertView *fuKuan = [[SpecialAlertView alloc]initWithMessageTitle:@"付款金额" messageString:[NSString stringWithFormat:@"¥%@.",array[0]] messageString1:array[1] messageString2:[NSString stringWithFormat:@"已扣除预付费用%@元",model.entry_fee]  messageString3:@"温馨提示" messageString4:@"请确认服务完成后再付款" sureBtnTitle:@"确定" sureBtnColor:[UIColor blueColor]];
+    WBLog(@"%@--%@",array[0],array[1]);
     [fuKuan withSureClick:^(NSString *string) {
         
         AllPayViewController *allpay = [[AllPayViewController alloc] init];

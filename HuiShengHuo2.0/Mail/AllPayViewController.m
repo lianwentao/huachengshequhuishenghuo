@@ -232,6 +232,12 @@
     }else if ([_type isEqualToString:@"wuyegongdanfukuan"]){
         NSLog(@"*********----wuyegongdanfukuan");
         mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
+        if ([_prepay isEqualToString:@"1"]) {
+            vc.titleselect = @"0";
+        }else{
+            vc.titleselect = @"1";
+        }
+        
         [self.navigationController pushViewController:vc animated:YES];
     }else{
         dingdanViewController *dingdan = [[dingdanViewController alloc] init];
@@ -322,6 +328,11 @@
     }else if ([_type isEqualToString:@"wuyegongdanfukuan"]){
         NSLog(@"*********----wuyegongdanfukuan");
         mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
+        if ([_prepay isEqualToString:@"1"]) {
+            vc.titleselect = @"0";
+        }else{
+            vc.titleselect = @"1";
+        }
         [self.navigationController pushViewController:vc animated:YES];
     }else{
         dingdanViewController *dingdan = [[dingdanViewController alloc] init];
@@ -580,6 +591,7 @@
         yikatong.hidesBottomBarWhenPushed = YES;
         yikatong.id = _order_id;
         yikatong.price = _price;
+        yikatong.prepay = _prepay;
         if ([_type isEqualToString:@"aciti"]) {
             yikatong.otype = @"hd";
         }else if ([_type isEqualToString:@"2"]){
@@ -905,6 +917,11 @@
     }else if ([_type isEqualToString:@"wuyegongdanfukuan"]){
         NSLog(@"*********----wuyegongdanfukuan");
         mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
+        if ([_prepay isEqualToString:@"1"]) {
+            vc.titleselect = @"0";
+        }else{
+            vc.titleselect = @"1";
+        }
         [self.navigationController pushViewController:vc animated:YES];
     } else{
         dingdanViewController *dingdan = [[dingdanViewController alloc] init];
