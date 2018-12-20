@@ -205,6 +205,7 @@
                     for (UIViewController *controller in self.navigationController.viewControllers) {
                         if ([controller isKindOfClass:[orderDetailsViewController class]]) {
                             orderDetailsViewController *vc =(orderDetailsViewController *)controller;
+                            vc.evaluate_status = @"1";
                             [self.navigationController popToViewController:vc animated:YES];
                         }
                     }

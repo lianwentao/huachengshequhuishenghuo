@@ -11,6 +11,6 @@
 @interface orderDetailsViewController : UIViewController
 @property (nonatomic , assign)NSInteger status;
 @property (nonatomic , assign)NSString *stateStr;
-@property (nonatomic , assign)NSInteger evaluate_status;
+@property (nonatomic , strong)NSString *evaluate_status;
 @property (nonatomic , strong)NSString *workOrderID;
 @end

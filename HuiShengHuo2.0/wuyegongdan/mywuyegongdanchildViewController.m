@@ -210,7 +210,6 @@
 {
     orderDetailsViewController *orderVC = [[orderDetailsViewController alloc]init];
     orderVC.stateStr = [_dataArr[indexPath.row] objectForKey:@"work_status_cn"];
-    orderVC.evaluate_status = [[_dataArr[indexPath.row] objectForKey:@"evaluate_status"] integerValue];
     orderVC.workOrderID = [_dataArr[indexPath.row] objectForKey:@"id"];
     [self.navigationController pushViewController:orderVC animated:YES];
 }

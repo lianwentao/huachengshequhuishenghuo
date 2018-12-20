@@ -56,7 +56,7 @@
     [self loadData];
 //    [self loadTableView];
 //    [self setRightBtn];
-    
+//
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shauxin) name:@"shuaxinwuyegongdanxiangqing" object:nil];
 }
 - (void)shauxin{
@@ -276,7 +276,7 @@
                 if (size.height < 20) {
                     return 50;
                 }else{
-                     return size.height;
+                     return size.height+10;
                 }
                
             }
@@ -500,10 +500,16 @@
         beiZhuLab.font = [UIFont systemFontOfSize:13];
         beiZhuLab.textAlignment = NSTextAlignmentLeft;
         if ([model.content isEqualToString:@""]) {
-            beiZhuLab.frame = CGRectMake(10, CGRectGetMaxY(backscrollview.frame), Main_width-40, beiZhuLabH);
-            
+             beiZhuLab.frame = CGRectMake(10, CGRectGetMaxY(backscrollview.frame), Main_width-40, beiZhuLabH);
         }else{
-            beiZhuLab.frame = CGRectMake(10, CGRectGetMaxY(backscrollview.frame), Main_width-40, size.height);
+            
+            if (_repairImgArr.count == 0) {
+                
+                beiZhuLab.frame = CGRectMake(10, 10, Main_width-40, size.height);
+            }else{
+                 beiZhuLab.frame = CGRectMake(10, CGRectGetMaxY(backscrollview.frame), Main_width-40, size.height);
+            }
+           
         }
     
         [cell addSubview:beiZhuLab];
@@ -910,7 +916,7 @@
 
                 }
 
-            }else if (_evaluate_status == 1){
+            }else if ([_score isKindOfClass:[NSDictionary class]]){
 
                 UILabel *timeLab1 = [[UILabel alloc] initWithFrame:CGRectMake(10,19, Main_width-20, 15)];
                 NSTimeInterval time=[model.release_at doubleValue]+28800;
@@ -1160,10 +1166,10 @@
             pjTitleLab.font = [UIFont systemFontOfSize:13];
             pjTitleLab.textAlignment = NSTextAlignmentLeft;
             if ([_score[@"evaluate_content"] isEqualToString:@""]) {
-                pjTitleLab.frame = CGRectMake(10, CGRectGetMaxY(starView.frame), Main_width-40, 0);
+                pjTitleLab.frame = CGRectMake(10, CGRectGetMaxY(starView.frame)+10, Main_width-40, 0);
                 
             }else{
-                pjTitleLab.frame = CGRectMake(10, CGRectGetMaxY(starView.frame), Main_width-40, size.height);
+                pjTitleLab.frame = CGRectMake(10, CGRectGetMaxY(starView.frame)+10, Main_width-40, size.height);
             }
             [cell addSubview:pjTitleLab];
             
