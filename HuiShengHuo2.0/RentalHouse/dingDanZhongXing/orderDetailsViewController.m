@@ -127,6 +127,7 @@
 -(void)setRightBtn{
     orderDetailModel *model = _dataSourceArr[0];
     if ([model.work_status isEqualToString:@"1"] || [model.work_status isEqualToString:@"2"]) {
+        WBLog(@"************111111111111-------22222222222222222");
         //等待派单
         UIButton *rightBtn1 = [UIButton buttonWithType:UIButtonTypeSystem];
         rightBtn1.frame = CGRectMake(0, 0, 80, 30);
@@ -139,6 +140,7 @@
         UIBarButtonItem *rightItem1 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn1];
         self.navigationItem.rightBarButtonItem = rightItem1;
     }else if ([model.work_status isEqualToString:@"3"]){
+        WBLog(@"************33333333333333");
         //    待付款+已付款
         UIButton *rightBtn2 = [UIButton buttonWithType:UIButtonTypeSystem];
         rightBtn2.frame = CGRectMake(0, 0, 58, 35);
@@ -154,7 +156,9 @@
         self.navigationItem.rightBarButtonItem = rightItem2;
         
     }else if ([model.work_status isEqualToString:@"5"]){
+        WBLog(@"************55555555555");
         if ([_score isKindOfClass:[NSNull class]]) {
+            WBLog(@"************55555555555----有评价按钮");
             UIButton *rightBtn3 = [UIButton buttonWithType:UIButtonTypeSystem];
             rightBtn3.frame = CGRectMake(0, 0, 58, 35);
             [rightBtn3 setTitle:@"评价" forState:UIControlStateNormal];
@@ -165,10 +169,14 @@
             [rightBtn3 addTarget:self action:@selector(rightBtn3Clicked) forControlEvents:UIControlEventTouchUpInside];
             UIBarButtonItem *rightItem3 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn3];
             self.navigationItem.rightBarButtonItem = rightItem3;
+        }else{
+            WBLog(@"************55555555555-没评价按钮");
+            self.navigationItem.rightBarButtonItem = nil;
         }
         
     }else{
-        
+        self.navigationItem.rightBarButtonItem = nil;
+        WBLog(@"************666666666666");
     }
   
 }

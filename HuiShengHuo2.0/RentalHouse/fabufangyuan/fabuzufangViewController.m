@@ -92,13 +92,8 @@
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIndetifier = @"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndetifier];
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIndetifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;    //点击的时候无效果
-    }
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;    //点击的时候无效果
     UIView *upview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Main_width, 14)];
     upview.backgroundColor = TabbleView.backgroundColor;
     [cell.contentView addSubview:upview];
