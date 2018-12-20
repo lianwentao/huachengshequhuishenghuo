@@ -175,40 +175,48 @@
     [self post];
 }
 -(void)post{
-   
-    //1.创建会话管理者
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"id":_orderID,@"level":_score,@"evaluate_content":_textview.text,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
-    NSLog(@"dict = %@",dict);
-    NSString *urlstr = [API stringByAppendingString:@"propertyWork/WorkScore"];
-    [manager POST:urlstr parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+    NSLog(@"_score = %@",_score);
+    if (![_score isKindOfClass:[NSString class]]) {
         
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSLog(@"dataStr = %@",dataStr);
-        
-        NSInteger status = [responseObject[@"status"] integerValue];
-        if (status == 1) {
-           
-             SpecialAlertView *pjwcView = [[SpecialAlertView alloc]initWithImage:@"xiaolian" messageTitle:@"谢谢您的评价" messageString:@"您的评价是我们最大的动力" messageString1:@"会继续努力滴" sureBtnTitle:@"返回订单" sureBtnColor:nil];
-            [pjwcView withSureClick:^(NSString *string) {
-                for (UIViewController *controller in self.navigationController.viewControllers) {
-                    if ([controller isKindOfClass:[orderDetailsViewController class]]) {
-                        orderDetailsViewController *vc =(orderDetailsViewController *)controller;
-                        [self.navigationController popToViewController:vc animated:YES];
+         [MBProgressHUD showToastToView:self.view withText:@"评分不能为空"];
+    }else if ([_textview.text isEqualToString:@""]){
+        [MBProgressHUD showToastToView:self.view withText:@"评价不能为空"];
+    }else{
+        //1.创建会话管理者
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        NSDictionary *dict = @{@"id":_orderID,@"level":_score,@"evaluate_content":_textview.text,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        NSLog(@"dict = %@",dict);
+        NSString *urlstr = [API stringByAppendingString:@"propertyWork/WorkScore"];
+        [manager POST:urlstr parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+            
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            
+            NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+            NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            NSLog(@"dataStr = %@",dataStr);
+            
+            NSInteger status = [responseObject[@"status"] integerValue];
+            if (status == 1) {
+                
+                SpecialAlertView *pjwcView = [[SpecialAlertView alloc]initWithImage:@"xiaolian" messageTitle:@"谢谢您的评价" messageString:@"您的评价是我们最大的动力" messageString1:@"会继续努力滴" sureBtnTitle:@"返回订单" sureBtnColor:nil];
+                [pjwcView withSureClick:^(NSString *string) {
+                    for (UIViewController *controller in self.navigationController.viewControllers) {
+                        if ([controller isKindOfClass:[orderDetailsViewController class]]) {
+                            orderDetailsViewController *vc =(orderDetailsViewController *)controller;
+                            [self.navigationController popToViewController:vc animated:YES];
+                        }
                     }
-                }
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"shuaxinwuyegongdanxiangqing" object:nil userInfo:nil];
-            }];
-        }
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-    }];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"shuaxinwuyegongdanxiangqing" object:nil userInfo:nil];
+                }];
+            }
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+        }];
+    }
+    
 }
 
 @end

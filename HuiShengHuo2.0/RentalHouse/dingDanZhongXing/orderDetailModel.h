@@ -36,7 +36,7 @@
 @property (nonatomic , strong)NSString *userphone;
 @property (nonatomic , strong)NSString *work_status;
 @property (nonatomic , strong)NSString *work_type;
-//@property (nonatomic , strong)NSString *score;
+@property (nonatomic , strong)NSString *complete_at;
 @property (nonatomic , strong)NSArray *repairImg;//报修图片
 @property (nonatomic , strong)NSArray *distributeUser;//派单人信息
 @property (nonatomic , strong)NSArray *completeImg;//师傅完成提交图片

@@ -61,6 +61,44 @@
 //    [self setUpAllView];
    
 }
+//-(void)loadData{
+//    
+//    
+//    NSLog(@"_sfID = %@",_sfID);
+//    
+//    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+//    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"house_id":_sfID};
+//    
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+//    NSLog(@"dict = %@",dict);
+//    NSString *strurl = [API stringByAppendingString:@"secondHouseType/getLeaseDetails"];
+//    NSLog(@"strurl = %@",strurl);
+//    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        //        NSLog(@"gouwuche--%@",responseObject);
+//        
+//        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+//        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+//        NSLog(@"dataStr = %@",dataStr);
+//        NSDictionary *dataDic = responseObject[@"data"];
+//        NSLog(@"dataDic = %@",dataDic);
+//        dataSourceArr = [NSMutableArray array];
+//        sfDetailModel *model =  [[sfDetailModel alloc]initWithDictionary:dataDic error:nil];
+//        [dataSourceArr addObject:model];
+//        
+//        tjArr = [NSMutableArray array];
+//        for (NSDictionary *tjDic in model.recommend) {
+//            tjListModel *tjModel = [[tjListModel alloc]initWithDictionary:tjDic error:NULL];
+//            [tjArr addObject:tjModel];
+//        }
+//        
+//        [self CreateTableview];
+//        [self loadFunctionView];
+//        
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        NSLog(@"failure--%@",error);
+//    }];
+//}
 -(void)setUpAllView{
     NSArray *array = @[@"租金",@"面积",@"房型",@"排序"];
     ZJChooseControlView *chooseView = [[ZJChooseControlView alloc]initWithFrame:CGRectMake(0, 64, Main_width, 45)];

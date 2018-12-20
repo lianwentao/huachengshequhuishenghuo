@@ -53,10 +53,7 @@
     self.view.backgroundColor = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:239/255.0 alpha:1];
     [self loadData];
 //    [self loadTableView];
-
 //    [self setRightBtn];
-
-    [self setRightBtn];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shauxin) name:@"shuaxinwuyegongdanxiangqing" object:nil];
 }
@@ -188,7 +185,7 @@
     _tableView.dataSource = self;
     _tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
     _tableView.showsVerticalScrollIndicator = NO;
-//    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 //    _tableView.contentInset = UIEdgeInsetsMake(IMAGE_HEIGHT - [self navBarBottom], 0, 0, 0);
     [self.view addSubview:_tableView];
     
@@ -271,7 +268,16 @@
             if ([model.content isEqualToString:@""]) {
                 return 0;
             }else{
-                return 60;
+                // 计算文字占据的高度
+                NSDictionary *attrs = @{NSFontAttributeName : [UIFont systemFontOfSize:13]};
+                CGSize maxSize = CGSizeMake(Main_width-80, MAXFLOAT);
+                CGSize size = [model.content boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
+                if (size.height < 20) {
+                    return 50;
+                }else{
+                     return size.height;
+                }
+               
             }
             
         }else{
@@ -279,7 +285,17 @@
             if ([model.content isEqualToString:@""]) {
                 return 90;
             }else{
-                return 150;
+                // 计算文字占据的高度
+                NSDictionary *attrs = @{NSFontAttributeName : [UIFont systemFontOfSize:13]};
+                CGSize maxSize = CGSizeMake(Main_width-80, MAXFLOAT);
+                CGSize size = [model.content boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
+//                WBLog(@"size.height = %lf",size.height+90);
+                if (size.height < 20) {
+                    return 90;
+                }else{
+                    return 90+10+size.height;
+                }
+               
             }
            
         }
@@ -400,6 +416,11 @@
         projectLab.textAlignment = NSTextAlignmentLeft;
         [cell addSubview:projectLab];
         
+        UIView *line = [[UIView alloc]init];
+        line.frame = CGRectMake(10, 49.5, Main_width-40, .5);
+        line.backgroundColor = [UIColor colorWithRed:222/255.0 green:222/255.0 blue:222/255.0 alpha:1];
+        [cell addSubview:line];
+        
 
     }else if(indexPath.section == 2){
         orderDetailModel *model = _dataSourceArr[0];
@@ -443,7 +464,7 @@
             [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_repairImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
             imgView.layer.cornerRadius = 5;
             imgView.clipsToBounds = YES;
-            imgView.contentMode = UIViewContentModeScaleToFill;
+            imgView.contentMode = UIViewContentModeScaleAspectFill;
             imgView.tag = i;
             imgView.userInteractionEnabled = YES;
             UITapGestureRecognizer * tap1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(browerImage1:)];
@@ -452,18 +473,50 @@
         }
         
         CGFloat beiZhuLabH = 0;
-        if ([model.content isEqualToString:@""]) {
-            beiZhuLabH = 0;
-        }else{
-            beiZhuLabH = 60;
-        }
-        UILabel *beiZhuLab = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(backscrollview.frame), Main_width-20, beiZhuLabH)];
-        beiZhuLab.numberOfLines = 2;
+        
+        UILabel *beiZhuLab = [[UILabel alloc] init];
+        // 计算文字占据的高度
+        NSDictionary *attrs = @{NSFontAttributeName : [UIFont systemFontOfSize:13]};
+        CGSize maxSize = CGSizeMake(Main_width-80, MAXFLOAT);
+        CGSize size = [model.content boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
+        beiZhuLab.numberOfLines = 0;
         beiZhuLab.text = [NSString stringWithFormat:@"维修备注:%@",model.content];
         beiZhuLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
         beiZhuLab.font = [UIFont systemFontOfSize:13];
         beiZhuLab.textAlignment = NSTextAlignmentLeft;
+        if ([model.content isEqualToString:@""]) {
+            beiZhuLab.frame = CGRectMake(10, CGRectGetMaxY(backscrollview.frame), Main_width-40, beiZhuLabH);
+            
+        }else{
+            beiZhuLab.frame = CGRectMake(10, CGRectGetMaxY(backscrollview.frame), Main_width-40, size.height);
+        }
+    
         [cell addSubview:beiZhuLab];
+        //分割线
+        UIView *line = [[UIView alloc]init];
+        if (model.repairImg.count == 0) {
+            if ([model.content isEqualToString:@""]) {
+               line.frame = CGRectMake(0, 0, 0, 0);
+            }else{
+                if (size.height < 20) {
+                   line.frame = CGRectMake(10, 49.5, Main_width-40, .5);
+                }else{
+                    line.frame = CGRectMake(10, size.height-0.5, Main_width-40, .5);
+                }
+                
+            }
+            
+        }else{
+            
+            if ([model.content isEqualToString:@""]) {
+                line.frame = CGRectMake(10, 90-0.5, Main_width-40, .5);
+            }else{
+                line.frame = CGRectMake(10, 90+10+size.height-0.5, Main_width-40, .5);
+            }
+            
+        }
+        line.backgroundColor = [UIColor colorWithRed:222/255.0 green:222/255.0 blue:222/255.0 alpha:1];
+        [cell addSubview:line];
 
     }else if(indexPath.section == 3){
         orderDetailModel *model = _dataSourceArr[0];
@@ -709,6 +762,8 @@
                     NSString *timeStr2 = @"已确认";
                     queRenLab.text = [NSString stringWithFormat:@"%@",timeStr2];
                     queRenLab.textColor = [UIColor whiteColor];
+                    queRenLab.layer.cornerRadius = 2;
+                    queRenLab.clipsToBounds = YES;
                     queRenLab.backgroundColor = [UIColor colorWithRed:80/255.0 green:204/255.0 blue:51/255.0 alpha:1];
                     queRenLab.font = [UIFont systemFontOfSize:10];
                     queRenLab.textAlignment = NSTextAlignmentCenter;
@@ -963,14 +1018,14 @@
              [cell addSubview:timeLab1];
 
              UILabel *timeLab2 = [[UILabel alloc] initWithFrame:CGRectMake(10,CGRectGetMaxY(timeLab1.frame)+10, Main_width-20, 15)];
-//             NSTimeInterval time2=[model.order_total_time doubleValue];
-//             NSDate *detaildate2=[NSDate dateWithTimeIntervalSince1970:time2];
-//             NSLog(@"date:%@",[detaildate2 description]);
-//             NSDateFormatter *dateFormatter2 = [[NSDateFormatter alloc] init];
-//             [dateFormatter2 setDateFormat:@"yyyy-MM-dd HH:mm"];
-//             NSString *currentDateStr2 = [dateFormatter stringFromDate: detaildate2];
-//             NSString *timeStr2 = currentDateStr2;
-             timeLab2.text = [NSString stringWithFormat:@"订单完成:%@",model.order_total_time];
+             NSTimeInterval time2=[model.complete_at doubleValue];
+             NSDate *detaildate2=[NSDate dateWithTimeIntervalSince1970:time2];
+             NSLog(@"date:%@",[detaildate2 description]);
+             NSDateFormatter *dateFormatter2 = [[NSDateFormatter alloc] init];
+             [dateFormatter2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+             NSString *currentDateStr2 = [dateFormatter stringFromDate: detaildate2];
+             NSString *timeStr2 = currentDateStr2;
+             timeLab2.text = [NSString stringWithFormat:@"订单完成:%@",timeStr2];
              timeLab2.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
              timeLab2.font = [UIFont systemFontOfSize:15];
              timeLab2.textAlignment = NSTextAlignmentLeft;
@@ -1007,9 +1062,9 @@
                  UIImageView *imgView = [[UIImageView alloc]init];
                  imgView.frame = CGRectMake(10+(i*90),16, 50, 50);
                  [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_completeImgArr[i]]] placeholderImage:[UIImage imageNamed:@"头像"]];
-//                 imgView.layer.cornerRadius = 25;
-//                 imgView.clipsToBounds = YES;
-                 imgView.contentMode = UIViewContentModeScaleToFill;
+                 imgView.layer.cornerRadius = 5;
+                 imgView.clipsToBounds = YES;
+                 imgView.contentMode = UIViewContentModeScaleAspectFill;;
                  imgView.tag = i;
                  imgView.userInteractionEnabled = YES;
                  UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(browerImage:)];
@@ -1025,16 +1080,18 @@
              beiZhuLab.textAlignment = NSTextAlignmentLeft;
              [cell addSubview:beiZhuLab];
              
-             //评价评分
-             UILabel *pingJiaLab = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(beiZhuLab.frame)+10, 70, 15)];
-             pingJiaLab.numberOfLines = 2;
-             pingJiaLab.text = @"服务评分:";
-             pingJiaLab.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:1/255.0 alpha:1];
-             pingJiaLab.font = [UIFont systemFontOfSize:15];
-             pingJiaLab.textAlignment = NSTextAlignmentCenter;
-             [cell addSubview:pingJiaLab];
+            
         
         if([_score isKindOfClass:[NSDictionary class]]) { //已评价
+            //评价评分
+            UILabel *pingJiaLab = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(beiZhuLab.frame)+10, 70, 15)];
+            pingJiaLab.numberOfLines = 2;
+            pingJiaLab.text = @"服务评分:";
+            pingJiaLab.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:1/255.0 alpha:1];
+            pingJiaLab.font = [UIFont systemFontOfSize:15];
+            pingJiaLab.textAlignment = NSTextAlignmentCenter;
+            [cell addSubview:pingJiaLab];
+            
              int i = [_score[@"level"] intValue];
              for (int j = 0; j<i; j++) {
                  UIImageView *starView = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(pingJiaLab.frame)+10+j*20, CGRectGetMaxY(beiZhuLab.frame)+10, 15, 15)];
@@ -1164,7 +1221,7 @@
     functionView.backgroundColor = [UIColor whiteColor];
 
     UILabel *yfLab = [[UILabel alloc]init];
-    yfLab.frame = CGRectMake(10, 15, 90, 20);
+    yfLab.frame = CGRectMake(10, 15, 65, 20);
     yfLab.text = @"预付金额:";
     yfLab.textColor = [UIColor colorWithRed:125/255.0 green:125/255.0 blue:125/255.0 alpha:1];
     yfLab.font = [UIFont systemFontOfSize:14];
@@ -1179,7 +1236,7 @@
     priceLab.textAlignment = NSTextAlignmentLeft;
     [functionView addSubview:priceLab];
 
-    UIButton *zhiFuBtn = [[UIButton alloc]initWithFrame:CGRectMake(Main_width-30-100, 5, 100, 40)];
+    UIButton *zhiFuBtn = [[UIButton alloc]initWithFrame:CGRectMake(Main_width-20-100, 5, 100, 40)];
     zhiFuBtn.clipsToBounds = YES;
     zhiFuBtn.layer.cornerRadius = 5;
     zhiFuBtn.backgroundColor = [UIColor colorWithRed:252/255.0 green:88/255.0 blue:48/255.0 alpha:1];
@@ -1200,36 +1257,60 @@
 }
 #pragma mark - 取消订单
 -(void)rightBtn1Clicked{
-    orderDetailModel *model = _dataSourceArr[0];
-    //1.创建会话管理者
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    //2.封装参数
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"id":model.id};
-
-    NSString *strurl = [API stringByAppendingString:@"propertyWork/WorkCancel"];
-    [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
-
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-
-        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSLog(@"dataStr = %@",dataStr);
-        NSInteger status = [responseObject[@"status"] integerValue];
-        if (status == 1) {
-            
-            for (UIViewController *controller in self.navigationController.viewControllers) {
-                if ([controller isKindOfClass:[mywuyegongdanViewController class]]) {
-                    mywuyegongdanViewController *vc =(mywuyegongdanViewController *)controller;
-                    [self.navigationController popToViewController:vc animated:YES];
-                }
-            }
-        }
-
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-
-    }];
+    //初始化警告框
+    UIAlertController*alert = [UIAlertController
+                               alertControllerWithTitle:@"提示"
+                               message: @"是否确定取消订单"
+                               preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction
+                      actionWithTitle:@"取消"
+                      style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                      {
+                          NSLog(@"取消取消订单");
+                      }]];
+    [alert addAction:[UIAlertAction
+                      actionWithTitle:@"确定"
+                      style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                      {
+                          
+                          orderDetailModel *model = _dataSourceArr[0];
+                          //1.创建会话管理者
+                          AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                          manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+                          //2.封装参数
+                          NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                          NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"id":model.id};
+                          
+                          NSString *strurl = [API stringByAppendingString:@"propertyWork/WorkCancel"];
+                          [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+                              
+                          } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                              
+                              NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+                              NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                              NSLog(@"dataStr = %@",dataStr);
+                              NSInteger status = [responseObject[@"status"] integerValue];
+                              if (status == 1) {
+                                  
+                                  for (UIViewController *controller in self.navigationController.viewControllers) {
+                                      if ([controller isKindOfClass:[mywuyegongdanViewController class]]) {
+                                          mywuyegongdanViewController *vc =(mywuyegongdanViewController *)controller;
+                                          [self.navigationController popToViewController:vc animated:YES];
+                                      }
+                                  }
+                              }
+                              
+                          } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                              
+                          }];
+                      
+                      }]];
+    //弹出提示框
+    [self presentViewController:alert
+                       animated:YES completion:nil];
+    
+   
 }
 #pragma mark - 支付预付款
 -(void)zhiFuAction{
@@ -1284,5 +1365,18 @@
 {
     XLPhotoBrowser *browser = [XLPhotoBrowser showPhotoBrowserWithImages:_rArr currentImageIndex:tap1.view.tag];
     browser.browserStyle = XLPhotoBrowserStylePageControl;
+}
+#pragma mark 获得文字高度
+-(float)getContactHeight:(NSString*)contact
+{
+    NSDictionary *attrs = @{NSFontAttributeName : [UIFont systemFontOfSize:13]};
+    CGSize maxSize = CGSizeMake(Main_width-100, MAXFLOAT);
+    
+    // 计算文字占据的高度
+    CGSize size = [contact boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
+    
+    
+    return size.height;
+    
 }
 @end
