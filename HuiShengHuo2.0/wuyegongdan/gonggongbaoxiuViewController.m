@@ -194,6 +194,8 @@
         }
         catebut.layer.masksToBounds = YES;
         catebut.layer.cornerRadius = 20;
+        catebut.layer.borderWidth = 1;
+        catebut.layer.borderColor = [UIColor colorWithHexString:@"#9C9C9C"].CGColor;
         catebut.tag = i;
         [catebut setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [catebut setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
@@ -259,7 +261,7 @@
     }else if (indexPath.row==1){
         //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         labeltype = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, Main_width-40, 50)];
-        labeltype.text = @"请选择保修类型";
+        labeltype.text = @"请选择报修类型";
         labeltype.font = Font(15);
         [cell.contentView addSubview:labeltype];
         tableView.rowHeight = 50;
@@ -425,7 +427,7 @@
     }
     _type_id = [[_CategoryArr objectAtIndex:sender.tag] objectForKey:@"id"];
     _type = [[_CategoryArr objectAtIndex:sender.tag] objectForKey:@"c_name"];
-    labeltype.text = [NSString stringWithFormat:@"保修类型  %@",_type];
+    labeltype.text = [NSString stringWithFormat:@"报修类型  %@",_type];
     [self dismissview];
 }
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
