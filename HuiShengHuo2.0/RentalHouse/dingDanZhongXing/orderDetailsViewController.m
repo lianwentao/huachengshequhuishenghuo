@@ -64,47 +64,71 @@
     [self loadData];
 }
 -(void)loadData{
-    //1.创建会话管理者
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    //2.封装参数
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-     NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"id":_workOrderID};
-
-    NSString *strurl = [API stringByAppendingString:@"propertyWork/getWorkDetails"];
-    [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+    
+    //初始化进度框，置于当前的View当中
+    static MBProgressHUD *_HUD;
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:_HUD];
+    
+    //如果设置此属性则当前的view置于后台
+    //_HUD.dimBackground = YES;
+    
+    //设置对话框文字
+    _HUD.labelText = @"加载中...";
+    _HUD.labelFont = [UIFont systemFontOfSize:14];
+    
+    //显示对话框
+    [_HUD showAnimated:YES whileExecutingBlock:^{
+        //对话框显示时需要执行的操作
+        //1.创建会话管理者
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+        //2.封装参数
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"id":_workOrderID};
         
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSLog(@"dataStr = %@",dataStr);
-        NSInteger status = [responseObject[@"status"] integerValue];
-        if (status == 1) {
-        
-            NSDictionary *dataDic = responseObject[@"data"];
-            NSLog(@"dataDic = %@",dataDic);
-            if ([dataDic[@"score"] isKindOfClass:[NSDictionary class]]) {
-                
-                _score = dataDic[@"score"];
-            }else{
-                _score = nil;
-            }
-            NSLog(@"_score = %@",_score);
-            _dataSourceArr = [NSMutableArray array];
-            orderDetailModel *model = [[orderDetailModel alloc]initWithDictionary:dataDic error:NULL];
-            [_dataSourceArr addObject:model];
-            NSLog(@"_dataSourceArr = %@",_dataSourceArr);
-            [self loadTableView];
-            if ([model.work_status isEqualToString:@"0"]) {
-                [self loadFunctionView];
-            }
-            [self setRightBtn];
+        NSString *strurl = [API stringByAppendingString:@"propertyWork/getWorkDetails"];
+        [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
             
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            
+            NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+            NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            NSLog(@"dataStr = %@",dataStr);
+            NSInteger status = [responseObject[@"status"] integerValue];
+            if (status == 1) {
+                
+                NSDictionary *dataDic = responseObject[@"data"];
+                NSLog(@"dataDic = %@",dataDic);
+                if ([dataDic[@"score"] isKindOfClass:[NSDictionary class]]) {
+                    
+                    _score = dataDic[@"score"];
+                }else{
+                    _score = nil;
+                }
+                NSLog(@"_score = %@",_score);
+                _dataSourceArr = [NSMutableArray array];
+                orderDetailModel *model = [[orderDetailModel alloc]initWithDictionary:dataDic error:NULL];
+                [_dataSourceArr addObject:model];
+                NSLog(@"_dataSourceArr = %@",_dataSourceArr);
+                [self loadTableView];
+                if ([model.work_status isEqualToString:@"0"]) {
+                    [self loadFunctionView];
+                }
+                [self setRightBtn];
+                
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+        }];
         
-    }];
+    }// 在HUD被隐藏后的回调
+       completionBlock:^{
+           //操作执行完后取消对话框
+           [_HUD removeFromSuperview];
+           _HUD = nil;
+       }];
+   
 }
 -(void)setRightBtn{
     orderDetailModel *model = _dataSourceArr[0];
