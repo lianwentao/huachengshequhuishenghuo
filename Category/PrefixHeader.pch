@@ -64,15 +64,22 @@ typedef NS_ENUM(NSInteger, OffsetType) {
 #import "TooBox.h"
 #import "UIImage+GIF.h"
 #import "SpecialAlertView.h"
+#import "UIView+Extension.h"
+
 #define Image1080                @"thumb_1080_1920_"
 #define Image800               @"thumb_800_1280_"
 #define Image480                @"thumb_480_800_"
 
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+/** notificationName */
+#define IsEnablePersonalCenterVCMainTableViewScroll @"IsEnablePersonalCenterVCMainTableViewScroll"
+//#define CurrentSelectedChildViewControllerIndex @"CurrentSelectedChildViewControllerIndex"
+#define PersonalCenterVCBackingStatus @"PersonalCenterVCBackingStatus"
+#define SegementViewChildVCBackToTop @"segementViewChildVCBackToTop"
+#define SegmentHeaderViewHeight  50 //标题栏高度
+#define NAVHEIGHT       (RECTSTATUS.size.height+44)
 
-#define kWBHeaderHeight Main_width * 385.0f / 704.0f
-
-
-
+#define kRGBA(r, g, b, a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
 #define random(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)/255.0]
 #ifdef DEBUG
 # define WBLog(format, ...) printf("[%s] %s [第%d行] %s\n", __TIME__, __FUNCTION__, __LINE__, [[NSString stringWithFormat:format, ## __VA_ARGS__] UTF8String]);
