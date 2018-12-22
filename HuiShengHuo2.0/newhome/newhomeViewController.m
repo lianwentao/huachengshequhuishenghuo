@@ -528,7 +528,7 @@
                     bannerView.items = imagearr;
                 }
             }
-            
+            WBLog(@"222");
             housesList = [NSArray array];
             housesList = [dataDic objectForKey:@"houses_list"];
             muluarr = [NSArray array];
