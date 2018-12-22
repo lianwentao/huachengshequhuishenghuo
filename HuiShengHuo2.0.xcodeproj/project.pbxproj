@@ -4331,6 +4331,7 @@
 		28D75DB31FBD0B82000BD4A1 /* HuiShengHuo2.0 */ = {
 			isa = PBXGroup;
 			children = (
+				28F6466121CDD604006C6281 /* version41mall */,
 				2810CA4C21C4E94200587324 /* wuyegongdan */,
 				286C924921A78D630055F187 /* New Service */,
 				28851947219CF5CD0068EA6B /* RentalHouse */,
@@ -4657,6 +4658,13 @@
 				28F5B21D209461BB0058AAC2 /* XYVideo.mp4 */,
 			);
 			path = XYTestImgs;
+			sourceTree = "<group>";
+		};
+		28F6466121CDD604006C6281 /* version41mall */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = version41mall;
 			sourceTree = "<group>";
 		};
 		28FE4CCE1FBFBEFA00C0A277 /* Model */ = {
@@ -6664,9 +6672,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-HuiShengHuo2.0/Pods-HuiShengHuo2.0-resources.sh",
+				"${PODS_ROOT}/GKNavigationBarViewController/GKNavigationBarViewController/GKNavigationBarViewController.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GKNavigationBarViewController.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
