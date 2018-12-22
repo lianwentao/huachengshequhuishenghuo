@@ -59,15 +59,28 @@
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight [UIScreen mainScreen].bounds.size.height
 #define LIMIT_OFFSET_Y -(IMAGE_HEIGHT + SCROLL_DOWN_LIMIT)
-@interface newhomeViewController ()<UITableViewDelegate,UITableViewDataSource,MenuScrollViewDeleagte>
+
+#import "XLsn0wTextCarousel.h"
+#import "DataSourceModel.h"
+#import "XLsn0w.h"
+#import "afteryanzhengViewController.h"//物业缴费
+#import "ziyongliebiaoViewController.h"//家用报修
+#import "gonggongbaoxiuViewController.h"//公共报修
+#import "zuFangViewController.h"//租房
+#import "shouFangViewController.h"//售房
+#import "zushouweituoViewController.h"//发布租售
+@interface newhomeViewController ()<UITableViewDelegate,UITableViewDataSource,MenuScrollViewDeleagte,TextInfoViewDelegate>
 {
     NSArray *topArr;
     NSDictionary *dataDic;
-    NSArray *tieziarr;
+    NSDictionary *tieziDic;
     NSArray *centerguanggaoarr;
     NSArray *chanpinarr;
     NSArray *muluarr;
     NSArray *xieyiarr;
+    NSArray *gongGaoArr;
+    NSArray *housesList;
+    NSArray *adCenterListArr;
     JKBannarView *bannerView;
     
     UILabel *titlelabel;
@@ -77,12 +90,14 @@
     
     NSDictionary *_dict;
     
-
+    
 }
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic,strong) MenuScrollView * menuScrollView;
 @property (strong, nonatomic) NSMutableArray *dataArray;
+@property (nonatomic, strong) NSMutableArray *dataSourceArray;
+
 
 @end
 
@@ -96,9 +111,9 @@
     
     [self setupNavItems];
     [self getData];
-    [self gettop];
-    [self getcenter];
-    [self createui];
+//    [self gettop];
+//    [self getcenter];
+//    [self createui];
     
     [self wr_setNavBarBarTintColor:[UIColor whiteColor]];
     [self wr_setNavBarBackgroundAlpha:0];
@@ -160,11 +175,11 @@
             NSLog(@"cookies为0");
             
         }
-//        NSArray *cookies = [NSKeyedUnarchiver unarchiveObjectWithData:[defaults objectForKey:@"Cookie"]];
-//        NSHTTPCookieStorage * cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-//        for (NSHTTPCookie * cookie in cookies){
-//            [cookieStorage setCookie: cookie];
-//        }
+        //        NSArray *cookies = [NSKeyedUnarchiver unarchiveObjectWithData:[defaults objectForKey:@"Cookie"]];
+        //        NSHTTPCookieStorage * cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+        //        for (NSHTTPCookie * cookie in cookies){
+        //            [cookieStorage setCookie: cookie];
+        //        }
         NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
         if (password.length>25) {
             if ([userdefaults objectForKey:@"registrationID"]==nil) {
@@ -427,7 +442,7 @@
         NSLog(@"top--%@--%@",[responseObject class],responseObject);
         topArr = [NSArray array];
         topArr = [responseObject objectForKey:@"data"];
-        bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)) viewSize:CGSizeMake(Main_width,Main_width/(1.87))];
+        bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, 150) viewSize:CGSizeMake(Main_width,150)];
         NSMutableArray *imagearr = [NSMutableArray arrayWithCapacity:0];
         if ([topArr isKindOfClass:[NSArray class]]) {
             for (int i=0; i<topArr.count; i++) {
@@ -479,29 +494,50 @@
     //3.发送GET请求
     /*
      */
-    
-    NSString *strurl = [API stringByAppendingString:@"index/index_32"];
+    NSLog(@"dict = %@",dict);
+    NSString *strurl = [API stringByAppendingString:@"index/index"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        NSLog(@"success--%@--%@",[responseObject class],responseObject);
+        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSLog(@"dataStr = %@",dataStr);
+        
+//        NSLog(@"success--%@--%@",[responseObject class],responseObject);
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
             dataDic = [[NSDictionary alloc] init];
             dataDic = [responseObject objectForKey:@"data"];
-            
             xieyiarr = [NSArray array];
             xieyiarr = [dataDic objectForKey:@"article_list"];
-            tieziarr = [NSArray array];
-            tieziarr = [dataDic objectForKey:@"social_list"];
+            tieziDic = [NSDictionary dictionary];
+            tieziDic = dataDic[@"social_list"];
             chanpinarr = [NSArray array];
             chanpinarr = [dataDic objectForKey:@"pro_list"];
+            gongGaoArr = [NSArray array];
+            gongGaoArr = [dataDic objectForKey:@"p_social_list"];
+            topArr = [NSArray array];
+            topArr = [dataDic objectForKey:@"ad_top_list"];
+            adCenterListArr = [NSArray array];
+            adCenterListArr = [dataDic objectForKey:@"ad_center_list"];
+            bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, 150) viewSize:CGSizeMake(Main_width,150)];
+            NSMutableArray *imagearr = [NSMutableArray arrayWithCapacity:0];
+            if ([topArr isKindOfClass:[NSArray class]]) {
+                for (int i=0; i<topArr.count; i++) {
+                    NSString *url = [API_img stringByAppendingString:[[topArr objectAtIndex:i]objectForKey:@"img"]];
+                    NSLog(@"%@",url);
+                    [imagearr addObject:url];
+                    bannerView.items = imagearr;
+                }
+            }
             
-            
+            housesList = [NSArray array];
+            housesList = [dataDic objectForKey:@"houses_list"];
             muluarr = [NSArray array];
             muluarr = [dataDic objectForKey:@"menu_list"];
         }else{
             [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }
         [_tableView.mj_header endRefreshing];
+        [self createui];
         [_tableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [MBProgressHUD showToastToView:self.view withText:@"加载失败"];
@@ -525,10 +561,10 @@
 }
 - (void)selectxiaoqu
 {
-//    XiaoquViewController *xiaoqu = [[XiaoquViewController alloc] init];
-//    xiaoqu.biaojistr = @"0";
-//    xiaoqu.hidesBottomBarWhenPushed = YES;
-//    [self.navigationController pushViewController:xiaoqu animated:YES];
+    //    XiaoquViewController *xiaoqu = [[XiaoquViewController alloc] init];
+    //    xiaoqu.biaojistr = @"0";
+    //    xiaoqu.hidesBottomBarWhenPushed = YES;
+    //    [self.navigationController pushViewController:xiaoqu animated:YES];
     selectxiaoquViewController *xiaoqu = [[selectxiaoquViewController alloc] init];
     xiaoqu.biaoshi = @"0";//0为非第一次进入选择小区页面
     xiaoqu.hidesBottomBarWhenPushed = YES;
@@ -543,11 +579,7 @@
     if (section==2) {
         return 2;
     }else if(section==3){
-        if ([centerguanggaoarr isKindOfClass:[NSArray class]]) {
-            return 1+(centerguanggaoarr.count+1)/2;
-        }else{
-            return 0;
-        }
+       return 2;
     }else if(section==4){
         if ([xieyiarr isKindOfClass:[NSArray class]]) {
             return xieyiarr.count;
@@ -721,44 +753,44 @@
                     
                     
                     
-//                    NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
-//                    NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
-//
-//                    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//                    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-//                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//                    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-//                    NSDictionary *dict = @{@"apk_token":uid_username};
-//                    NSString *strurl = [API stringByAppendingString:@"apk/property/binding_community"];
-//                    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//                        NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
-//                        NSArray *arrrrr = [[NSArray alloc] init];
-//                        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-//                            arrrrr = [responseObject objectForKey:@"data"];
-//                            if (arrrrr.count>1) {
-//                                selectHomeViewController *selecthome = [[selectHomeViewController alloc] init];
-//                                selecthome.homeArr = arrrrr;
-//                                selecthome.hidesBottomBarWhenPushed = YES;
-//                                [self.navigationController pushViewController:selecthome animated:YES];
-//                            }else{
-//                                MyhomeViewController *myhome = [[MyhomeViewController alloc] init];
-//                                myhome.room_id = [[arrrrr objectAtIndex:0] objectForKey:@"room_id"];
-//                                myhome.hidesBottomBarWhenPushed = YES;
-//                                [self.navigationController pushViewController:myhome animated:YES];
-//                            }
-//                            [defaults setObject:@"2" forKey:@"is_bind_property"];
-//                            [userdf synchronize];
-//                        }else{
-//                            bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
-//                            bangding.hidesBottomBarWhenPushed = YES;
-//                            [self.navigationController pushViewController:bangding animated:YES];
-//
-//                            [defaults setObject:@"1" forKey:@"is_bind_property"];
-//                            [userdf synchronize];
-//                        }
-//                    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//                        NSLog(@"failure--%@",error);
-//                    }];
+                    //                    NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
+                    //                    NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
+                    //
+                    //                    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                    //                    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+                    //                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    //                    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
+                    //                    NSDictionary *dict = @{@"apk_token":uid_username};
+                    //                    NSString *strurl = [API stringByAppendingString:@"apk/property/binding_community"];
+                    //                    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                    //                        NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
+                    //                        NSArray *arrrrr = [[NSArray alloc] init];
+                    //                        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                    //                            arrrrr = [responseObject objectForKey:@"data"];
+                    //                            if (arrrrr.count>1) {
+                    //                                selectHomeViewController *selecthome = [[selectHomeViewController alloc] init];
+                    //                                selecthome.homeArr = arrrrr;
+                    //                                selecthome.hidesBottomBarWhenPushed = YES;
+                    //                                [self.navigationController pushViewController:selecthome animated:YES];
+                    //                            }else{
+                    //                                MyhomeViewController *myhome = [[MyhomeViewController alloc] init];
+                    //                                myhome.room_id = [[arrrrr objectAtIndex:0] objectForKey:@"room_id"];
+                    //                                myhome.hidesBottomBarWhenPushed = YES;
+                    //                                [self.navigationController pushViewController:myhome animated:YES];
+                    //                            }
+                    //                            [defaults setObject:@"2" forKey:@"is_bind_property"];
+                    //                            [userdf synchronize];
+                    //                        }else{
+                    //                            bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
+                    //                            bangding.hidesBottomBarWhenPushed = YES;
+                    //                            [self.navigationController pushViewController:bangding animated:YES];
+                    //
+                    //                            [defaults setObject:@"1" forKey:@"is_bind_property"];
+                    //                            [userdf synchronize];
+                    //                        }
+                    //                    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                    //                        NSLog(@"failure--%@",error);
+                    //                    }];
                 }if ([url_type isEqualToString:@"17"]){
                     NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
                     NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
@@ -789,7 +821,7 @@
                                 NSString *strurl = [API stringByAppendingString:@"property/checkIsAjb"];
                                 [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                                     
-                        
+                                    
                                     NSLog(@"%@-11111-%@",[responseObject objectForKey:@"msg"],responseObject);
                                     NSDictionary *dicccc = [[NSDictionary alloc] init];
                                     if ([[responseObject objectForKey:@"status"] integerValue]==1) {
@@ -828,7 +860,7 @@
                             for (NSHTTPCookie *cookie in cookieStorage) {
                                 [manager deleteCookie:cookie];
                             }
-//                            [self logout];
+                            //                            [self logout];
                         }else{
                             bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
                             bangding.hidesBottomBarWhenPushed = YES;
@@ -887,43 +919,160 @@
                     
                 }
             }];
-            tableView.rowHeight = Main_width/1.87;
+            tableView.rowHeight = 150;
         }else{
             tableView.rowHeight = RECTSTATUS.size.height+44;
         }
     }else if(indexPath.section==2){
         if (indexPath.row==0) {
-            if ([tieziarr isKindOfClass:[NSArray class]]) {
-                NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:@" 精 | 选 | 帖 | 子"];
-                
-                NSTextAttachment *attch = [[NSTextAttachment alloc] init];
-                attch.image = [UIImage imageNamed:@"精选帖子"];
-                attch.bounds = CGRectMake(0, -2.5, 20, 20);
-                NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
-                [attri insertAttributedString:string atIndex:0];
-                UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width-20, 50)];
-                label1.attributedText = attri;
-                label1.textAlignment = NSTextAlignmentCenter;
-                label1.font = [UIFont systemFontOfSize:16.5];
-                [cell.contentView addSubview:label1];
-                tableView.rowHeight = 50;
-            }else{
-                tableView.rowHeight = 0;
-            }
             
-        }else{
-            if ([tieziarr isKindOfClass:[NSArray class]]) {
-                tableView.rowHeight = Main_width/2.5+tieziarr.count*147-20;
-                UIImageView *bg_image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, Main_width, Main_width/2.5)];
-                [bg_image sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[dataDic objectForKey:@"bg_img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                [cell.contentView addSubview:bg_image];
+            self.dataSourceArray = [NSMutableArray array];
+            NSArray *typeArray = @[@"提示", @"提示", @"提示", @"提示"];
+            gongGaoArr = dataDic[@"p_social_list"];
+            NSMutableArray *titleArray = [NSMutableArray array];
+            for (int m = 0; m < gongGaoArr.count; m++) {
+                NSDictionary *dic = gongGaoArr[m];
+                NSString *title = [dic objectForKey:@"title"];
+                [titleArray addObject:title];
+            }
+            NSLog(@"titleArray = %@",titleArray);
+            NSMutableArray *timeArray = [NSMutableArray array];
+            
+            for (int m = 0; m < gongGaoArr.count; m++) {
+                NSDictionary *dic = gongGaoArr[m];
+                NSString *time = [dic objectForKey:@"addtime"];
+                [timeArray addObject:time];
+            }
+            NSArray *URLArray = @[@"http://0", @"http://1", @"http://2", @"http://3"];
+            
+            for (int i = 0; i < titleArray.count; i++) {
+                NSString *title = [titleArray objectAtIndex:i];
+                NSString *URLString = [URLArray objectAtIndex:i];
+                NSString *type = [typeArray objectAtIndex:i];
+                NSString *time = [timeArray objectAtIndex:i];
+                DataSourceModel *model = [DataSourceModel dataSourceModelWithType:type title:title time:time URLString:URLString];
+                [self.dataSourceArray addObject:model];
+            }
+            XLsn0wTextCarousel *view = [[XLsn0wTextCarousel alloc] initWithFrame:CGRectMake(0 , 0, Main_width, 70)];
+            UILabel *topLabel = [[UILabel alloc]init];
+            [topLabel setFrame:(CGRectMake(70, 16, 30, 15))];
+            topLabel.text = @"提示";
+            topLabel.backgroundColor = [UIColor whiteColor];
+            topLabel.textColor = [UIColor colorWithHexString:@"#FF5722"];
+            topLabel.layer.cornerRadius = 2;
+            topLabel.layer.masksToBounds = YES;
+            topLabel.textAlignment = NSTextAlignmentCenter;
+            topLabel.font = [UIFont systemFontOfSize:10];
+            [view addSubview:topLabel];
+            
+            UILabel *bottomLabel = [[UILabel alloc]init];
+            [bottomLabel setFrame:(CGRectMake(70, 44, 30, 15))];
+            bottomLabel.text = @"提示";
+            bottomLabel.backgroundColor = [UIColor whiteColor];
+            bottomLabel.textColor = [UIColor colorWithHexString:@"#FF5722"];
+            bottomLabel.layer.cornerRadius = 2;
+            bottomLabel.layer.masksToBounds = YES;
+            bottomLabel.textAlignment = NSTextAlignmentCenter;
+            bottomLabel.font = [UIFont systemFontOfSize:10];
+             [view addSubview:bottomLabel];
+            
+            view.dataSourceArray = self.dataSourceArray;
+            view.currentTextInfoView.xlsn0wDelegate = self;
+            view.hiddenTextInfoView.xlsn0wDelegate = self;
+            
+            UILabel *ggLab1 = [[UILabel alloc]init];
+            ggLab1.frame = CGRectMake(10, 16, 60, 22);
+            ggLab1.numberOfLines = 2;
+            ggLab1.text = @"物业";
+            ggLab1.textColor = [UIColor whiteColor];
+            [ggLab1 setFont:[UIFont fontWithName:@"Helvetica-Bold" size:20]];
+            [view addSubview:ggLab1];
+            
+            UILabel *ggLab2 = [[UILabel alloc]init];
+            ggLab2.frame = CGRectMake(10, 38, 60, 22);
+            ggLab2.numberOfLines = 2;
+            ggLab2.text = @"公告";
+            ggLab2.textColor = [UIColor whiteColor];
+            [ggLab2 setFont:[UIFont fontWithName:@"Helvetica-Bold" size:20]];
+            [view addSubview:ggLab2];
+            
+            //            view.backgroundColor =[UIColor orangeColor];
+            [cell.contentView addSubview:view];
+            
+            UILabel *titleLab = [[UILabel alloc]init];
+            titleLab.frame = CGRectMake(10, CGRectGetMaxY(view.frame)+17, 75, 19);
+            titleLab.text = @"物业服务";
+            titleLab.textColor = [UIColor colorWithHexString:@"#555555FF"];
+            titleLab.font = [UIFont systemFontOfSize:18];
+            [cell.contentView addSubview:titleLab];
+            
+            UILabel *fuLab = [[UILabel alloc]init];
+            fuLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame)+10, CGRectGetMaxY(view.frame)+22, 113, 14);
+            fuLab.text = @"精选商品 放心购物";
+            fuLab.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
+            fuLab.font = [UIFont systemFontOfSize:13];
+            [cell.contentView addSubview:fuLab];
+            NSArray *textArr1 = @[@"生活缴费",@"家用报修",@"公共报修"];
+            NSArray *textArr2 = @[@"便捷缴费",@"一键报修",@"一键报修"];
+            NSArray *imgArr = @[@"物业缴费",@"家用维修",@"报事处理"];
+            for (int i = 0; i < 3; i++) {
                 
-                for (int i=0; i<tieziarr.count; i++) {
+                UIView *bgView = [[UIView alloc]init];
+                bgView.frame = CGRectMake(10+(i*((Main_width-40)/3+10)), CGRectGetMaxY(titleLab.frame)+19, (Main_width-40)/3, 66);
+                UILabel *textLab1 = [[UILabel alloc]init];
+                textLab1.frame = CGRectMake(5, 17, 55, 13);
+                textLab1.text = textArr1[i];
+                textLab1.textColor = [UIColor colorWithHexString:@"#555555"];
+                textLab1.font = [UIFont systemFontOfSize:13];
+                [bgView addSubview:textLab1];
+                
+                UILabel *textLab2 = [[UILabel alloc]init];
+                textLab2.frame = CGRectMake(5, 39, 45, 12);
+                textLab2.text = textArr2[i];
+                textLab2.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
+                textLab2.font = [UIFont systemFontOfSize:11];
+                [bgView addSubview:textLab2];
+                
+                UIImageView *imgView = [[UIImageView alloc]init];
+                imgView.frame = CGRectMake(62, 13, 43, 40);
+                imgView.image = [UIImage imageNamed:imgArr[i]];
+                [bgView addSubview:imgView];
+                
+                UIButton *wuYeJiaoFei = [UIButton buttonWithType:UIButtonTypeCustom];
+                wuYeJiaoFei.frame = CGRectMake(0,0, (Main_width-40)/3, 66);
+                wuYeJiaoFei.tag = i+100;
+                [wuYeJiaoFei addTarget:self action:@selector(wuYeJiaoFei:) forControlEvents:UIControlEventTouchUpInside];
+                [bgView addSubview:wuYeJiaoFei];
+                
+//                bgView.backgroundColor = [UIColor yellowColor];
+                bgView.layer.cornerRadius = 5;
+                bgView.layer.masksToBounds = YES;
+                bgView.layer.borderWidth = 1;
+                bgView.layer.borderColor = [[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1] CGColor];
+                [cell.contentView addSubview:bgView];
+            }
+            tableView.rowHeight = 175+16;
+        }else{
+                if ([tieziDic isKindOfClass:[NSDictionary class]]) {
+                    
+                    UILabel *titleLab = [[UILabel alloc]init];
+                    titleLab.frame = CGRectMake(10,17, 75, 19);
+                    titleLab.text = @"邻里交流";
+                    titleLab.textColor = [UIColor colorWithHexString:@"#555555FF"];
+                    titleLab.font = [UIFont systemFontOfSize:18];
+                    [cell.contentView addSubview:titleLab];
+                    
+                    UILabel *fuLab = [[UILabel alloc]init];
+                    fuLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame)+10, 22, 113, 14);
+                    fuLab.text = @"精选商品 放心购物";
+                    fuLab.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
+                    fuLab.font = [UIFont systemFontOfSize:13];
+                    [cell.contentView addSubview:fuLab];
+                    
                     UIView *backview = [[UIView alloc] init];
-                    backview.frame = CGRectMake(12, Main_width/2.5-20+i*147, Main_width-24, 142);
+                    backview.frame = CGRectMake(12, CGRectGetMaxY(titleLab.frame)+19, Main_width-24, 145);
                     backview.backgroundColor = [UIColor whiteColor];
                     backview.layer.cornerRadius = 5;
-                    [cell.contentView addSubview:backview];
                     
                     UIImageView *_imageview = [[UIImageView alloc] initWithFrame:CGRectMake(Main_width-24-80-10, 15, 80, 80)];
                     [backview addSubview:_imageview];
@@ -931,14 +1080,13 @@
                     _imageview.clipsToBounds = YES;
                     _imageview.contentMode = UIViewContentModeScaleAspectFill;
                     NSArray *imglistarr = [[NSArray alloc] init];
-                    imglistarr = [[tieziarr objectAtIndex:i] objectForKey:@"img_list"];
-                    if (imglistarr.count>=1) {
-                        NSString *imagestring = [[[[tieziarr objectAtIndex:i] objectForKey:@"img_list"] objectAtIndex:0] objectForKey:@"img"];
-                        [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                    }
+                    imglistarr = [tieziDic objectForKey:@"img_list"];
+                    
+                    NSString *imagestring = [[[tieziDic objectForKey:@"img_list"] objectAtIndex:0] objectForKey:@"img"];
+                    [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
                     
                     UILabel *titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, Main_width-24-20-80-10, 40)];
-                    NSData *data1 = [[NSData alloc] initWithBase64EncodedString:[[tieziarr objectAtIndex:i] objectForKey:@"title"] options:0];
+                    NSData *data1 = [[NSData alloc] initWithBase64EncodedString:[tieziDic objectForKey:@"title"] options:0];
                     NSString *labeltext = [[NSString alloc] initWithData:data1 encoding:NSUTF8StringEncoding];
                     titlelabel.text = labeltext;
                     titlelabel.numberOfLines = 2;
@@ -952,26 +1100,26 @@
                     contentlabel.numberOfLines = 2;
                     contentlabel.font = font15;
                     contentlabel.alpha = 0.54;
-                    NSData *data2 = [[NSData alloc] initWithBase64EncodedString:[[tieziarr objectAtIndex:i] objectForKey:@"content"] options:0];
+                    NSData *data2 = [[NSData alloc] initWithBase64EncodedString:[tieziDic objectForKey:@"content"] options:0];
                     NSString *labeltext2 = [[NSString alloc] initWithData:data2 encoding:NSUTF8StringEncoding];
                     contentlabel.text = labeltext2;
                     [backview addSubview:contentlabel];
                     
                     UIImageView *touxiang = [[UIImageView alloc] initWithFrame:CGRectMake(10, contentlabel.frame.size.height+contentlabel.frame.origin.y+10, 20, 20)];
                     touxiang.layer.cornerRadius = 10;
-                    NSString *imagestring1 = [[tieziarr objectAtIndex:i] objectForKey:@"avatars"];
+                    NSString *imagestring1 = [tieziDic objectForKey:@"avatars"];
                     [touxiang sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring1]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
                     [backview addSubview:touxiang];
                     
                     UILabel *zuozhe = [[UILabel alloc] initWithFrame:CGRectMake(10+20+5, contentlabel.frame.size.height+contentlabel.frame.origin.y+10, Main_width-24-20-80-10-40, 20)];
                     zuozhe.font = [UIFont systemFontOfSize:13];
                     zuozhe.alpha = 0.54;
-                    zuozhe.text = [NSString stringWithFormat:@"%@  发布于  %@  %@",[[tieziarr objectAtIndex:i] objectForKey:@"nickname"],[[tieziarr objectAtIndex:i] objectForKey:@"c_name"],[[tieziarr objectAtIndex:i] objectForKey:@"addtime"]];
+                    zuozhe.text = [NSString stringWithFormat:@"%@  发布于  %@  %@",[tieziDic objectForKey:@"nickname"],[tieziDic objectForKey:@"c_name"],[tieziDic objectForKey:@"addtime"]];
                     [backview addSubview:zuozhe];
                     
                     UILabel *scanlabel = [[UILabel alloc] initWithFrame:CGRectMake(Main_width-24-100-10, contentlabel.frame.size.height+contentlabel.frame.origin.y+10, 60, 20)];
                     
-                    NSMutableAttributedString *attri =     [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[[tieziarr objectAtIndex:i] objectForKey:@"click"]]];
+                    NSMutableAttributedString *attri =     [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[tieziDic objectForKey:@"click"]]];
                     NSTextAttachment *attch = [[NSTextAttachment alloc] init];
                     attch.image = [UIImage imageNamed:@"liulan"];
                     attch.bounds = CGRectMake(0, -3, 15, 15);
@@ -983,7 +1131,7 @@
                     [backview addSubview:scanlabel];
                     
                     UILabel *pinglunlabel = [[UILabel alloc] initWithFrame:CGRectMake(Main_width-24-100-10+60, contentlabel.frame.size.height+contentlabel.frame.origin.y+10, 50, 20)];
-                    NSMutableAttributedString *attri1 =     [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[[tieziarr objectAtIndex:i] objectForKey:@"reply_num"]]];
+                    NSMutableAttributedString *attri1 =     [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[tieziDic objectForKey:@"reply_num"]]];
                     NSTextAttachment *attch1 = [[NSTextAttachment alloc] init];
                     attch1.image = [UIImage imageNamed:@"pinglun"];
                     attch1.bounds = CGRectMake(0, -3, 15, 15);
@@ -997,83 +1145,175 @@
                     UIButton *tiezxiangqingbut = [UIButton buttonWithType:UIButtonTypeCustom];
                     tiezxiangqingbut.frame = CGRectMake(0, 0, Main_width-24, 140);
                     [backview addSubview:tiezxiangqingbut];
-                    tiezxiangqingbut.tag = i;
+                    //                tiezxiangqingbut.tag = i;
                     [tiezxiangqingbut addTarget:self action:@selector(tiezixiangqing:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    [cell.contentView addSubview:backview];
+                    
+                    tableView.rowHeight = 39+10+145+16;
+                }else{
+                    tableView.rowHeight = 0;
                 }
-            }else{
-                tableView.rowHeight = 0;
             }
-        }
     }else if(indexPath.section==3){
+        
         if (indexPath.row==0) {
-            if ([centerguanggaoarr isKindOfClass:[NSArray class]]) {
-                NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:@" 精 | 选 | 专 | 栏"];
+            
+            UILabel *titleLab = [[UILabel alloc]init];
+            titleLab.frame = CGRectMake(10, 17, 75, 19);
+            titleLab.text = @"租售服务";
+            titleLab.textColor = [UIColor colorWithHexString:@"#555555FF"];
+            titleLab.font = [UIFont systemFontOfSize:18];
+            [cell.contentView addSubview:titleLab];
+            
+            UILabel *fuLab = [[UILabel alloc]init];
+            fuLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame)+10, 22, 113, 14);
+            fuLab.text = @"精选商品 放心购物";
+            fuLab.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
+            fuLab.font = [UIFont systemFontOfSize:13];
+            [cell.contentView addSubview:fuLab];
+            
+            NSArray *textArr1 = @[@"找物业租房",@"找物业买房",@"发布租售"];
+            NSArray *textArr2 = @[@"物业认证放心购买",@"放心,安心,称心",@"房屋管理贴心服务"];
+            for (int i = 0; i < 3; i++) {
                 
-                NSTextAttachment *attch = [[NSTextAttachment alloc] init];
-                attch.image = [UIImage imageNamed:@"精选专栏"];
-                attch.bounds = CGRectMake(0, -2.5, 20, 20);
-                NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
-                [attri insertAttributedString:string atIndex:0];
-                UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width-20, 50)];
-                label1.attributedText = attri;
-                label1.textAlignment = NSTextAlignmentCenter;
-                label1.font = [UIFont systemFontOfSize:16.5];
-                [cell.contentView addSubview:label1];
-                tableView.rowHeight = 50;
-            }else{
-                tableView.rowHeight = 0;
+                UIView *bgView = [[UIView alloc]init];
+                bgView.frame = CGRectMake(10+(i*((Main_width-40)/3+10)), CGRectGetMaxY(titleLab.frame)+19, (Main_width-40)/3, 65);
+                CAGradientLayer *layer = [CAGradientLayer layer];
+                layer.frame = CGRectMake(0, 0, Main_width, 70);
+                layer.startPoint = CGPointMake(0,0);
+                layer.endPoint = CGPointMake(1, 0);
+                if (i == 0) {
+                    layer.colors = @[(id)[UIColor colorWithHexString:@"#ff7124"].CGColor,(id)[UIColor colorWithHexString:@"#ff4049"].CGColor];
+                    [bgView.layer addSublayer:layer];
+                }else if (i == 1){
+                    layer.colors = @[(id)[UIColor colorWithHexString:@"#77beff"].CGColor,(id)[UIColor colorWithHexString:@"#0084ff"].CGColor];
+                    [bgView.layer addSublayer:layer];
+                }else{
+                    layer.colors = @[(id)[UIColor colorWithHexString:@"#fd3aff"].CGColor,(id)[UIColor colorWithHexString:@"#a628ff"].CGColor];
+                    [bgView.layer addSublayer:layer];
+                }
+                
+                UIImageView *imgView = [[UIImageView alloc]init];
+                imgView.frame = CGRectMake(10, 13, 18, 18);
+                imgView.backgroundColor = [UIColor orangeColor];
+                [bgView addSubview:imgView];
+                
+                UILabel *textLab1 = [[UILabel alloc]init];
+                textLab1.frame = CGRectMake(34, 16, 67, 13);
+                textLab1.text = textArr1[i];
+                textLab1.textColor = [UIColor whiteColor];
+                textLab1.font = [UIFont systemFontOfSize:13];
+                [bgView addSubview:textLab1];
+                
+                UILabel *textLab2 = [[UILabel alloc]init];
+                textLab2.frame = CGRectMake(8, 38, 90, 11);
+                textLab2.text = textArr2[i];
+                textLab2.textColor = [UIColor whiteColor];
+                textLab2.font = [UIFont systemFontOfSize:11];
+                [bgView addSubview:textLab2];
+                
+                UIButton *zuShouFang = [UIButton buttonWithType:UIButtonTypeCustom];
+                zuShouFang.frame = CGRectMake(0,0, (Main_width-40)/3, 66);
+                zuShouFang.tag = i+100;
+                [zuShouFang addTarget:self action:@selector(zuShouFang:) forControlEvents:UIControlEventTouchUpInside];
+                [bgView addSubview:zuShouFang];
+                
+                bgView.layer.cornerRadius = 5;
+                bgView.layer.masksToBounds = YES;
+                bgView.layer.borderWidth = 1;
+                bgView.layer.borderColor = [[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1] CGColor];
+                [cell.contentView addSubview:bgView];
             }
             
+            tableView.rowHeight = 120;
+            
         }else{
-            if ([centerguanggaoarr isKindOfClass:[NSArray class]]) {
-                
-                if (centerguanggaoarr.count%2 == 0) {
-                    for (int i=0; i<2; i++) {
-                        UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(12+(Main_width-24)*i/2, 0, Main_width/2-24/2, (Main_width-24)/2/1.5)];
-                        [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerguanggaoarr objectAtIndex:i+(indexPath.row-1)*2] objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                        [cell.contentView addSubview:imageview];
-                        
-                        UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-                        but.frame = CGRectMake(12+(Main_width-24)*i/2, 0, Main_width/2-24/2, (Main_width-24)/2/1.5);
-                        //but.backgroundColor = QIColor;
-                        but.tag = i+(indexPath.row-1)*2;
-                        [but addTarget:self action:@selector(centerguanggao:) forControlEvents:UIControlEventTouchUpInside];
-                        [cell.contentView addSubview:but];
-                    }
+
+            //新加租售房列表
+            
+            long number;
+            if (housesList.count%2==0) {
+                tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*housesList.count/2+5;
+                number = housesList.count;
+            }else{
+                tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*(housesList.count+1)/2+5;
+                number = housesList.count;
+            }
+            for (int i=0; i<number; i++) {
+                if (i%2 == 0) {
+                    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12, 10+((Main_width-24-7)/2+32.5+5)*(i/2), (Main_width-24-7)/2, 200)];
+                    view.backgroundColor = [UIColor whiteColor];
+                    view.layer.cornerRadius = 3;
+                    [cell.contentView addSubview:view];
+                    
+                    //                    UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
+                    //                    dianjibut.frame = view.frame;
+                    //                    dianjibut.tag = [[[arr objectAtIndex:i] objectForKey:@"id"] longValue];
+                    //                    [dianjibut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
+                    //                    [cell.contentView addSubview:dianjibut];
+                    
+                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, 110)];
+                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[housesList objectAtIndex:i] objectForKey:@"head_img"]]];
+                    NSLog(@"kkkkkkkkkkkkkkkkk = %@",url);
+                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    imageview.backgroundColor = [UIColor yellowColor];
+                    [view addSubview:imageview];
+                    
+                    UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(12.5, 5+imageview.frame.size.height, view.frame.size.width-25, 40)];
+                    name.text = [[housesList objectAtIndex:i] objectForKey:@"community_name"];
+                    name.font = [UIFont systemFontOfSize:13];
+                    name.textColor = [UIColor colorWithHexString:@"#555555"];
+                    name.numberOfLines = 2;
+                    [view addSubview:name];
+                    
+                    UILabel *price = [[UILabel alloc] initWithFrame:CGRectMake(12.5, CGRectGetMaxY(name.frame)+10, 50, 17)];
+//                    price.text = [NSString stringWithFormat:@"%@/%@",[[housesList objectAtIndex:i] objectForKey:@"total_price"],[[housesList objectAtIndex:i] objectForKey:@"unit_price"]];
+                    price.text = [NSString stringWithFormat:@"%@",[[housesList objectAtIndex:i] objectForKey:@"total_price"]];
+                    price.textColor = QIColor;
+                    price.font = [UIFont systemFontOfSize:18];
+                    
+                    [view addSubview:price];
+                    
                 }else{
-                    if (indexPath.row == (centerguanggaoarr.count+1)/2) {
-                        for (int i=0; i<1; i++) {
-                            UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(12+(Main_width-24)*i/2, 0, Main_width/2-24/2, (Main_width-24)/2/1.5)];
-                            [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerguanggaoarr objectAtIndex:i+(indexPath.row-1)*2] objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                            [cell.contentView addSubview:imageview];
-                            
-                            UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-                            but.frame = CGRectMake(12+(Main_width-24)*i/2, 0, Main_width/2-24/2, (Main_width-24)/2/1.5);
-                            //but.backgroundColor = QIColor;
-                            but.tag = i+(indexPath.row-1)*2;
-                            [but addTarget:self action:@selector(centerguanggao:) forControlEvents:UIControlEventTouchUpInside];
-                            [cell.contentView addSubview:but];
-                        }
-                    }else{
-                        for (int i=0; i<2; i++) {
-                            UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(12+(Main_width-24)*i/2, 0, Main_width/2-24/2, (Main_width-24)/2/1.5)];
-                            [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerguanggaoarr objectAtIndex:i+(indexPath.row-1)*2] objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                            [cell.contentView addSubview:imageview];
-                            
-                            UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-                            but.frame = CGRectMake(12+(Main_width-24)*i/2, 0, Main_width/2-24/2, (Main_width-24)/2/1.5);
-                            //but.backgroundColor = QIColor;
-                            but.tag = i+(indexPath.row-1)*2;
-                            [but addTarget:self action:@selector(centerguanggao:) forControlEvents:UIControlEventTouchUpInside];
-                            [cell.contentView addSubview:but];
-                        }
-                    }
+                    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+((Main_width-24-7)/2+7), 10+((Main_width-24-7)/2+32.5+5)*(i/2), (Main_width-24-7)/2, 200)];
+                    view.backgroundColor = [UIColor whiteColor];
+                    view.layer.cornerRadius = 3;
+                    [cell.contentView addSubview:view];
+                    
+                    //                    UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
+                    //                    dianjibut.frame = view.frame;
+                    //                    dianjibut.tag = [[[arr objectAtIndex:i] objectForKey:@"id"] longValue];
+                    //                    [dianjibut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
+                    //                    [cell.contentView addSubview:dianjibut];
+                    
+                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, 110)];
+                    //                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[arr objectAtIndex:i] objectForKey:@"title_thumb_img"]]];
+                    //                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[housesList objectAtIndex:i] objectForKey:@"head_img"]]];
+                    NSLog(@"iiiiiiiiiiiiiiiii = %@",url);
+                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    [view addSubview:imageview];
+                    
+                    UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(12.5, 5+imageview.frame.size.height, view.frame.size.width-25, 40)];
+                    name.text = [[housesList objectAtIndex:i] objectForKey:@"community_name"];
+                    name.font = [UIFont systemFontOfSize:13];
+                    name.textColor = [UIColor colorWithHexString:@"#555555"];
+                    name.numberOfLines = 2;
+                    [view addSubview:name];
+                    
+                    UILabel *price = [[UILabel alloc] initWithFrame:CGRectMake(12.5, CGRectGetMaxY(name.frame)+10, 50, 17)];
+                    //                    price.text = [NSString stringWithFormat:@"%@/%@",[[arr objectAtIndex:i] objectForKey:@"price"],[[arr objectAtIndex:i] objectForKey:@"unit"]];
+                    price.text = [NSString stringWithFormat:@"%@",[[housesList objectAtIndex:i] objectForKey:@"total_price"]];
+                    price.textColor = QIColor;
+                    price.font = [UIFont systemFontOfSize:18];
+                    
+                    [view addSubview:price];
                 }
                 
-                tableView.rowHeight = (Main_width-24)/2/1.5;
-            }else{
-                tableView.rowHeight = 0;
             }
+            
+            tableView.rowHeight = ((Main_width-24-7)/2+32.5+5)*4/2+5;
         }
     }else if (indexPath.section==4){
         
@@ -1161,23 +1401,144 @@
     }else{
         
         if (indexPath.row==0) {
-            NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:@" 猜 | 您 | 喜 | 欢"];
+           
+            UILabel *titleLab = [[UILabel alloc]init];
+            titleLab.frame = CGRectMake(10, 17, 75, 19);
+            titleLab.text = @"精选商品";
+            titleLab.textColor = [UIColor colorWithHexString:@"#555555FF"];
+            titleLab.font = [UIFont systemFontOfSize:18];
+            [cell.contentView addSubview:titleLab];
             
-            NSTextAttachment *attch = [[NSTextAttachment alloc] init];
-            attch.image = [UIImage imageNamed:@"猜你喜欢"];
-            attch.bounds = CGRectMake(0, -2.5, 20, 20);
-            NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
-            [attri insertAttributedString:string atIndex:0];
-            UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width-20, 50)];
-            label1.attributedText = attri;
-            label1.textAlignment = NSTextAlignmentCenter;
-            label1.font = [UIFont systemFontOfSize:16.5];
-            [cell.contentView addSubview:label1];
-            tableView.rowHeight = 50;
+            UILabel *fuLab = [[UILabel alloc]init];
+            fuLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame)+10, 22, 113, 14);
+            fuLab.text = @"精选商品 放心购物";
+            fuLab.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
+            fuLab.font = [UIFont systemFontOfSize:13];
+            [cell.contentView addSubview:fuLab];
+            
+            long m;
+            if (adCenterListArr.count%2==0) {
+                tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*adCenterListArr.count/2+5;
+                m = adCenterListArr.count;
+            }else{
+                tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*(adCenterListArr.count+1)/2+5;
+                m = adCenterListArr.count;
+            }
+            NSLog(@"jjjjjjjjj = %ld",m);
+            for (int i=0; i<m; i++) {
+                if (i%2 == 0) {
+                    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+(Main_width-24+5)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5)];
+                    view.backgroundColor = [UIColor whiteColor];
+                    view.layer.cornerRadius = 3;
+                    [cell.contentView addSubview:view];
+                    
+                    //                    UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
+                    //                    dianjibut.frame = view.frame;
+                    //                    dianjibut.tag = [[[arr objectAtIndex:i] objectForKey:@"id"] longValue];
+                    //                    [dianjibut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
+                    //                    [cell.contentView addSubview:dianjibut];
+                    
+                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, (Main_width-24)/2/1.5)];
+                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[housesList objectAtIndex:i] objectForKey:@"head_img"]]];
+                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    imageview.backgroundColor = [UIColor yellowColor];
+                    [view addSubview:imageview];
+                    
+                }else{
+                    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+(Main_width-24+5)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5)];
+                    view.backgroundColor = [UIColor whiteColor];
+                    view.layer.cornerRadius = 3;
+                    [cell.contentView addSubview:view];
+                    
+                    //                    UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
+                    //                    dianjibut.frame = view.frame;
+                    //                    dianjibut.tag = [[[arr objectAtIndex:i] objectForKey:@"id"] longValue];
+                    //                    [dianjibut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
+                    //                    [cell.contentView addSubview:dianjibut];
+                    
+                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, (Main_width-24)/2/1.5)];
+                    //                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[arr objectAtIndex:i] objectForKey:@"title_thumb_img"]]];
+                    //                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[housesList objectAtIndex:i] objectForKey:@"head_img"]]];
+                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    [view addSubview:imageview];
+
+                }
+                
+            }
+//            if (m%2 == 0) {
+//                for (int i=0; i<2; i++) {
+//                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(12+(Main_width-24+5)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5)];
+//                    [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[adCenterListArr objectAtIndex:i+(indexPath.row-1)*2] objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+//                    imageview.backgroundColor = [UIColor yellowColor];
+//                    [cell.contentView addSubview:imageview];
+//                }
+//
+//            }else{
+//                for (int i=0; i<2; i++) {
+//                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(12+(Main_width-24+5)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5)];
+//                    [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[adCenterListArr objectAtIndex:i+(indexPath.row-1)*2] objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+//                    imageview.backgroundColor = [UIColor yellowColor];
+//                    [cell.contentView addSubview:imageview];
+//                }
+//            }
+            
+            tableView.rowHeight = 54+(Main_width-24)/2/1.5;
+            
+            //            if ([centerguanggaoarr isKindOfClass:[NSArray class]]) {
+            //
+            //                if (centerguanggaoarr.count%2 == 0) {
+            //                    for (int i=0; i<2; i++) {
+            //                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(12+(Main_width-24)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5)];
+            //                    [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerguanggaoarr objectAtIndex:i+(indexPath.row-1)*2] objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            //                    [cell.contentView addSubview:imageview];
+            //
+            //                    UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+            //                    but.frame = CGRectMake(12+(Main_width-24)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5);
+            //                                    //but.backgroundColor = QIColor;
+            //                    but.tag = i+(indexPath.row-1)*2;
+            //                    [but addTarget:self action:@selector(centerguanggao:) forControlEvents:UIControlEventTouchUpInside];
+            //                                    [cell.contentView addSubview:but];
+            //                                }
+            //                        }else{
+            //                            if (indexPath.row == (centerguanggaoarr.count+1)/2) {
+            //                                for (int i=0; i<1; i++) {
+            //                        UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(12+(Main_width-24)*i/2, 0, Main_width/2-24/2, (Main_width-24)/2/1.5)];
+            //                        [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerguanggaoarr objectAtIndex:i+(indexPath.row-1)*2] objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            //                        [cell.contentView addSubview:imageview];
+            //
+            //                        UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+            //                        but.frame = CGRectMake(12+(Main_width-24)*i/2, 0, Main_width/2-24/2, (Main_width-24)/2/1.5);
+            //                        //but.backgroundColor = QIColor;
+            //                        but.tag = i+(indexPath.row-1)*2;
+            //                        [but addTarget:self action:@selector(centerguanggao:) forControlEvents:UIControlEventTouchUpInside];
+            //                                        [cell.contentView addSubview:but];
+            //                                    }
+            //                    }else{
+            //                        for (int i=0; i<2; i++) {
+            //                        UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(12+(Main_width-24)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5)];
+            //                        [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerguanggaoarr objectAtIndex:i+(indexPath.row-1)*2] objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            //                        [cell.contentView addSubview:imageview];
+            //
+            //                        UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+            //                        but.frame = CGRectMake(12+(Main_width-24)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5);
+            //                                        //but.backgroundColor = QIColor;
+            //                        but.tag = i+(indexPath.row-1)*2;
+            //                        [but addTarget:self action:@selector(centerguanggao:) forControlEvents:UIControlEventTouchUpInside];
+            //                                        [cell.contentView addSubview:but];
+            //                                    }
+            //                                }
+            //                            }
+            //
+            //                            tableView.rowHeight = (Main_width-24)/2/1.5+36;
+            //                        }else{
+            //                            tableView.rowHeight = 0;
+            //                        }
+            
         }else{
             
-            tableView.rowHeight = 110+12.5;
-            UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(12, 0, Main_width-24, 110)];
+            tableView.rowHeight = 110+22.5;
+            UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(12, 10, Main_width-24, 110)];
             backview.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:backview];
             
@@ -1461,7 +1822,7 @@
                 for (NSHTTPCookie *cookie in cookieStorage) {
                     [manager deleteCookie:cookie];
                 }
-//                [self logout];
+                //                [self logout];
             }else{
                 bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
                 bangding.hidesBottomBarWhenPushed = YES;
@@ -1540,7 +1901,7 @@
                 for (NSHTTPCookie *cookie in cookieStorage) {
                     [manager deleteCookie:cookie];
                 }
-//                [self logout];
+                //                [self logout];
             }else{
                 bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
                 bangding.hidesBottomBarWhenPushed = YES;
@@ -1658,7 +2019,7 @@
             for (NSHTTPCookie *cookie in cookieStorage) {
                 [manager deleteCookie:cookie];
             }
-//            [self logout];
+            //            [self logout];
         }else{
             
         }
@@ -1677,8 +2038,8 @@
 - (void)tiezixiangqing:(UIButton *)sender
 {
     circledetailsViewController *circle = [[circledetailsViewController alloc] init];
-    circle.id = [[tieziarr objectAtIndex:sender.tag] objectForKey:@"id"];
-    circle.is_pro = [[tieziarr objectAtIndex:sender.tag] objectForKey:@"is_pro"];
+    circle.id = [tieziDic objectForKey:@"id"];
+    circle.is_pro = [tieziDic objectForKey:@"is_pro"];
     circle.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:circle animated:YES];
 }
@@ -1783,9 +2144,9 @@
             LoginViewController *login = [[LoginViewController alloc] init];
             [self presentViewController:login animated:YES completion:nil];
         }else{
-        youxianjiaofeiViewController *youxian = [[youxianjiaofeiViewController alloc] init];
-        youxian.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:youxian animated:YES];
+            youxianjiaofeiViewController *youxian = [[youxianjiaofeiViewController alloc] init];
+            youxian.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:youxian animated:YES];
         }
     }if ([url_type isEqualToString:@"16"]){
         if (str==nil) {
@@ -1797,44 +2158,44 @@
             [self.navigationController pushViewController:afteryanzheng animated:YES];
             
             
-//            NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
-//            NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
-//
-//            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-//            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//            NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-//            NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
-//            NSString *strurl = [API stringByAppendingString:@"apk/property/binding_community"];
-//            [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//                NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
-//                NSArray *arrrrr = [[NSArray alloc] init];
-//                if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-//                    arrrrr = [responseObject objectForKey:@"data"];
-//                    if (arrrrr.count>1) {
-//                        selectHomeViewController *selecthome = [[selectHomeViewController alloc] init];
-//                        selecthome.homeArr = arrrrr;
-//                        selecthome.hidesBottomBarWhenPushed = YES;
-//                        [self.navigationController pushViewController:selecthome animated:YES];
-//                    }else{
-//                        MyhomeViewController *myhome = [[MyhomeViewController alloc] init];
-//                        myhome.room_id = [[arrrrr objectAtIndex:0] objectForKey:@"room_id"];
-//                        myhome.hidesBottomBarWhenPushed = YES;
-//                        [self.navigationController pushViewController:myhome animated:YES];
-//                    }
-//                    [defaults setObject:@"2" forKey:@"is_bind_property"];
-//                    [userdf synchronize];
-//                }else{
-//                    bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
-//                    bangding.hidesBottomBarWhenPushed = YES;
-//                    [self.navigationController pushViewController:bangding animated:YES];
-//
-//                    [defaults setObject:@"1" forKey:@"is_bind_property"];
-//                    [userdf synchronize];
-//                }
-//            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//                NSLog(@"failure--%@",error);
-//            }];
+            //            NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
+            //            NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
+            //
+            //            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+            //            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+            //            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            //            NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
+            //            NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+            //            NSString *strurl = [API stringByAppendingString:@"apk/property/binding_community"];
+            //            [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            //                NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
+            //                NSArray *arrrrr = [[NSArray alloc] init];
+            //                if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+            //                    arrrrr = [responseObject objectForKey:@"data"];
+            //                    if (arrrrr.count>1) {
+            //                        selectHomeViewController *selecthome = [[selectHomeViewController alloc] init];
+            //                        selecthome.homeArr = arrrrr;
+            //                        selecthome.hidesBottomBarWhenPushed = YES;
+            //                        [self.navigationController pushViewController:selecthome animated:YES];
+            //                    }else{
+            //                        MyhomeViewController *myhome = [[MyhomeViewController alloc] init];
+            //                        myhome.room_id = [[arrrrr objectAtIndex:0] objectForKey:@"room_id"];
+            //                        myhome.hidesBottomBarWhenPushed = YES;
+            //                        [self.navigationController pushViewController:myhome animated:YES];
+            //                    }
+            //                    [defaults setObject:@"2" forKey:@"is_bind_property"];
+            //                    [userdf synchronize];
+            //                }else{
+            //                    bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
+            //                    bangding.hidesBottomBarWhenPushed = YES;
+            //                    [self.navigationController pushViewController:bangding animated:YES];
+            //
+            //                    [defaults setObject:@"1" forKey:@"is_bind_property"];
+            //                    [userdf synchronize];
+            //                }
+            //            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            //                NSLog(@"failure--%@",error);
+            //            }];
         }
         
     }if ([url_type isEqualToString:@"17"]){
@@ -1842,96 +2203,96 @@
             LoginViewController *login = [[LoginViewController alloc] init];
             [self presentViewController:login animated:YES completion:nil];
         }else{
-        NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
-        NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
-        
-        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-        NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
-        NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
-        [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
-            NSArray *arrrrr = [[NSArray alloc] init];
-            if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-                arrrrr = [responseObject objectForKey:@"data"];
-                if (arrrrr.count>1) {
-                    selectHomeViewController *selecthome = [[selectHomeViewController alloc] init];
-                    selecthome.homeArr = arrrrr;
-                    selecthome.rukoubiaoshi = @"layakaimen";
-                    selecthome.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:selecthome animated:YES];
-                }else{
-                    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-                    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-                    NSDictionary *dict = @{@"apk_token":uid_username,@"room_id":[[arrrrr objectAtIndex:0] objectForKey:@"room_id"],@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
-                    NSString *strurl = [API stringByAppendingString:@"property/checkIsAjb"];
-                    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                        NSLog(@"%@-11111-%@",[responseObject objectForKey:@"msg"],responseObject);
-                        NSDictionary *dicccc = [[NSDictionary alloc] init];
-                        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-                            dicccc = [responseObject objectForKey:@"data"];
-                            if ([dicccc isKindOfClass:[NSDictionary class]]) {
-                                blueyaViewController *blueya = [[blueyaViewController alloc] init];
-                                blueya.Dic = dicccc;
-                                blueya.hidesBottomBarWhenPushed = YES;
-                                [self.navigationController pushViewController:blueya animated:YES];
+            NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
+            NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
+            
+            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
+            NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+            NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
+            [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
+                NSArray *arrrrr = [[NSArray alloc] init];
+                if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                    arrrrr = [responseObject objectForKey:@"data"];
+                    if (arrrrr.count>1) {
+                        selectHomeViewController *selecthome = [[selectHomeViewController alloc] init];
+                        selecthome.homeArr = arrrrr;
+                        selecthome.rukoubiaoshi = @"layakaimen";
+                        selecthome.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:selecthome animated:YES];
+                    }else{
+                        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+                        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                        NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
+                        NSDictionary *dict = @{@"apk_token":uid_username,@"room_id":[[arrrrr objectAtIndex:0] objectForKey:@"room_id"],@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+                        NSString *strurl = [API stringByAppendingString:@"property/checkIsAjb"];
+                        [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                            NSLog(@"%@-11111-%@",[responseObject objectForKey:@"msg"],responseObject);
+                            NSDictionary *dicccc = [[NSDictionary alloc] init];
+                            if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                                dicccc = [responseObject objectForKey:@"data"];
+                                if ([dicccc isKindOfClass:[NSDictionary class]]) {
+                                    blueyaViewController *blueya = [[blueyaViewController alloc] init];
+                                    blueya.Dic = dicccc;
+                                    blueya.hidesBottomBarWhenPushed = YES;
+                                    [self.navigationController pushViewController:blueya animated:YES];
+                                }else{
+                                    [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                                }
                             }else{
                                 [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
                             }
-                        }else{
-                            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-                        }
-                    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                        NSLog(@"failure--%@",error);
-                    }];
+                        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                            NSLog(@"failure--%@",error);
+                        }];
+                    }
+                    [defaults setObject:@"2" forKey:@"is_bind_property"];
+                    [userdf synchronize];
+                }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
+                    [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                    [userinfo removeObjectForKey:@"username"];
+                    [userinfo removeObjectForKey:@"phone_type"];
+                    [userinfo removeObjectForKey:@"uid"];
+                    [userinfo removeObjectForKey:@"pwd"];
+                    [userinfo removeObjectForKey:@"is_bind_property"];
+                    [userinfo removeObjectForKey:@"Cookie"];
+                    [userinfo removeObjectForKey:@"is_new"];
+                    [userinfo removeObjectForKey:@"token"];
+                    [userinfo removeObjectForKey:@"tokenSecret"];
+                    NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+                    NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+                    for (NSHTTPCookie *cookie in cookieStorage) {
+                        [manager deleteCookie:cookie];
+                    }
+                    //                [self logout];
+                }else{
+                    //                bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
+                    //                bangding.hidesBottomBarWhenPushed = YES;
+                    //                [self.navigationController pushViewController:bangding animated:YES];
+                    //                [defaults setObject:@"1" forKey:@"is_bind_property"];
+                    //                [userdf synchronize];
+                    
+                    afteryanzhengViewController *afteryanzheng = [[afteryanzhengViewController alloc] init];
+                    afteryanzheng.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:afteryanzheng animated:YES];
                 }
-                [defaults setObject:@"2" forKey:@"is_bind_property"];
-                [userdf synchronize];
-            }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
-                [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-                NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                [userinfo removeObjectForKey:@"username"];
-                [userinfo removeObjectForKey:@"phone_type"];
-                [userinfo removeObjectForKey:@"uid"];
-                [userinfo removeObjectForKey:@"pwd"];
-                [userinfo removeObjectForKey:@"is_bind_property"];
-                [userinfo removeObjectForKey:@"Cookie"];
-                [userinfo removeObjectForKey:@"is_new"];
-                [userinfo removeObjectForKey:@"token"];
-                [userinfo removeObjectForKey:@"tokenSecret"];
-                NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-                NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-                for (NSHTTPCookie *cookie in cookieStorage) {
-                    [manager deleteCookie:cookie];
-                }
-//                [self logout];
-            }else{
-//                bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
-//                bangding.hidesBottomBarWhenPushed = YES;
-//                [self.navigationController pushViewController:bangding animated:YES];
-//                [defaults setObject:@"1" forKey:@"is_bind_property"];
-//                [userdf synchronize];
-                
-                afteryanzhengViewController *afteryanzheng = [[afteryanzhengViewController alloc] init];
-                afteryanzheng.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:afteryanzheng animated:YES];
-            }
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            NSLog(@"failure--%@",error);
-        }];
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"failure--%@",error);
+            }];
         }
     }if ([url_type isEqualToString:@"18"]){
         if (str==nil) {
             LoginViewController *login = [[LoginViewController alloc] init];
             [self presentViewController:login animated:YES completion:nil];
         }else{
-        FacePayViewController *face = [[FacePayViewController alloc] init];
-        face.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:face animated:YES];
+            FacePayViewController *face = [[FacePayViewController alloc] init];
+            face.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:face animated:YES];
         }
     }if ([url_type isEqualToString:@"19"]){
         jujiayanglaoViewController *hujia = [[jujiayanglaoViewController alloc] init];
@@ -1979,163 +2340,163 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section==3) {
-//        if (indexPath.row>0) {
-//            NSString *url_type = [[centerguanggaoarr objectAtIndex:indexPath.row-1] objectForKey:@"url_type"];
-//            NSString *url_id = [[centerguanggaoarr objectAtIndex:indexPath.row-1] objectForKey:@"url_id"];
-//            NSString *urltypename = [[centerguanggaoarr objectAtIndex:indexPath.row-1] objectForKey:@"type_name"];
-//            if ([url_type isEqualToString:@"5"]) {
-//                weixiuViewController *weixiu = [[weixiuViewController alloc] init];
-//                weixiu.hidesBottomBarWhenPushed = YES;
-//                [self.navigationController pushViewController:weixiu animated:YES];
-//            }if ([url_type isEqualToString:@"3"]) {
-//                acivityViewController *aciti = [[acivityViewController alloc] init];
-//                aciti.hidesBottomBarWhenPushed = YES;
-//                aciti.url = url_id;
-//                [self.navigationController pushViewController:aciti animated:YES];
-//            }if ([url_type isEqualToString:@"4"]) {
-//                activitydetailsViewController *acti = [[activitydetailsViewController alloc] init];
-//                acti.url = url_id;
-//                acti.hidesBottomBarWhenPushed = YES;
-//                [self.navigationController pushViewController:acti animated:YES];
-//            }if ([url_type isEqualToString:@"7"]) {
-//                NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",url_id];
-//                UIWebView *callWebview = [[UIWebView alloc] init];
-//                [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
-//                [self.view addSubview:callWebview];
-//            }if ([url_type isEqualToString:@"1"]) {
-//                shangpinerjiViewController *erji = [[shangpinerjiViewController alloc] init];
-//                NSString *type_name = [[centerguanggaoarr objectAtIndex:indexPath.row-1] objectForKey:@"type_name"];
-//                NSRange range = [type_name rangeOfString:@"id/"]; //现获取要截取的字符串位置
-//                NSString * result = [type_name substringFromIndex:range.location+3]; //截取字符串
-//                erji.id = result;
-//                erji.hidesBottomBarWhenPushed = YES;
-//                [self.navigationController pushViewController:erji animated:YES];
-//            }if ([url_type isEqualToString:@"6"]) {
-//                //优惠券
-//                NSString *type_name = [[centerguanggaoarr objectAtIndex:indexPath.row-1] objectForKey:@"type_name"];
-//
-//                WebViewController *web = [[WebViewController alloc] init];
-//                web.url_type = @"2";
-//                web.title = @"优惠券";
-//                web.url = type_name;
-//                web.hidesBottomBarWhenPushed = YES;
-//                [self.navigationController pushViewController:web animated:YES];
-//            }if ([url_type isEqualToString:@"8"]) {
-//                youhuiquanViewController *youhuiquan = [[youhuiquanViewController alloc] init];
-//                [self.navigationController presentViewController:youhuiquan animated:YES completion:nil];
-//            }if ([url_type isEqualToString:@"9"]) {
-//                youhuiquanxiangqingViewController *youhuiquan = [[youhuiquanxiangqingViewController alloc] init];
-//                [self.navigationController presentViewController:youhuiquan animated:YES completion:nil];
-//            }if ([url_type isEqualToString:@"2"]) {
-//                GoodsDetailViewController *goods = [[GoodsDetailViewController alloc] init];
-//                NSRange range = [urltypename rangeOfString:@"id/"]; //现获取要截取的字符串位置
-//                NSString * result = [urltypename substringFromIndex:range.location+3]; //截取字符串
-//                goods.IDstring = result;
-//                goods.hidesBottomBarWhenPushed = YES;
-//                [self.navigationController pushViewController:goods animated:YES];
-//            }if ([url_type isEqualToString:@"10"]) {
-//                WebViewController *web = [[WebViewController alloc] init];
-//                web.url = url_id;
-//                web.url_type = @"1";
-//                //web.jpushstring = @"jpush";
-//                web.title = @"小慧推荐";
-//                web.hidesBottomBarWhenPushed = YES;
-//                [self.navigationController pushViewController:web animated:YES];
-//            }if ([url_type isEqualToString:@"11"]) {
-//                noticeViewController *notice = [[noticeViewController alloc] init];
-//                notice.hidesBottomBarWhenPushed = YES;
-//                NSRange range = [url_id rangeOfString:@"id/"]; //现获取要截取的字符串位置
-//                NSString * result = [url_id substringFromIndex:range.location+3]; //截取字符串
-//                notice.id = result;
-//                //notice.jpushstring = @"jpush";
-//                [self.navigationController pushViewController:notice animated:YES];
-//            }if ([url_type isEqualToString:@"12"]){
-//
-//            }if ([url_type isEqualToString:@"13"]){
-//                circledetailsViewController *circle = [[circledetailsViewController alloc] init];
-//                circle.id = url_id;
-//                circle.hidesBottomBarWhenPushed = YES;
-//                [self.navigationController pushViewController:circle animated:YES];
-//            }if ([url_type isEqualToString:@"14"]){
-//
-//            }if ([url_type isEqualToString:@"15"]){
-//                youxianjiaofeiViewController *youxian = [[youxianjiaofeiViewController alloc] init];
-//                youxian.hidesBottomBarWhenPushed = YES;
-//                [self.navigationController pushViewController:youxian animated:YES];
-//            }if ([url_type isEqualToString:@"16"]){
-//
-//            }if ([url_type isEqualToString:@"17"]){
-//                NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
-//                NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
-//
-//                AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//                manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-//                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//                NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-//                NSDictionary *dict = @{@"apk_token":uid_username};
-//                NSString *strurl = [API stringByAppendingString:@"apk/property/binding_community"];
-//                [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//                    NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
-//                    NSArray *arrrrr = [[NSArray alloc] init];
-//                    if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-//                        arrrrr = [responseObject objectForKey:@"data"];
-//                        if (arrrrr.count>1) {
-//                            selectHomeViewController *selecthome = [[selectHomeViewController alloc] init];
-//                            selecthome.homeArr = arrrrr;
-//                            selecthome.rukoubiaoshi = @"layakaimen";
-//                            selecthome.hidesBottomBarWhenPushed = YES;
-//                            [self.navigationController pushViewController:selecthome animated:YES];
-//                        }else{
-//                            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//                            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-//                            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-//                            NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-//                            NSDictionary *dict = @{@"apk_token":uid_username,@"room_id":[[arrrrr objectAtIndex:0] objectForKey:@"room_id"]};
-//                            NSString *strurl = [API stringByAppendingString:@"apk/property/checkIsAjb"];
-//                            [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//                                NSLog(@"%@-11111-%@",[responseObject objectForKey:@"msg"],responseObject);
-//                                NSDictionary *dicccc = [[NSDictionary alloc] init];
-//                                if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-//                                    dicccc = [responseObject objectForKey:@"data"];
-//                                    if ([dicccc isKindOfClass:[NSDictionary class]]) {
-//                                        blueyaViewController *blueya = [[blueyaViewController alloc] init];
-//                                        blueya.Dic = dicccc;
-//                                        blueya.hidesBottomBarWhenPushed = YES;
-//                                        [self.navigationController pushViewController:blueya animated:YES];
-//                                    }else{
-//                                        [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-//                                    }
-//                                }else{
-//                                    [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-//                                }
-//                            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//                                NSLog(@"failure--%@",error);
-//                            }];
-//                        }
-//                        [defaults setObject:@"2" forKey:@"is_bind_property"];
-//                        [userdf synchronize];
-//                    }else{
-//                        bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
-//                        bangding.hidesBottomBarWhenPushed = YES;
-//                        [self.navigationController pushViewController:bangding animated:YES];
-//                        [defaults setObject:@"1" forKey:@"is_bind_property"];
-//                        [userdf synchronize];
-//                    }
-//                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//                    NSLog(@"failure--%@",error);
-//                }];
-//            }if ([url_type isEqualToString:@"18"]){
-//                FacePayViewController *face = [[FacePayViewController alloc] init];
-//                face.hidesBottomBarWhenPushed = YES;
-//                [self.navigationController pushViewController:face animated:YES];
-//            }if ([url_type isEqualToString:@"19"]){
-//                jujiayanglaoViewController *hujia = [[jujiayanglaoViewController alloc] init];
-//                hujia.hidesBottomBarWhenPushed = YES;
-//                [self.navigationController pushViewController:hujia animated:YES];
-//            }if ([url_type isEqualToString:@"20"]){
-//
-//            }
-//        }
+        //        if (indexPath.row>0) {
+        //            NSString *url_type = [[centerguanggaoarr objectAtIndex:indexPath.row-1] objectForKey:@"url_type"];
+        //            NSString *url_id = [[centerguanggaoarr objectAtIndex:indexPath.row-1] objectForKey:@"url_id"];
+        //            NSString *urltypename = [[centerguanggaoarr objectAtIndex:indexPath.row-1] objectForKey:@"type_name"];
+        //            if ([url_type isEqualToString:@"5"]) {
+        //                weixiuViewController *weixiu = [[weixiuViewController alloc] init];
+        //                weixiu.hidesBottomBarWhenPushed = YES;
+        //                [self.navigationController pushViewController:weixiu animated:YES];
+        //            }if ([url_type isEqualToString:@"3"]) {
+        //                acivityViewController *aciti = [[acivityViewController alloc] init];
+        //                aciti.hidesBottomBarWhenPushed = YES;
+        //                aciti.url = url_id;
+        //                [self.navigationController pushViewController:aciti animated:YES];
+        //            }if ([url_type isEqualToString:@"4"]) {
+        //                activitydetailsViewController *acti = [[activitydetailsViewController alloc] init];
+        //                acti.url = url_id;
+        //                acti.hidesBottomBarWhenPushed = YES;
+        //                [self.navigationController pushViewController:acti animated:YES];
+        //            }if ([url_type isEqualToString:@"7"]) {
+        //                NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",url_id];
+        //                UIWebView *callWebview = [[UIWebView alloc] init];
+        //                [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+        //                [self.view addSubview:callWebview];
+        //            }if ([url_type isEqualToString:@"1"]) {
+        //                shangpinerjiViewController *erji = [[shangpinerjiViewController alloc] init];
+        //                NSString *type_name = [[centerguanggaoarr objectAtIndex:indexPath.row-1] objectForKey:@"type_name"];
+        //                NSRange range = [type_name rangeOfString:@"id/"]; //现获取要截取的字符串位置
+        //                NSString * result = [type_name substringFromIndex:range.location+3]; //截取字符串
+        //                erji.id = result;
+        //                erji.hidesBottomBarWhenPushed = YES;
+        //                [self.navigationController pushViewController:erji animated:YES];
+        //            }if ([url_type isEqualToString:@"6"]) {
+        //                //优惠券
+        //                NSString *type_name = [[centerguanggaoarr objectAtIndex:indexPath.row-1] objectForKey:@"type_name"];
+        //
+        //                WebViewController *web = [[WebViewController alloc] init];
+        //                web.url_type = @"2";
+        //                web.title = @"优惠券";
+        //                web.url = type_name;
+        //                web.hidesBottomBarWhenPushed = YES;
+        //                [self.navigationController pushViewController:web animated:YES];
+        //            }if ([url_type isEqualToString:@"8"]) {
+        //                youhuiquanViewController *youhuiquan = [[youhuiquanViewController alloc] init];
+        //                [self.navigationController presentViewController:youhuiquan animated:YES completion:nil];
+        //            }if ([url_type isEqualToString:@"9"]) {
+        //                youhuiquanxiangqingViewController *youhuiquan = [[youhuiquanxiangqingViewController alloc] init];
+        //                [self.navigationController presentViewController:youhuiquan animated:YES completion:nil];
+        //            }if ([url_type isEqualToString:@"2"]) {
+        //                GoodsDetailViewController *goods = [[GoodsDetailViewController alloc] init];
+        //                NSRange range = [urltypename rangeOfString:@"id/"]; //现获取要截取的字符串位置
+        //                NSString * result = [urltypename substringFromIndex:range.location+3]; //截取字符串
+        //                goods.IDstring = result;
+        //                goods.hidesBottomBarWhenPushed = YES;
+        //                [self.navigationController pushViewController:goods animated:YES];
+        //            }if ([url_type isEqualToString:@"10"]) {
+        //                WebViewController *web = [[WebViewController alloc] init];
+        //                web.url = url_id;
+        //                web.url_type = @"1";
+        //                //web.jpushstring = @"jpush";
+        //                web.title = @"小慧推荐";
+        //                web.hidesBottomBarWhenPushed = YES;
+        //                [self.navigationController pushViewController:web animated:YES];
+        //            }if ([url_type isEqualToString:@"11"]) {
+        //                noticeViewController *notice = [[noticeViewController alloc] init];
+        //                notice.hidesBottomBarWhenPushed = YES;
+        //                NSRange range = [url_id rangeOfString:@"id/"]; //现获取要截取的字符串位置
+        //                NSString * result = [url_id substringFromIndex:range.location+3]; //截取字符串
+        //                notice.id = result;
+        //                //notice.jpushstring = @"jpush";
+        //                [self.navigationController pushViewController:notice animated:YES];
+        //            }if ([url_type isEqualToString:@"12"]){
+        //
+        //            }if ([url_type isEqualToString:@"13"]){
+        //                circledetailsViewController *circle = [[circledetailsViewController alloc] init];
+        //                circle.id = url_id;
+        //                circle.hidesBottomBarWhenPushed = YES;
+        //                [self.navigationController pushViewController:circle animated:YES];
+        //            }if ([url_type isEqualToString:@"14"]){
+        //
+        //            }if ([url_type isEqualToString:@"15"]){
+        //                youxianjiaofeiViewController *youxian = [[youxianjiaofeiViewController alloc] init];
+        //                youxian.hidesBottomBarWhenPushed = YES;
+        //                [self.navigationController pushViewController:youxian animated:YES];
+        //            }if ([url_type isEqualToString:@"16"]){
+        //
+        //            }if ([url_type isEqualToString:@"17"]){
+        //                NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
+        //                NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
+        //
+        //                AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        //                manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+        //                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        //                NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
+        //                NSDictionary *dict = @{@"apk_token":uid_username};
+        //                NSString *strurl = [API stringByAppendingString:@"apk/property/binding_community"];
+        //                [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //                    NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
+        //                    NSArray *arrrrr = [[NSArray alloc] init];
+        //                    if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+        //                        arrrrr = [responseObject objectForKey:@"data"];
+        //                        if (arrrrr.count>1) {
+        //                            selectHomeViewController *selecthome = [[selectHomeViewController alloc] init];
+        //                            selecthome.homeArr = arrrrr;
+        //                            selecthome.rukoubiaoshi = @"layakaimen";
+        //                            selecthome.hidesBottomBarWhenPushed = YES;
+        //                            [self.navigationController pushViewController:selecthome animated:YES];
+        //                        }else{
+        //                            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        //                            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+        //                            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        //                            NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
+        //                            NSDictionary *dict = @{@"apk_token":uid_username,@"room_id":[[arrrrr objectAtIndex:0] objectForKey:@"room_id"]};
+        //                            NSString *strurl = [API stringByAppendingString:@"apk/property/checkIsAjb"];
+        //                            [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //                                NSLog(@"%@-11111-%@",[responseObject objectForKey:@"msg"],responseObject);
+        //                                NSDictionary *dicccc = [[NSDictionary alloc] init];
+        //                                if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+        //                                    dicccc = [responseObject objectForKey:@"data"];
+        //                                    if ([dicccc isKindOfClass:[NSDictionary class]]) {
+        //                                        blueyaViewController *blueya = [[blueyaViewController alloc] init];
+        //                                        blueya.Dic = dicccc;
+        //                                        blueya.hidesBottomBarWhenPushed = YES;
+        //                                        [self.navigationController pushViewController:blueya animated:YES];
+        //                                    }else{
+        //                                        [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+        //                                    }
+        //                                }else{
+        //                                    [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+        //                                }
+        //                            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        //                                NSLog(@"failure--%@",error);
+        //                            }];
+        //                        }
+        //                        [defaults setObject:@"2" forKey:@"is_bind_property"];
+        //                        [userdf synchronize];
+        //                    }else{
+        //                        bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
+        //                        bangding.hidesBottomBarWhenPushed = YES;
+        //                        [self.navigationController pushViewController:bangding animated:YES];
+        //                        [defaults setObject:@"1" forKey:@"is_bind_property"];
+        //                        [userdf synchronize];
+        //                    }
+        //                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        //                    NSLog(@"failure--%@",error);
+        //                }];
+        //            }if ([url_type isEqualToString:@"18"]){
+        //                FacePayViewController *face = [[FacePayViewController alloc] init];
+        //                face.hidesBottomBarWhenPushed = YES;
+        //                [self.navigationController pushViewController:face animated:YES];
+        //            }if ([url_type isEqualToString:@"19"]){
+        //                jujiayanglaoViewController *hujia = [[jujiayanglaoViewController alloc] init];
+        //                hujia.hidesBottomBarWhenPushed = YES;
+        //                [self.navigationController pushViewController:hujia animated:YES];
+        //            }if ([url_type isEqualToString:@"20"]){
+        //
+        //            }
+        //        }
     }else if(indexPath.section==4){
         if (indexPath.row>1) {
             yuefunextViewController *yuefunext = [[yuefunextViewController alloc] init];
@@ -2176,20 +2537,50 @@
     [view addSubview:but];
     [but addTarget:self action:@selector(selectxiaoqu) forControlEvents:UIControlEventTouchUpInside];
 }
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - 物业公告文字滚动
+- (void)handleTopEventWithURLString:(NSString *)URLString {
+    self.tabBarController.selectedIndex = 3;
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)getTopDataSourceModel:(DataSourceModel *)topDataSourceModel {
+    //    XLsn0wLog(@"第一个 %@ %@ %@", topDataSourceModel.type, topDataSourceModel.title, topDataSourceModel.URLString);
 }
-*/
 
+- (void)getBottomDataSourceModel:(DataSourceModel *)bottomDataSourceModel {
+    //    XLsn0wLog(@"第二个 %@ %@ %@", bottomDataSourceModel.type, bottomDataSourceModel.title, bottomDataSourceModel.URLString);
+}
+
+//- (void)handleBottomEventWithURLString:(NSString *)URLString {
+//    XLsn0wLog(@"URLString===%@", URLString);
+//}
+#pragma mark - 物业缴费
+-(void)wuYeJiaoFei:(UIButton *)sender{
+    
+    if (sender.tag == 100) {
+        afteryanzhengViewController *afterVC = [[afteryanzhengViewController alloc]init];
+        [self.navigationController pushViewController:afterVC animated:YES];
+    }else if (sender.tag == 101){
+        ziyongliebiaoViewController *ziyongliebiaoVC = [[ziyongliebiaoViewController alloc]init];
+        [self.navigationController pushViewController:ziyongliebiaoVC animated:YES];
+    }else{
+        gonggongbaoxiuViewController *gonggongbaoxiuVC = [[gonggongbaoxiuViewController alloc]init];
+        [self.navigationController pushViewController:gonggongbaoxiuVC animated:YES];
+    }
+    
+}
+#pragma mark - 租房，售房，发布
+-(void)zuShouFang:(UIButton *)sender{
+    
+    if (sender.tag == 100) {
+        zuFangViewController *zuFangVC = [[zuFangViewController alloc]init];
+        [self.navigationController pushViewController:zuFangVC animated:YES];
+    }else if (sender.tag == 101){
+        shouFangViewController *shouFangVC = [[shouFangViewController alloc]init];
+        [self.navigationController pushViewController:shouFangVC animated:YES];
+    }else{
+        zushouweituoViewController *zushouweituoVC = [[zushouweituoViewController alloc]init];
+        [self.navigationController pushViewController:zushouweituoVC animated:YES];
+    }
+    
+}
 @end
