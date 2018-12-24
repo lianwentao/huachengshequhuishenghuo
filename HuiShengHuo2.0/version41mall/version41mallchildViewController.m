@@ -10,6 +10,7 @@
 #import "liebiaomodel.h"
 #import "liebiaoTableViewCell.h"
 #import "GoodsDetailViewController.h"
+#import "LoginViewController.h"
 @interface version41mallchildViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     NSArray *biaoqianarr;
@@ -19,7 +20,6 @@
     NSMutableArray *liebiaoArr;
     NSMutableArray *modelArr;
     
-    UITableView *_TabelView;
     NSArray *_searcharr;
     
     int _pagenum;
@@ -36,30 +36,209 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     [self postliebiao];
     
     
     // Do any additional setup after loading the view.
 }
--(void)setui{
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width, Main_Height - NAVHEIGHT - SegmentHeaderViewHeight-49)];
-    //        _tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    _tableView.showsVerticalScrollIndicator = NO;
-    _tableView.showsHorizontalScrollIndicator = NO;
-    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    //_TabelView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(postliebiao)];
-    _TabelView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(postup)];
-    _tableView.rowHeight = 110+12.5;
-    [self.view addSubview:_tableView];
+- (void)ui{
+    
 }
-//- (UITableView *)tableView {
-//    if (!_tableView) {
-//        
-//    }
-//    return _tableView;
-//}
+- (UITableView *)tableView {
+    if (!_tableView) {
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width, Main_Height - NAVHEIGHT - SegmentHeaderViewHeight-49)];
+        //        _tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+        _tableView.showsVerticalScrollIndicator = NO;
+        _tableView.showsHorizontalScrollIndicator = NO;
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(postup)];
+        _tableView.rowHeight = (Main_width-24-7)/2+112.5+16;
+        //[self.view addSubview:_tableView];
+    }
+    return _tableView;
+}
+
+#pragma mark - UITableViewDataSource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return (liebiaoArr.count+1)/2;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *const FirstViewControllerTableViewCellIdentifier = @"FirstViewControllerTableViewCell";
+    UITableViewCell  *cell = [tableView dequeueReusableCellWithIdentifier:FirstViewControllerTableViewCellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FirstViewControllerTableViewCellIdentifier];
+    }
+    //cell.textLabel.text = [NSString stringWithFormat:@"快点我%ld -> 进入我的消息",indexPath.row];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12, 8, (Main_width-24-7)/2, (Main_width-24-7)/2+112.5)];
+    view.backgroundColor = [UIColor whiteColor];
+    view.clipsToBounds = YES;
+    view.layer.borderColor = BackColor.CGColor;
+    view.layer.borderWidth = 1;
+    [cell.contentView addSubview:view];
+    
+    
+    
+    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.width)];
+    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[liebiaoArr objectAtIndex:indexPath.row*2] objectForKey:@"title_thumb_img"]]];
+    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    [view addSubview:imageview];
+    
+    UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(12.5, 5+imageview.frame.size.height, view.frame.size.width-25, 40)];
+    name.text = [[liebiaoArr objectAtIndex:indexPath.row*2] objectForKey:@"title"];
+    name.font = font15;
+    name.numberOfLines = 2;
+    [view addSubview:name];
+    
+    UIView *tagview = [[UIView alloc] initWithFrame:CGRectMake(12.5, name.frame.size.height+name.frame.origin.y+7, 50, 16)];
+    [view addSubview:tagview];
+    NSArray *tagarr = [[liebiaoArr objectAtIndex:indexPath.row*2] objectForKey:@"goods_tag"];
+    if ([tagarr isKindOfClass:[NSArray class]]) {
+        if (tagarr.count>2) {
+            for (int j=0; j<2; j++) {
+                UILabel *taglabel = [[UILabel alloc] initWithFrame:CGRectMake(60*j, 0, 55, 18)];
+                taglabel.text = [[tagarr objectAtIndex:j] objectForKey:@"c_name"];
+                taglabel.font = [UIFont systemFontOfSize:10];
+                taglabel.textColor = QIColor;
+                taglabel.textAlignment = NSTextAlignmentCenter;
+                taglabel.layer.cornerRadius = 2;
+                [taglabel.layer setBorderWidth:0.5];
+                [taglabel.layer setBorderColor:QIColor.CGColor];
+                [tagview addSubview:taglabel];
+            }
+        }else{
+            for (int j=0; j<tagarr.count; j++) {
+                UILabel *taglabel = [[UILabel alloc] initWithFrame:CGRectMake(60*j, 0, 55, 18)];
+                taglabel.text = [[tagarr objectAtIndex:j] objectForKey:@"c_name"];
+                taglabel.font = [UIFont systemFontOfSize:10];
+                taglabel.textColor = QIColor;
+                taglabel.textAlignment = NSTextAlignmentCenter;
+                taglabel.layer.cornerRadius = 2;
+                [taglabel.layer setBorderWidth:0.5];
+                [taglabel.layer setBorderColor:QIColor.CGColor];
+                [tagview addSubview:taglabel];
+            }
+        }
+    }
+    
+    UILabel *price = [[UILabel alloc] initWithFrame:CGRectMake(12.5, tagview.frame.size.height+tagview.frame.origin.y+12.5, 60, 20)];
+    price.text = [NSString stringWithFormat:@"%@/%@",[[liebiaoArr objectAtIndex:indexPath.row*2] objectForKey:@"price"],[[liebiaoArr objectAtIndex:indexPath.row*2] objectForKey:@"unit"]];
+    price.textColor = QIColor;
+    price.font = [UIFont systemFontOfSize:13];
+    
+    [view addSubview:price];
+    
+    UILabel *originalprice = [[UILabel alloc] initWithFrame:CGRectMake(12.5+60+5, tagview.frame.size.height+tagview.frame.origin.y+12.5, 60, 20)];
+    originalprice.textColor = CIrclecolor;
+    originalprice.text = [NSString stringWithFormat:@"¥%@",[[liebiaoArr objectAtIndex:indexPath.row*2] objectForKey:@"original"]];
+    originalprice.font = [UIFont systemFontOfSize:12];
+    NSDictionary *attribtDic = @{NSStrikethroughStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+    NSMutableAttributedString *attribtStr = [[NSMutableAttributedString alloc]initWithString:originalprice.text attributes:attribtDic];
+    originalprice.attributedText = attribtStr;
+    [view addSubview:originalprice];
+    
+    
+    UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
+    dianjibut.frame = view.frame;
+    dianjibut.tag = [[[liebiaoArr objectAtIndex:indexPath.row*2] objectForKey:@"id"] longValue];
+    [dianjibut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.contentView addSubview:dianjibut];
+    
+    UIButton *gouwuchebut = [UIButton buttonWithType:UIButtonTypeCustom];
+    gouwuchebut.frame = CGRectMake((Main_width-24-7)/2-45, tagview.frame.size.height+tagview.frame.origin.y+5, 30, 30);
+    [gouwuchebut setImage:[UIImage imageNamed:@"gouwuche"] forState:UIControlStateNormal];
+    gouwuchebut.tag = indexPath.row*2;
+    gouwuchebut.titleLabel.text = [NSString stringWithFormat:@"%ld",indexPath.section-4];
+    [gouwuchebut.titleLabel setFont:[UIFont systemFontOfSize:0.01]];
+    [gouwuchebut addTarget:self action:@selector(jiarugouwuche:) forControlEvents:UIControlEventTouchUpInside];
+    [dianjibut addSubview:gouwuchebut];
+    
+    
+    UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(Main_width/2+3.5, 8, (Main_width-24-7)/2, (Main_width-24-7)/2+112.5)];
+    view1.backgroundColor = [UIColor whiteColor];
+    view1.clipsToBounds = YES;
+    view1.layer.borderColor = BackColor.CGColor;
+    view1.layer.borderWidth = 1;
+    [cell.contentView addSubview:view1];
+    
+    UIButton *dianjibut1 = [UIButton buttonWithType:UIButtonTypeCustom];
+    dianjibut1.frame = view1.frame;
+    dianjibut1.tag = [[[liebiaoArr objectAtIndex:indexPath.row*2+1] objectForKey:@"id"] longValue];
+    [dianjibut1 addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.contentView addSubview:dianjibut1];
+    
+    UIImageView *imageview1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view1.frame.size.width, view1.frame.size.width)];
+    NSURL *url1 = [NSURL URLWithString:[API_img stringByAppendingString:[[liebiaoArr objectAtIndex:indexPath.row*2+1] objectForKey:@"title_thumb_img"]]];
+    [imageview1 sd_setImageWithURL:url1 placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    [view1 addSubview:imageview1];
+    
+    UILabel *name1 = [[UILabel alloc] initWithFrame:CGRectMake(12.5, 5+imageview1.frame.size.height, view1.frame.size.width-25, 40)];
+    name1.text = [[liebiaoArr objectAtIndex:indexPath.row*2+1] objectForKey:@"title"];
+    name1.font = font15;
+    name1.numberOfLines = 2;
+    [view1 addSubview:name1];
+    
+    UIView *tagview1 = [[UIView alloc] initWithFrame:CGRectMake(12.5, name1.frame.size.height+name1.frame.origin.y+7, 50, 16)];
+    [view1 addSubview:tagview1];
+    NSArray *tagarr1 = [[liebiaoArr objectAtIndex:indexPath.row*2+1] objectForKey:@"goods_tag"];
+    if ([tagarr1 isKindOfClass:[NSArray class]]) {
+        if (tagarr1.count>2) {
+            for (int j=0; j<2; j++) {
+                UILabel *taglabel = [[UILabel alloc] initWithFrame:CGRectMake(60*j, 0, 55, 18)];
+                taglabel.text = [[tagarr1 objectAtIndex:j] objectForKey:@"c_name"];
+                taglabel.font = [UIFont systemFontOfSize:10];
+                taglabel.textColor = QIColor;
+                taglabel.textAlignment = NSTextAlignmentCenter;
+                taglabel.layer.cornerRadius = 2;
+                [taglabel.layer setBorderWidth:0.5];
+                [taglabel.layer setBorderColor:QIColor.CGColor];
+                [tagview1 addSubview:taglabel];
+            }
+        }else{
+            for (int j=0; j<tagarr1.count; j++) {
+                UILabel *taglabel = [[UILabel alloc] initWithFrame:CGRectMake(60*j, 0, 55, 18)];
+                taglabel.text = [[tagarr1 objectAtIndex:j] objectForKey:@"c_name"];
+                taglabel.font = [UIFont systemFontOfSize:10];
+                taglabel.textColor = QIColor;
+                taglabel.textAlignment = NSTextAlignmentCenter;
+                taglabel.layer.cornerRadius = 2;
+                [taglabel.layer setBorderWidth:0.5];
+                [taglabel.layer setBorderColor:QIColor.CGColor];
+                [tagview1 addSubview:taglabel];
+            }
+        }
+    }
+    
+    UILabel *price1 = [[UILabel alloc] initWithFrame:CGRectMake(12.5, tagview1.frame.size.height+tagview1.frame.origin.y+12.5, 60, 20)];
+    price1.text = [NSString stringWithFormat:@"%@/%@",[[liebiaoArr objectAtIndex:indexPath.row*2+1] objectForKey:@"price"],[[liebiaoArr objectAtIndex:indexPath.row*2+1] objectForKey:@"unit"]];
+    price1.textColor = QIColor;
+    price1.font = [UIFont systemFontOfSize:13];
+    
+    [view1 addSubview:price1];
+    
+    UILabel *originalprice1 = [[UILabel alloc] initWithFrame:CGRectMake(12.5+60+5, tagview1.frame.size.height+tagview1.frame.origin.y+12.5, 60, 20)];
+    originalprice1.textColor = CIrclecolor;
+    originalprice1.text = [NSString stringWithFormat:@"¥%@",[[liebiaoArr objectAtIndex:indexPath.row*2+1] objectForKey:@"original"]];
+    originalprice1.font = [UIFont systemFontOfSize:12];
+    NSDictionary *attribtDic1 = @{NSStrikethroughStyleAttributeName: [NSNumber numberWithInteger:NSUnderlineStyleSingle]};
+    NSMutableAttributedString *attribtStr1 = [[NSMutableAttributedString alloc]initWithString:originalprice1.text attributes:attribtDic1];
+    originalprice1.attributedText = attribtStr1;
+    [view1 addSubview:originalprice1];
+    
+    UIButton *gouwuchebut1 = [UIButton buttonWithType:UIButtonTypeCustom];
+    gouwuchebut1.frame = CGRectMake((Main_width-24-7)/2-45, tagview1.frame.size.height+tagview1.frame.origin.y+5, 30, 30);
+    [gouwuchebut1 setImage:[UIImage imageNamed:@"gouwuche"] forState:UIControlStateNormal];
+    gouwuchebut1.tag = indexPath.row*2+1;
+    gouwuchebut1.titleLabel.text = [NSString stringWithFormat:@"%ld",indexPath.section-4];
+    [gouwuchebut1.titleLabel setFont:[UIFont systemFontOfSize:0.01]];
+    [gouwuchebut1 addTarget:self action:@selector(jiarugouwuche:) forControlEvents:UIControlEventTouchUpInside];
+    [dianjibut1 addSubview:gouwuchebut1];
+    return cell;
+}
+
 
 -(void)postliebiao
 {
@@ -83,45 +262,23 @@
      */
     NSString *strurl = [API stringByAppendingString:@"shop/hotCateProlist"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
+
         liebiaoArr = [[NSMutableArray alloc] init];
         modelArr = [NSMutableArray arrayWithCapacity:0];
-        
+
         //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
         NSLog(@"center---success--%@--%@",[responseObject class],responseObject);
         NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
         arr = [responseObject objectForKey:@"data"];
-        
+
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-            for (int i=0; i<arr.count; i++) {
-                liebiaomodel *model = [[liebiaomodel alloc] init];
-                model.imagestring = [[arr objectAtIndex:i] objectForKey:@"title_img"];
-                model.title = [[arr objectAtIndex:i] objectForKey:@"title"];
-                model.tagArr = [[arr objectAtIndex:i] objectForKey:@"goods_tag"];
-                model.nowprice = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"price"]];
-                model.yuanprice = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"original"]];
-                model.unit = [[arr objectAtIndex:i] objectForKey:@"unit"];
-                model.yishou = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"order_num"]];
-                model.biaoshi = @"0";//1代表限时抢购，0代表其他商品
-                
-                model.id = [[arr objectAtIndex:i] objectForKey:@"id"];
-                model.tagname = [[arr objectAtIndex:i] objectForKey:@"tagname"];
-                model.tagid = [[arr objectAtIndex:i] objectForKey:@"tagid"];
-                model.title_img = [[arr objectAtIndex:i] objectForKey:@"title_img"];
-                model.exihours = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"exist_hours"]];
-                model.is_time = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"discount"]];
-                model.is_new = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"is_new"]];
-                model.is_hot = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"is_hot"]];
-                model.kucun = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"inventory"]];
-                [modelArr addObject:model];
-            }
+            
             [liebiaoArr addObjectsFromArray:arr];
         }
-        [self setui];
-        
-        [_TabelView reloadData];
+        [self.view addSubview:self.tableView];
+        //[_TabelView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
+
         NSLog(@"failure--%@",error);
     }];
 }
@@ -147,72 +304,81 @@
      */
     NSString *strurl = [API stringByAppendingString:@"shop/hotCateProlist"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
+
         NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
         //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
         NSLog(@"center---success--%@--%@",[responseObject class],responseObject);
-        
+
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
             arr = [responseObject objectForKey:@"data"];
             NSString *stringnumber = [[arr objectAtIndex:0] objectForKey:@"total_Pages"];
             NSInteger i = [stringnumber integerValue];
             if (_pagenum>i) {
-                _TabelView.mj_footer.state = MJRefreshStateNoMoreData;
-                [_TabelView.mj_footer resetNoMoreData];
+                _tableView.mj_footer.state = MJRefreshStateNoMoreData;
+                [_tableView.mj_footer resetNoMoreData];
             }else{
-                for (int i=0; i<arr.count; i++) {
-                    liebiaomodel *model = [[liebiaomodel alloc] init];
-                    model.imagestring = [[arr objectAtIndex:i] objectForKey:@"title_img"];
-                    model.title = [[arr objectAtIndex:i] objectForKey:@"title"];
-                    model.tagArr = [[arr objectAtIndex:i] objectForKey:@"goods_tag"];
-                    model.nowprice = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"price"]];
-                    model.yuanprice = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"original"]];
-                    model.unit = [[arr objectAtIndex:i] objectForKey:@"unit"];
-                    model.yishou = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"order_num"]];
-                    model.biaoshi = @"0";//1代表限时抢购，0代表其他商品
-                    model.is_time = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"discount"]];
-                    model.exihours = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"exist_hours"]];
-                    model.is_new = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"is_new"]];
-                    model.is_hot = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"is_hot"]];
-                    model.kucun = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"inventory"]];
-                    model.id = [[arr objectAtIndex:i] objectForKey:@"id"];
-                    model.tagname = [[arr objectAtIndex:i] objectForKey:@"tagname"];
-                    model.tagid = [[arr objectAtIndex:i] objectForKey:@"tagid"];
-                    model.title_img = [[arr objectAtIndex:i] objectForKey:@"title_img"];
-                    [modelArr addObject:model];
-                }
+                
                 [liebiaoArr addObjectsFromArray:arr];
             }
-            [_TabelView.mj_footer endRefreshing];
-            [_TabelView reloadData];
+            
         }
+        [_tableView.mj_footer endRefreshing];
+        [_tableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
     }];
 }
-#pragma mark - UITableViewDataSource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return modelArr.count;
+- (void)pushgoods:(UIButton *)sender
+{
+    NSDictionary *dict = @{@"goodsid":[NSString stringWithFormat:@"%lu",sender.tag]};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"zhuyemianpush" object:nil userInfo:dict];
+   
 }
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellIndetifier = @"facepayjiluTableViewCell";
-    liebiaoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndetifier];
-    if (cell == nil) {
-        cell = [[liebiaoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+- (void)jiarugouwuche:(UIButton *)sender
+{
+    NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+    NSString *str = [userdefaults objectForKey:@"token"];
+    if (str==nil) {
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self presentViewController:login animated:YES completion:nil];
+    }else{
+        long i = sender.tag;
+        //int j = [sender.titleLabel.text intValue];
+        NSArray *arr = [NSArray array];
+        arr = liebiaoArr;
         
-        //cell.userInteractionEnabled = NO;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;    //点击的时候无效果
+        NSString *kucun = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"inventory"]];
+        NSString *exist_hours = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"exist_hours"]];
+        NSString *tagname = [[arr objectAtIndex:i] objectForKey:@"inventory"];
+        NSString *pid = [[arr objectAtIndex:i] objectForKey:@"id"];
+        NSString *title = [[arr objectAtIndex:i] objectForKey:@"title"];
+        NSString *title_img = [[arr objectAtIndex:i] objectForKey:@"title_img"];
+        NSString *tagid = [[arr objectAtIndex:i] objectForKey:@"tagid"];
+        NSString *price = [[arr objectAtIndex:i] objectForKey:@"price"];
+        if ([exist_hours isEqualToString:@"2"]) {
+            [MBProgressHUD showToastToView:self.view withText:@"当前时间不在配送时间范围内"];
+        }else if ([kucun isEqualToString:@"0"]){
+            [MBProgressHUD showToastToView:self.view withText:@"库存不足"];
+        }else{
+            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+            //2.封装参数
+            
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
+            NSDictionary *dict = [[NSDictionary alloc] init];
+            
+            
+            dict = @{@"number":@"1",@"tagname":tagname,@"p_id":pid,@"p_title":title,@"p_title_img":title_img,@"tagid":tagid,@"price":price,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+            NSString *strurl = [API stringByAppendingString:@"shop/add_shopping_cart"];
+            [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"failure--%@",error);
+            }];
+        }
     }
-    cell.backgroundColor = BackColor;
-    cell.model = [modelArr objectAtIndex:indexPath.row];
-    return cell;
-}
-
-#pragma mark - UITableViewDelegate
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

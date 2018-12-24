@@ -48,7 +48,6 @@
 /********** 导航栏高度 **********/
 #define STATUSBARHEIGHT    44
 /********** 导航栏+状态栏高度 **********/
-#define NAVHEIGHT       (NAVIGATIONBARHEIGHT+STATUSBARHEIGHT)
 
 #define SegmentHeaderViewHeight  50 //标题栏高度
 

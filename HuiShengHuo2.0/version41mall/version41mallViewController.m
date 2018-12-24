@@ -56,6 +56,14 @@
 #import "huodongwebviewViewController.h"
 
 #import "newxianshiqianggouViewController.h"
+
+#define NAVBAR_COLORCHANGE_POINT (-IMAGE_HEIGHT + NAV_HEIGHT)
+#define NAV_HEIGHT 64
+#define IMAGE_HEIGHT 0
+#define SCROLL_DOWN_LIMIT 70
+#define kScreenWidth [UIScreen mainScreen].bounds.size.width
+#define kScreenHeight [UIScreen mainScreen].bounds.size.height
+#define LIMIT_OFFSET_Y -(IMAGE_HEIGHT + SCROLL_DOWN_LIMIT)
 @interface version41mallViewController ()<UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate,NewPagedFlowViewDelegate,NewPagedFlowViewDataSource,UISearchBarDelegate>{
     NSArray *HeaDataArr;
     NSArray *centerArr;
@@ -96,8 +104,6 @@
 @property (nonatomic, assign) BOOL canScroll;//mainTableView是否可以滚动
 @property (nonatomic, assign) BOOL isBacking;//是否正在pop
 
-
-
 //@property (nonatomic, strong) headBackView *headView;
 //空白view，可以加空间
 @property (nonatomic, strong) UIView *tabHeadView;
@@ -119,15 +125,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self getdata];
-    if (@available(iOS 11.0, *)) {
-        [[UIScrollView appearance] setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
-    }else {
-        self.automaticallyAdjustsScrollViewInsets = NO;
-    }
+    [self setupNavItems];;
+    [self wr_setNavBarBarTintColor:[UIColor whiteColor]];
+    [self wr_setNavBarBackgroundAlpha:0];
     
-    //如果使用自定义的按钮去替换系统默认返回按钮，会出现滑动返回手势失效的情况
-    self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    [self getdata];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushgoods:) name:@"zhuyemianpush" object:nil];
+//    if (@available(iOS 11.0, *)) {
+//        [[UIScrollView appearance] setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
+//    }else {
+//        self.automaticallyAdjustsScrollViewInsets = NO;
+//    }
+    
+//    //如果使用自定义的按钮去替换系统默认返回按钮，会出现滑动返回手势失效的情况
+//    self.navigationController.interactivePopGestureRecognizer.delegate = self;
     //注册允许外层tableView滚动通知-解决和分页视图的上下滑动冲突问题
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(acceptMsg:) name:@"leaveTop" object:nil];
     //分页的scrollView左右滑动的时候禁止mainTableView滑动，停止滑动的时候允许mainTableView滑动
@@ -142,29 +155,225 @@
     
     // Do any additional setup after loading the view.
 }
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES];
-    self.naviView.hidden = NO;
+- (void)setupNavItems
+{
+    //    UIBarButtonItem *leftButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"fenlei"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickLeft)];
+    //    self.navigationItem.leftBarButtonItem = leftButtonItem;
+    //
+    //    UIBarButtonItem *rightButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"gouwuche"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickRight)];
+    //    self.navigationItem.rightBarButtonItem = rightButtonItem;
+    //
+    //    UIButton *but = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-50, 5, 30, 30)];
+    //    [but setImage:[UIImage imageNamed:[Imagearr objectAtIndex:1]] forState:UIControlStateNormal];
+    //    but.backgroundColor = [UIColor redColor];
+    //    self.navigationItem.titleView addSubview:<#(nonnull UIView *)#>
+    //    redcountimage = [[UIImageView alloc] initWithFrame:CGRectMake(27, 2, 6, 6)];
+    //    redcountimage.layer.masksToBounds = YES;
+    //    redcountimage.layer.cornerRadius = 3;
+    //    redcountimage.backgroundColor = [UIColor redColor];
+    //    redcountimage.hidden = NO;
+    //    [self.navigationItem.titleView addSubview:redcountimage];
+    //    // 这里暂时没适配
+    //    self.searchButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 230, 30)];
+    //    [self.searchButton setTitle:@"搜索您想要的商品" forState:UIControlStateNormal];
+    //    self.searchButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    //    [self.searchButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    //    [self.searchButton setBackgroundImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
+    //    [self.searchButton addTarget:self action:@selector(onClickSearchBtn) forControlEvents:UIControlEventTouchUpInside];
+    //    self.navigationItem.titleView = self.searchButton;
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    [self.navigationItem setTitleView:view];
+    
+    UIButton *butleft = [[UIButton alloc] initWithFrame:CGRectMake(0, 5, 30, 30)];
+    [butleft setImage:[UIImage imageNamed:@"fenlei"] forState:UIControlStateNormal];
+    butleft.backgroundColor = [UIColor redColor];
+    [butleft addTarget:self action:@selector(onClickLeft) forControlEvents:UIControlEventTouchUpInside];
+    butleft.backgroundColor = [UIColor clearColor];
+    [view addSubview:butleft];
+    
+    UIButton *but = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-50, 5, 30, 30)];
+    [but setImage:[UIImage imageNamed:@"gouwuche"] forState:UIControlStateNormal];
+    but.backgroundColor = [UIColor redColor];
+    [but addTarget:self action:@selector(onClickRight) forControlEvents:UIControlEventTouchUpInside];
+    but.backgroundColor = [UIColor clearColor];
+    [view addSubview:but];
+    redcountimage = [[UIImageView alloc] initWithFrame:CGRectMake(27, 2, 6, 6)];
+    redcountimage.layer.masksToBounds = YES;
+    redcountimage.layer.cornerRadius = 3;
+    redcountimage.backgroundColor = [UIColor redColor];
+    redcountimage.hidden = NO;
+    [but addSubview:redcountimage];
+    
+    UISearchBar *customSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(50,5, (self.view.frame.size.width-120), 34)];
+    customSearchBar.delegate = self;
+    customSearchBar.showsCancelButton = NO;
+    customSearchBar.placeholder = @"搜一搜";
+    customSearchBar.searchBarStyle = UISearchBarStyleMinimal;
+    [view addSubview:customSearchBar];
+    
+    UIButton *searchbut = [UIButton buttonWithType:UIButtonTypeCustom];
+    searchbut.frame = CGRectMake(0, 0, Main_width-70, 34);
+    [customSearchBar addSubview:searchbut];
+    [searchbut addTarget:self action:@selector(getsearchs) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    self.isBacking = NO;
-    //[[NSNotificationCenter defaultCenter] postNotificationName:PersonalCenterVCBackingStatus object:nil userInfo:@{@"isBacking":@(self.isBacking)}];
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat currentOffsetY  = scrollView.contentOffset.y;
+    
+        //临界点偏移量
+        CGFloat mainy = [self.mainTableView rectForSection:0].origin.y;
+        //    NSLog(@"mainy====%f",mainy);
+        CGFloat criticalPointOffsetY = [self.mainTableView rectForSection:0].origin.y - NAVHEIGHT;
+        //WBLog(@"%f--%f--%f",currentOffsetY,mainy,criticalPointOffsetY);
+    CGFloat offsetY = scrollView.contentOffset.y;
+    if (offsetY < -NAVHEIGHT) {
+        [self updateNavBarButtonItemsAlphaAnimated:.0f];
+    } else {
+        [self updateNavBarButtonItemsAlphaAnimated:1.0f];
+    }
+    
+    if (offsetY > NAVBAR_COLORCHANGE_POINT)
+    {
+        CGFloat alpha = (offsetY - NAVBAR_COLORCHANGE_POINT) / NAV_HEIGHT;
+        [self wr_setNavBarBackgroundAlpha:alpha];
+        [self updateSearchBarColor:alpha];
+    }
+    else
+    {
+        [self wr_setNavBarBackgroundAlpha:0];
+        [self.searchButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    }
+    //第二部分：
+    //利用contentOffset处理内外层scrollView的滑动冲突问题
+    if (currentOffsetY < criticalPointOffsetY) {
+        if (!self.canScroll) {
+            scrollView.contentOffset = CGPointMake(0, criticalPointOffsetY);
+        }
+        //WBLog(@"******______*********");
+    } else {
+        
+        scrollView.contentOffset = CGPointMake(0, criticalPointOffsetY);
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"goTop" object:nil userInfo:@{@"canScroll":@"1"}];
+        self.canScroll = NO;
+        //WBLog(@"#########******______*********");
+    }
+    //    //限制下拉的距离
+    //    if(offsetY < LIMIT_OFFSET_Y) {
+    //        [scrollView setContentOffset:CGPointMake(0, LIMIT_OFFSET_Y)];
+    //    }
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    self.isBacking = YES;
-    //[[NSNotificationCenter defaultCenter] postNotificationName:PersonalCenterVCBackingStatus object:nil userInfo:@{@"isBacking":@(self.isBacking)}];
+- (void)updateNavBarButtonItemsAlphaAnimated:(CGFloat)alpha
+{
+    [UIView animateWithDuration:0.2 animations:^{
+        [self.navigationController.navigationBar wr_setBarButtonItemsAlpha:alpha hasSystemBackIndicator:NO];
+    }];
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    [self.navigationController setNavigationBarHidden:NO];
-    self.naviView.hidden = YES;
+- (void)updateSearchBarColor:(CGFloat)alpha
+{
+    UIColor *color = [[UIColor whiteColor] colorWithAlphaComponent:alpha];
+    UIImage *image = [UIImage imageNamed:@"search"];
+    image = [image wr_updateImageWithTintColor:color alpha:alpha];
+    [self.searchButton setBackgroundImage:image forState:UIControlStateNormal];
+    [self.searchButton setTitleColor:CIrclecolor forState:UIControlStateNormal];
 }
+- (void)onClickLeft
+{
+    ShangpinfenleiViewController *shangfenlei = [[ShangpinfenleiViewController alloc] init];
+    shangfenlei.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:shangfenlei animated:YES];
+}
+- (void)onClickRight
+{
+    NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+    NSString *str = [userdefaults objectForKey:@"token"];
+    if (str==nil) {
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self presentViewController:login animated:YES completion:nil];
+    }else{
+        GouwucheViewController *gouwuche = [[GouwucheViewController alloc] init];
+        gouwuche.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:gouwuche animated:YES];
+    }
+    
+}
+- (void)onClickSearchBtn
+{
+    [self getsearchs];
+}
+- (void)getsearchs
+{
+    //1.创建会话管理者
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    //2.封装参数
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
+    NSDictionary *dict = @{@"id":[user objectForKey:@"community_id"]};
+    //3.发送GET请求
+    /*
+     */
+    NSString *strurl = [API stringByAppendingString:@"shop/goods_search_keys"];
+    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+            _searcharr = [[NSArray alloc] init];
+            _searcharr = [responseObject objectForKey:@"data"];
+            [self search];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"failure--%@",error);
+    }];
+}
+- (void)search
+{//apk/shop/goods_search_keys
+    NSArray *hotSeaches = _searcharr;
+    NSLog(@"%@****%@",hotSeaches,_searcharr);
+    PYSearchViewController *searchViewController = [PYSearchViewController searchViewControllerWithHotSearches:hotSeaches searchBarPlaceholder:NSLocalizedString(@"搜索商品",@"") didSearchBlock:^(PYSearchViewController *searchViewController, UISearchBar *searchBar, NSString *searchText) {
+        searchreslutsViewController *searchvc = [[searchreslutsViewController alloc] init];
+        searchvc.searchs = searchViewController.searchBar.text;
+        [searchViewController.navigationController pushViewController:searchvc animated:YES];
+    }];
+    searchViewController.hotSearchStyle = 0;
+    searchViewController.searchHistoryStyle = PYHotSearchStyleDefault;
+    searchViewController.delegate = self;
+    // 5. Present a navigation controller
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:searchViewController];
+    [self presentViewController:nav animated:YES completion:nil];
+}
+- (int)navBarBottom
+{
+    if ([WRNavigationBar isIphoneX]) {
+        return 88;
+    } else {
+        return 64;
+    }
+}
+//- (void)viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear:animated];
+//    //[self.navigationController setNavigationBarHidden:YES];
+//    self.naviView.hidden = NO;
+//}
+//
+//- (void)viewDidAppear:(BOOL)animated {
+//    [super viewDidAppear:animated];
+//    self.isBacking = NO;
+//    [[NSNotificationCenter defaultCenter] postNotificationName:PersonalCenterVCBackingStatus object:nil userInfo:@{@"isBacking":@(self.isBacking)}];
+//}
+//
+//- (void)viewWillDisappear:(BOOL)animated {
+//    [super viewWillDisappear:animated];
+//    self.isBacking = YES;
+//    [[NSNotificationCenter defaultCenter] postNotificationName:PersonalCenterVCBackingStatus object:nil userInfo:@{@"isBacking":@(self.isBacking)}];
+//}
+//
+//- (void)viewDidDisappear:(BOOL)animated {
+//    [super viewDidDisappear:animated];
+//    //[self.navigationController setNavigationBarHidden:NO];
+//    self.naviView.hidden = YES;
+//}
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -176,7 +385,7 @@
     
     [self.view addSubview:self.mainTableView];
     
-    //[self.mainTableView addSubview:self.tabHeadView];
+    [self.mainTableView addSubview:self.tabHeadView];
     
     
     self.pageHeadView.parentScrollView = self.mainTableView;  //这个必须设置
@@ -184,8 +393,8 @@
     
     
     [self.mainTableView addSubview:self.pageHeadView];
-    //[self.pageHeadView addSubview:self.imageScrollView];
-    [self.view addSubview:self.naviView];
+    [self.pageHeadView addSubview:self.imageScrollView];
+    //[self.view addSubview:self.naviView];
     
     
 }
@@ -222,70 +431,59 @@
  * 处理联动
  * 因为要实现下拉头部放大的问题，tableView设置了contentInset，所以试图刚加载的时候会调用一遍这个方法，所以要做一些特殊处理，
  */
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    //当前y轴偏移量
-    CGFloat currentOffsetY  = scrollView.contentOffset.y;
-    
-    //临界点偏移量
-    CGFloat mainy = [self.mainTableView rectForSection:0].origin.y;
-    //    NSLog(@"mainy====%f",mainy);
-    CGFloat criticalPointOffsetY = [self.mainTableView rectForSection:0].origin.y - NAVHEIGHT;
-    WBLog(@"%f--%f--%f",currentOffsetY,mainy,criticalPointOffsetY);
-    //    NSLog(@"criticalPointOffsetY====%f",criticalPointOffsetY);
-    //    NSLog(@"NAVHEIGHT====%f",NAVHEIGHT);
-    //第一部分: 更改导航栏的背景图的透明度
-    CGFloat alpha = 0;
-    if (currentOffsetY <= 0) {
-        alpha = 0;
-    } else if ((currentOffsetY > 0) && currentOffsetY < 400) {
-        alpha = currentOffsetY / 400;
-    } else {
-        alpha = 1;
-    }
-    self.naviView.backgroundColor = kRGBA(255, 126, 15, alpha);
-    
-    //第二部分：
-    //利用contentOffset处理内外层scrollView的滑动冲突问题
-    if (currentOffsetY < criticalPointOffsetY) {
-        if (!self.canScroll) {
-            scrollView.contentOffset = CGPointMake(0, criticalPointOffsetY);
-        }
-    } else {
-        
-        scrollView.contentOffset = CGPointMake(0, criticalPointOffsetY);
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"goTop" object:nil userInfo:@{@"canScroll":@"1"}];
-        self.canScroll = NO;
-    }
-    
-    //第三部分：
-    /**
-     * 处理头部自定义背景视图 (如: 下拉放大)
-     * 图片会被拉伸多出状态栏的高度
-     */
-    //     NSLog(@"currentOffsetY === %f",currentOffsetY);
-    //    if(currentOffsetY <= -self.offHeight) {
-    //
-    //        if (self.isEnlarge) {
-    //
-    //            _pageHeadView.y  = currentOffsetY;
-    //            _pageHeadView.height = -currentOffsetY-self.tabHeadViewHeight;
-    //
-    //
-    //             _imageScrollView.height = -currentOffsetY-self.tabHeadViewHeight;
-    //            [_imageScrollView adjustSubViewHeight];
-    //
-    //        }else{
-    //            scrollView.contentOffset = CGPointMake(0, -self.offHeight);
-    //            scrollView.bounces = NO;
-    //
-    //        }
-    //
-    //
-    //    }else {
-    ////        _imageScrollView.y = -(currentOffsetY + self.offHeight);
-    //        scrollView.bounces = YES;
-    //    }
-}
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    //当前y轴偏移量
+//    CGFloat currentOffsetY  = scrollView.contentOffset.y;
+//    
+//    //临界点偏移量
+//    CGFloat mainy = [self.mainTableView rectForSection:0].origin.y;
+//    //    NSLog(@"mainy====%f",mainy);
+//    CGFloat criticalPointOffsetY = [self.mainTableView rectForSection:0].origin.y - NAVHEIGHT;
+//    WBLog(@"%f--%f--%f",currentOffsetY,mainy,criticalPointOffsetY);
+//    //    NSLog(@"criticalPointOffsetY====%f",criticalPointOffsetY);
+//    //    NSLog(@"NAVHEIGHT====%f",NAVHEIGHT);
+//    //第一部分: 更改导航栏的背景图的透明度
+//    CGFloat alpha = 0;
+//    if (currentOffsetY <= 0) {
+//        alpha = 0;
+//    } else if ((currentOffsetY > 0) && currentOffsetY < 400) {
+//        alpha = currentOffsetY / 400;
+//    } else {
+//        alpha = 1;
+//    }
+//    self.naviView.backgroundColor = kRGBA(255, 126, 15, alpha);
+//    
+//    
+//    
+//    //第三部分：
+//    /**
+//     * 处理头部自定义背景视图 (如: 下拉放大)
+//     * 图片会被拉伸多出状态栏的高度
+//     */
+//    //     NSLog(@"currentOffsetY === %f",currentOffsetY);
+//    //    if(currentOffsetY <= -self.offHeight) {
+//    //
+//    //        if (self.isEnlarge) {
+//    //
+//    //            _pageHeadView.y  = currentOffsetY;
+//    //            _pageHeadView.height = -currentOffsetY-self.tabHeadViewHeight;
+//    //
+//    //
+//    //             _imageScrollView.height = -currentOffsetY-self.tabHeadViewHeight;
+//    //            [_imageScrollView adjustSubViewHeight];
+//    //
+//    //        }else{
+//    //            scrollView.contentOffset = CGPointMake(0, -self.offHeight);
+//    //            scrollView.bounces = NO;
+//    //
+//    //        }
+//    //
+//    //
+//    //    }else {
+//    ////        _imageScrollView.y = -(currentOffsetY + self.offHeight);
+//    //        scrollView.bounces = YES;
+//    //    }
+//}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -302,32 +500,32 @@
 
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return Main_Height - NAVHEIGHT;
+    return Main_Height;
 }
 
-#pragma mark - Lazy
-- (UIView *)naviView {
-    if (!_naviView) {
-        _naviView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, Main_width, NAVHEIGHT)];
-        _naviView.backgroundColor = [UIColor colorWithWhite:1 alpha:0];
-        //添加返回按钮
-        UIButton *backButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
-        [backButton setImage:[UIImage imageNamed:@"back"] forState:(UIControlStateNormal)];
-        backButton.frame = CGRectMake(5, 8 + NAVIGATIONBARHEIGHT, 28, 25);
-        backButton.adjustsImageWhenHighlighted = YES;
-        [backButton addTarget:self action:@selector(backAction) forControlEvents:(UIControlEventTouchUpInside)];
-        [_naviView addSubview:backButton];
-        
-        //添加消息按钮
-        UIButton *messageButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
-        [messageButton setImage:[UIImage imageNamed:@"shareIcon"] forState:(UIControlStateNormal)];
-        messageButton.frame = CGRectMake(Main_width - 35, 8 + NAVIGATIONBARHEIGHT, 25, 25);
-        messageButton.adjustsImageWhenHighlighted = YES;
-        [messageButton addTarget:self action:@selector(gotoShare) forControlEvents:(UIControlEventTouchUpInside)];
-        [_naviView addSubview:messageButton];
-    }
-    return _naviView;
-}
+//#pragma mark - Lazy
+//- (UIView *)naviView {
+//    if (!_naviView) {
+//        _naviView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, Main_width, NAVHEIGHT)];
+//        _naviView.backgroundColor = [UIColor colorWithWhite:1 alpha:0];
+//        //添加返回按钮
+//        UIButton *backButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
+//        [backButton setImage:[UIImage imageNamed:@"back"] forState:(UIControlStateNormal)];
+//        backButton.frame = CGRectMake(5, 8 + NAVIGATIONBARHEIGHT, 28, 25);
+//        backButton.adjustsImageWhenHighlighted = YES;
+//        [backButton addTarget:self action:@selector(backAction) forControlEvents:(UIControlEventTouchUpInside)];
+//        [_naviView addSubview:backButton];
+//
+//        //添加消息按钮
+//        UIButton *messageButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
+//        [messageButton setImage:[UIImage imageNamed:@"shareIcon"] forState:(UIControlStateNormal)];
+//        messageButton.frame = CGRectMake(Main_width - 35, 8 + NAVIGATIONBARHEIGHT, 25, 25);
+//        messageButton.adjustsImageWhenHighlighted = YES;
+//        [messageButton addTarget:self action:@selector(gotoShare) forControlEvents:(UIControlEventTouchUpInside)];
+//        [_naviView addSubview:messageButton];
+//    }
+//    return _naviView;
+//}
 
 - (void)backAction {
     NSLog(@"点击分享11111");
@@ -352,28 +550,31 @@
             [titlearr addObject:[[fenleiArr objectAtIndex:i] objectForKey:@"cate_name"]];
         }
         NSArray *titleArray = titlearr;
-        SegmentView *segmentView = [[SegmentView alloc] initWithFrame:CGRectMake(0, 0, Main_width, Main_Height - NAVHEIGHT) controllers:arr titleArray:titleArray parentController:self];
+        SegmentView *segmentView = [[SegmentView alloc] initWithFrame:CGRectMake(0, NAVHEIGHT, Main_width, Main_Height-NAVHEIGHT) controllers:arr titleArray:titleArray parentController:self];
         //注意：不能通过初始化方法传递selectedIndex的初始值，因为内部使用的是Masonry布局的方式, 否则设置selectedIndex不起作用
         
         _segmentView = segmentView;
     }
     return _segmentView;
 }
-
+- (void)createui
+{
+    [self setupSubViews];
+}
 - (UITableView *)mainTableView {
     if (!_mainTableView) {
         //⚠️这里的属性初始化一定要放在mainTableView.contentInset的设置滚动之前, 不然首次进来视图就会偏移到临界位置，contentInset会调用scrollViewDidScroll这个方法。
         //初始化变量
         self.canScroll = YES;
         
-        self.mainTableView = [[CenterTouchTableView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_Height) style:UITableViewStylePlain];
+        self.mainTableView = [[CenterTouchTableView alloc]initWithFrame:CGRectMake(0, -NAVHEIGHT, Main_width, Main_Height+NAVHEIGHT)];
         _mainTableView.delegate = self;
         _mainTableView.dataSource = self;
         _mainTableView.showsVerticalScrollIndicator = NO;
         //注意：这里不能使用动态高度_headimageHeight, 不然tableView会往下移，在iphone X下，头部不放大的时候，上方依然会有白色空白
         _mainTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getdata)];
         
-//        _mainTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);//内容视图开始正常显示的坐标为(0, HeaderImageViewHeight)
+        _mainTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);//内容视图开始正常显示的坐标为(0, HeaderImageViewHeight)
         _tabHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, Main_width, self.tabHeadViewHeight)];
         
         #pragma mark - 头部广告
@@ -992,18 +1193,20 @@
             [backview addSubview:goodsbut];
         }
         
-#pragma mark - 更多好货
+#pragma mark - 每日必逛
         
-        UIView *gengduohaohuo = [[UIView alloc] initWithFrame:CGRectMake(0, backscrollview.frame.size.height+backscrollview.frame.origin.y+10, Main_width, 50)];
+        UIView *meiribiguang = [[UIView alloc] initWithFrame:CGRectMake(0, backscrollview.frame.size.height+backscrollview.frame.origin.y+10, Main_width, 50)];
+        meiribiguang.backgroundColor = QIColor;
+        [_tabHeadView addSubview:meiribiguang];
+        
+        
+        UIView *meiribiguangguanggao = [[UIView alloc] initWithFrame:CGRectMake(0, meiribiguang.frame.size.height+meiribiguang.frame.origin.y+10, Main_width, 120)];
+        meiribiguangguanggao.backgroundColor = BackColor;
+        [_tabHeadView addSubview:meiribiguangguanggao];
+        #pragma mark - 更多好货
+        UIView *gengduohaohuo = [[UIView alloc] initWithFrame:CGRectMake(0, meiribiguangguanggao.frame.size.height+meiribiguangguanggao.frame.origin.y+10, Main_width, 50)];
         gengduohaohuo.backgroundColor = QIColor;
         [_tabHeadView addSubview:gengduohaohuo];
-        
-        
-        UIView *gengduoguanggao = [[UIView alloc] initWithFrame:CGRectMake(0, gengduohaohuo.frame.size.height+gengduohaohuo.frame.origin.y+10, Main_width, 120)];
-        gengduoguanggao.backgroundColor = BackColor;
-        [_tabHeadView addSubview:gengduoguanggao];
-        
-        //
         
         
         _mainTableView.tableHeaderView = _tabHeadView;
@@ -1012,38 +1215,38 @@
     }
     return _mainTableView;
 }
-//这是红色视图
--(UIView *)tabHeadView{
-    if (!_tabHeadView) {
-        
-        
-    }
-    return _tabHeadView;
-}
-//这是轮播
-- (CCPagedScrollView*)imageScrollView{
-    if (!_imageScrollView)
-    {
-        
-//        _imageScrollView = [[CCPagedScrollView alloc] initWithFrame:CGRectMake(0, 0,Main_width, self.HeaderImageViewHeight) animationDuration:0 isAuto:NO];
-//
-//        NSArray *imagesURLStrings = @[
-//                                      @"https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a4b3d7085dee3d6d2293d48b252b5910/0e2442a7d933c89524cd5cd4d51373f0830200ea.jpg",
-//                                      @"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a41eb338dd33c895a62bcb3bb72e47c2/5fdf8db1cb134954a2192ccb524e9258d1094a1e.jpg",
-//                                      @"https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1542851892&di=0e59ba3566a6124310a0a94a7fe1d3d6&src=http://imgsrc.baidu.com/imgad/pic/item/d52a2834349b033b142032f71ece36d3d539bd77.jpg"
-//                                      ];
-//
-//        NSMutableArray *array = [NSMutableArray array];
-//        for (NSString *imgUrl in imagesURLStrings) {
-//            [array addObject:[[CCPagedScrollViewItem alloc] initWithItemImageUrl:imgUrl itemTag:@(0)]];
-//        }
+////这是红色视图
+//-(UIView *)tabHeadView{
+//    if (!_tabHeadView) {
 //
 //
-//        _imageScrollView.items = array;
-    }
-    
-    return _imageScrollView;
-}
+//    }
+//    return _tabHeadView;
+//}
+////这是轮播
+//- (CCPagedScrollView*)imageScrollView{
+//    if (!_imageScrollView)
+//    {
+//
+////        _imageScrollView = [[CCPagedScrollView alloc] initWithFrame:CGRectMake(0, 0,Main_width, self.HeaderImageViewHeight) animationDuration:0 isAuto:NO];
+////
+////        NSArray *imagesURLStrings = @[
+////                                      @"https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a4b3d7085dee3d6d2293d48b252b5910/0e2442a7d933c89524cd5cd4d51373f0830200ea.jpg",
+////                                      @"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a41eb338dd33c895a62bcb3bb72e47c2/5fdf8db1cb134954a2192ccb524e9258d1094a1e.jpg",
+////                                      @"https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1542851892&di=0e59ba3566a6124310a0a94a7fe1d3d6&src=http://imgsrc.baidu.com/imgad/pic/item/d52a2834349b033b142032f71ece36d3d539bd77.jpg"
+////                                      ];
+////
+////        NSMutableArray *array = [NSMutableArray array];
+////        for (NSString *imgUrl in imagesURLStrings) {
+////            [array addObject:[[CCPagedScrollViewItem alloc] initWithItemImageUrl:imgUrl itemTag:@(0)]];
+////        }
+////
+////
+////        _imageScrollView.items = array;
+//    }
+//
+//    return _imageScrollView;
+//}
 
 ////这是轮播的父控件
 //-(YWPageHeadView *)pageHeadView{
@@ -1101,10 +1304,10 @@
             centerArr = [[responseObject objectForKey:@"data"] objectForKey:@"cate_list"];
 
             pro_discount_listArr = [[[responseObject objectForKey:@"data"] objectForKey:@"pro_discount_list"] objectForKey:@"list"];
-        [self setupSubViews];
         }else{
             
         }
+        [self createui];
         [_mainTableView.mj_header endRefreshing];
         [self.mainTableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -1157,10 +1360,11 @@
         }
     }
 }
-- (void)pushgoods:(UIButton *)sender
+- (void)pushgoods:(NSNotification *)user
 {
+    NSString *goodsid = [user.userInfo objectForKey:@"goodsid"];
     GoodsDetailViewController *goods = [[GoodsDetailViewController alloc] init];
-    goods.IDstring = [NSString stringWithFormat:@"%lu",sender.tag];
+    goods.IDstring = goodsid;
     goods.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:goods animated:YES];
 }

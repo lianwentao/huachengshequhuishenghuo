@@ -73,7 +73,7 @@ typedef NS_ENUM(NSInteger, OffsetType) {
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 /** notificationName */
 #define IsEnablePersonalCenterVCMainTableViewScroll @"IsEnablePersonalCenterVCMainTableViewScroll"
-//#define CurrentSelectedChildViewControllerIndex @"CurrentSelectedChildViewControllerIndex"
+#define CurrentSelectedChildViewControllerIndex @"CurrentSelectedChildViewControllerIndex"
 #define PersonalCenterVCBackingStatus @"PersonalCenterVCBackingStatus"
 #define SegementViewChildVCBackToTop @"segementViewChildVCBackToTop"
 #define SegmentHeaderViewHeight  50 //标题栏高度
