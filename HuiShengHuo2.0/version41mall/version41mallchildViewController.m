@@ -73,7 +73,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FirstViewControllerTableViewCellIdentifier];
     }
     if (liebiaoArr.count>indexPath.row*2) {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12, 8, (Main_width-24-7)/2, (Main_width-24-7)/2+112.5)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12, 0, (Main_width-24-7)/2, (Main_width-24-7)/2+112.5)];
         view.backgroundColor = [UIColor whiteColor];
         view.clipsToBounds = YES;
         view.layer.borderColor = BackColor.CGColor;
@@ -161,7 +161,7 @@
     
     
     if (liebiaoArr.count>indexPath.row*2+1) {
-        UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(Main_width/2+3.5, 8, (Main_width-24-7)/2, (Main_width-24-7)/2+112.5)];
+        UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(Main_width/2+3.5, 0, (Main_width-24-7)/2, (Main_width-24-7)/2+112.5)];
         view1.backgroundColor = [UIColor whiteColor];
         view1.clipsToBounds = YES;
         view1.layer.borderColor = BackColor.CGColor;
