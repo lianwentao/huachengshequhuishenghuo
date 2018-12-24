@@ -499,6 +499,16 @@
 		28F5B232209461BB0058AAC2 /* XYHome@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B21B209461BB0058AAC2 /* XYHome@2x.png */; };
 		28F5B233209461BB0058AAC2 /* XYRoll4.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B21C209461BB0058AAC2 /* XYRoll4.jpeg */; };
 		28F5B234209461BB0058AAC2 /* XYVideo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B21D209461BB0058AAC2 /* XYVideo.mp4 */; };
+		28F6468921CDF0C4006C6281 /* CenterTouchTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F6467E21CDF0C4006C6281 /* CenterTouchTableView.m */; };
+		28F6468A21CDF0C4006C6281 /* HMSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F6468021CDF0C4006C6281 /* HMSegmentedControl.m */; };
+		28F6468B21CDF0C4006C6281 /* SegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F6468221CDF0C4006C6281 /* SegmentView.m */; };
+		28F6468C21CDF0C4006C6281 /* SegmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F6468421CDF0C4006C6281 /* SegmentViewController.m */; };
+		28F6468D21CDF0C4006C6281 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F6468621CDF0C4006C6281 /* UIView+Extension.m */; };
+		28F6468E21CDF0C4006C6281 /* YWPageHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F6468821CDF0C4006C6281 /* YWPageHeadView.m */; };
+		28F6469121CDF100006C6281 /* version41mallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F6469021CDF100006C6281 /* version41mallViewController.m */; };
+		28F6469B21CDF383006C6281 /* CCPagedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F6469721CDF383006C6281 /* CCPagedScrollView.m */; };
+		28F6469C21CDF383006C6281 /* XXCustomPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F6469A21CDF383006C6281 /* XXCustomPageControl.m */; };
+		28F646A221CDFA5B006C6281 /* version41mallchildViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F646A121CDFA5B006C6281 /* version41mallchildViewController.m */; };
 		28FE4CD41FC02A9800C0A277 /* ShangpinshuxiangViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FE4CD31FC02A9800C0A277 /* ShangpinshuxiangViewController.m */; };
 		840596F121B112870052B99D /* serviceListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 840596F021B112870052B99D /* serviceListModel.m */; };
 		840596F421B112BE0052B99D /* insinfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 840596F321B112BE0052B99D /* insinfoModel.m */; };
@@ -1809,6 +1819,27 @@
 		28F5B21B209461BB0058AAC2 /* XYHome@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "XYHome@2x.png"; sourceTree = "<group>"; };
 		28F5B21C209461BB0058AAC2 /* XYRoll4.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = XYRoll4.jpeg; sourceTree = "<group>"; };
 		28F5B21D209461BB0058AAC2 /* XYVideo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = XYVideo.mp4; sourceTree = "<group>"; };
+		28F6467D21CDF0C4006C6281 /* CenterTouchTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CenterTouchTableView.h; sourceTree = "<group>"; };
+		28F6467E21CDF0C4006C6281 /* CenterTouchTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CenterTouchTableView.m; sourceTree = "<group>"; };
+		28F6467F21CDF0C4006C6281 /* HMSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMSegmentedControl.h; sourceTree = "<group>"; };
+		28F6468021CDF0C4006C6281 /* HMSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMSegmentedControl.m; sourceTree = "<group>"; };
+		28F6468121CDF0C4006C6281 /* SegmentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentView.h; sourceTree = "<group>"; };
+		28F6468221CDF0C4006C6281 /* SegmentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentView.m; sourceTree = "<group>"; };
+		28F6468321CDF0C4006C6281 /* SegmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentViewController.h; sourceTree = "<group>"; };
+		28F6468421CDF0C4006C6281 /* SegmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentViewController.m; sourceTree = "<group>"; };
+		28F6468521CDF0C4006C6281 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
+		28F6468621CDF0C4006C6281 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
+		28F6468721CDF0C4006C6281 /* YWPageHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YWPageHeadView.h; sourceTree = "<group>"; };
+		28F6468821CDF0C4006C6281 /* YWPageHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWPageHeadView.m; sourceTree = "<group>"; };
+		28F6468F21CDF100006C6281 /* version41mallViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = version41mallViewController.h; sourceTree = "<group>"; };
+		28F6469021CDF100006C6281 /* version41mallViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = version41mallViewController.m; sourceTree = "<group>"; };
+		28F6469621CDF383006C6281 /* CCPagedScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPagedScrollView.h; sourceTree = "<group>"; };
+		28F6469721CDF383006C6281 /* CCPagedScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPagedScrollView.m; sourceTree = "<group>"; };
+		28F6469821CDF383006C6281 /* directSeedingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = directSeedingHeader.h; sourceTree = "<group>"; };
+		28F6469921CDF383006C6281 /* XXCustomPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXCustomPageControl.h; sourceTree = "<group>"; };
+		28F6469A21CDF383006C6281 /* XXCustomPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXCustomPageControl.m; sourceTree = "<group>"; };
+		28F646A021CDFA5B006C6281 /* version41mallchildViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = version41mallchildViewController.h; sourceTree = "<group>"; };
+		28F646A121CDFA5B006C6281 /* version41mallchildViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = version41mallchildViewController.m; sourceTree = "<group>"; };
 		28FE4CD21FC02A9800C0A277 /* ShangpinshuxiangViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShangpinshuxiangViewController.h; sourceTree = "<group>"; };
 		28FE4CD31FC02A9800C0A277 /* ShangpinshuxiangViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShangpinshuxiangViewController.m; sourceTree = "<group>"; };
 		840596EF21B112870052B99D /* serviceListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = serviceListModel.h; sourceTree = "<group>"; };
@@ -4261,6 +4292,7 @@
 		28D75DB31FBD0B82000BD4A1 /* HuiShengHuo2.0 */ = {
 			isa = PBXGroup;
 			children = (
+				28F6466121CDD604006C6281 /* version41mall */,
 				2810CA4C21C4E94200587324 /* wuyegongdan */,
 				286C924921A78D630055F187 /* New Service */,
 				28851947219CF5CD0068EA6B /* RentalHouse */,
@@ -4587,6 +4619,50 @@
 				28F5B21D209461BB0058AAC2 /* XYVideo.mp4 */,
 			);
 			path = XYTestImgs;
+			sourceTree = "<group>";
+		};
+		28F6466121CDD604006C6281 /* version41mall */ = {
+			isa = PBXGroup;
+			children = (
+				28F6469521CDF383006C6281 /* CCPagedScrollView */,
+				28F6467C21CDF0C4006C6281 /* YWPerson */,
+				28F6468F21CDF100006C6281 /* version41mallViewController.h */,
+				28F6469021CDF100006C6281 /* version41mallViewController.m */,
+				28F646A021CDFA5B006C6281 /* version41mallchildViewController.h */,
+				28F646A121CDFA5B006C6281 /* version41mallchildViewController.m */,
+			);
+			path = version41mall;
+			sourceTree = "<group>";
+		};
+		28F6467C21CDF0C4006C6281 /* YWPerson */ = {
+			isa = PBXGroup;
+			children = (
+				28F6467D21CDF0C4006C6281 /* CenterTouchTableView.h */,
+				28F6467E21CDF0C4006C6281 /* CenterTouchTableView.m */,
+				28F6467F21CDF0C4006C6281 /* HMSegmentedControl.h */,
+				28F6468021CDF0C4006C6281 /* HMSegmentedControl.m */,
+				28F6468121CDF0C4006C6281 /* SegmentView.h */,
+				28F6468221CDF0C4006C6281 /* SegmentView.m */,
+				28F6468321CDF0C4006C6281 /* SegmentViewController.h */,
+				28F6468421CDF0C4006C6281 /* SegmentViewController.m */,
+				28F6468521CDF0C4006C6281 /* UIView+Extension.h */,
+				28F6468621CDF0C4006C6281 /* UIView+Extension.m */,
+				28F6468721CDF0C4006C6281 /* YWPageHeadView.h */,
+				28F6468821CDF0C4006C6281 /* YWPageHeadView.m */,
+			);
+			path = YWPerson;
+			sourceTree = "<group>";
+		};
+		28F6469521CDF383006C6281 /* CCPagedScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				28F6469621CDF383006C6281 /* CCPagedScrollView.h */,
+				28F6469721CDF383006C6281 /* CCPagedScrollView.m */,
+				28F6469821CDF383006C6281 /* directSeedingHeader.h */,
+				28F6469921CDF383006C6281 /* XXCustomPageControl.h */,
+				28F6469A21CDF383006C6281 /* XXCustomPageControl.m */,
+			);
+			path = CCPagedScrollView;
 			sourceTree = "<group>";
 		};
 		28FE4CCE1FBFBEFA00C0A277 /* Model */ = {
@@ -6539,9 +6615,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-HuiShengHuo2.0/Pods-HuiShengHuo2.0-resources.sh",
+				"${PODS_ROOT}/GKNavigationBarViewController/GKNavigationBarViewController/GKNavigationBarViewController.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GKNavigationBarViewController.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -6616,6 +6695,7 @@
 				8460371D21CDD4E500D83490 /* UIBezierPath+JKSVGString.m in Sources */,
 				846036AA21CDD4E500D83490 /* FMResultSet.m in Sources */,
 				2843230C1FC8074500472C05 /* PurchaseCarAnimationTool.m in Sources */,
+				28F6469121CDF100006C6281 /* version41mallViewController.m in Sources */,
 				285DED741FD2537800B0812F /* MJRefreshNormalHeader.m in Sources */,
 				2834F976213BA3B00068DE75 /* wuyeqianfeiViewController.m in Sources */,
 				8460379021CDD4E500D83490 /* UIWebView+JKJavaScript.m in Sources */,
@@ -6656,6 +6736,7 @@
 				8460378B21CDD4E500D83490 /* UIViewController+JKVisible.m in Sources */,
 				846036B121CDD4E500D83490 /* CAShapeLayer+JKUIBezierPath.m in Sources */,
 				8405970221B12B210052B99D /* serviceModel.m in Sources */,
+				28F6468C21CDF0C4006C6281 /* SegmentViewController.m in Sources */,
 				8460377921CDD4E500D83490 /* UIView+JKBlockGesture.m in Sources */,
 				2895C1902079228900A5DA4B /* blueyaViewController.m in Sources */,
 				282805B4219AD72500B0DD7D /* SDWebImagePrefetcher.m in Sources */,
@@ -6732,6 +6813,7 @@
 				845C565021A7F529002F509D /* shouFangDetailViewController.m in Sources */,
 				8460370621CDD4E500D83490 /* NSString+JKTrims.m in Sources */,
 				28A83CB1205F4634009ED444 /* HXPhotoSubViewCell.m in Sources */,
+				28F6469B21CDF383006C6281 /* CCPagedScrollView.m in Sources */,
 				286DE84620C194E60010F410 /* UICollectionView+XY.m in Sources */,
 				284F85EB2064D3010068CB0B /* openDoorViewController.m in Sources */,
 				28D75A0520A0330D0008A07D /* ICAlarmView.m in Sources */,
@@ -6772,6 +6854,7 @@
 				2847D81E20BD4CCD00934A8D /* shangpinliebiaoViewController.m in Sources */,
 				28AA2D232019C49400EF582A /* shangpinpingjiaTableViewCell.m in Sources */,
 				2846A7402000B676003C3B78 /* youhuiquanxiangqingViewController.m in Sources */,
+				28F6468B21CDF0C4006C6281 /* SegmentView.m in Sources */,
 				8460373721CDD4E500D83490 /* UIFont+JKDynamicFontControl.m in Sources */,
 				282805C1219AD72500B0DD7D /* DALabeledCircularProgressView.m in Sources */,
 				8460370021CDD4E500D83490 /* NSString+JKMIME.m in Sources */,
@@ -6782,6 +6865,7 @@
 				2838420021BBEAC500437D43 /* LWGesturePenetrationTableView.m in Sources */,
 				285DED711FD2537800B0812F /* MJRefreshBackNormalFooter.m in Sources */,
 				282805AA219AD72500B0DD7D /* SDWebImageCoder.m in Sources */,
+				28F646A221CDFA5B006C6281 /* version41mallchildViewController.m in Sources */,
 				846036BA21CDD4E500D83490 /* NSArray+XL.m in Sources */,
 				8460371121CDD4E500D83490 /* NSURLRequest+JKParamsFromDictionary.m in Sources */,
 				8460376421CDD4E500D83490 /* UIScreen+BFKit.m in Sources */,
@@ -6815,6 +6899,7 @@
 				28A83C9B205F4634009ED444 /* HXCustomCameraController.m in Sources */,
 				284F854C2064AA760068CB0B /* FacepaysuessViewController.m in Sources */,
 				8460377021CDD4E500D83490 /* UITextField+JKSelect.m in Sources */,
+				28F6469C21CDF383006C6281 /* XXCustomPageControl.m in Sources */,
 				846D2D4521ABDB0B00221687 /* pingLunViewController.m in Sources */,
 				846036FB21CDD4E500D83490 /* NSString+JKDictionaryValue.m in Sources */,
 				28A716FC20626E680050D446 /* HaveNOiconCell.m in Sources */,
@@ -6961,12 +7046,14 @@
 				846036D121CDD4E500D83490 /* NSDictionary+JKBlock.m in Sources */,
 				846037AA21CDD4E500D83490 /* XLTextField.m in Sources */,
 				28A83CA1205F4634009ED444 /* HXDatePhotoInteractiveTransition.m in Sources */,
+				28F6468D21CDF0C4006C6281 /* UIView+Extension.m in Sources */,
 				8460379921CDD4E500D83490 /* UploadImageCell.m in Sources */,
 				2805782421BA6E6C0093906C /* fuwusearchViewController.m in Sources */,
 				2889D324200C953800904B85 /* NSObject+MethodSwizzle.m in Sources */,
 				28A83C9C205F4634009ED444 /* HXCustomCameraViewController.m in Sources */,
 				8460370E21CDD4E500D83490 /* NSURL+JKParam.m in Sources */,
 				8460378D21CDD4E500D83490 /* UIWebView+BFKit.m in Sources */,
+				28F6468A21CDF0C4006C6281 /* HMSegmentedControl.m in Sources */,
 				28967A971FC3AADB009E3560 /* LoginViewController.m in Sources */,
 				282805BA219AD72500B0DD7D /* UIImage+MultiFormat.m in Sources */,
 				846D2D3F21AB8F8B00221687 /* IgnoreHeaderTouchAndRecognizeSimultaneousTableView.m in Sources */,
@@ -7020,6 +7107,7 @@
 				285DED381FD24EAA00B0812F /* SaveViewController.m in Sources */,
 				285DB5651FC67CBD00400EA6 /* BMChineseSort.m in Sources */,
 				846D2D3621AB8EAB00221687 /* TitlesView.m in Sources */,
+				28F6468921CDF0C4006C6281 /* CenterTouchTableView.m in Sources */,
 				842049D921A939160084EC18 /* serviceDetailViewController.m in Sources */,
 				28280610219ADE5600B0DD7D /* WebViewJavascriptBridgeBase.m in Sources */,
 				8460377F21CDD4E500D83490 /* UIView+JKNib.m in Sources */,
@@ -7239,6 +7327,7 @@
 				846036F121CDD4E500D83490 /* NSObject+JKKVOBlocks.m in Sources */,
 				840596FF21B121FE0052B99D /* businessVCModel.m in Sources */,
 				282805BB219AD72500B0DD7D /* UIImage+WebP.m in Sources */,
+				28F6468E21CDF0C4006C6281 /* YWPageHeadView.m in Sources */,
 				285371561FC910B100D0376E /* DWQTableHeaderView.m in Sources */,
 				288BCFD9213FE74C006F2569 /* newsuerViewController.m in Sources */,
 				8460374021CDD4E500D83490 /* UIImage+JKFileName.m in Sources */,
