@@ -10,7 +10,6 @@
 #import "SegmentView.h"
 #import "CenterTouchTableView.h"
 #import "YWPageHeadView.h"
-#import "CCPagedScrollView.h"
 #import "version41mallchildViewController.h"
 
 #import "xianshiqianggouViewController.h"
@@ -68,7 +67,7 @@
     NSArray *HeaDataArr;
     NSArray *centerArr;
     NSArray *guanggaoArr;
-    NSMutableArray *shangpinArr;
+    NSArray *shangpinArr;
     NSArray *fenleiArr;
     NSArray *pro_discount_listArr;
     
@@ -115,7 +114,7 @@
 @property (nonatomic, assign) CGFloat offHeight;
 
 
-@property(nonatomic,strong)CCPagedScrollView *imageScrollView;
+//@property(nonatomic,strong)CCPagedScrollView *imageScrollView;
 @property (nonatomic,strong) YWPageHeadView *pageHeadView;
 
 @end
@@ -133,6 +132,7 @@
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushgoods:) name:@"zhuyemianpush" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(change) name:@"changetitle" object:nil];
 //    if (@available(iOS 11.0, *)) {
 //        [[UIScrollView appearance] setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
 //    }else {
@@ -140,7 +140,7 @@
 //    }
     
 //    //如果使用自定义的按钮去替换系统默认返回按钮，会出现滑动返回手势失效的情况
-//    self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
     //注册允许外层tableView滚动通知-解决和分页视图的上下滑动冲突问题
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(acceptMsg:) name:@"leaveTop" object:nil];
     //分页的scrollView左右滑动的时候禁止mainTableView滑动，停止滑动的时候允许mainTableView滑动
@@ -149,38 +149,19 @@
     
     
     //这三个高度必须先算出来，建议请求完数据知道高度以后再调用下面代码
-    self.tabHeadViewHeight = Main_width/(1.87)+10+(Main_width-24-30*5)/5+15+15+20+10+15+(Main_width-24-30*5)/5+20+15+50+212+16+50+120+10+20;
-    self.HeaderImageViewHeight = 0;
-    self.offHeight = self.tabHeadViewHeight + self.HeaderImageViewHeight;
+    
+//    self.HeaderImageViewHeight = 0;
+//    self.offHeight = self.tabHeadViewHeight + self.HeaderImageViewHeight;
     
     // Do any additional setup after loading the view.
 }
+- (void)change
+{
+    [_mainTableView.mj_header beginRefreshing];
+}
 - (void)setupNavItems
 {
-    //    UIBarButtonItem *leftButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"fenlei"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickLeft)];
-    //    self.navigationItem.leftBarButtonItem = leftButtonItem;
-    //
-    //    UIBarButtonItem *rightButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"gouwuche"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickRight)];
-    //    self.navigationItem.rightBarButtonItem = rightButtonItem;
-    //
-    //    UIButton *but = [[UIButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width-50, 5, 30, 30)];
-    //    [but setImage:[UIImage imageNamed:[Imagearr objectAtIndex:1]] forState:UIControlStateNormal];
-    //    but.backgroundColor = [UIColor redColor];
-    //    self.navigationItem.titleView addSubview:<#(nonnull UIView *)#>
-    //    redcountimage = [[UIImageView alloc] initWithFrame:CGRectMake(27, 2, 6, 6)];
-    //    redcountimage.layer.masksToBounds = YES;
-    //    redcountimage.layer.cornerRadius = 3;
-    //    redcountimage.backgroundColor = [UIColor redColor];
-    //    redcountimage.hidden = NO;
-    //    [self.navigationItem.titleView addSubview:redcountimage];
-    //    // 这里暂时没适配
-    //    self.searchButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 230, 30)];
-    //    [self.searchButton setTitle:@"搜索您想要的商品" forState:UIControlStateNormal];
-    //    self.searchButton.titleLabel.font = [UIFont systemFontOfSize:13];
-    //    [self.searchButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    //    [self.searchButton setBackgroundImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
-    //    [self.searchButton addTarget:self action:@selector(onClickSearchBtn) forControlEvents:UIControlEventTouchUpInside];
-    //    self.navigationItem.titleView = self.searchButton;
+    
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     [self.navigationItem setTitleView:view];
     
@@ -353,26 +334,25 @@
 }
 //- (void)viewWillAppear:(BOOL)animated {
 //    [super viewWillAppear:animated];
-//    //[self.navigationController setNavigationBarHidden:YES];
-//    self.naviView.hidden = NO;
-//}
+//    [self.navigationController setNavigationBarHidden:YES];
 //
-//- (void)viewDidAppear:(BOOL)animated {
-//    [super viewDidAppear:animated];
-//    self.isBacking = NO;
-//    [[NSNotificationCenter defaultCenter] postNotificationName:PersonalCenterVCBackingStatus object:nil userInfo:@{@"isBacking":@(self.isBacking)}];
 //}
-//
-//- (void)viewWillDisappear:(BOOL)animated {
-//    [super viewWillDisappear:animated];
-//    self.isBacking = YES;
-//    [[NSNotificationCenter defaultCenter] postNotificationName:PersonalCenterVCBackingStatus object:nil userInfo:@{@"isBacking":@(self.isBacking)}];
-//}
-//
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    self.isBacking = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:PersonalCenterVCBackingStatus object:nil userInfo:@{@"isBacking":@(self.isBacking)}];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    self.isBacking = YES;
+    [[NSNotificationCenter defaultCenter] postNotificationName:PersonalCenterVCBackingStatus object:nil userInfo:@{@"isBacking":@(self.isBacking)}];
+}
+
 //- (void)viewDidDisappear:(BOOL)animated {
 //    [super viewDidDisappear:animated];
-//    //[self.navigationController setNavigationBarHidden:NO];
-//    self.naviView.hidden = YES;
+//    [self.navigationController setNavigationBarHidden:NO];
 //}
 
 - (void)dealloc {
@@ -389,11 +369,11 @@
     
     
     self.pageHeadView.parentScrollView = self.mainTableView;  //这个必须设置
-    self.pageHeadView.chidlScrollView = self.imageScrollView.scrollView; //这个必须设置
+    //self.pageHeadView.chidlScrollView = self.imageScrollView.scrollView; //这个必须设置
     
     
     [self.mainTableView addSubview:self.pageHeadView];
-    [self.pageHeadView addSubview:self.imageScrollView];
+    //[self.pageHeadView addSubview:self.imageScrollView];
     //[self.view addSubview:self.naviView];
     
     
@@ -494,7 +474,8 @@
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     //    cell.backgroundColor = [UIColor greenColor];
-    [cell.contentView addSubview:self.setPageViewControllers];
+    
+    [cell.contentView addSubview:self.segmentView];
     return cell;
 }
 
@@ -527,379 +508,409 @@
 //    return _naviView;
 //}
 
-- (void)backAction {
-    NSLog(@"点击分享11111");
-}
-
-- (void)gotoShare {
-    NSLog(@"点击分享");
-}
 
 /*
  *
  */
-- (UIView *)setPageViewControllers {
-    if (!_segmentView) {
-        //设置子控制器
-        NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
-        NSMutableArray *titlearr = [NSMutableArray arrayWithCapacity:0];
-        for (int i=0; i<fenleiArr.count; i++) {
-            version41mallchildViewController *vc = [[version41mallchildViewController alloc] init];
-            [arr addObject:vc];
-            vc.id = [[fenleiArr objectAtIndex:i] objectForKey:@"id"];
-            [titlearr addObject:[[fenleiArr objectAtIndex:i] objectForKey:@"cate_name"]];
-        }
-        NSArray *titleArray = titlearr;
-        SegmentView *segmentView = [[SegmentView alloc] initWithFrame:CGRectMake(0, NAVHEIGHT, Main_width, Main_Height-NAVHEIGHT) controllers:arr titleArray:titleArray parentController:self];
-        //注意：不能通过初始化方法传递selectedIndex的初始值，因为内部使用的是Masonry布局的方式, 否则设置selectedIndex不起作用
-        
-        _segmentView = segmentView;
-    }
-    return _segmentView;
-}
+//- (UIView *)setPageViewControllers {
+//    if (!_segmentView) {
+//        //设置子控制器
+//        NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+//        NSMutableArray *titlearr = [NSMutableArray arrayWithCapacity:0];
+//        for (int i=0; i<fenleiArr.count; i++) {
+//            version41mallchildViewController *vc = [[version41mallchildViewController alloc] init];
+//            [arr addObject:vc];
+//            vc.id = [[fenleiArr objectAtIndex:i] objectForKey:@"id"];
+//            [titlearr addObject:[[fenleiArr objectAtIndex:i] objectForKey:@"cate_name"]];
+//        }
+//        NSArray *titleArray = titlearr;
+//        SegmentView *segmentView = [[SegmentView alloc] initWithFrame:CGRectMake(0, NAVHEIGHT, Main_width, Main_Height-NAVHEIGHT) controllers:arr titleArray:titleArray parentController:self];
+//        //注意：不能通过初始化方法传递selectedIndex的初始值，因为内部使用的是Masonry布局的方式, 否则设置selectedIndex不起作用
+//
+//        _segmentView = segmentView;
+//    }
+//    return _segmentView;
+//}
 - (void)createui
 {
     [self setupSubViews];
-}
-- (UITableView *)mainTableView {
-    if (!_mainTableView) {
-        //⚠️这里的属性初始化一定要放在mainTableView.contentInset的设置滚动之前, 不然首次进来视图就会偏移到临界位置，contentInset会调用scrollViewDidScroll这个方法。
-        //初始化变量
-        self.canScroll = YES;
+    //初始化变量
+    self.canScroll = YES;
+    
+    self.mainTableView = [[CenterTouchTableView alloc]initWithFrame:CGRectMake(0, -NAVHEIGHT, Main_width, Main_Height+NAVHEIGHT)];
+    [self.view addSubview:self.mainTableView];
+    _mainTableView.delegate = self;
+    _mainTableView.dataSource = self;
+    _mainTableView.showsVerticalScrollIndicator = NO;
+    //注意：这里不能使用动态高度_headimageHeight, 不然tableView会往下移，在iphone X下，头部不放大的时候，上方依然会有白色空白
+    _mainTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getdata)];
+    
+    _mainTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);//内容视图开始正常显示的坐标为(0, HeaderImageViewHeight)
+    
+    long H1;
+    long H2;
+    if ([pro_discount_listArr isKindOfClass:[NSArray class]]&&pro_discount_listArr.count>0) {
+        H1 =212+8+10+50;
         
-        self.mainTableView = [[CenterTouchTableView alloc]initWithFrame:CGRectMake(0, -NAVHEIGHT, Main_width, Main_Height+NAVHEIGHT)];
-        _mainTableView.delegate = self;
-        _mainTableView.dataSource = self;
-        _mainTableView.showsVerticalScrollIndicator = NO;
-        //注意：这里不能使用动态高度_headimageHeight, 不然tableView会往下移，在iphone X下，头部不放大的时候，上方依然会有白色空白
-        _mainTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getdata)];
+    }else{
+        H1 = 0;
         
-        _mainTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);//内容视图开始正常显示的坐标为(0, HeaderImageViewHeight)
-        _tabHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, Main_width, self.tabHeadViewHeight)];
+    }
+    if ([shangpinArr isKindOfClass:[NSArray class]]&&shangpinArr.count>0) {
+        H2 =10+50+10+120;
         
-        #pragma mark - 头部广告
-        [bannerView imageViewClick:^(JKBannarView * _Nonnull barnerview, NSInteger index) {
-            NSLog(@"点击图片%ld",index);
-            NSString *url_type = [[HeaDataArr objectAtIndex:index] objectForKey:@"url_type"];
-            NSString *url_id = [[HeaDataArr objectAtIndex:index] objectForKey:@"url_id"];
-            NSString *urltypename = [[HeaDataArr objectAtIndex:index] objectForKey:@"type_name"];
-            if ([url_type isEqualToString:@"5"]) {
-                weixiuViewController *weixiu = [[weixiuViewController alloc] init];
-                weixiu.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:weixiu animated:YES];
-            }if ([url_type isEqualToString:@"3"]) {
-                acivityViewController *aciti = [[acivityViewController alloc] init];
-                aciti.hidesBottomBarWhenPushed = YES;
-                aciti.url = urltypename;
-                [self.navigationController pushViewController:aciti animated:YES];
-            }if ([url_type isEqualToString:@"4"]) {
-                activitydetailsViewController *acti = [[activitydetailsViewController alloc] init];
-                acti.url = urltypename;
-                acti.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:acti animated:YES];
-            }if ([url_type isEqualToString:@"7"]) {
-                NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",url_id];
-                UIWebView *callWebview = [[UIWebView alloc] init];
-                [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
-                [self.view addSubview:callWebview];
-            }if ([url_type isEqualToString:@"1"]) {
-                shangpinliebiaoViewController *liebiao = [[shangpinliebiaoViewController alloc] init];
-                shangpinerjiViewController *erji = [[shangpinerjiViewController alloc] init];
-                NSString *type_name = [[HeaDataArr objectAtIndex:index] objectForKey:@"type_name"];
-                NSRange range = [type_name rangeOfString:@"id/"]; //现获取要截取的字符串位置
-                NSString * result = [type_name substringFromIndex:range.location+3]; //截取字符串
-                liebiao.id = result;
-                erji.id = result;
-                erji.hidesBottomBarWhenPushed = YES;
-                liebiao.hidesBottomBarWhenPushed = YES;
+    }else{
+        H2 = 0;
+        
+    }
+    //view.frame.size.height+view.frame.origin.y+H1+10+H2+10/////15+width+15+20+10+15+width+20+15
+    _tabHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)+10+2*(Main_width-24-30*5)/5+15+15+20+10+15+20+15+H1+10+H2)];
+    
+    
+    
+    
+#pragma mark - 头部广告
+    [bannerView imageViewClick:^(JKBannarView * _Nonnull barnerview, NSInteger index) {
+        NSLog(@"点击图片%ld",index);
+        NSString *url_type = [[HeaDataArr objectAtIndex:index] objectForKey:@"url_type"];
+        NSString *url_id = [[HeaDataArr objectAtIndex:index] objectForKey:@"url_id"];
+        NSString *urltypename = [[HeaDataArr objectAtIndex:index] objectForKey:@"type_name"];
+        if ([url_type isEqualToString:@"5"]) {
+            weixiuViewController *weixiu = [[weixiuViewController alloc] init];
+            weixiu.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:weixiu animated:YES];
+        }if ([url_type isEqualToString:@"3"]) {
+            acivityViewController *aciti = [[acivityViewController alloc] init];
+            aciti.hidesBottomBarWhenPushed = YES;
+            aciti.url = urltypename;
+            [self.navigationController pushViewController:aciti animated:YES];
+        }if ([url_type isEqualToString:@"4"]) {
+            activitydetailsViewController *acti = [[activitydetailsViewController alloc] init];
+            acti.url = urltypename;
+            acti.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:acti animated:YES];
+        }if ([url_type isEqualToString:@"7"]) {
+            NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",url_id];
+            UIWebView *callWebview = [[UIWebView alloc] init];
+            [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+            [self.view addSubview:callWebview];
+        }if ([url_type isEqualToString:@"1"]) {
+            shangpinliebiaoViewController *liebiao = [[shangpinliebiaoViewController alloc] init];
+            shangpinerjiViewController *erji = [[shangpinerjiViewController alloc] init];
+            NSString *type_name = [[HeaDataArr objectAtIndex:index] objectForKey:@"type_name"];
+            NSRange range = [type_name rangeOfString:@"id/"]; //现获取要截取的字符串位置
+            NSString * result = [type_name substringFromIndex:range.location+3]; //截取字符串
+            liebiao.id = result;
+            erji.id = result;
+            erji.hidesBottomBarWhenPushed = YES;
+            liebiao.hidesBottomBarWhenPushed = YES;
+            
+            
+            //1.创建会话管理者
+            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+            //2.封装参数
+            
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"cate_id":result};
+            
+            NSString *strurl = [API stringByAppendingString:@"shop/pro_list_cate"];
+            [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
+                NSArray *arr = [responseObject objectForKey:@"data"];
+                if (![arr isKindOfClass:[NSArray class]]) {
+                    [self.navigationController pushViewController:erji animated:YES];
+                }else{
+                    [self.navigationController pushViewController:liebiao animated:YES];
+                }
                 
-                //1.创建会话管理者
-                AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-                manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-                //2.封装参数
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
-                NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-                NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"cate_id":result};
-                
-                NSString *strurl = [API stringByAppendingString:@"shop/pro_list_cate"];
-                [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                    
-                    NSArray *arr = [responseObject objectForKey:@"data"];
-                    if (![arr isKindOfClass:[NSArray class]]) {
-                        [self.navigationController pushViewController:erji animated:YES];
+                NSLog(@"failure--%@",error);
+            }];
+            
+            
+        }if ([url_type isEqualToString:@"6"]) {
+            //优惠券
+            NSString *type_name = [[HeaDataArr objectAtIndex:index] objectForKey:@"type_name"];
+            
+            WebViewController *web = [[WebViewController alloc] init];
+            web.url_type = @"2";
+            web.title = @"优惠券";
+            web.url = type_name;
+            web.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:web animated:YES];
+        }if ([url_type isEqualToString:@"8"]) {
+            youhuiquanViewController *youhuiquan = [[youhuiquanViewController alloc] init];
+            youhuiquan.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:youhuiquan animated:YES];
+        }if ([url_type isEqualToString:@"9"]) {
+            youhuiquanxiangqingViewController *youhuiquan = [[youhuiquanxiangqingViewController alloc] init];
+            youhuiquan.hidesBottomBarWhenPushed = YES;
+            NSRange range = [urltypename rangeOfString:@"id/"]; //现获取要截取的字符串位置
+            NSString * result = [urltypename substringFromIndex:range.location+3]; //截取字符串
+            youhuiquan.id = result;
+            [self.navigationController pushViewController:youhuiquan animated:YES];
+        }if ([url_type isEqualToString:@"2"]) {
+            GoodsDetailViewController *goods = [[GoodsDetailViewController alloc] init];
+            NSRange range = [urltypename rangeOfString:@"id/"]; //现获取要截取的字符串位置
+            NSString * result = [urltypename substringFromIndex:range.location+3]; //截取字符串
+            goods.IDstring = result;
+            goods.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:goods animated:YES];
+        }if ([url_type isEqualToString:@"10"]) {
+            WebViewController *web = [[WebViewController alloc] init];
+            web.url = url_id;
+            web.url_type = @"1";
+            //web.jpushstring = @"jpush";
+            web.title = @"小慧推荐";
+            web.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:web animated:YES];
+        }if ([url_type isEqualToString:@"11"]) {
+            noticeViewController *notice = [[noticeViewController alloc] init];
+            notice.hidesBottomBarWhenPushed = YES;
+            NSRange range = [url_id rangeOfString:@"id/"]; //现获取要截取的字符串位置
+            NSString * result = [url_id substringFromIndex:range.location+3]; //截取字符串
+            notice.id = result;
+            //notice.jpushstring = @"jpush";
+            [self.navigationController pushViewController:notice animated:YES];
+        }if ([url_type isEqualToString:@"12"]){
+            
+        }if ([url_type isEqualToString:@"13"]){
+            circledetailsViewController *circle = [[circledetailsViewController alloc] init];
+            NSRange range = [urltypename rangeOfString:@"id/"]; //现获取要截取的字符串位置
+            NSString * result = [urltypename substringFromIndex:range.location+3]; //截取字符串
+            circle.id = result;
+            circle.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:circle animated:YES];
+        }if ([url_type isEqualToString:@"14"]){
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url_id]];
+        }if ([url_type isEqualToString:@"15"]){
+            youxianjiaofeiViewController *youxian = [[youxianjiaofeiViewController alloc] init];
+            youxian.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:youxian animated:YES];
+        }if ([url_type isEqualToString:@"16"]){
+            NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
+            NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
+            
+            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
+            NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+            NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
+            [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
+                NSArray *arrrrr = [[NSArray alloc] init];
+                if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                    arrrrr = [responseObject objectForKey:@"data"];
+                    if (arrrrr.count>1) {
+                        selectHomeViewController *selecthome = [[selectHomeViewController alloc] init];
+                        selecthome.homeArr = arrrrr;
+                        selecthome.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:selecthome animated:YES];
                     }else{
-                        [self.navigationController pushViewController:liebiao animated:YES];
+                        MyhomeViewController *myhome = [[MyhomeViewController alloc] init];
+                        myhome.room_id = [[arrrrr objectAtIndex:0] objectForKey:@"room_id"];
+                        myhome.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:myhome animated:YES];
                     }
+                    [defaults setObject:@"2" forKey:@"is_bind_property"];
+                    [userdf synchronize];
+                }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
+                    [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                    [userinfo removeObjectForKey:@"username"];
+                    [userinfo removeObjectForKey:@"phone_type"];
+                    [userinfo removeObjectForKey:@"uid"];
+                    [userinfo removeObjectForKey:@"pwd"];
+                    [userinfo removeObjectForKey:@"is_bind_property"];
+                    [userinfo removeObjectForKey:@"Cookie"];
+                    [userinfo removeObjectForKey:@"is_new"];
+                    [userinfo removeObjectForKey:@"token"];
+                    [userinfo removeObjectForKey:@"tokenSecret"];
+                    NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+                    NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+                    for (NSHTTPCookie *cookie in cookieStorage) {
+                        [manager deleteCookie:cookie];
+                    }
+                    //                            [self logout];
+                }else{
+                    bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
+                    bangding.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:bangding animated:YES];
                     
-                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                    
-                    NSLog(@"failure--%@",error);
-                }];
-                
-                
-            }if ([url_type isEqualToString:@"6"]) {
-                //优惠券
-                NSString *type_name = [[HeaDataArr objectAtIndex:index] objectForKey:@"type_name"];
-                
-                WebViewController *web = [[WebViewController alloc] init];
-                web.url_type = @"2";
-                web.title = @"优惠券";
-                web.url = type_name;
-                web.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:web animated:YES];
-            }if ([url_type isEqualToString:@"8"]) {
-                youhuiquanViewController *youhuiquan = [[youhuiquanViewController alloc] init];
-                youhuiquan.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:youhuiquan animated:YES];
-            }if ([url_type isEqualToString:@"9"]) {
-                youhuiquanxiangqingViewController *youhuiquan = [[youhuiquanxiangqingViewController alloc] init];
-                youhuiquan.hidesBottomBarWhenPushed = YES;
-                NSRange range = [urltypename rangeOfString:@"id/"]; //现获取要截取的字符串位置
-                NSString * result = [urltypename substringFromIndex:range.location+3]; //截取字符串
-                youhuiquan.id = result;
-                [self.navigationController pushViewController:youhuiquan animated:YES];
-            }if ([url_type isEqualToString:@"2"]) {
-                GoodsDetailViewController *goods = [[GoodsDetailViewController alloc] init];
-                NSRange range = [urltypename rangeOfString:@"id/"]; //现获取要截取的字符串位置
-                NSString * result = [urltypename substringFromIndex:range.location+3]; //截取字符串
-                goods.IDstring = result;
-                goods.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:goods animated:YES];
-            }if ([url_type isEqualToString:@"10"]) {
-                WebViewController *web = [[WebViewController alloc] init];
-                web.url = url_id;
-                web.url_type = @"1";
-                //web.jpushstring = @"jpush";
-                web.title = @"小慧推荐";
-                web.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:web animated:YES];
-            }if ([url_type isEqualToString:@"11"]) {
-                noticeViewController *notice = [[noticeViewController alloc] init];
-                notice.hidesBottomBarWhenPushed = YES;
-                NSRange range = [url_id rangeOfString:@"id/"]; //现获取要截取的字符串位置
-                NSString * result = [url_id substringFromIndex:range.location+3]; //截取字符串
-                notice.id = result;
-                //notice.jpushstring = @"jpush";
-                [self.navigationController pushViewController:notice animated:YES];
-            }if ([url_type isEqualToString:@"12"]){
-                
-            }if ([url_type isEqualToString:@"13"]){
-                circledetailsViewController *circle = [[circledetailsViewController alloc] init];
-                NSRange range = [urltypename rangeOfString:@"id/"]; //现获取要截取的字符串位置
-                NSString * result = [urltypename substringFromIndex:range.location+3]; //截取字符串
-                circle.id = result;
-                circle.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:circle animated:YES];
-            }if ([url_type isEqualToString:@"14"]){
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url_id]];
-            }if ([url_type isEqualToString:@"15"]){
-                youxianjiaofeiViewController *youxian = [[youxianjiaofeiViewController alloc] init];
-                youxian.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:youxian animated:YES];
-            }if ([url_type isEqualToString:@"16"]){
-                NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
-                NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
-                
-                AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-                manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-                NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
-                NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
-                [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                    NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
-                    NSArray *arrrrr = [[NSArray alloc] init];
-                    if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-                        arrrrr = [responseObject objectForKey:@"data"];
-                        if (arrrrr.count>1) {
-                            selectHomeViewController *selecthome = [[selectHomeViewController alloc] init];
-                            selecthome.homeArr = arrrrr;
-                            selecthome.hidesBottomBarWhenPushed = YES;
-                            [self.navigationController pushViewController:selecthome animated:YES];
-                        }else{
-                            MyhomeViewController *myhome = [[MyhomeViewController alloc] init];
-                            myhome.room_id = [[arrrrr objectAtIndex:0] objectForKey:@"room_id"];
-                            myhome.hidesBottomBarWhenPushed = YES;
-                            [self.navigationController pushViewController:myhome animated:YES];
-                        }
-                        [defaults setObject:@"2" forKey:@"is_bind_property"];
-                        [userdf synchronize];
-                    }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
-                        [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-                        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                        [userinfo removeObjectForKey:@"username"];
-                        [userinfo removeObjectForKey:@"phone_type"];
-                        [userinfo removeObjectForKey:@"uid"];
-                        [userinfo removeObjectForKey:@"pwd"];
-                        [userinfo removeObjectForKey:@"is_bind_property"];
-                        [userinfo removeObjectForKey:@"Cookie"];
-                        [userinfo removeObjectForKey:@"is_new"];
-                        [userinfo removeObjectForKey:@"token"];
-                        [userinfo removeObjectForKey:@"tokenSecret"];
-                        NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-                        NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-                        for (NSHTTPCookie *cookie in cookieStorage) {
-                            [manager deleteCookie:cookie];
-                        }
-                        //                            [self logout];
+                    [defaults setObject:@"1" forKey:@"is_bind_property"];
+                    [userdf synchronize];
+                }
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"failure--%@",error);
+            }];
+        }if ([url_type isEqualToString:@"17"]){
+            NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
+            NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
+            
+            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
+            NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+            NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
+            [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
+                NSArray *arrrrr = [[NSArray alloc] init];
+                if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                    arrrrr = [responseObject objectForKey:@"data"];
+                    if (arrrrr.count>1) {
+                        selectHomeViewController *selecthome = [[selectHomeViewController alloc] init];
+                        selecthome.homeArr = arrrrr;
+                        selecthome.rukoubiaoshi = @"layakaimen";
+                        selecthome.hidesBottomBarWhenPushed = YES;
+                        [self.navigationController pushViewController:selecthome animated:YES];
                     }else{
-                        bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
-                        bangding.hidesBottomBarWhenPushed = YES;
-                        [self.navigationController pushViewController:bangding animated:YES];
-                        
-                        [defaults setObject:@"1" forKey:@"is_bind_property"];
-                        [userdf synchronize];
-                    }
-                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                    NSLog(@"failure--%@",error);
-                }];
-            }if ([url_type isEqualToString:@"17"]){
-                NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
-                NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
-                
-                AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-                manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-                NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
-                NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
-                [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                    NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
-                    NSArray *arrrrr = [[NSArray alloc] init];
-                    if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-                        arrrrr = [responseObject objectForKey:@"data"];
-                        if (arrrrr.count>1) {
-                            selectHomeViewController *selecthome = [[selectHomeViewController alloc] init];
-                            selecthome.homeArr = arrrrr;
-                            selecthome.rukoubiaoshi = @"layakaimen";
-                            selecthome.hidesBottomBarWhenPushed = YES;
-                            [self.navigationController pushViewController:selecthome animated:YES];
-                        }else{
-                            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-                            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-                            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                            NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-                            NSDictionary *dict = @{@"apk_token":uid_username,@"room_id":[[arrrrr objectAtIndex:0] objectForKey:@"room_id"],@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
-                            NSString *strurl = [API stringByAppendingString:@"property/checkIsAjb"];
-                            [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                                NSLog(@"%@-11111-%@",[responseObject objectForKey:@"msg"],responseObject);
-                                NSDictionary *dicccc = [[NSDictionary alloc] init];
-                                if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-                                    dicccc = [responseObject objectForKey:@"data"];
-                                    if ([dicccc isKindOfClass:[NSDictionary class]]) {
-                                        blueyaViewController *blueya = [[blueyaViewController alloc] init];
-                                        blueya.Dic = dicccc;
-                                        blueya.hidesBottomBarWhenPushed = YES;
-                                        [self.navigationController pushViewController:blueya animated:YES];
-                                    }else{
-                                        [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-                                    }
-                                }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
-                                    [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-                                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                                    [userinfo removeObjectForKey:@"username"];
-                                    [userinfo removeObjectForKey:@"phone_type"];
-                                    [userinfo removeObjectForKey:@"uid"];
-                                    [userinfo removeObjectForKey:@"pwd"];
-                                    [userinfo removeObjectForKey:@"is_bind_property"];
-                                    [userinfo removeObjectForKey:@"Cookie"];
-                                    [userinfo removeObjectForKey:@"is_new"];
-                                    [userinfo removeObjectForKey:@"token"];
-                                    [userinfo removeObjectForKey:@"tokenSecret"];
-                                    NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-                                    NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-                                    for (NSHTTPCookie *cookie in cookieStorage) {
-                                        [manager deleteCookie:cookie];
-                                    }
-                                    //                                        [self logout];
+                        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+                        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                        NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
+                        NSDictionary *dict = @{@"apk_token":uid_username,@"room_id":[[arrrrr objectAtIndex:0] objectForKey:@"room_id"],@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+                        NSString *strurl = [API stringByAppendingString:@"property/checkIsAjb"];
+                        [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                            NSLog(@"%@-11111-%@",[responseObject objectForKey:@"msg"],responseObject);
+                            NSDictionary *dicccc = [[NSDictionary alloc] init];
+                            if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                                dicccc = [responseObject objectForKey:@"data"];
+                                if ([dicccc isKindOfClass:[NSDictionary class]]) {
+                                    blueyaViewController *blueya = [[blueyaViewController alloc] init];
+                                    blueya.Dic = dicccc;
+                                    blueya.hidesBottomBarWhenPushed = YES;
+                                    [self.navigationController pushViewController:blueya animated:YES];
                                 }else{
                                     [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
                                 }
-                            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                                NSLog(@"failure--%@",error);
-                            }];
-                        }
-                        [defaults setObject:@"2" forKey:@"is_bind_property"];
-                        [userdf synchronize];
-                    }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
-                        [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-                        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                        [userinfo removeObjectForKey:@"username"];
-                        [userinfo removeObjectForKey:@"phone_type"];
-                        [userinfo removeObjectForKey:@"uid"];
-                        [userinfo removeObjectForKey:@"pwd"];
-                        [userinfo removeObjectForKey:@"is_bind_property"];
-                        [userinfo removeObjectForKey:@"Cookie"];
-                        [userinfo removeObjectForKey:@"is_new"];
-                        [userinfo removeObjectForKey:@"token"];
-                        [userinfo removeObjectForKey:@"tokenSecret"];
-                        NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-                        NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-                        for (NSHTTPCookie *cookie in cookieStorage) {
-                            [manager deleteCookie:cookie];
-                        }
-                        //                            [self logout];
-                    }else{
-                        bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
-                        bangding.hidesBottomBarWhenPushed = YES;
-                        [self.navigationController pushViewController:bangding animated:YES];
-                        [defaults setObject:@"1" forKey:@"is_bind_property"];
-                        [userdf synchronize];
+                            }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
+                                [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                                NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                                [userinfo removeObjectForKey:@"username"];
+                                [userinfo removeObjectForKey:@"phone_type"];
+                                [userinfo removeObjectForKey:@"uid"];
+                                [userinfo removeObjectForKey:@"pwd"];
+                                [userinfo removeObjectForKey:@"is_bind_property"];
+                                [userinfo removeObjectForKey:@"Cookie"];
+                                [userinfo removeObjectForKey:@"is_new"];
+                                [userinfo removeObjectForKey:@"token"];
+                                [userinfo removeObjectForKey:@"tokenSecret"];
+                                NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+                                NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+                                for (NSHTTPCookie *cookie in cookieStorage) {
+                                    [manager deleteCookie:cookie];
+                                }
+                                //                                        [self logout];
+                            }else{
+                                [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                            }
+                        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                            NSLog(@"failure--%@",error);
+                        }];
                     }
-                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                    NSLog(@"failure--%@",error);
-                }];
-            }if ([url_type isEqualToString:@"18"]){
-                FacePayViewController *face = [[FacePayViewController alloc] init];
-                face.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:face animated:YES];
-            }if ([url_type isEqualToString:@"19"]){
-                jujiayanglaoViewController *hujia = [[jujiayanglaoViewController alloc] init];
-                hujia.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:hujia animated:YES];
-            }if ([url_type isEqualToString:@"20"]){
-                NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-                
-                if ([user objectForKey:@"username"]==nil) {
-                    LoginViewController *log = [[LoginViewController alloc] init];
-                    [self presentViewController:log animated:YES completion:nil];
+                    [defaults setObject:@"2" forKey:@"is_bind_property"];
+                    [userdf synchronize];
+                }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
+                    [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                    [userinfo removeObjectForKey:@"username"];
+                    [userinfo removeObjectForKey:@"phone_type"];
+                    [userinfo removeObjectForKey:@"uid"];
+                    [userinfo removeObjectForKey:@"pwd"];
+                    [userinfo removeObjectForKey:@"is_bind_property"];
+                    [userinfo removeObjectForKey:@"Cookie"];
+                    [userinfo removeObjectForKey:@"is_new"];
+                    [userinfo removeObjectForKey:@"token"];
+                    [userinfo removeObjectForKey:@"tokenSecret"];
+                    NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+                    NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+                    for (NSHTTPCookie *cookie in cookieStorage) {
+                        [manager deleteCookie:cookie];
+                    }
+                    //                            [self logout];
                 }else{
-                    huodongwebviewViewController *web = [[huodongwebviewViewController alloc] init];
-                    web.url = urltypename;
-                    
-                    
-                    //         http://www.dsyg42.com/ec/app_index?username=18503408643&sign=hshObj&atitude=112.727884&longitude=37.690397&uuid=990009261666328
-                    
-                    web.url = [NSString stringWithFormat:@"%@?username=%@&sign=hshObj&atitude=%@&longitude=%@&uuid=%@",urltypename,[user objectForKey:@"username"],[user objectForKey:@"latitude"],[user objectForKey:@"longitude"],GSKeyChainDataManager.readUUID];
-                    web.title = @"东森易购";
-                    NSLog(@"weburl---%@---%@",web.url,GSKeyChainDataManager.readUUID);
-                    web.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:web animated:YES];
+                    bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
+                    bangding.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:bangding animated:YES];
+                    [defaults setObject:@"1" forKey:@"is_bind_property"];
+                    [userdf synchronize];
                 }
-            }if ([url_type isEqualToString:@"21"]){
-                xinfangshouceViewController *xinfang = [[xinfangshouceViewController alloc] init];
-                xinfang.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:xinfang animated:YES];
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"failure--%@",error);
+            }];
+        }if ([url_type isEqualToString:@"18"]){
+            FacePayViewController *face = [[FacePayViewController alloc] init];
+            face.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:face animated:YES];
+        }if ([url_type isEqualToString:@"19"]){
+            jujiayanglaoViewController *hujia = [[jujiayanglaoViewController alloc] init];
+            hujia.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:hujia animated:YES];
+        }if ([url_type isEqualToString:@"20"]){
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            
+            if ([user objectForKey:@"username"]==nil) {
+                LoginViewController *log = [[LoginViewController alloc] init];
+                [self presentViewController:log animated:YES completion:nil];
+            }else{
+                huodongwebviewViewController *web = [[huodongwebviewViewController alloc] init];
+                web.url = urltypename;
+                
+                
+                //         http://www.dsyg42.com/ec/app_index?username=18503408643&sign=hshObj&atitude=112.727884&longitude=37.690397&uuid=990009261666328
+                
+                web.url = [NSString stringWithFormat:@"%@?username=%@&sign=hshObj&atitude=%@&longitude=%@&uuid=%@",urltypename,[user objectForKey:@"username"],[user objectForKey:@"latitude"],[user objectForKey:@"longitude"],GSKeyChainDataManager.readUUID];
+                web.title = @"东森易购";
+                NSLog(@"weburl---%@---%@",web.url,GSKeyChainDataManager.readUUID);
+                web.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:web animated:YES];
             }
-        }];
-        [_tabHeadView addSubview:bannerView];
-        
-#pragma mark - 分类
-        UIView *view = [[UIView alloc] init];
-        CGFloat width = (Main_width-24-30*5)/5;//(Main_width-24-30*5)/5+15+15+20+10+15+width+20+15
-        if (centerArr.count<6) {
-            view.frame = CGRectMake(12, bannerView.frame.size.height+10, Main_width-24, width+30+20+15);
-        }else{
-            view.frame = CGRectMake(12, bannerView.frame.size.height+10, Main_width-24, 15+width+15+20+10+15+width+20+15);
+        }if ([url_type isEqualToString:@"21"]){
+            xinfangshouceViewController *xinfang = [[xinfangshouceViewController alloc] init];
+            xinfang.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:xinfang animated:YES];
         }
-        view.layer.cornerRadius = 5;
-        view.backgroundColor = [UIColor whiteColor];
-        [_tabHeadView addSubview:view];
-        
-        CGFloat labelwidth = (Main_width-24)/5;
-        if (centerArr.count<6){
-            for (int i=0; i<centerArr.count; i++) {
+    }];
+    [_tabHeadView addSubview:bannerView];
+    
+#pragma mark - 分类
+    UIView *view = [[UIView alloc] init];
+    CGFloat width = (Main_width-24-30*5)/5;//(Main_width-24-30*5)/5+15+15+20+10+15+width+20+15
+    if (centerArr.count<6) {
+        view.frame = CGRectMake(12, bannerView.frame.size.height+10, Main_width-24, width+30+20+15);
+    }else{
+        view.frame = CGRectMake(12, bannerView.frame.size.height+10, Main_width-24, 15+width+15+20+10+15+width+20+15);
+    }
+    view.layer.cornerRadius = 5;
+    view.backgroundColor = [UIColor whiteColor];
+    [_tabHeadView addSubview:view];
+    
+    CGFloat labelwidth = (Main_width-24)/5;
+    if (centerArr.count<6){
+        for (int i=0; i<centerArr.count; i++) {
+            UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15+i*30+i*width, 15, width, width)];
+            [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [view addSubview:imageview];
+            
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(i*labelwidth, 15+width+15, labelwidth, 20)];
+            label.text = [[centerArr objectAtIndex:i] objectForKey:@"cate_name"];
+            label.font = [UIFont systemFontOfSize:13];
+            label.textAlignment = NSTextAlignmentCenter;
+            [view addSubview:label];
+            
+            UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+            but.frame = CGRectMake(labelwidth*i, 15, labelwidth, labelwidth);
+            but.tag = i;
+            [but addTarget:self action:@selector(pusherji:) forControlEvents:UIControlEventTouchUpInside];
+            [view addSubview:but];
+        }
+    }else if (centerArr.count>=10) {
+        for (int i=0; i<9; i++) {
+            if (i<5) {
                 UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15+i*30+i*width, 15, width, width)];
                 [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
                 [view addSubview:imageview];
@@ -915,109 +926,108 @@
                 but.tag = i;
                 [but addTarget:self action:@selector(pusherji:) forControlEvents:UIControlEventTouchUpInside];
                 [view addSubview:but];
-            }
-        }else if (centerArr.count>=10) {
-            for (int i=0; i<9; i++) {
-                if (i<5) {
-                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15+i*30+i*width, 15, width, width)];
-                    [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                    [view addSubview:imageview];
-                    
-                    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(i*labelwidth, 15+width+15, labelwidth, 20)];
-                    label.text = [[centerArr objectAtIndex:i] objectForKey:@"cate_name"];
-                    label.font = [UIFont systemFontOfSize:13];
-                    label.textAlignment = NSTextAlignmentCenter;
-                    [view addSubview:label];
-                    
-                    UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-                    but.frame = CGRectMake(labelwidth*i, 15, labelwidth, labelwidth);
-                    but.tag = i;
-                    [but addTarget:self action:@selector(pusherji:) forControlEvents:UIControlEventTouchUpInside];
-                    [view addSubview:but];
-                }else{
-                    
-                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15+(i-5)*30+(i-5)*width, 15+width+15+20+10, width, width)];
-                    
-                    [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                    [view addSubview:imageview];
-                    
-                    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake((i-5)*labelwidth, 15+width+15+20+10+15+width, labelwidth, 20)];
-                    
-                    label.font = [UIFont systemFontOfSize:13];
-                    label.textAlignment = NSTextAlignmentCenter;
-                    [view addSubview:label];
-                    
-                    
-                    [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                    label.text = [[centerArr objectAtIndex:i] objectForKey:@"cate_name"];
-                    UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-                    but.frame = CGRectMake(labelwidth*(i-5), 15+width+15+20+10, labelwidth, labelwidth);
-                    but.tag = i;
-                    [but addTarget:self action:@selector(pusherji:) forControlEvents:UIControlEventTouchUpInside];
-                    [view addSubview:but];
-                }
-            }
-            
-            UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15+(9-5)*30+(9-5)*width, 15+width+15+20+10, width, width)];
-            imageview.image = [UIImage imageNamed:@"iv_icon_all"];
-            
-            [view addSubview:imageview];
-            
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake((9-5)*labelwidth, 15+width+15+20+10+15+width, labelwidth, 20)];
-            
-            label.font = [UIFont systemFontOfSize:13];
-            label.textAlignment = NSTextAlignmentCenter;
-            label.text = @"全部";
-            [view addSubview:label];
-            
-            
-            
-            UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-            but.frame = CGRectMake(labelwidth*(9-5), 15+width+15+20+10, labelwidth, labelwidth);
-            but.tag = 9;
-            [but addTarget:self action:@selector(pusherji:) forControlEvents:UIControlEventTouchUpInside];
-            [view addSubview:but];
-        }else{
-            for (int i=0; i<centerArr.count; i++) {
-                if (i<5) {
-                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15+i*30+i*width, 15, width, width)];
-                    [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                    [view addSubview:imageview];
-                    
-                    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(i*labelwidth, 15+width+15, labelwidth, 20)];
-                    label.text = [[centerArr objectAtIndex:i] objectForKey:@"cate_name"];
-                    label.font = [UIFont systemFontOfSize:13];
-                    label.textAlignment = NSTextAlignmentCenter;
-                    [view addSubview:label];
-                    
-                    UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-                    but.frame = CGRectMake(labelwidth*i, 15, labelwidth, labelwidth);
-                    but.tag = i;
-                    [but addTarget:self action:@selector(pusherji:) forControlEvents:UIControlEventTouchUpInside];
-                    [view addSubview:but];
-                }else{
-                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15+(i-5)*30+(i-5)*width, 15+width+15+20+10, width, width)];
-                    [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                    [view addSubview:imageview];
-                    
-                    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake((i-5)*labelwidth, 15+width+15+20+10+15+width, labelwidth, 20)];
-                    label.text = [[centerArr objectAtIndex:i] objectForKey:@"cate_name"];
-                    label.font = [UIFont systemFontOfSize:13];
-                    label.textAlignment = NSTextAlignmentCenter;
-                    [view addSubview:label];
-                    
-                    UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-                    but.frame = CGRectMake(labelwidth*(i-5), 15+width+15+20+10, labelwidth, labelwidth);
-                    but.tag = i;
-                    [but addTarget:self action:@selector(pusherji:) forControlEvents:UIControlEventTouchUpInside];
-                    [view addSubview:but];
-                }
+            }else{
+                
+                UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15+(i-5)*30+(i-5)*width, 15+width+15+20+10, width, width)];
+                
+                [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                [view addSubview:imageview];
+                
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake((i-5)*labelwidth, 15+width+15+20+10+15+width, labelwidth, 20)];
+                
+                label.font = [UIFont systemFontOfSize:13];
+                label.textAlignment = NSTextAlignmentCenter;
+                [view addSubview:label];
+                
+                
+                [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                label.text = [[centerArr objectAtIndex:i] objectForKey:@"cate_name"];
+                UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+                but.frame = CGRectMake(labelwidth*(i-5), 15+width+15+20+10, labelwidth, labelwidth);
+                but.tag = i;
+                [but addTarget:self action:@selector(pusherji:) forControlEvents:UIControlEventTouchUpInside];
+                [view addSubview:but];
             }
         }
         
+        UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15+(9-5)*30+(9-5)*width, 15+width+15+20+10, width, width)];
+        imageview.image = [UIImage imageNamed:@"iv_icon_all"];
+        
+        [view addSubview:imageview];
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake((9-5)*labelwidth, 15+width+15+20+10+15+width, labelwidth, 20)];
+        
+        label.font = [UIFont systemFontOfSize:13];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.text = @"全部";
+        [view addSubview:label];
+        
+        
+        
+        UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+        but.frame = CGRectMake(labelwidth*(9-5), 15+width+15+20+10, labelwidth, labelwidth);
+        but.tag = 9;
+        [but addTarget:self action:@selector(pusherji:) forControlEvents:UIControlEventTouchUpInside];
+        [view addSubview:but];
+    }else{
+        for (int i=0; i<centerArr.count; i++) {
+            if (i<5) {
+                UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15+i*30+i*width, 15, width, width)];
+                [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                [view addSubview:imageview];
+                
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(i*labelwidth, 15+width+15, labelwidth, 20)];
+                label.text = [[centerArr objectAtIndex:i] objectForKey:@"cate_name"];
+                label.font = [UIFont systemFontOfSize:13];
+                label.textAlignment = NSTextAlignmentCenter;
+                [view addSubview:label];
+                
+                UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+                but.frame = CGRectMake(labelwidth*i, 15, labelwidth, labelwidth);
+                but.tag = i;
+                [but addTarget:self action:@selector(pusherji:) forControlEvents:UIControlEventTouchUpInside];
+                [view addSubview:but];
+            }else{
+                UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15+(i-5)*30+(i-5)*width, 15+width+15+20+10, width, width)];
+                [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                [view addSubview:imageview];
+                
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake((i-5)*labelwidth, 15+width+15+20+10+15+width, labelwidth, 20)];
+                label.text = [[centerArr objectAtIndex:i] objectForKey:@"cate_name"];
+                label.font = [UIFont systemFontOfSize:13];
+                label.textAlignment = NSTextAlignmentCenter;
+                [view addSubview:label];
+                
+                UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+                but.frame = CGRectMake(labelwidth*(i-5), 15+width+15+20+10, labelwidth, labelwidth);
+                but.tag = i;
+                [but addTarget:self action:@selector(pusherji:) forControlEvents:UIControlEventTouchUpInside];
+                [view addSubview:but];
+            }
+        }
+    }
+    
 #pragma mark - 限时抢购
+    
+    
+    
+    if ([pro_discount_listArr isKindOfClass:[NSArray class]]&&pro_discount_listArr.count>0) {
+        
         UIView *xianshitoubu = [[UIView alloc] initWithFrame:CGRectMake(0, view.frame.size.height+view.frame.origin.y+10, Main_width, 50)];
-        xianshitoubu.backgroundColor = QIColor;
+//        xianshitoubu.backgroundColor = QIColor;
+        UILabel *titleLab = [[UILabel alloc]init];
+        titleLab.frame = CGRectMake(10, 17, 75, 19);
+        titleLab.text = @"限时秒杀";
+        titleLab.textColor = [UIColor colorWithHexString:@"#FF2035"];
+        titleLab.font = [UIFont systemFontOfSize:18];
+        [xianshitoubu addSubview:titleLab];
+        
+        UILabel *fuLab = [[UILabel alloc]init];
+        fuLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame)+10, 22, 113, 14);
+        fuLab.text = @"限时限量 火速来秒";
+        fuLab.textColor = [UIColor colorWithHexString:@"#FF2035"];
+        fuLab.font = [UIFont systemFontOfSize:13];
+        [xianshitoubu addSubview:fuLab];
         [_tabHeadView addSubview:xianshitoubu];
         
         UIButton *morebut = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -1025,8 +1035,8 @@
         morebut.backgroundColor = QIColor;
         //[cell.contentView addSubview:morebut];
         
-        UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(18, 8+xianshitoubu.frame.size.height+xianshitoubu.frame.origin.y, Main_width-18*2, 212)];
         
+        UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(18, 8+xianshitoubu.frame.size.height+xianshitoubu.frame.origin.y, Main_width-18*2, 212)];
         backscrollview.contentSize = CGSizeMake(125*pro_discount_listArr.count+16*(pro_discount_listArr.count-1), 212);
         backscrollview.showsVerticalScrollIndicator = NO;
         backscrollview.showsHorizontalScrollIndicator = NO;
@@ -1189,32 +1199,119 @@
             UIButton *goodsbut = [UIButton buttonWithType:UIButtonTypeCustom];
             goodsbut.frame = CGRectMake(0, 0, 125, 212);
             goodsbut.tag = [[[pro_discount_listArr objectAtIndex:i] objectForKey:@"id"] integerValue];
-            [goodsbut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
+            [goodsbut addTarget:self action:@selector(pushgoodsdetail:) forControlEvents:UIControlEventTouchUpInside];
             [backview addSubview:goodsbut];
         }
         
-#pragma mark - 每日必逛
+    }else{
         
-        UIView *meiribiguang = [[UIView alloc] initWithFrame:CGRectMake(0, backscrollview.frame.size.height+backscrollview.frame.origin.y+10, Main_width, 50)];
-        meiribiguang.backgroundColor = QIColor;
+    }
+    
+    
+#pragma mark - 每日必逛
+    if ([shangpinArr isKindOfClass:[NSArray class]]&&shangpinArr.count>0) {
+        UIView *meiribiguang = [[UIView alloc] initWithFrame:CGRectMake(0, view.frame.size.height+view.frame.origin.y+H1+10, Main_width, 50)];
+//        meiribiguang.backgroundColor = QIColor;
+        UILabel *titleLab = [[UILabel alloc]init];
+        titleLab.frame = CGRectMake(10, 17, 75, 19);
+        titleLab.text = @"每日必逛";
+        titleLab.textColor = [UIColor colorWithHexString:@"#555555FF"];
+        titleLab.font = [UIFont systemFontOfSize:18];
+        [meiribiguang addSubview:titleLab];
+        
+        UILabel *fuLab = [[UILabel alloc]init];
+        fuLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame)+10, 22, 113, 14);
+        fuLab.text = @"精挑细选 为你省钱";
+        fuLab.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
+        fuLab.font = [UIFont systemFontOfSize:13];
+        [meiribiguang addSubview:fuLab];
         [_tabHeadView addSubview:meiribiguang];
         
         
         UIView *meiribiguangguanggao = [[UIView alloc] initWithFrame:CGRectMake(0, meiribiguang.frame.size.height+meiribiguang.frame.origin.y+10, Main_width, 120)];
-        meiribiguangguanggao.backgroundColor = BackColor;
+        if ([shangpinArr isKindOfClass:[NSArray class]]) {
+            long m = shangpinArr.count;
+            for (int i=0; i<m; i++) {
+                if (i%2 == 0) {
+                    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+(Main_width-24+2)*i/2, 0, Main_width/2-24/2, 120)];
+                    view.backgroundColor = [UIColor whiteColor];
+                    view.layer.cornerRadius = 3;
+                    [meiribiguangguanggao addSubview:view];
+                    
+                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, (Main_width-24)/2/1.5)];
+                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[shangpinArr objectAtIndex:i] objectForKey:@"img"]]];
+                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    imageview.backgroundColor = [UIColor yellowColor];
+                    [view addSubview:imageview];
+                    
+                    //                UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
+                    //                dianjibut.frame = imageview.frame;
+                    //                dianjibut.tag = i+indexPath.row;
+                    //                [dianjibut addTarget:self action:@selector(centerguanggao:) forControlEvents:UIControlEventTouchUpInside];
+                    //                [view addSubview:dianjibut];
+                    
+                }else{
+                    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+(Main_width-24+2)*i/2, 0, Main_width/2-24/2, 120)];
+                    view.backgroundColor = [UIColor whiteColor];
+                    view.layer.cornerRadius = 3;
+                    [meiribiguangguanggao addSubview:view];
+                    
+                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, (Main_width-24)/2/1.5)];
+                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[shangpinArr objectAtIndex:i] objectForKey:@"img"]]];
+                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    [view addSubview:imageview];
+                    
+                    //                UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
+                    //                dianjibut.frame = imageview.frame;
+                    //                dianjibut.tag = i+indexPath.row;
+                    //                //                    [[[centerguanggaoarr objectAtIndex:i] objectForKey:@"id"] longValue];
+                    //                [dianjibut addTarget:self action:@selector(centerguanggao:) forControlEvents:UIControlEventTouchUpInside];
+                    //                [view addSubview:dianjibut];
+                    
+                }
+            }
+        }
+        
+//        meiribiguangguanggao.backgroundColor = BackColor;
+         meiribiguangguanggao.backgroundColor = [UIColor whiteColor];
         [_tabHeadView addSubview:meiribiguangguanggao];
-        #pragma mark - 更多好货
-        UIView *gengduohaohuo = [[UIView alloc] initWithFrame:CGRectMake(0, meiribiguangguanggao.frame.size.height+meiribiguangguanggao.frame.origin.y+10, Main_width, 50)];
-        gengduohaohuo.backgroundColor = QIColor;
-        [_tabHeadView addSubview:gengduohaohuo];
         
         
-        _mainTableView.tableHeaderView = _tabHeadView;
         
-        _tabHeadView.backgroundColor = [UIColor whiteColor];
+    }else{
+        
     }
-    return _mainTableView;
+    
+#pragma mark - 更多好货
+    UIView *gengduohaohuo = [[UIView alloc] initWithFrame:CGRectMake(0, view.frame.size.height+view.frame.origin.y+H1+10+H2, Main_width, 50)];
+//    gengduohaohuo.backgroundColor = QIColor;
+    UILabel *titleLab = [[UILabel alloc]init];
+    titleLab.frame = CGRectMake(10, 17, 75, 19);
+    titleLab.text = @"更多好货";
+    titleLab.textColor = [UIColor colorWithHexString:@"#555555FF"];
+    titleLab.font = [UIFont systemFontOfSize:18];
+    [gengduohaohuo addSubview:titleLab];
+    
+    UILabel *fuLab = [[UILabel alloc]init];
+    fuLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame)+10, 22, 113, 14);
+    fuLab.text = @"海量商品 等你来挑";
+    fuLab.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
+    fuLab.font = [UIFont systemFontOfSize:13];
+    [gengduohaohuo addSubview:fuLab];
+    [_tabHeadView addSubview:gengduohaohuo];
+    
+    
+    _mainTableView.tableHeaderView = _tabHeadView;
+    
+    _tabHeadView.backgroundColor = [UIColor whiteColor];
 }
+//- (UITableView *)mainTableView {
+//    if (!_mainTableView) {
+//        //⚠️这里的属性初始化一定要放在mainTableView.contentInset的设置滚动之前, 不然首次进来视图就会偏移到临界位置，contentInset会调用scrollViewDidScroll这个方法。
+//
+//    }
+//    return _mainTableView;
+//}
 ////这是红色视图
 //-(UIView *)tabHeadView{
 //    if (!_tabHeadView) {
@@ -1259,60 +1356,93 @@
 //}
 -(void)getdata
 {
+    //初始化进度框，置于当前的View当中
+    static MBProgressHUD *_HUD;
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:_HUD];
     
-    //1.创建会话管理者
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    //2.封装参数
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"]};
-    //3.发送GET请求
-    /*
-     */
-    NSString *strurl = [API stringByAppendingString:@"shop/shop_index"];
-    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        //[_DataArr addObjectsFromArray:[responseObject objectForKey:@"data"]];
-        //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
-        WBLog(@"getversion41---success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
-        centerArr = [[NSArray alloc] init];
-        //shangpinArr = [[NSMutableArray alloc] init];
-        fenleiArr = [[NSArray alloc] init];
-        pro_discount_listArr = [[NSArray alloc] init];
-        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-            
-            HeaDataArr = [[NSArray alloc] init];
-            HeaDataArr = [[responseObject objectForKey:@"data"] objectForKey:@"ad_hc_shopindex"];
-            NSLog(@"headarr==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
-            //NSLog(@"success--%@--%@",[responseObject class],responseObject);
-            
-            NSMutableArray *imagearr = [NSMutableArray array];
-            bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)) viewSize:CGSizeMake(Main_width,Main_width/(1.87))];
-            
-            if ([HeaDataArr isKindOfClass:[NSArray class]]) {
-                for (int i=0; i<HeaDataArr.count; i++) {
-                    NSString *strurl = [API_img stringByAppendingString:[[HeaDataArr objectAtIndex:i]objectForKey:@"img"]];
-                    NSLog(@"%@",strurl);
-                    [imagearr addObject:strurl];
-                    bannerView.items = imagearr;
+    //如果设置此属性则当前的view置于后台
+    //_HUD.dimBackground = YES;
+    
+    //设置对话框文字
+    _HUD.labelText = @"加载中...";
+    _HUD.labelFont = [UIFont systemFontOfSize:14];
+    
+    //显示对话框
+    [_HUD showAnimated:YES whileExecutingBlock:^{
+        //1.创建会话管理者
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+        //2.封装参数
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"]};
+        //3.发送GET请求
+        /*
+         */
+        NSString *strurl = [API stringByAppendingString:@"shop/shop_index"];
+        [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            //[_DataArr addObjectsFromArray:[responseObject objectForKey:@"data"]];
+            //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
+            WBLog(@"getversion41---success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+            centerArr = [[NSArray alloc] init];//头部广告下分类
+            shangpinArr = [[NSArray alloc] init];
+            fenleiArr = [[NSArray alloc] init];//下面的tableview数据
+            pro_discount_listArr = [[NSArray alloc] init];//限时抢购
+            if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                
+                HeaDataArr = [[NSArray alloc] init];//头部
+                HeaDataArr = [[responseObject objectForKey:@"data"] objectForKey:@"ad_hc_shopindex"];
+                NSLog(@"headarr==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
+                //NSLog(@"success--%@--%@",[responseObject class],responseObject);
+                
+                NSMutableArray *imagearr = [NSMutableArray array];
+                bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)) viewSize:CGSizeMake(Main_width,Main_width/(1.87))];
+                
+                if ([HeaDataArr isKindOfClass:[NSArray class]]) {
+                    for (int i=0; i<HeaDataArr.count; i++) {
+                        NSString *strurl = [API_img stringByAppendingString:[[HeaDataArr objectAtIndex:i]objectForKey:@"img"]];
+                        NSLog(@"%@",strurl);
+                        [imagearr addObject:strurl];
+                        bannerView.items = imagearr;
+                    }
+                }else{
+                    imagearr  =  nil;
+                    
                 }
+                //            centerArr = [[responseObject objectForKey:@"data"] objectForKey:@"cate_list"];ad_hc_shop_center
+                fenleiArr = [[responseObject objectForKey:@"data"] objectForKey:@"hot_cate_list"];
+                centerArr = [[responseObject objectForKey:@"data"] objectForKey:@"cate_list"];
+                shangpinArr = [[responseObject objectForKey:@"data"] objectForKey:@"ad_hc_shop_center"];
+                pro_discount_listArr = [[[responseObject objectForKey:@"data"] objectForKey:@"pro_discount_list"] objectForKey:@"list"];
+                
+                NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+                NSMutableArray *titlearr = [NSMutableArray arrayWithCapacity:0];
+                for (int i=0; i<fenleiArr.count; i++) {
+                    version41mallchildViewController *vc = [[version41mallchildViewController alloc] init];
+                    [arr addObject:vc];
+                    vc.id = [[fenleiArr objectAtIndex:i] objectForKey:@"id"];
+                    [titlearr addObject:[[fenleiArr objectAtIndex:i] objectForKey:@"cate_name"]];
+                }
+                NSArray *titleArray = titlearr;
+                SegmentView *segmentView = [[SegmentView alloc] initWithFrame:CGRectMake(0, NAVHEIGHT, Main_width, Main_Height-NAVHEIGHT) controllers:arr titleArray:titleArray parentController:self];
+                //注意：不能通过初始化方法传递selectedIndex的初始值，因为内部使用的是Masonry布局的方式, 否则设置selectedIndex不起作用
+                
+                _segmentView = segmentView;
             }else{
-                imagearr  =  nil;
                 
             }
-//            centerArr = [[responseObject objectForKey:@"data"] objectForKey:@"cate_list"];
-            fenleiArr = [[responseObject objectForKey:@"data"] objectForKey:@"hot_cate_list"];
-            centerArr = [[responseObject objectForKey:@"data"] objectForKey:@"cate_list"];
-
-            pro_discount_listArr = [[[responseObject objectForKey:@"data"] objectForKey:@"pro_discount_list"] objectForKey:@"list"];
-        }else{
+            [self createui];
+            [_mainTableView.mj_header endRefreshing];
+            [self.mainTableView reloadData];
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
-        }
-        [self createui];
-        [_mainTableView.mj_header endRefreshing];
-        [self.mainTableView reloadData];
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-    }];
+        }];
+    }// 在HUD被隐藏后的回调
+       completionBlock:^{
+           //操作执行完后取消对话框
+           [_HUD removeFromSuperview];
+           _HUD = nil;
+       }];
 }
 -(void) countDownAction{
     int i = [[countDownTimer.userInfo objectForKey:@"tag"] intValue];
@@ -1359,6 +1489,14 @@
             [self.navigationController pushViewController:liebiao animated:YES];
         }
     }
+}//pushgoodsdetail
+- (void)pushgoodsdetail:(UIButton *)sender
+{
+    NSString *goodsid = [NSString stringWithFormat:@"%ld",sender.tag];
+    GoodsDetailViewController *goods = [[GoodsDetailViewController alloc] init];
+    goods.IDstring = goodsid;
+    goods.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:goods animated:YES];
 }
 - (void)pushgoods:(NSNotification *)user
 {

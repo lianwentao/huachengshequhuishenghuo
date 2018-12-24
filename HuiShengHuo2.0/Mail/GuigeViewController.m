@@ -165,35 +165,87 @@
 {
     int i = [labelnum.text intValue];
     long j = [labelkucun.text longLongValue];
-    if (j==i) {
-        if (sender.tag==0) {
-            i--;
-        }if(sender.tag==1){
-            [MBProgressHUD showToastToView:self.view withText:@"库存不足"];
-        }
-        NSString *stringInt = [NSString stringWithFormat:@"%d",i];
-        labelnum.text = stringInt;
-    }else{
-        if (sender.tag==0) {
-            if (i==0) {
-                i=0;
-            }if (i>1) {
-                i--;
-            }
-        }if(sender.tag==1){
-            if (i==0) {
-                [MBProgressHUD showToastToView:self.view withText:@"此商品为限购商品，您购物车或无付款订单有此商品，请前往购买"];
-            }else{
-                if ((i+_LimitAll)==_Limit) {
-                    [MBProgressHUD showToastToView:self.view withText:[NSString stringWithFormat:@"此商品为限购商品,您剩余限购次数为%d",i]];
-                }else{
-                    i++;
+    if (sender.tag==0) {
+        
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+        //2.封装参数
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        NSDictionary *dict = @{@"p_id":_IDstring,@"tagid":[NSString stringWithFormat:@"%@",_tagidstring],@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"num":[NSString stringWithFormat:@"%d",i+1]};
+        NSLog(@"%@",dict);
+        NSString *strurl = [API stringByAppendingString:@"shop/check_shop_limit"];
+        [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSLog(@"111---success--%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
+            if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                //            _Limit = [[[responseObject objectForKey:@"data"] objectForKey:@"limit"] integerValue];
+                //            long cartnum = [[[responseObject objectForKey:@"data"] objectForKey:@"cart_num"] integerValue];
+                //            long ordernum = [[[responseObject objectForKey:@"data"] objectForKey:@"order_num"] integerValue];
+                //            _limtcart = cartnum;
+                //            _limitord = ordernum;
+                //            _LimitAll = cartnum+ordernum;
+                labelnum.text = [NSString stringWithFormat:@"%d",i+1];
+            }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
+                [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                [userinfo removeObjectForKey:@"username"];
+                [userinfo removeObjectForKey:@"phone_type"];
+                [userinfo removeObjectForKey:@"uid"];
+                [userinfo removeObjectForKey:@"pwd"];
+                [userinfo removeObjectForKey:@"is_bind_property"];
+                [userinfo removeObjectForKey:@"Cookie"];
+                [userinfo removeObjectForKey:@"is_new"];
+                [userinfo removeObjectForKey:@"token"];
+                [userinfo removeObjectForKey:@"tokenSecret"];
+                NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+                NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+                for (NSHTTPCookie *cookie in cookieStorage) {
+                    [manager deleteCookie:cookie];
                 }
+                //                [self logout];
+            }else{
+                [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
             }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+            NSLog(@"failure--%@",error);
+        }];
+    }else{
+        if (i>1) {
+            i--;
         }
-        NSString *stringInt = [NSString stringWithFormat:@"%d",i];
-        labelnum.text = stringInt;
     }
+    
+
+//    if (j==i) {
+//        if (sender.tag==0) {
+//            i--;
+//        }if(sender.tag==1){
+//            [MBProgressHUD showToastToView:self.view withText:@"库存不足"];
+//        }
+//        NSString *stringInt = [NSString stringWithFormat:@"%d",i];
+//        labelnum.text = stringInt;
+//    }else{
+//        if (sender.tag==0) {
+//            if (i==0) {
+//                i=0;
+//            }if (i>1) {
+//                i--;
+//            }
+//        }if(sender.tag==1){
+//            if (i==0) {
+//                [MBProgressHUD showToastToView:self.view withText:@"此商品为限购商品，您购物车或无付款订单有此商品，请前往购买"];
+//            }else{
+//                if ((i+_LimitAll)==_Limit) {
+//                    [MBProgressHUD showToastToView:self.view withText:[NSString stringWithFormat:@"此商品为限购商品,您剩余限购次数为%d",i]];
+//                }else{
+//                    i++;
+//                }
+//            }
+//        }
+//        NSString *stringInt = [NSString stringWithFormat:@"%d",i];
+//        labelnum.text = stringInt;
+//    }
+    
 }
 - (void)back
 {
@@ -205,24 +257,19 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"p_id":_IDstring,@"tagid":[NSString stringWithFormat:@"%@",_tagidstring],@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    NSDictionary *dict = @{@"p_id":_IDstring,@"tagid":[NSString stringWithFormat:@"%@",_tagidstring],@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"num":@"1"};
     NSLog(@"%@",dict);
     NSString *strurl = [API stringByAppendingString:@"shop/check_shop_limit"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"111---success--%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-            _Limit = [[[responseObject objectForKey:@"data"] objectForKey:@"limit"] integerValue];
-            long cartnum = [[[responseObject objectForKey:@"data"] objectForKey:@"cart_num"] integerValue];
-            long ordernum = [[[responseObject objectForKey:@"data"] objectForKey:@"order_num"] integerValue];
-            _limtcart = cartnum;
-            _limitord = ordernum;
-            _LimitAll = cartnum+ordernum;
-            if (_LimitAll==_Limit&&_Limit>0) {
-                labelnum.text = @"0";
-            }else{
-                labelnum.text = @"1";
-            }
+//            _Limit = [[[responseObject objectForKey:@"data"] objectForKey:@"limit"] integerValue];
+//            long cartnum = [[[responseObject objectForKey:@"data"] objectForKey:@"cart_num"] integerValue];
+//            long ordernum = [[[responseObject objectForKey:@"data"] objectForKey:@"order_num"] integerValue];
+//            _limtcart = cartnum;
+//            _limitord = ordernum;
+//            _LimitAll = cartnum+ordernum;
+           labelnum.text = @"1";
         }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
             [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
             NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
@@ -242,11 +289,8 @@
             }
             //                [self logout];
         }else{
-            
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }
-       
-        
-        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         NSLog(@"failure--%@",error);
@@ -348,6 +392,9 @@
     _Labelyixuan.text = price;
     
     labelnum.text = @"1";
+    
+    _tagidstring = [[_Dataarr objectAtIndex:sender.tag] objectForKey:@"id"];
+    WBLog(@"%@",_tagidstring);
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -35,13 +35,13 @@
         
         self.segmentedControl.titleTextAttributes = @{NSForegroundColorAttributeName:UIColorFromRGB(0x343434),
                                                   NSFontAttributeName:[UIFont systemFontOfSize:14]};//设定title的颜色和字体
-        self.segmentedControl.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:UIColorFromRGB(0x343434),
-                                                          NSFontAttributeName:[UIFont systemFontOfSize:14]};//设定选中title时的颜色和字体
+        self.segmentedControl.selectedTitleTextAttributes = @{NSForegroundColorAttributeName:QIColor,
+                                                          NSFontAttributeName:[UIFont systemFontOfSize:15]};//设定选中title时的颜色和字体
         
         self.segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;//设定线条的位置
         //        self.segmentedControl.selectionStyle = HMSegmentedControlSelectionStyleBox;//设定线条的宽度
         //        segmentedControl1.segmentEdgeInset = UIEdgeInsetsMake(0, 10, 0, 10); //设置每个title上下左右间距
-        self.segmentedControl.selectionIndicatorHeight = 3.f;//设定线条的高度
+        self.segmentedControl.selectionIndicatorHeight = 0.f;//设定线条的高度
         self.segmentedControl.frame = CGRectMake(0, 0, kWidth, SegmentHeaderViewHeight);
           [self addSubview:self.segmentedControl];
         
