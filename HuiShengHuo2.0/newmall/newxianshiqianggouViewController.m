@@ -103,26 +103,34 @@
     NSDictionary *dic = [[NSDictionary alloc] init];
     dic = user.userInfo;
     
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    AFHTTPSessionManager *manager1 = [AFHTTPSessionManager manager];
+    manager1.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
-    
+    NSUserDefaults *user1 = [NSUserDefaults standardUserDefaults];
+    //    NSDictionary *dict1 = @{@"c_id":[user1 objectForKey:@"community_id"],@"p_id":pid,@"tagid":tagid,@"num":@"1",@"token":[user1 objectForKey:@"token"],@"tokenSecret":[user1 objectForKey:@"tokenSecret"]};
     //3.发送GET请求
-    /*
-     第一个参数:请求路径(NSString)+ 不需要加参数
-     第二个参数:发送给服务器的参数数据
-     第三个参数:progress 进度回调
-     第四个参数:success  成功之后的回调(此处的成功或者是失败指的是整个请求)
-     task:请求任务
-     responseObject:注意!!!响应体信息--->(json--->oc))
-     task.response: 响应头信息
-     第五个参数:failure 失败之后的回调
-     */
-    NSString *strurl = [API stringByAppendingString:@"shop/add_shopping_cart"];
-    [manager POST:strurl parameters:dic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-        NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+    NSString *strurl1 = [API stringByAppendingString:@"shop/check_shop_limit"];
+    [manager1 GET:strurl1 parameters:dic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
+        NSLog(@"center---success--%@--%@",[responseObject class],responseObject);
+        
+        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+            NSString *strurl = [API stringByAppendingString:@"shop/add_shopping_cart"];
+            [manager POST:strurl parameters:dic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"failure--%@",error);
+            }];
+        }else{
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+        }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [MBProgressHUD showToastToView:self.view withText:@"加载失败"];
         NSLog(@"failure--%@",error);
     }];
 }

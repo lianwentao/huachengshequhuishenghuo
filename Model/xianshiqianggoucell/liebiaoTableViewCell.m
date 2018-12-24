@@ -167,8 +167,8 @@
 }
 - (void)gouwuche:(UIButton *)sender
 {
-    NSLog(@"%@",_dic);
     [[NSNotificationCenter defaultCenter] postNotificationName:@"liebiaojiarugouwuche" object:nil userInfo:_dic];
+    
 }
 - (void)bupeisong
 {
