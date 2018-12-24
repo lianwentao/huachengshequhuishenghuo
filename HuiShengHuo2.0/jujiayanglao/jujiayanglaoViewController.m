@@ -874,13 +874,35 @@
      task.response: 响应头信息
      第五个参数:failure 失败之后的回调
      */
-    NSString *strurl = [API stringByAppendingString:@"shop/add_shopping_cart"];
-    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-        NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+    AFHTTPSessionManager *manager1 = [AFHTTPSessionManager manager];
+    manager1.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    //2.封装参数
+    NSUserDefaults *user1 = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict1 = @{@"c_id":[user1 objectForKey:@"community_id"],@"p_id":[[chanpinarr objectAtIndex:num] objectForKey:@"id"],@"tagid":[[chanpinarr objectAtIndex:num] objectForKey:@"tagid"],@"num":@"1",@"token":[user1 objectForKey:@"token"],@"tokenSecret":[user1 objectForKey:@"tokenSecret"]};
+    //3.发送GET请求
+    NSString *strurl1 = [API stringByAppendingString:@"shop/check_shop_limit"];
+    [manager1 GET:strurl1 parameters:dict1 progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        
+        //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
+        NSLog(@"center---success--%@--%@",[responseObject class],responseObject);
+        
+        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+            NSString *strurl = [API stringByAppendingString:@"shop/add_shopping_cart"];
+            [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"failure--%@",error);
+            }];
+        }else{
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+        }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [MBProgressHUD showToastToView:self.view withText:@"加载失败"];
         NSLog(@"failure--%@",error);
     }];
+    
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

@@ -1665,29 +1665,44 @@
     NSString *title_img = [[arr objectAtIndex:i] objectForKey:@"title_img"];
     NSString *tagid = [[arr objectAtIndex:i] objectForKey:@"tagid"];
     NSString *price = [[arr objectAtIndex:i] objectForKey:@"price"];
-    if ([exist_hours isEqualToString:@"2"]) {
-        [MBProgressHUD showToastToView:self.view withText:@"当前时间不在配送时间范围内"];
-    }else if ([kucun isEqualToString:@"0"]){
-        [MBProgressHUD showToastToView:self.view withText:@"库存不足"];
-    }else{
-        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+        AFHTTPSessionManager *manager1 = [AFHTTPSessionManager manager];
+        manager1.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
         //2.封装参数
-
-        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-        NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-        NSDictionary *dict = [[NSDictionary alloc] init];
-
-
-        dict = @{@"number":@"1",@"tagname":tagname,@"p_id":pid,@"p_title":title,@"p_title_img":title_img,@"tagid":tagid,@"price":price,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
-        NSString *strurl = [API stringByAppendingString:@"shop/add_shopping_cart"];
-        [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-            NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+        NSUserDefaults *user1 = [NSUserDefaults standardUserDefaults];
+        NSDictionary *dict1 = @{@"c_id":[user1 objectForKey:@"community_id"],@"p_id":pid,@"tagid":tagid,@"num":@"1",@"token":[user1 objectForKey:@"token"],@"tokenSecret":[user1 objectForKey:@"tokenSecret"]};
+        //3.发送GET请求
+        NSString *strurl1 = [API stringByAppendingString:@"shop/check_shop_limit"];
+        [manager1 GET:strurl1 parameters:dict1 progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            
+            
+            //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
+            NSLog(@"center---success--%@--%@",[responseObject class],responseObject);
+            
+            if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+                //2.封装参数
+                
+                NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+                NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
+                NSDictionary *dict = [[NSDictionary alloc] init];
+                
+                
+                dict = @{@"number":@"1",@"tagname":tagname,@"p_id":pid,@"p_title":title,@"p_title_img":title_img,@"tagid":tagid,@"price":price,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+                NSString *strurl = [API stringByAppendingString:@"shop/add_shopping_cart"];
+                [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                    [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                    NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                    NSLog(@"failure--%@",error);
+                }];
+            }else{
+                [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+            }
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            [MBProgressHUD showToastToView:self.view withText:@"加载失败"];
             NSLog(@"failure--%@",error);
         }];
-    }
     }
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
