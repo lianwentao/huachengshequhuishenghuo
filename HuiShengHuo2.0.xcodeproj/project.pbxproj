@@ -506,8 +506,6 @@
 		28F6468D21CDF0C4006C6281 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F6468621CDF0C4006C6281 /* UIView+Extension.m */; };
 		28F6468E21CDF0C4006C6281 /* YWPageHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F6468821CDF0C4006C6281 /* YWPageHeadView.m */; };
 		28F6469121CDF100006C6281 /* version41mallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F6469021CDF100006C6281 /* version41mallViewController.m */; };
-		28F6469B21CDF383006C6281 /* CCPagedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F6469721CDF383006C6281 /* CCPagedScrollView.m */; };
-		28F6469C21CDF383006C6281 /* XXCustomPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F6469A21CDF383006C6281 /* XXCustomPageControl.m */; };
 		28F646A221CDFA5B006C6281 /* version41mallchildViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F646A121CDFA5B006C6281 /* version41mallchildViewController.m */; };
 		28FE4CD41FC02A9800C0A277 /* ShangpinshuxiangViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28FE4CD31FC02A9800C0A277 /* ShangpinshuxiangViewController.m */; };
 		840596F121B112870052B99D /* serviceListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 840596F021B112870052B99D /* serviceListModel.m */; };
@@ -1833,11 +1831,6 @@
 		28F6468821CDF0C4006C6281 /* YWPageHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YWPageHeadView.m; sourceTree = "<group>"; };
 		28F6468F21CDF100006C6281 /* version41mallViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = version41mallViewController.h; sourceTree = "<group>"; };
 		28F6469021CDF100006C6281 /* version41mallViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = version41mallViewController.m; sourceTree = "<group>"; };
-		28F6469621CDF383006C6281 /* CCPagedScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCPagedScrollView.h; sourceTree = "<group>"; };
-		28F6469721CDF383006C6281 /* CCPagedScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCPagedScrollView.m; sourceTree = "<group>"; };
-		28F6469821CDF383006C6281 /* directSeedingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = directSeedingHeader.h; sourceTree = "<group>"; };
-		28F6469921CDF383006C6281 /* XXCustomPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XXCustomPageControl.h; sourceTree = "<group>"; };
-		28F6469A21CDF383006C6281 /* XXCustomPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XXCustomPageControl.m; sourceTree = "<group>"; };
 		28F646A021CDFA5B006C6281 /* version41mallchildViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = version41mallchildViewController.h; sourceTree = "<group>"; };
 		28F646A121CDFA5B006C6281 /* version41mallchildViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = version41mallchildViewController.m; sourceTree = "<group>"; };
 		28FE4CD21FC02A9800C0A277 /* ShangpinshuxiangViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShangpinshuxiangViewController.h; sourceTree = "<group>"; };
@@ -4624,7 +4617,6 @@
 		28F6466121CDD604006C6281 /* version41mall */ = {
 			isa = PBXGroup;
 			children = (
-				28F6469521CDF383006C6281 /* CCPagedScrollView */,
 				28F6467C21CDF0C4006C6281 /* YWPerson */,
 				28F6468F21CDF100006C6281 /* version41mallViewController.h */,
 				28F6469021CDF100006C6281 /* version41mallViewController.m */,
@@ -4651,18 +4643,6 @@
 				28F6468821CDF0C4006C6281 /* YWPageHeadView.m */,
 			);
 			path = YWPerson;
-			sourceTree = "<group>";
-		};
-		28F6469521CDF383006C6281 /* CCPagedScrollView */ = {
-			isa = PBXGroup;
-			children = (
-				28F6469621CDF383006C6281 /* CCPagedScrollView.h */,
-				28F6469721CDF383006C6281 /* CCPagedScrollView.m */,
-				28F6469821CDF383006C6281 /* directSeedingHeader.h */,
-				28F6469921CDF383006C6281 /* XXCustomPageControl.h */,
-				28F6469A21CDF383006C6281 /* XXCustomPageControl.m */,
-			);
-			path = CCPagedScrollView;
 			sourceTree = "<group>";
 		};
 		28FE4CCE1FBFBEFA00C0A277 /* Model */ = {
@@ -6813,7 +6793,6 @@
 				845C565021A7F529002F509D /* shouFangDetailViewController.m in Sources */,
 				8460370621CDD4E500D83490 /* NSString+JKTrims.m in Sources */,
 				28A83CB1205F4634009ED444 /* HXPhotoSubViewCell.m in Sources */,
-				28F6469B21CDF383006C6281 /* CCPagedScrollView.m in Sources */,
 				286DE84620C194E60010F410 /* UICollectionView+XY.m in Sources */,
 				284F85EB2064D3010068CB0B /* openDoorViewController.m in Sources */,
 				28D75A0520A0330D0008A07D /* ICAlarmView.m in Sources */,
@@ -6899,7 +6878,6 @@
 				28A83C9B205F4634009ED444 /* HXCustomCameraController.m in Sources */,
 				284F854C2064AA760068CB0B /* FacepaysuessViewController.m in Sources */,
 				8460377021CDD4E500D83490 /* UITextField+JKSelect.m in Sources */,
-				28F6469C21CDF383006C6281 /* XXCustomPageControl.m in Sources */,
 				846D2D4521ABDB0B00221687 /* pingLunViewController.m in Sources */,
 				846036FB21CDD4E500D83490 /* NSString+JKDictionaryValue.m in Sources */,
 				28A716FC20626E680050D446 /* HaveNOiconCell.m in Sources */,

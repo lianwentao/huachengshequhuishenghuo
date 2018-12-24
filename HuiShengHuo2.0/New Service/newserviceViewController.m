@@ -93,7 +93,12 @@
     
     [self wr_setNavBarBarTintColor:[UIColor whiteColor]];
     [self wr_setNavBarBackgroundAlpha:0];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(change) name:@"changetitle" object:nil];
     // Do any additional setup after loading the view.
+}
+- (void)change
+{
+    [_tableView.mj_header beginRefreshing];
 }
 - (void)setupNavItems
 {

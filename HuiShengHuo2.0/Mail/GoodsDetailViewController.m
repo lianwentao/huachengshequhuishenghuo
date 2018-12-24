@@ -255,18 +255,15 @@ static NSString * LINKEDME_SHORT_URL;
 }
 - (void)butclick:(UIButton *)sender
 {
-    NSString *exitshours = [NSString stringWithFormat:@"%@",[_DataDic objectForKey:@"exist_hours"]];
-    NSString *kucun = [NSString stringWithFormat:@"%@",[_DataDic objectForKey:@"inventory"]];
+    NSString *tagid = [NSString stringWithFormat:@"%@",[_DataDic objectForKey:@"tagid"]];
+    //NSString *kucun = [NSString stringWithFormat:@"%@",[_DataDic objectForKey:@"inventory"]];
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *str = [userinfo objectForKey:@"token"];
     if (str==nil) {
         LoginViewController *login = [[LoginViewController alloc] init];
         [self presentViewController:login animated:YES completion:nil];
-    }else if ([exitshours isEqualToString:@"2"]){
-        [MBProgressHUD showToastToView:self.view withText:@"当前时间不在配送时间范围内"];
-    }else if ([kucun isEqualToString:@"0"]){
-        [MBProgressHUD showToastToView:self.view withText:@"库存不足"];
-    } else{
+    }else{
+        
         if (blocktagname==nil) {
             GuigeViewController *guige = [[GuigeViewController alloc] init];
             
@@ -294,22 +291,37 @@ static NSString * LINKEDME_SHORT_URL;
             if (ssssss==0) {
                 [MBProgressHUD showToastToView:self.view withText:@"商品规格不能为0"];
             }else{
-                _limit = _limit-ssssss;
-                if (_limit<=0) {
-                    [MBProgressHUD showToastToView:self.view withText:@"限购次数已到"];
-                }else{
-                    if (sender.tag == 2) {
-                        [self post1];
-                        [[PurchaseCarAnimationTool shareTool]startAnimationandView:imageview andRect:imageview.frame andFinisnRect:CGPointMake(50, ScreenHeight-49) andFinishBlock:^(BOOL finisn){
-                            UIView *tabbarBtn = but;
-                            [PurchaseCarAnimationTool shakeAnimation:tabbarBtn];
-                        }];
-                        
-                    }else{
-                        [self lijigoumaipost];
-                    }
+                AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+                //2.封装参数
+                NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+                NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"p_id":_IDstring,@"tagid":tagid,@"num":@"1",@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+                //3.发送GET请求
+                NSString *strurl = [API stringByAppendingString:@"shop/check_shop_limit"];
+                [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                     
-                }
+                    
+                    //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
+                    NSLog(@"center---success--%@--%@",[responseObject class],responseObject);
+                    
+                    if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                        if (sender.tag == 2) {
+                            [self post1];
+                            [[PurchaseCarAnimationTool shareTool]startAnimationandView:imageview andRect:imageview.frame andFinisnRect:CGPointMake(50, ScreenHeight-49) andFinishBlock:^(BOOL finisn){
+                                UIView *tabbarBtn = but;
+                                [PurchaseCarAnimationTool shakeAnimation:tabbarBtn];
+                            }];
+                            
+                        }else{
+                            [self lijigoumaipost];
+                        }
+                    }else{
+                        [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                    }
+                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                    [MBProgressHUD showToastToView:self.view withText:@"加载失败"];
+                    NSLog(@"failure--%@",error);
+                }];
             }
             }
         }
