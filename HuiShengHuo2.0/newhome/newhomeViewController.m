@@ -929,8 +929,8 @@
             tableView.rowHeight = 53;
             
         }else if(indexPath.row==1){
-            for (int i=0; i<4; i++) {
-                UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(15+i*(Main_width/2-35/2)+5*i, 0, Main_width/2-35/2, 150)];
+            for (int i=0; i<2; i++) {
+                UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(15+i*((Main_width-30)/2), 0, (Main_width-30)/2, 150)];
                 backview.backgroundColor = [UIColor whiteColor];
                 [cell.contentView addSubview:backview];
                 
@@ -953,6 +953,18 @@
                 [label1 setFont:font15];
                 label1.alpha = 0.5;
                 [backview addSubview:label1];
+                UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(backview.frame)-1, (Main_width-30)/2, 1)];
+                line1.backgroundColor = [UIColor colorWithHexString:@"#F1F1F1"];
+                [backview addSubview:line1];
+                UIView *line2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, (Main_width-30)/2, 1)];
+                line2.backgroundColor = [UIColor colorWithHexString:@"#F1F1F1"];
+                [backview addSubview:line2];
+                UIView *line3 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 150)];
+                line3.backgroundColor = [UIColor colorWithHexString:@"#F1F1F1"];
+                [backview addSubview:line3];
+                UIView *line4 = [[UIView alloc] initWithFrame:CGRectMake((Main_width-30)/2, 0, 1, 150)];
+                line4.backgroundColor = [UIColor colorWithHexString:@"#F1F1F1"];
+                [backview addSubview:line4];
                 
                 UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
                 but.frame = CGRectMake(15+i*(Main_width/2-35/2)+5*i, 0, Main_width/2-35/2, 150);
@@ -962,11 +974,20 @@
             }
             tableView.rowHeight = 150;
         }else{
-            tableView.rowHeight = 55+8;
+            tableView.rowHeight = 55;
             
-            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(15, 8, Main_width-30, 55)];
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(15, 0, Main_width-30, 54)];
             view.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:view];
+            UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(15, CGRectGetMaxY(view.frame), Main_width-30, 1)];
+            line1.backgroundColor = [UIColor colorWithHexString:@"#F1F1F1"];
+            [cell.contentView addSubview:line1];
+            UIView *line2 = [[UIView alloc] initWithFrame:CGRectMake(Main_width-30, 0, 1, 54)];
+            line2.backgroundColor = [UIColor colorWithHexString:@"#F1F1F1"];
+            [view addSubview:line2];
+            UIView *line3 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, 54)];
+            line3.backgroundColor = [UIColor colorWithHexString:@"#F1F1F1"];
+            [view addSubview:line3];
             NSString *urlstr = [API_img stringByAppendingString:[[xieyiarr objectAtIndex:indexPath.row] objectForKey:@"article_image"]];
             UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 25, 25)];
             [imageview sd_setImageWithURL:[NSURL URLWithString:urlstr]];

@@ -19,7 +19,14 @@
 #import "JSDropDownMenu.h"
 #import "zfListModel.h"
 
-@interface zuFangViewController ()<JSDropDownMenuDataSource,JSDropDownMenuDelegate,UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>{
+#import "YZPullDownMenu.h"
+#import "YZMenuButton.h"
+#import "TableViewController1.h"
+#import "TableViewController2.h"
+#import "TableViewController3.h"
+#import "TableViewController4.h"
+
+@interface zuFangViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,YZPullDownMenuDataSource>{
     
     NSMutableArray *zuJinArr;
     NSMutableArray *mianJiArr;
@@ -37,6 +44,15 @@
 }
 @property(nonatomic ,strong) UITableView *tableView;
 @property (nonatomic,copy)NSString         *community_name;
+@property (nonatomic, strong) NSArray *titles;
+@property (nonatomic,copy)NSString         *money;
+@property (nonatomic,copy)NSString         *housetype;
+@property (nonatomic,copy)NSString         *defaultType;
+@property (nonatomic,copy)NSString         *acreage;
+@property (nonatomic,copy)NSString         *moneyOne;
+@property (nonatomic,copy)NSString         *moneyTwo;
+@property (nonatomic,copy)NSString         *acreageOne;
+@property (nonatomic,copy)NSString         *acreageTwo;
 @end
 
 @implementation zuFangViewController
@@ -46,13 +62,50 @@
    self.view.backgroundColor = [UIColor whiteColor];
     // 设置导航控制器的代理为self
 //    self.navigationController.delegate = self;
-//    [self loadData];
+    [self loadData2];
     [self loadData1];
     [self CreateTableview];
     
     
     [self createdaohangolan];
     [self shaixuanList];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shaixuan1:) name:@"shaixuan1" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shaixuan2:) name:@"shaixuan2" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shaixuan3:) name:@"shaixuan3" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shaixuan4:) name:@"shaixuan4" object:nil];
+    
+
+}
+-(void)loadData2{
+    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSString *www = [userinfo objectForKey:@"token"];
+    NSLog(@"www = %@",www);
+    
+    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"houses_type":@"1"};
+    
+    NSLog(@"dict = %@",dict);
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    NSLog(@"dict = %@",dict);
+    //secondHouseType/getmoney secondHouseType/getacreage  secondHouseType/gethousetype secondHouseType/getdefault
+    NSString *strurl = [API stringByAppendingString:@"secondHouseType/getacreage"];
+    NSLog(@"strurl = %@",strurl);
+    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //        NSLog(@"gouwuche--%@",responseObject);
+        
+        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSLog(@"发反反复复方法dataStr = %@",dataStr);
+        
+        
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"failure--%@",error);
+    }];
+    
 }
 -(void)loadData{
 
@@ -89,11 +142,33 @@
     
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     if (_community_name == NULL) {
-        
         _community_name = @"";
     }
-    
-    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"money":@"",@"moneyOne":@"",@"moneyTwo ":@"",@"acreage":@"",@"areaOne":@"",@"areaTwo":@"",@"housetype ":@"",@"default":@"",@"page":@"",@"community_name":_community_name};
+    if (_money == NULL) {
+        _money = @"";
+    }
+    if (_housetype == NULL) {
+        _housetype = @"";
+    }
+    if (_defaultType == NULL) {
+        _defaultType = @"";
+    }
+    if (_acreage == NULL) {
+        _acreage = @"";
+    }
+    if (_acreageOne == NULL) {
+        _acreageOne = @"";
+    }
+    if (_acreageTwo == NULL) {
+        _acreageTwo = @"";
+    }
+    if (_moneyTwo == NULL) {
+        _moneyTwo = @"";
+    }
+    if (_moneyOne == NULL) {
+        _moneyOne = @"";
+    }
+    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":@"",@"community_name":_community_name};
     
     NSLog(@"dict = %@",dict);
     
@@ -156,132 +231,153 @@
 #pragma mark - 租房筛选框
 -(void)shaixuanList{
     
-    zuJinArr = [NSMutableArray arrayWithObjects:@"不限", @"500以下", @"500-1000元", @"1000-1500元", @"1500-2000元", nil];
-    mianJiArr = [NSMutableArray arrayWithObjects:@"不限", @"50平米以下", @"50-70平米", @"70-90平米", @"90-110平米", nil];
-    fangXingArr = [NSMutableArray arrayWithObjects:@"不限", @"一室", @"二室", @"三室", @"四室", nil];
-    gengDuoArr = [NSMutableArray arrayWithObjects:@"默认排序", @"最新发布", @"价格从低到高", @"价格从高到低", @"面积从大到小", nil];
-    
-    JSDropDownMenu *menu = [[JSDropDownMenu alloc] initWithOrigin:CGPointMake(0, 64) andHeight:45];
-    menu.indicatorColor = [UIColor colorWithRed:175.0f/255.0f green:175.0f/255.0f blue:175.0f/255.0f alpha:1.0];
-    menu.separatorColor = [UIColor colorWithRed:210.0f/255.0f green:210.0f/255.0f blue:210.0f/255.0f alpha:1.0];
-    menu.textColor = [UIColor colorWithRed:83.f/255.0f green:83.f/255.0f blue:83.f/255.0f alpha:1.0f];
+    // 创建下拉菜单
+    YZPullDownMenu *menu = [[YZPullDownMenu alloc] init];
+    menu.frame = CGRectMake(0, 64, Main_width, 44);
+    [self.view addSubview:menu];    
+    // 设置下拉菜单代理
     menu.dataSource = self;
-    menu.delegate = self;
-    
-    [self.view addSubview:menu];
+    // 初始化标题
+    _titles = @[@"租金",@"面积",@"房型",@"排序"];
+    // 添加子控制器
+    [self setupAllChildViewController];
 }
-- (NSInteger)numberOfColumnsInMenu:(JSDropDownMenu *)menu {
-    
+#pragma mark - 添加子控制器
+- (void)setupAllChildViewController
+{
+    TableViewController1 *list1 = [[TableViewController1 alloc] init];
+    TableViewController2 *list2 = [[TableViewController2 alloc] init];
+    TableViewController3 *list3 = [[TableViewController3 alloc] init];
+    TableViewController4 *list4 = [[TableViewController4 alloc] init];
+    [self addChildViewController:list1];
+    [self addChildViewController:list2];
+    [self addChildViewController:list3];
+    [self addChildViewController:list4];
+}
+#pragma mark - 下拉菜单代理方法
+// 返回下拉菜单多少列
+- (NSInteger)numberOfColsInMenu:(YZPullDownMenu *)pullDownMenu
+{
     return 4;
 }
 
--(BOOL)displayByCollectionViewInColumn:(NSInteger)column{
-    
-//    if (column==2) {
-//
-//        return YES;
-//    }
-    
-//    return NO;
-    
-    return NO;
+// 返回下拉菜单每列按钮
+- (UIButton *)pullDownMenu:(YZPullDownMenu *)pullDownMenu buttonForColAtIndex:(NSInteger)index
+{
+    YZMenuButton *button = [YZMenuButton buttonWithType:UIButtonTypeCustom];
+    [button setTitle:_titles[index] forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize:15];
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithHexString:@"#FF5722"] forState:UIControlStateSelected];
+    [button setImage:[UIImage imageNamed:@"标签-向下箭头"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"标签-向上箭头"] forState:UIControlStateSelected];
+    return button;
 }
 
--(BOOL)haveRightTableViewInColumn:(NSInteger)column{
-//
-//    if (column==0) {
-//        return YES;
-//    }
-    return NO;
+// 返回下拉菜单每列对应的控制器
+- (UIViewController *)pullDownMenu:(YZPullDownMenu *)pullDownMenu viewControllerForColAtIndex:(NSInteger)index
+{
+    return self.childViewControllers[index];
 }
 
--(CGFloat)widthRatioOfLeftColumn:(NSInteger)column{
-    
-//    if (column==0) {
-//        return 0.3;
-//    }
-    
-    return 1;
-}
-
--(NSInteger)currentLeftSelectedRow:(NSInteger)column{
-    
-    return _currentData2Index;
-    return 0;
-}
-
-- (NSInteger)menu:(JSDropDownMenu *)menu numberOfRowsInColumn:(NSInteger)column leftOrRight:(NSInteger)leftOrRight leftRow:(NSInteger)leftRow{
-    
-    if (column==0) {
-            
-        return zuJinArr.count;
-    } else if (column==1){
-        
-        return mianJiArr.count;
-        
-    } else if (column==2){
-        
-        return fangXingArr.count;
-    }else if (column==3){
-        
-        return gengDuoArr.count;
+// 返回下拉菜单每列对应的高度
+- (CGFloat)pullDownMenu:(YZPullDownMenu *)pullDownMenu heightForColAtIndex:(NSInteger)index
+{
+    // 第1列 高度
+    if (index == 0) {
+        return 280;
     }
-    
-    return 0;
-}
-- (NSString *)menu:(JSDropDownMenu *)menu titleForColumn:(NSInteger)column{
-    
-    
-    switch (column) {
-        case 0: return @"租金";
-            break;
-        case 1: return @"面积";
-            break;
-        case 2: return @"房型";
-            break;
-        case 3: return @"排序";
-            break;
-        default:
-            return nil;
-            break;
+    // 第2列 高度
+    if (index == 1) {
+        return 280;
     }
+    // 第3列 高度
+    return 230;
+    // 第4列 高度
+    return 230;
 }
 
-- (NSString *)menu:(JSDropDownMenu *)menu titleForRowAtIndexPath:(JSIndexPath *)indexPath {
-    
-    if (indexPath.column==0) {
+- (void)shaixuan1:(NSNotification *)userinfo{
+    NSString *str = [userinfo.userInfo objectForKey:@"shaiXuanStr1"];
+    NSLog(@"str = %@",str);
+    if ([str isEqualToString:@"不限"]) {
+        _money = @"0";
+    }else if ([str isEqualToString:@"500以下"]) {
+        _money = @"1";
+    }else if ([str isEqualToString:@"500-1000元"]) {
+        _money = @"2";
+    }else if ([str isEqualToString:@"1000-1500元"]) {
+        _money = @"3";
+    }else if ([str isEqualToString:@"1500-2000元"]) {
+        _money = @"4";
+    }else{
+        NSArray *array = [str componentsSeparatedByString:@"-"];//从字符-中分隔成2个元素的数组
+        _moneyOne = [array objectAtIndex:0];
+        _moneyTwo = [array objectAtIndex:1];
         
-        return zuJinArr[indexPath.row];
-        
-    } else if (indexPath.column==1) {
-        
-        return mianJiArr[indexPath.row];
-        
-    } else if (indexPath.column==2) {
-        
-        return fangXingArr[indexPath.row];
-        
-    }else {
-        
-        return gengDuoArr[indexPath.row];
     }
+    [self loadData1];
+}
+- (void)shaixuan2:(NSNotification *)userinfo{
+    NSString *str = [userinfo.userInfo objectForKey:@"shaiXuanStr2"];
+    NSLog(@"str = %@",str);
+    if ([str isEqualToString:@"不限"]) {
+        _acreage = @"0";
+    }else if ([str isEqualToString:@"50平米以下"]) {
+        _acreage = @"1";
+    }else if ([str isEqualToString:@"50-70平米"]) {
+        _acreage = @"2";
+    }else if ([str isEqualToString:@"70-90平米"]) {
+        _acreage = @"3";
+    }else if ([str isEqualToString:@"90-110平米"]) {
+        _acreage = @"4";
+    }else{
+        NSArray *array = [str componentsSeparatedByString:@"-"];//从字符-中分隔成2个元素的数组
+        _acreageOne = [array objectAtIndex:0];
+        _acreageTwo = [array objectAtIndex:1];
+    }
+    [self loadData1];
+}
+- (void)shaixuan3:(NSNotification *)userinfo{
+    NSString *str = [userinfo.userInfo objectForKey:@"shaiXuanStr3"];
+    NSLog(@"str = %@",str);
+    if ([str isEqualToString:@"不限"]) {
+        _housetype = @"0";
+    }else if ([str isEqualToString:@"一室"]) {
+        _housetype = @"1";
+    }else if ([str isEqualToString:@"二室"]) {
+        _housetype = @"2";
+    }else if ([str isEqualToString:@"三室"]) {
+        _housetype = @"3";
+    }else if ([str isEqualToString:@"四室"]) {
+        _housetype = @"4";
+    }
+    [self loadData1];
+}
+- (void)shaixuan4:(NSNotification *)userinfo{
+   
+    NSString *str = [userinfo.userInfo objectForKey:@"shaiXuanStr4"];
+    NSLog(@"str = %@",str);
+    if ([str isEqualToString:@"默认排序"]) {
+        _defaultType = @"0";
+    }else if ([str isEqualToString:@"最新发布"]) {
+        _defaultType = @"1";
+    }else if ([str isEqualToString:@"价格从低到高"]) {
+        _defaultType = @"2";
+    }else if ([str isEqualToString:@"价格从高到低"]) {
+        _defaultType = @"3";
+    }else if ([str isEqualToString:@"面积从大到小"]) {
+        _defaultType = @"4";
+    }
+    [self loadData1];
+}
+- (void)upDataId:(NSNotification *)userinfo{
+    NSString *str = [userinfo.userInfo objectForKey:@"id"];
+    NSLog(@"str = %@",str);
+    _money = str;
+    [self loadData1];
 }
 
-- (void)menu:(JSDropDownMenu *)menu didSelectRowAtIndexPath:(JSIndexPath *)indexPath {
-    
-    if (indexPath.column == 0) {
-       
-       _currentData2Index = indexPath.row;
-        
-    } else if(indexPath.column == 1){
-        
-        _currentData2Index = indexPath.row;
-        
-    } else{
-        
-       _currentData2Index = indexPath.row;
-    }
-}
 #pragma mark - 租房列表
 - (void)CreateTableview{
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 110, self.view.frame.size.width, self.view.frame.size.height-110)style:UITableViewStylePlain ];
@@ -388,10 +484,10 @@
     
     UILabel *priceLab = [[UILabel alloc]init];
     priceLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+5, 100, 30);
-    priceLab.text = @"1500元/月";
+    priceLab.text = [NSString stringWithFormat:@"%@元/月",model.unit_price];
 //    priceLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
     priceLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
-    priceLab.font = [UIFont systemFontOfSize:17];
+    priceLab.font = [UIFont systemFontOfSize:18];
     priceLab.textAlignment = NSTextAlignmentLeft;
     [cell addSubview:priceLab];
     
