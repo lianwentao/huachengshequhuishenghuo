@@ -1106,7 +1106,7 @@
             //                    label3.textAlignment = NSTextAlignmentRight;
             //                    label3.font = [UIFont systemFontOfSize:14];
             NSDictionary *dicttime = @{@"tag":[NSString stringWithFormat:@"%d",i]};
-            countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDownAction) userInfo:dicttime repeats:YES]; //启动倒计时后会每秒钟调用一次方法 countDownAction
+            //countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDownAction) userInfo:dicttime repeats:YES]; //启动倒计时后会每秒钟调用一次方法 countDownAction
             //设置倒计时显示的时间
             NSString *str_day = [NSString stringWithFormat:@"%ld",secondsCountDown/3600/24];
             NSString *str_hour = [NSString stringWithFormat:@"%ld",secondsCountDown/3600%24];//时
