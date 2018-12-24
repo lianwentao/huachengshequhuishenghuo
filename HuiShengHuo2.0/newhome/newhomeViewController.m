@@ -59,6 +59,7 @@
 #define kScreenWidth [UIScreen mainScreen].bounds.size.width
 #define kScreenHeight [UIScreen mainScreen].bounds.size.height
 #define LIMIT_OFFSET_Y -(IMAGE_HEIGHT + SCROLL_DOWN_LIMIT)
+#define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
 
 #import "XLsn0wTextCarousel.h"
 #import "DataSourceModel.h"
@@ -80,7 +81,6 @@
     NSArray *xieyiarr;
     NSArray *gongGaoArr;
     NSArray *housesList;
-    NSArray *adCenterListArr;
     JKBannarView *bannerView;
     
     UILabel *titlelabel;
@@ -110,10 +110,8 @@
     //[self loggggg];
     
     [self setupNavItems];
-    [self getData];
-//    [self gettop];
-//    [self getcenter];
-//    [self createui];
+//    [self getData];
+    [self createui];
     
     [self wr_setNavBarBarTintColor:[UIColor whiteColor]];
     [self wr_setNavBarBackgroundAlpha:0];
@@ -413,75 +411,22 @@
     _tableView.backgroundColor = BackColor;
     _tableView.showsVerticalScrollIndicator = NO;
     //_TabelView.enablePlaceHolderView = YES;
-    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(xiala)];
+   
     self.tableView.contentInset = UIEdgeInsetsMake(IMAGE_HEIGHT - [self navBarBottom], 0, 0, 0);
     [self.view addSubview:_tableView];
+    
+    WS(ws);
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [ws.tableView.mj_footer endRefreshing];
+        [ws getData];
+        
+    }];
+     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(xiala)];
+    [self.tableView.mj_header beginRefreshing];
 }
 - (void)xiala
 {
     [self getData];
-    [self gettop];
-    [self getcenter];
-}
--(void)gettop
-{
-    //1.创建会话管理者
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    //2.封装参数
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"community_id":[user objectForKey:@"community_id"]};
-    //3.发送GET请求
-    /*
-     
-     */
-    
-    NSString *strurl = [API stringByAppendingString:@"site/get_Advertising/c_name/hc_index_top"];
-    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        NSLog(@"top--%@--%@",[responseObject class],responseObject);
-        topArr = [NSArray array];
-        topArr = [responseObject objectForKey:@"data"];
-        bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, 150) viewSize:CGSizeMake(Main_width,150)];
-        NSMutableArray *imagearr = [NSMutableArray arrayWithCapacity:0];
-        if ([topArr isKindOfClass:[NSArray class]]) {
-            for (int i=0; i<topArr.count; i++) {
-                NSString *url = [API_img stringByAppendingString:[[topArr objectAtIndex:i]objectForKey:@"img"]];
-                NSLog(@"%@",url);
-                [imagearr addObject:url];
-                bannerView.items = imagearr;
-            }
-        }
-        [_tableView reloadData];
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-        NSLog(@"failure--%@",error);
-    }];
-}
--(void)getcenter
-{
-    //1.创建会话管理者
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    //2.封装参数
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"community_id":[user objectForKey:@"community_id"]};
-    //3.发送GET请求
-    /*
-     
-     */
-    
-    NSString *strurl = [API stringByAppendingString:@"site/get_Advertising/c_name/hc_index_center"];
-    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        centerguanggaoarr = [NSArray array];
-        centerguanggaoarr = [responseObject objectForKey:@"data"];
-        NSLog(@"center--%@--%@",[responseObject class],responseObject);
-        
-        [_tableView reloadData];
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-        NSLog(@"failure--%@",error);
-    }];
 }
 -(void)getData
 {
@@ -501,7 +446,7 @@
         NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
         NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSLog(@"dataStr = %@",dataStr);
-        
+         [_tableView.mj_header endRefreshing];
 //        NSLog(@"success--%@--%@",[responseObject class],responseObject);
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
             dataDic = [[NSDictionary alloc] init];
@@ -516,8 +461,8 @@
             gongGaoArr = [dataDic objectForKey:@"p_social_list"];
             topArr = [NSArray array];
             topArr = [dataDic objectForKey:@"ad_top_list"];
-            adCenterListArr = [NSArray array];
-            adCenterListArr = [dataDic objectForKey:@"ad_center_list"];
+            centerguanggaoarr = [NSArray array];
+            centerguanggaoarr = [dataDic objectForKey:@"ad_center_list"];
             bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, 150) viewSize:CGSizeMake(Main_width,150)];
             NSMutableArray *imagearr = [NSMutableArray arrayWithCapacity:0];
             if ([topArr isKindOfClass:[NSArray class]]) {
@@ -536,8 +481,7 @@
         }else{
             [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }
-        [_tableView.mj_header endRefreshing];
-        [self createui];
+//        [self createui];
         [_tableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [MBProgressHUD showToastToView:self.view withText:@"加载失败"];
@@ -576,31 +520,37 @@
 //cell 的数量
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section==2) {
-        return 2;
+    if (section==0) {
+        return 1;
+    }else if(section==1){
+        return 1;
+    }else if(section==2){
+        return 1;
     }else if(section==3){
-       return 2;
-    }else if(section==4){
         if ([xieyiarr isKindOfClass:[NSArray class]]) {
             return xieyiarr.count;
         }else{
             return 0;
         }
+    }else if(section==4){
+        return 1;
     }else if(section==5){
+        return 1;
+    }else if(section==6){
+        return 2;
+    }else{
         if ([chanpinarr isKindOfClass:[NSArray class]]) {
             return 1+chanpinarr.count;
         }else{
             return 0;
         }
-    }else{
-        return 1;
     }
 }
 
 // 分组的数量
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 6;
+    return 8;
 }
 //headview的高度和内容
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -749,48 +699,6 @@
                     youxian.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:youxian animated:YES];
                 }if ([url_type isEqualToString:@"16"]){
-                    
-                    
-                    
-                    
-                    //                    NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
-                    //                    NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
-                    //
-                    //                    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-                    //                    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-                    //                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                    //                    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-                    //                    NSDictionary *dict = @{@"apk_token":uid_username};
-                    //                    NSString *strurl = [API stringByAppendingString:@"apk/property/binding_community"];
-                    //                    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                    //                        NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
-                    //                        NSArray *arrrrr = [[NSArray alloc] init];
-                    //                        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-                    //                            arrrrr = [responseObject objectForKey:@"data"];
-                    //                            if (arrrrr.count>1) {
-                    //                                selectHomeViewController *selecthome = [[selectHomeViewController alloc] init];
-                    //                                selecthome.homeArr = arrrrr;
-                    //                                selecthome.hidesBottomBarWhenPushed = YES;
-                    //                                [self.navigationController pushViewController:selecthome animated:YES];
-                    //                            }else{
-                    //                                MyhomeViewController *myhome = [[MyhomeViewController alloc] init];
-                    //                                myhome.room_id = [[arrrrr objectAtIndex:0] objectForKey:@"room_id"];
-                    //                                myhome.hidesBottomBarWhenPushed = YES;
-                    //                                [self.navigationController pushViewController:myhome animated:YES];
-                    //                            }
-                    //                            [defaults setObject:@"2" forKey:@"is_bind_property"];
-                    //                            [userdf synchronize];
-                    //                        }else{
-                    //                            bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
-                    //                            bangding.hidesBottomBarWhenPushed = YES;
-                    //                            [self.navigationController pushViewController:bangding animated:YES];
-                    //
-                    //                            [defaults setObject:@"1" forKey:@"is_bind_property"];
-                    //                            [userdf synchronize];
-                    //                        }
-                    //                    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                    //                        NSLog(@"failure--%@",error);
-                    //                    }];
                 }if ([url_type isEqualToString:@"17"]){
                     NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
                     NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
@@ -924,415 +832,104 @@
             tableView.rowHeight = RECTSTATUS.size.height+44;
         }
     }else if(indexPath.section==2){
-        if (indexPath.row==0) {
-            
-            self.dataSourceArray = [NSMutableArray array];
-            NSArray *typeArray = @[@"提示", @"提示", @"提示", @"提示"];
-            gongGaoArr = dataDic[@"p_social_list"];
-            NSMutableArray *titleArray = [NSMutableArray array];
-            for (int m = 0; m < gongGaoArr.count; m++) {
-                NSDictionary *dic = gongGaoArr[m];
-                NSString *title = [dic objectForKey:@"title"];
-                [titleArray addObject:title];
-            }
-            NSLog(@"titleArray = %@",titleArray);
-            NSMutableArray *timeArray = [NSMutableArray array];
-            
-            for (int m = 0; m < gongGaoArr.count; m++) {
-                NSDictionary *dic = gongGaoArr[m];
-                NSString *time = [dic objectForKey:@"addtime"];
-                [timeArray addObject:time];
-            }
-            NSArray *URLArray = @[@"http://0", @"http://1", @"http://2", @"http://3"];
-            
-            for (int i = 0; i < titleArray.count; i++) {
-                NSString *title = [titleArray objectAtIndex:i];
-                NSString *URLString = [URLArray objectAtIndex:i];
-                NSString *type = [typeArray objectAtIndex:i];
-                NSString *time = [timeArray objectAtIndex:i];
-                DataSourceModel *model = [DataSourceModel dataSourceModelWithType:type title:title time:time URLString:URLString];
-                [self.dataSourceArray addObject:model];
-            }
-            XLsn0wTextCarousel *view = [[XLsn0wTextCarousel alloc] initWithFrame:CGRectMake(0 , 0, Main_width, 70)];
-            UILabel *topLabel = [[UILabel alloc]init];
-            [topLabel setFrame:(CGRectMake(70, 16, 30, 15))];
-            topLabel.text = @"提示";
-            topLabel.backgroundColor = [UIColor whiteColor];
-            topLabel.textColor = [UIColor colorWithHexString:@"#FF5722"];
-            topLabel.layer.cornerRadius = 2;
-            topLabel.layer.masksToBounds = YES;
-            topLabel.textAlignment = NSTextAlignmentCenter;
-            topLabel.font = [UIFont systemFontOfSize:10];
-            [view addSubview:topLabel];
-            
-            UILabel *bottomLabel = [[UILabel alloc]init];
-            [bottomLabel setFrame:(CGRectMake(70, 44, 30, 15))];
-            bottomLabel.text = @"提示";
-            bottomLabel.backgroundColor = [UIColor whiteColor];
-            bottomLabel.textColor = [UIColor colorWithHexString:@"#FF5722"];
-            bottomLabel.layer.cornerRadius = 2;
-            bottomLabel.layer.masksToBounds = YES;
-            bottomLabel.textAlignment = NSTextAlignmentCenter;
-            bottomLabel.font = [UIFont systemFontOfSize:10];
-             [view addSubview:bottomLabel];
-            
-            view.dataSourceArray = self.dataSourceArray;
-            view.currentTextInfoView.xlsn0wDelegate = self;
-            view.hiddenTextInfoView.xlsn0wDelegate = self;
-            
-            UILabel *ggLab1 = [[UILabel alloc]init];
-            ggLab1.frame = CGRectMake(10, 16, 60, 22);
-            ggLab1.numberOfLines = 2;
-            ggLab1.text = @"物业";
-            ggLab1.textColor = [UIColor whiteColor];
-            [ggLab1 setFont:[UIFont fontWithName:@"Helvetica-Bold" size:20]];
-            [view addSubview:ggLab1];
-            
-            UILabel *ggLab2 = [[UILabel alloc]init];
-            ggLab2.frame = CGRectMake(10, 38, 60, 22);
-            ggLab2.numberOfLines = 2;
-            ggLab2.text = @"公告";
-            ggLab2.textColor = [UIColor whiteColor];
-            [ggLab2 setFont:[UIFont fontWithName:@"Helvetica-Bold" size:20]];
-            [view addSubview:ggLab2];
-            
-            //            view.backgroundColor =[UIColor orangeColor];
-            [cell.contentView addSubview:view];
-            
-            UILabel *titleLab = [[UILabel alloc]init];
-            titleLab.frame = CGRectMake(10, CGRectGetMaxY(view.frame)+17, 75, 19);
-            titleLab.text = @"物业服务";
-            titleLab.textColor = [UIColor colorWithHexString:@"#555555FF"];
-            titleLab.font = [UIFont systemFontOfSize:18];
-            [cell.contentView addSubview:titleLab];
-            
-            UILabel *fuLab = [[UILabel alloc]init];
-            fuLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame)+10, CGRectGetMaxY(view.frame)+22, 113, 14);
-            fuLab.text = @"精选商品 放心购物";
-            fuLab.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
-            fuLab.font = [UIFont systemFontOfSize:13];
-            [cell.contentView addSubview:fuLab];
-            NSArray *textArr1 = @[@"生活缴费",@"家用报修",@"公共报修"];
-            NSArray *textArr2 = @[@"便捷缴费",@"一键报修",@"一键报修"];
-            NSArray *imgArr = @[@"物业缴费",@"家用维修",@"报事处理"];
-            for (int i = 0; i < 3; i++) {
-                
-                UIView *bgView = [[UIView alloc]init];
-                bgView.frame = CGRectMake(10+(i*((Main_width-40)/3+10)), CGRectGetMaxY(titleLab.frame)+19, (Main_width-40)/3, 66);
-                UILabel *textLab1 = [[UILabel alloc]init];
-                textLab1.frame = CGRectMake(5, 17, 55, 13);
-                textLab1.text = textArr1[i];
-                textLab1.textColor = [UIColor colorWithHexString:@"#555555"];
-                textLab1.font = [UIFont systemFontOfSize:13];
-                [bgView addSubview:textLab1];
-                
-                UILabel *textLab2 = [[UILabel alloc]init];
-                textLab2.frame = CGRectMake(5, 39, 45, 12);
-                textLab2.text = textArr2[i];
-                textLab2.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
-                textLab2.font = [UIFont systemFontOfSize:11];
-                [bgView addSubview:textLab2];
-                
-                UIImageView *imgView = [[UIImageView alloc]init];
-                imgView.frame = CGRectMake(62, 13, 43, 40);
-                imgView.image = [UIImage imageNamed:imgArr[i]];
-                [bgView addSubview:imgView];
-                
-                UIButton *wuYeJiaoFei = [UIButton buttonWithType:UIButtonTypeCustom];
-                wuYeJiaoFei.frame = CGRectMake(0,0, (Main_width-40)/3, 66);
-                wuYeJiaoFei.tag = i+100;
-                [wuYeJiaoFei addTarget:self action:@selector(wuYeJiaoFei:) forControlEvents:UIControlEventTouchUpInside];
-                [bgView addSubview:wuYeJiaoFei];
-                
-//                bgView.backgroundColor = [UIColor yellowColor];
-                bgView.layer.cornerRadius = 5;
-                bgView.layer.masksToBounds = YES;
-                bgView.layer.borderWidth = 1;
-                bgView.layer.borderColor = [[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1] CGColor];
-                [cell.contentView addSubview:bgView];
-            }
-            tableView.rowHeight = 175+16;
-        }else{
-                if ([tieziDic isKindOfClass:[NSDictionary class]]) {
-                    
-                    UILabel *titleLab = [[UILabel alloc]init];
-                    titleLab.frame = CGRectMake(10,17, 75, 19);
-                    titleLab.text = @"邻里交流";
-                    titleLab.textColor = [UIColor colorWithHexString:@"#555555FF"];
-                    titleLab.font = [UIFont systemFontOfSize:18];
-                    [cell.contentView addSubview:titleLab];
-                    
-                    UILabel *fuLab = [[UILabel alloc]init];
-                    fuLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame)+10, 22, 113, 14);
-                    fuLab.text = @"精选商品 放心购物";
-                    fuLab.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
-                    fuLab.font = [UIFont systemFontOfSize:13];
-                    [cell.contentView addSubview:fuLab];
-                    
-                    UIView *backview = [[UIView alloc] init];
-                    backview.frame = CGRectMake(12, CGRectGetMaxY(titleLab.frame)+19, Main_width-24, 145);
-                    backview.backgroundColor = [UIColor whiteColor];
-                    backview.layer.cornerRadius = 5;
-                    
-                    UIImageView *_imageview = [[UIImageView alloc] initWithFrame:CGRectMake(Main_width-24-80-10, 15, 80, 80)];
-                    [backview addSubview:_imageview];
-                    _imageview.userInteractionEnabled = YES;
-                    _imageview.clipsToBounds = YES;
-                    _imageview.contentMode = UIViewContentModeScaleAspectFill;
-                    NSArray *imglistarr = [[NSArray alloc] init];
-                    imglistarr = [tieziDic objectForKey:@"img_list"];
-                    
-                    NSString *imagestring = [[[tieziDic objectForKey:@"img_list"] objectAtIndex:0] objectForKey:@"img"];
-                    [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                    
-                    UILabel *titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, Main_width-24-20-80-10, 40)];
-                    NSData *data1 = [[NSData alloc] initWithBase64EncodedString:[tieziDic objectForKey:@"title"] options:0];
-                    NSString *labeltext = [[NSString alloc] initWithData:data1 encoding:NSUTF8StringEncoding];
-                    titlelabel.text = labeltext;
-                    titlelabel.numberOfLines = 2;
-                    titlelabel.alpha = 0.87;
-                    titlelabel.font = [UIFont boldSystemFontOfSize:16.5];
-                    [backview addSubview:titlelabel];
-                    
-                    
-                    
-                    UILabel *contentlabel = [[UILabel alloc] initWithFrame:CGRectMake(10, titlelabel.frame.size.height+titlelabel.frame.origin.y+10, Main_width-24-20-80-10, 40)];
-                    contentlabel.numberOfLines = 2;
-                    contentlabel.font = font15;
-                    contentlabel.alpha = 0.54;
-                    NSData *data2 = [[NSData alloc] initWithBase64EncodedString:[tieziDic objectForKey:@"content"] options:0];
-                    NSString *labeltext2 = [[NSString alloc] initWithData:data2 encoding:NSUTF8StringEncoding];
-                    contentlabel.text = labeltext2;
-                    [backview addSubview:contentlabel];
-                    
-                    UIImageView *touxiang = [[UIImageView alloc] initWithFrame:CGRectMake(10, contentlabel.frame.size.height+contentlabel.frame.origin.y+10, 20, 20)];
-                    touxiang.layer.cornerRadius = 10;
-                    NSString *imagestring1 = [tieziDic objectForKey:@"avatars"];
-                    [touxiang sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring1]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                    [backview addSubview:touxiang];
-                    
-                    UILabel *zuozhe = [[UILabel alloc] initWithFrame:CGRectMake(10+20+5, contentlabel.frame.size.height+contentlabel.frame.origin.y+10, Main_width-24-20-80-10-40, 20)];
-                    zuozhe.font = [UIFont systemFontOfSize:13];
-                    zuozhe.alpha = 0.54;
-                    zuozhe.text = [NSString stringWithFormat:@"%@  发布于  %@  %@",[tieziDic objectForKey:@"nickname"],[tieziDic objectForKey:@"c_name"],[tieziDic objectForKey:@"addtime"]];
-                    [backview addSubview:zuozhe];
-                    
-                    UILabel *scanlabel = [[UILabel alloc] initWithFrame:CGRectMake(Main_width-24-100-10, contentlabel.frame.size.height+contentlabel.frame.origin.y+10, 60, 20)];
-                    
-                    NSMutableAttributedString *attri =     [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[tieziDic objectForKey:@"click"]]];
-                    NSTextAttachment *attch = [[NSTextAttachment alloc] init];
-                    attch.image = [UIImage imageNamed:@"liulan"];
-                    attch.bounds = CGRectMake(0, -3, 15, 15);
-                    NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
-                    [attri insertAttributedString:string atIndex:0];
-                    scanlabel.attributedText = attri;
-                    scanlabel.alpha = 0.54;
-                    scanlabel.font = [UIFont systemFontOfSize:13];
-                    [backview addSubview:scanlabel];
-                    
-                    UILabel *pinglunlabel = [[UILabel alloc] initWithFrame:CGRectMake(Main_width-24-100-10+60, contentlabel.frame.size.height+contentlabel.frame.origin.y+10, 50, 20)];
-                    NSMutableAttributedString *attri1 =     [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[tieziDic objectForKey:@"reply_num"]]];
-                    NSTextAttachment *attch1 = [[NSTextAttachment alloc] init];
-                    attch1.image = [UIImage imageNamed:@"pinglun"];
-                    attch1.bounds = CGRectMake(0, -3, 15, 15);
-                    NSAttributedString *string1 = [NSAttributedString attributedStringWithAttachment:attch1];
-                    [attri1 insertAttributedString:string1 atIndex:0];
-                    pinglunlabel.attributedText = attri1;
-                    pinglunlabel.alpha = 0.54;
-                    pinglunlabel.font = [UIFont systemFontOfSize:13];
-                    [backview addSubview:pinglunlabel];
-                    
-                    UIButton *tiezxiangqingbut = [UIButton buttonWithType:UIButtonTypeCustom];
-                    tiezxiangqingbut.frame = CGRectMake(0, 0, Main_width-24, 140);
-                    [backview addSubview:tiezxiangqingbut];
-                    //                tiezxiangqingbut.tag = i;
-                    [tiezxiangqingbut addTarget:self action:@selector(tiezixiangqing:) forControlEvents:UIControlEventTouchUpInside];
-                    
-                    [cell.contentView addSubview:backview];
-                    
-                    tableView.rowHeight = 39+10+145+16;
-                }else{
-                    tableView.rowHeight = 0;
+       
+            if ([gongGaoArr isKindOfClass:[NSArray class]]) {
+                NSMutableArray *titleArray = [NSMutableArray array];
+                for (int m = 0; m < gongGaoArr.count; m++) {
+                    NSDictionary *dic = gongGaoArr[m];
+                    NSString *title = [dic objectForKey:@"title"];
+                    [titleArray addObject:title];
                 }
+                NSLog(@"titleArray = %@",titleArray);
+                NSMutableArray *timeArray = [NSMutableArray array];
+
+                for (int m = 0; m < gongGaoArr.count; m++) {
+                    NSDictionary *dic = gongGaoArr[m];
+                    NSString *time = [dic objectForKey:@"addtime"];
+                    [timeArray addObject:time];
+                }
+                self.dataSourceArray = [NSMutableArray array];
+                for (int i = 0; i < titleArray.count; i++) {
+                    NSString *title = [titleArray objectAtIndex:i];
+                    NSString *time = [timeArray objectAtIndex:i];
+                    DataSourceModel *model = [DataSourceModel dataSourceModelWithType:nil title:title time:time URLString:nil];
+                    [self.dataSourceArray addObject:model];
+                }
+                XLsn0wTextCarousel *view = [[XLsn0wTextCarousel alloc] initWithFrame:CGRectMake(0 , 0, Main_width, 70)];
+                UILabel *topLabel = [[UILabel alloc]init];
+                [topLabel setFrame:(CGRectMake(70, 16, 30, 15))];
+                topLabel.text = @"提示";
+                topLabel.backgroundColor = [UIColor whiteColor];
+                topLabel.textColor = [UIColor colorWithHexString:@"#FF5722"];
+                topLabel.layer.cornerRadius = 2;
+                topLabel.layer.masksToBounds = YES;
+                topLabel.textAlignment = NSTextAlignmentCenter;
+                topLabel.font = [UIFont systemFontOfSize:10];
+                [view addSubview:topLabel];
+
+                UILabel *bottomLabel = [[UILabel alloc]init];
+                [bottomLabel setFrame:(CGRectMake(70, 44, 30, 15))];
+                bottomLabel.text = @"提示";
+                bottomLabel.backgroundColor = [UIColor whiteColor];
+                bottomLabel.textColor = [UIColor colorWithHexString:@"#FF5722"];
+                bottomLabel.layer.cornerRadius = 2;
+                bottomLabel.layer.masksToBounds = YES;
+                bottomLabel.textAlignment = NSTextAlignmentCenter;
+                bottomLabel.font = [UIFont systemFontOfSize:10];
+                [view addSubview:bottomLabel];
+
+                view.dataSourceArray = self.dataSourceArray;
+                view.currentTextInfoView.xlsn0wDelegate = self;
+                view.hiddenTextInfoView.xlsn0wDelegate = self;
+
+                UILabel *ggLab1 = [[UILabel alloc]init];
+                ggLab1.frame = CGRectMake(10, 16, 60, 22);
+                ggLab1.numberOfLines = 2;
+                ggLab1.text = @"物业";
+                ggLab1.textColor = [UIColor whiteColor];
+                [ggLab1 setFont:[UIFont fontWithName:@"Helvetica-Bold" size:20]];
+                [view addSubview:ggLab1];
+
+                UILabel *ggLab2 = [[UILabel alloc]init];
+                ggLab2.frame = CGRectMake(10, 38, 60, 22);
+                ggLab2.numberOfLines = 2;
+                ggLab2.text = @"公告";
+                ggLab2.textColor = [UIColor whiteColor];
+                [ggLab2 setFont:[UIFont fontWithName:@"Helvetica-Bold" size:20]];
+                [view addSubview:ggLab2];
+
+                //            view.backgroundColor =[UIColor orangeColor];
+                [cell.contentView addSubview:view];
+
+                tableView.rowHeight = 70;
+
+            }else{
+
+                tableView.rowHeight = 0;
             }
-    }else if(indexPath.section==3){
+        
+    }else if (indexPath.section==3){
         
         if (indexPath.row==0) {
             
             UILabel *titleLab = [[UILabel alloc]init];
-            titleLab.frame = CGRectMake(10, 17, 75, 19);
-            titleLab.text = @"租售服务";
+            titleLab.frame = CGRectMake(10,17, 75, 19);
+            titleLab.text = @"物业手册";
             titleLab.textColor = [UIColor colorWithHexString:@"#555555FF"];
             titleLab.font = [UIFont systemFontOfSize:18];
             [cell.contentView addSubview:titleLab];
             
             UILabel *fuLab = [[UILabel alloc]init];
             fuLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame)+10, 22, 113, 14);
-            fuLab.text = @"精选商品 放心购物";
+            fuLab.text = @"品质服务 美好生活";
             fuLab.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
             fuLab.font = [UIFont systemFontOfSize:13];
             [cell.contentView addSubview:fuLab];
             
-            NSArray *textArr1 = @[@"找物业租房",@"找物业买房",@"发布租售"];
-            NSArray *textArr2 = @[@"物业认证放心购买",@"放心,安心,称心",@"房屋管理贴心服务"];
-            for (int i = 0; i < 3; i++) {
-                
-                UIView *bgView = [[UIView alloc]init];
-                bgView.frame = CGRectMake(10+(i*((Main_width-40)/3+10)), CGRectGetMaxY(titleLab.frame)+19, (Main_width-40)/3, 65);
-                CAGradientLayer *layer = [CAGradientLayer layer];
-                layer.frame = CGRectMake(0, 0, Main_width, 70);
-                layer.startPoint = CGPointMake(0,0);
-                layer.endPoint = CGPointMake(1, 0);
-                if (i == 0) {
-                    layer.colors = @[(id)[UIColor colorWithHexString:@"#ff7124"].CGColor,(id)[UIColor colorWithHexString:@"#ff4049"].CGColor];
-                    [bgView.layer addSublayer:layer];
-                }else if (i == 1){
-                    layer.colors = @[(id)[UIColor colorWithHexString:@"#77beff"].CGColor,(id)[UIColor colorWithHexString:@"#0084ff"].CGColor];
-                    [bgView.layer addSublayer:layer];
-                }else{
-                    layer.colors = @[(id)[UIColor colorWithHexString:@"#fd3aff"].CGColor,(id)[UIColor colorWithHexString:@"#a628ff"].CGColor];
-                    [bgView.layer addSublayer:layer];
-                }
-                
-                UIImageView *imgView = [[UIImageView alloc]init];
-                imgView.frame = CGRectMake(10, 13, 18, 18);
-                imgView.backgroundColor = [UIColor orangeColor];
-                [bgView addSubview:imgView];
-                
-                UILabel *textLab1 = [[UILabel alloc]init];
-                textLab1.frame = CGRectMake(34, 16, 67, 13);
-                textLab1.text = textArr1[i];
-                textLab1.textColor = [UIColor whiteColor];
-                textLab1.font = [UIFont systemFontOfSize:13];
-                [bgView addSubview:textLab1];
-                
-                UILabel *textLab2 = [[UILabel alloc]init];
-                textLab2.frame = CGRectMake(8, 38, 90, 11);
-                textLab2.text = textArr2[i];
-                textLab2.textColor = [UIColor whiteColor];
-                textLab2.font = [UIFont systemFontOfSize:11];
-                [bgView addSubview:textLab2];
-                
-                UIButton *zuShouFang = [UIButton buttonWithType:UIButtonTypeCustom];
-                zuShouFang.frame = CGRectMake(0,0, (Main_width-40)/3, 66);
-                zuShouFang.tag = i+100;
-                [zuShouFang addTarget:self action:@selector(zuShouFang:) forControlEvents:UIControlEventTouchUpInside];
-                [bgView addSubview:zuShouFang];
-                
-                bgView.layer.cornerRadius = 5;
-                bgView.layer.masksToBounds = YES;
-                bgView.layer.borderWidth = 1;
-                bgView.layer.borderColor = [[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1] CGColor];
-                [cell.contentView addSubview:bgView];
-            }
+            tableView.rowHeight = 53;
             
-            tableView.rowHeight = 120;
-            
-        }else{
-
-            //新加租售房列表
-            
-            long number;
-            if (housesList.count%2==0) {
-                tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*housesList.count/2+5;
-                number = housesList.count;
-            }else{
-                tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*(housesList.count+1)/2+5;
-                number = housesList.count;
-            }
-            for (int i=0; i<number; i++) {
-                if (i%2 == 0) {
-                    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12, 10+((Main_width-24-7)/2+32.5+5)*(i/2), (Main_width-24-7)/2, 200)];
-                    view.backgroundColor = [UIColor whiteColor];
-                    view.layer.cornerRadius = 3;
-                    [cell.contentView addSubview:view];
-                    
-                    //                    UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
-                    //                    dianjibut.frame = view.frame;
-                    //                    dianjibut.tag = [[[arr objectAtIndex:i] objectForKey:@"id"] longValue];
-                    //                    [dianjibut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
-                    //                    [cell.contentView addSubview:dianjibut];
-                    
-                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, 110)];
-                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[housesList objectAtIndex:i] objectForKey:@"head_img"]]];
-                    NSLog(@"kkkkkkkkkkkkkkkkk = %@",url);
-                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                    imageview.backgroundColor = [UIColor yellowColor];
-                    [view addSubview:imageview];
-                    
-                    UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(12.5, 5+imageview.frame.size.height, view.frame.size.width-25, 40)];
-                    name.text = [[housesList objectAtIndex:i] objectForKey:@"community_name"];
-                    name.font = [UIFont systemFontOfSize:13];
-                    name.textColor = [UIColor colorWithHexString:@"#555555"];
-                    name.numberOfLines = 2;
-                    [view addSubview:name];
-                    
-                    UILabel *price = [[UILabel alloc] initWithFrame:CGRectMake(12.5, CGRectGetMaxY(name.frame)+10, 50, 17)];
-//                    price.text = [NSString stringWithFormat:@"%@/%@",[[housesList objectAtIndex:i] objectForKey:@"total_price"],[[housesList objectAtIndex:i] objectForKey:@"unit_price"]];
-                    price.text = [NSString stringWithFormat:@"%@",[[housesList objectAtIndex:i] objectForKey:@"total_price"]];
-                    price.textColor = QIColor;
-                    price.font = [UIFont systemFontOfSize:18];
-                    
-                    [view addSubview:price];
-                    
-                }else{
-                    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+((Main_width-24-7)/2+7), 10+((Main_width-24-7)/2+32.5+5)*(i/2), (Main_width-24-7)/2, 200)];
-                    view.backgroundColor = [UIColor whiteColor];
-                    view.layer.cornerRadius = 3;
-                    [cell.contentView addSubview:view];
-                    
-                    //                    UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
-                    //                    dianjibut.frame = view.frame;
-                    //                    dianjibut.tag = [[[arr objectAtIndex:i] objectForKey:@"id"] longValue];
-                    //                    [dianjibut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
-                    //                    [cell.contentView addSubview:dianjibut];
-                    
-                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, 110)];
-                    //                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[arr objectAtIndex:i] objectForKey:@"title_thumb_img"]]];
-                    //                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[housesList objectAtIndex:i] objectForKey:@"head_img"]]];
-                    NSLog(@"iiiiiiiiiiiiiiiii = %@",url);
-                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                    [view addSubview:imageview];
-                    
-                    UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(12.5, 5+imageview.frame.size.height, view.frame.size.width-25, 40)];
-                    name.text = [[housesList objectAtIndex:i] objectForKey:@"community_name"];
-                    name.font = [UIFont systemFontOfSize:13];
-                    name.textColor = [UIColor colorWithHexString:@"#555555"];
-                    name.numberOfLines = 2;
-                    [view addSubview:name];
-                    
-                    UILabel *price = [[UILabel alloc] initWithFrame:CGRectMake(12.5, CGRectGetMaxY(name.frame)+10, 50, 17)];
-                    //                    price.text = [NSString stringWithFormat:@"%@/%@",[[arr objectAtIndex:i] objectForKey:@"price"],[[arr objectAtIndex:i] objectForKey:@"unit"]];
-                    price.text = [NSString stringWithFormat:@"%@",[[housesList objectAtIndex:i] objectForKey:@"total_price"]];
-                    price.textColor = QIColor;
-                    price.font = [UIFont systemFontOfSize:18];
-                    
-                    [view addSubview:price];
-                }
-                
-            }
-            
-            tableView.rowHeight = ((Main_width-24-7)/2+32.5+5)*4/2+5;
-        }
-    }else if (indexPath.section==4){
-        
-        if (indexPath.row==0) {
-            NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:@" 社 | 区 | 协 | 议"];
-            
-            NSTextAttachment *attch = [[NSTextAttachment alloc] init];
-            attch.image = [UIImage imageNamed:@"协议"];
-            attch.bounds = CGRectMake(0, -2.5, 20, 20);
-            NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
-            [attri insertAttributedString:string atIndex:0];
-            UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width-20, 50)];
-            label1.attributedText = attri;
-            label1.textAlignment = NSTextAlignmentCenter;
-            label1.font = [UIFont systemFontOfSize:16.5];
-            [cell.contentView addSubview:label1];
-            tableView.rowHeight = 50;
         }else if(indexPath.row==1){
-            for (int i=0; i<2; i++) {
+            for (int i=0; i<4; i++) {
                 UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(15+i*(Main_width/2-35/2)+5*i, 0, Main_width/2-35/2, 150)];
                 backview.backgroundColor = [UIColor whiteColor];
                 [cell.contentView addSubview:backview];
@@ -1349,7 +946,7 @@
                 [backview addSubview:label];
                 
                 UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(5, label.frame.origin.y+label.frame.size.height+12.5, (Main_width-60)/2, 50)];
-                NSString *article = [[xieyiarr objectAtIndex:i] objectForKey:@"content_"];
+                NSString *article = [[xieyiarr objectAtIndex:i] objectForKey:@"content"];
                 NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[article dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
                 label1.attributedText = attributedString;
                 label1.numberOfLines = 2;
@@ -1381,6 +978,402 @@
             [label setFont:nomalfont];
             [view addSubview:label];
         }
+    }else if(indexPath.section==4){
+        
+        UILabel *titleLab = [[UILabel alloc]init];
+        titleLab.frame = CGRectMake(10, 17, 75, 19);
+        titleLab.text = @"物业服务";
+        titleLab.textColor = [UIColor colorWithHexString:@"#555555FF"];
+        titleLab.font = [UIFont systemFontOfSize:18];
+        [cell.contentView addSubview:titleLab];
+        
+        UILabel *fuLab = [[UILabel alloc]init];
+        fuLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame)+10, 22, 113, 14);
+        fuLab.text = @"缴费报修 省心省力";
+        fuLab.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
+        fuLab.font = [UIFont systemFontOfSize:13];
+        [cell.contentView addSubview:fuLab];
+        NSArray *textArr1 = @[@"生活缴费",@"家用报修",@"公共报修"];
+        NSArray *textArr2 = @[@"便捷缴费",@"一键报修",@"一键报修"];
+        NSArray *imgArr = @[@"物业缴费",@"家用维修",@"报事处理"];
+        for (int i = 0; i < 3; i++) {
+            
+            UIView *bgView = [[UIView alloc]init];
+            bgView.frame = CGRectMake(10+(i*((Main_width-40)/3+10)), CGRectGetMaxY(titleLab.frame)+19, (Main_width-40)/3, 66);
+            UILabel *textLab1 = [[UILabel alloc]init];
+            textLab1.frame = CGRectMake(5, 17, 55, 13);
+            textLab1.text = textArr1[i];
+            textLab1.textColor = [UIColor colorWithHexString:@"#555555"];
+            textLab1.font = [UIFont systemFontOfSize:13];
+            [bgView addSubview:textLab1];
+            
+            UILabel *textLab2 = [[UILabel alloc]init];
+            textLab2.frame = CGRectMake(5, 39, 45, 12);
+            textLab2.text = textArr2[i];
+            textLab2.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
+            textLab2.font = [UIFont systemFontOfSize:11];
+            [bgView addSubview:textLab2];
+            
+            UIImageView *imgView = [[UIImageView alloc]init];
+            imgView.frame = CGRectMake(62, 13, 43, 40);
+            imgView.image = [UIImage imageNamed:imgArr[i]];
+            [bgView addSubview:imgView];
+            
+            UIButton *wuYeJiaoFei = [UIButton buttonWithType:UIButtonTypeCustom];
+            wuYeJiaoFei.frame = CGRectMake(0,0, (Main_width-40)/3, 66);
+            wuYeJiaoFei.tag = i+100;
+            [wuYeJiaoFei addTarget:self action:@selector(wuYeJiaoFei:) forControlEvents:UIControlEventTouchUpInside];
+            [bgView addSubview:wuYeJiaoFei];
+            
+            //                bgView.backgroundColor = [UIColor yellowColor];
+            bgView.layer.cornerRadius = 5;
+            bgView.layer.masksToBounds = YES;
+            bgView.layer.borderWidth = 1;
+            bgView.layer.borderColor = [[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1] CGColor];
+            [cell.contentView addSubview:bgView];
+        }
+        
+        tableView.rowHeight = 53+66;
+        
+    }else if(indexPath.section==5){
+        
+        if ([tieziDic isKindOfClass:[NSDictionary class]]) {
+            
+            UILabel *titleLab = [[UILabel alloc]init];
+            titleLab.frame = CGRectMake(10,17, 75, 19);
+            titleLab.text = @"邻里交流";
+            titleLab.textColor = [UIColor colorWithHexString:@"#555555FF"];
+            titleLab.font = [UIFont systemFontOfSize:18];
+            [cell.contentView addSubview:titleLab];
+            
+            UILabel *fuLab = [[UILabel alloc]init];
+            fuLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame)+10, 22, 226, 14);
+            fuLab.text = @"社区资讯 随时了解";
+            fuLab.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
+            fuLab.font = [UIFont systemFontOfSize:13];
+            [cell.contentView addSubview:fuLab];
+            
+            UIButton *moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            moreBtn.frame = CGRectMake(Main_width-10-50, 17, 50, 19);
+            [moreBtn setTitle:@"更多 >" forState:UIControlStateNormal];
+            [moreBtn setTitleColor:[UIColor colorWithHexString:@"#9C9C9C"] forState:UIControlStateNormal];
+            moreBtn.titleLabel.font = [UIFont boldSystemFontOfSize:13];
+            [moreBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:moreBtn];
+            
+            UIView *backview = [[UIView alloc] init];
+            backview.frame = CGRectMake(12, CGRectGetMaxY(titleLab.frame)+19, Main_width-24, 145);
+            backview.backgroundColor = [UIColor whiteColor];
+            backview.layer.cornerRadius = 5;
+            
+            UIImageView *_imageview = [[UIImageView alloc] initWithFrame:CGRectMake(Main_width-24-80-10, 15, 80, 80)];
+            [backview addSubview:_imageview];
+            _imageview.userInteractionEnabled = YES;
+            _imageview.clipsToBounds = YES;
+            _imageview.contentMode = UIViewContentModeScaleAspectFill;
+            NSArray *imglistarr = [[NSArray alloc] init];
+            imglistarr = [tieziDic objectForKey:@"img_list"];
+            
+            NSString *imagestring = [[[tieziDic objectForKey:@"img_list"] objectAtIndex:0] objectForKey:@"img"];
+            [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            
+            UILabel *titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, Main_width-24-20-80-10, 40)];
+            NSData *data1 = [[NSData alloc] initWithBase64EncodedString:[tieziDic objectForKey:@"title"] options:0];
+            NSString *labeltext = [[NSString alloc] initWithData:data1 encoding:NSUTF8StringEncoding];
+            titlelabel.text = labeltext;
+            titlelabel.numberOfLines = 2;
+            titlelabel.alpha = 0.87;
+            titlelabel.font = [UIFont boldSystemFontOfSize:16.5];
+            [backview addSubview:titlelabel];
+
+            UILabel *contentlabel = [[UILabel alloc] initWithFrame:CGRectMake(10, titlelabel.frame.size.height+titlelabel.frame.origin.y+10, Main_width-24-20-80-10, 40)];
+            contentlabel.numberOfLines = 2;
+            contentlabel.font = font15;
+            contentlabel.alpha = 0.54;
+            NSData *data2 = [[NSData alloc] initWithBase64EncodedString:[tieziDic objectForKey:@"content"] options:0];
+            NSString *labeltext2 = [[NSString alloc] initWithData:data2 encoding:NSUTF8StringEncoding];
+            contentlabel.text = labeltext2;
+            [backview addSubview:contentlabel];
+            
+            UIImageView *touxiang = [[UIImageView alloc] initWithFrame:CGRectMake(10, contentlabel.frame.size.height+contentlabel.frame.origin.y+10, 20, 20)];
+            NSString *imagestring1 = [tieziDic objectForKey:@"avatars"];
+            [touxiang sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring1]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            touxiang.layer.cornerRadius = 10;
+            touxiang.clipsToBounds = YES;
+            [backview addSubview:touxiang];
+            
+            UILabel *zuozhe = [[UILabel alloc] initWithFrame:CGRectMake(10+20+5, contentlabel.frame.size.height+contentlabel.frame.origin.y+10, Main_width-24-20-80-10-40, 20)];
+            zuozhe.font = [UIFont systemFontOfSize:13];
+            zuozhe.alpha = 0.54;
+            zuozhe.text = [NSString stringWithFormat:@"%@  发布于  %@  %@",[tieziDic objectForKey:@"nickname"],[tieziDic objectForKey:@"c_name"],[tieziDic objectForKey:@"addtime"]];
+            [backview addSubview:zuozhe];
+            
+            UILabel *scanlabel = [[UILabel alloc] initWithFrame:CGRectMake(Main_width-24-100-10, contentlabel.frame.size.height+contentlabel.frame.origin.y+10, 60, 20)];
+            
+            NSMutableAttributedString *attri =     [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[tieziDic objectForKey:@"click"]]];
+            NSTextAttachment *attch = [[NSTextAttachment alloc] init];
+            attch.image = [UIImage imageNamed:@"liulan"];
+            attch.bounds = CGRectMake(0, -3, 15, 15);
+            NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attch];
+            [attri insertAttributedString:string atIndex:0];
+            scanlabel.attributedText = attri;
+            scanlabel.alpha = 0.54;
+            scanlabel.font = [UIFont systemFontOfSize:13];
+            [backview addSubview:scanlabel];
+            
+            UILabel *pinglunlabel = [[UILabel alloc] initWithFrame:CGRectMake(Main_width-24-100-10+60, contentlabel.frame.size.height+contentlabel.frame.origin.y+10, 50, 20)];
+            NSMutableAttributedString *attri1 =     [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[tieziDic objectForKey:@"reply_num"]]];
+            NSTextAttachment *attch1 = [[NSTextAttachment alloc] init];
+            attch1.image = [UIImage imageNamed:@"pinglun"];
+            attch1.bounds = CGRectMake(0, -3, 15, 15);
+            NSAttributedString *string1 = [NSAttributedString attributedStringWithAttachment:attch1];
+            [attri1 insertAttributedString:string1 atIndex:0];
+            pinglunlabel.attributedText = attri1;
+            pinglunlabel.alpha = 0.54;
+            pinglunlabel.font = [UIFont systemFontOfSize:13];
+            [backview addSubview:pinglunlabel];
+            
+            UIButton *tiezxiangqingbut = [UIButton buttonWithType:UIButtonTypeCustom];
+            tiezxiangqingbut.frame = CGRectMake(0, 0, Main_width-24, 140);
+            [backview addSubview:tiezxiangqingbut];
+            //                tiezxiangqingbut.tag = i;
+            [tiezxiangqingbut addTarget:self action:@selector(tiezixiangqing:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [cell.contentView addSubview:backview];
+            
+            tableView.rowHeight = 39+10+145+16;
+        }else{
+            tableView.rowHeight = 0;
+        }
+        
+    }else if(indexPath.section==6){
+        
+        if (indexPath.row==0) {
+            
+            UILabel *titleLab = [[UILabel alloc]init];
+            titleLab.frame = CGRectMake(10, 17, 75, 19);
+            titleLab.text = @"租售服务";
+            titleLab.textColor = [UIColor colorWithHexString:@"#555555FF"];
+            titleLab.font = [UIFont systemFontOfSize:18];
+            [cell.contentView addSubview:titleLab];
+            
+            UILabel *fuLab = [[UILabel alloc]init];
+            fuLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame)+10, 22, 113, 14);
+            fuLab.text = @"租赁买卖 安心放心";
+            fuLab.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
+            fuLab.font = [UIFont systemFontOfSize:13];
+            [cell.contentView addSubview:fuLab];
+            
+            NSArray *textArr1 = @[@"找物业租房",@"找物业买房",@"发布租售"];
+            NSArray *textArr2 = @[@"安全便捷放心舒心",@"物业认证省心称心",@"自主发布无需中介"];
+            NSArray *imgArr = @[@"zufang",@"shoufang",@"fabu"];
+            for (int i = 0; i < 3; i++) {
+                
+                UIView *bgView = [[UIView alloc]init];
+                bgView.frame = CGRectMake(10+(i*((Main_width-40)/3+10)), CGRectGetMaxY(titleLab.frame)+19, (Main_width-40)/3, 65);
+                CAGradientLayer *layer = [CAGradientLayer layer];
+                layer.frame = CGRectMake(0, 0, Main_width, 70);
+                layer.startPoint = CGPointMake(0,0);
+                layer.endPoint = CGPointMake(1, 0);
+                if (i == 0) {
+                    layer.colors = @[(id)[UIColor colorWithHexString:@"#ff7124"].CGColor,(id)[UIColor colorWithHexString:@"#ff4049"].CGColor];
+                    [bgView.layer addSublayer:layer];
+                }else if (i == 1){
+                    layer.colors = @[(id)[UIColor colorWithHexString:@"#77beff"].CGColor,(id)[UIColor colorWithHexString:@"#0084ff"].CGColor];
+                    [bgView.layer addSublayer:layer];
+                }else{
+                    layer.colors = @[(id)[UIColor colorWithHexString:@"#fd3aff"].CGColor,(id)[UIColor colorWithHexString:@"#a628ff"].CGColor];
+                    [bgView.layer addSublayer:layer];
+                }
+                
+                UIImageView *imgView = [[UIImageView alloc]init];
+                imgView.frame = CGRectMake(10, 13, 18, 18);
+                imgView.image = [UIImage imageNamed:imgArr[i]];
+                [bgView addSubview:imgView];
+                
+                UILabel *textLab1 = [[UILabel alloc]init];
+                textLab1.frame = CGRectMake(34, 16, 67, 13);
+                textLab1.text = textArr1[i];
+                textLab1.textColor = [UIColor whiteColor];
+                textLab1.font = [UIFont systemFontOfSize:13];
+                [bgView addSubview:textLab1];
+                
+                UILabel *textLab2 = [[UILabel alloc]init];
+                textLab2.frame = CGRectMake(8, 38, 90, 11);
+                textLab2.text = textArr2[i];
+                textLab2.textColor = [UIColor whiteColor];
+                textLab2.font = [UIFont systemFontOfSize:11];
+                [bgView addSubview:textLab2];
+                
+                UIButton *zuShouFang = [UIButton buttonWithType:UIButtonTypeCustom];
+                zuShouFang.frame = CGRectMake(0,0, (Main_width-40)/3, 66);
+                zuShouFang.tag = i+100;
+                [zuShouFang addTarget:self action:@selector(zuShouFang:) forControlEvents:UIControlEventTouchUpInside];
+                [bgView addSubview:zuShouFang];
+                
+                
+                bgView.layer.cornerRadius = 5;
+                bgView.layer.masksToBounds = YES;
+                bgView.layer.borderWidth = 1;
+                bgView.layer.borderColor = [[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1] CGColor];
+                [cell.contentView addSubview:bgView];
+            }
+            
+            tableView.rowHeight = 120;
+            
+        }else{
+
+            //新加租售房列表
+            if ([housesList isKindOfClass:[NSArray class]]) {
+             
+                long number;
+                if (housesList.count%2==0) {
+                    tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*housesList.count/2+5;
+                    number = housesList.count;
+                }else{
+                    tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*(housesList.count+1)/2+5;
+                    number = housesList.count;
+                }
+                for (int i=0; i<number; i++) {
+                    if (i%2 == 0) {
+                        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12, 10+((Main_width-24-7)/2+32.5+5)*(i/2), (Main_width-24-7)/2, 200)];
+                        view.backgroundColor = [UIColor whiteColor];
+                        view.layer.cornerRadius = 3;
+                        [cell.contentView addSubview:view];
+                        
+                        //                    UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
+                        //                    dianjibut.frame = view.frame;
+                        //                    dianjibut.tag = [[[arr objectAtIndex:i] objectForKey:@"id"] longValue];
+                        //                    [dianjibut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
+                        //                    [cell.contentView addSubview:dianjibut];
+                        
+                        UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, 110)];
+                        NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[housesList objectAtIndex:i] objectForKey:@"head_img"]]];
+                        NSLog(@"kkkkkkkkkkkkkkkkk = %@",url);
+                        [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                        
+                        NSInteger houseType = [[[housesList objectAtIndex:i] objectForKey:@"house_type"] integerValue];
+                        if (houseType == 1) {
+                            
+                            UIImageView *smallImg = [[UIImageView alloc]init];
+                            smallImg.frame = CGRectMake(10, 10, 30, 30);
+                            smallImg.image = [UIImage imageNamed:@"zu"];
+                            [imageview addSubview:smallImg];
+                            [view addSubview:imageview];
+                            
+                        }else{
+                            UIImageView *smallImg = [[UIImageView alloc]init];
+                            smallImg.frame = CGRectMake(10, 10, 30, 30);
+                            smallImg.image = [UIImage imageNamed:@"shou"];
+                            [imageview addSubview:smallImg];
+                            [view addSubview:imageview];
+                        }
+                        
+                        
+                        UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(12.5, 5+imageview.frame.size.height, view.frame.size.width-25, 40)];
+                        NSString *str = [NSString stringWithFormat:@"-%@室",[[housesList objectAtIndex:i] objectForKey:@"room"]];
+                        NSString *str1 = [NSString stringWithFormat:@"%@厅",[[housesList objectAtIndex:i] objectForKey:@"office"]];
+                        NSString *str2 = [NSString stringWithFormat:@"%@厨",[[housesList objectAtIndex:i] objectForKey:@"kitchen"]];
+                        NSString *str3 = [NSString stringWithFormat:@"%@卫",[[housesList objectAtIndex:i] objectForKey:@"guard"]];
+                        NSString *str4 = [str stringByAppendingString:str1];
+                        NSString *str5 = [str4 stringByAppendingString:str2];
+                        NSString *str6 = [str5 stringByAppendingString:str3];
+                        NSString *str7 = [[[housesList objectAtIndex:i] objectForKey:@"community_name"] stringByAppendingString:str6];
+                        NSString *str8 = [NSString stringWithFormat:@"-面积%@平米",[[housesList objectAtIndex:i] objectForKey:@"area"]];
+                        NSString *floor = [[housesList objectAtIndex:i] objectForKey:@"floor"];
+                        NSString *houseFloor = [[housesList objectAtIndex:i] objectForKey:@"house_floor"];
+                        NSString *str9 = [NSString stringWithFormat:@"|%@/%@层",floor,houseFloor];
+                        NSString *str10 = [str7 stringByAppendingString:str8];
+                        NSString *titleStr = [str10 stringByAppendingString:str9];
+                        
+                        name.text = titleStr;
+                        name.font = [UIFont systemFontOfSize:13];
+                        name.textColor = [UIColor colorWithHexString:@"#555555"];
+                        name.numberOfLines = 2;
+                        [view addSubview:name];
+                        
+                        UILabel *price = [[UILabel alloc] initWithFrame:CGRectMake(12.5, CGRectGetMaxY(name.frame)+10, 50, 17)];
+                        //                    price.text = [NSString stringWithFormat:@"%@/%@",[[housesList objectAtIndex:i] objectForKey:@"total_price"],[[housesList objectAtIndex:i] objectForKey:@"unit_price"]];
+                        price.text = [NSString stringWithFormat:@"%@",[[housesList objectAtIndex:i] objectForKey:@"total_price"]];
+                        price.textColor = QIColor;
+                        price.font = [UIFont systemFontOfSize:18];
+                        
+                        [view addSubview:price];
+                        
+                    }else{
+                        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+((Main_width-24-7)/2+7), 10+((Main_width-24-7)/2+32.5+5)*(i/2), (Main_width-24-7)/2, 200)];
+                        view.backgroundColor = [UIColor whiteColor];
+                        view.layer.cornerRadius = 3;
+                        [cell.contentView addSubview:view];
+                        
+                        //                    UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
+                        //                    dianjibut.frame = view.frame;
+                        //                    dianjibut.tag = [[[arr objectAtIndex:i] objectForKey:@"id"] longValue];
+                        //                    [dianjibut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
+                        //                    [cell.contentView addSubview:dianjibut];
+                        
+                        UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, 110)];
+                        //                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[arr objectAtIndex:i] objectForKey:@"title_thumb_img"]]];
+                        //                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                        NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[housesList objectAtIndex:i] objectForKey:@"head_img"]]];
+                        NSLog(@"iiiiiiiiiiiiiiiii = %@",url);
+                        [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                        [view addSubview:imageview];
+                        
+                        NSInteger houseType = [[[housesList objectAtIndex:i] objectForKey:@"house_type"] integerValue];
+                        if (houseType == 1) {
+                            
+                            UIImageView *smallImg = [[UIImageView alloc]init];
+                            smallImg.frame = CGRectMake(10, 10, 30, 30);
+                            smallImg.image = [UIImage imageNamed:@"zu"];
+                            [imageview addSubview:smallImg];
+                            [view addSubview:imageview];
+                            
+                        }else{
+                            UIImageView *smallImg = [[UIImageView alloc]init];
+                            smallImg.frame = CGRectMake(10, 10, 30, 30);
+                            smallImg.image = [UIImage imageNamed:@"shou"];
+                            [imageview addSubview:smallImg];
+                            [view addSubview:imageview];
+                        }
+                        
+                        UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(12.5, 5+imageview.frame.size.height, view.frame.size.width-25, 40)];
+                        NSString *str = [NSString stringWithFormat:@"-%@室",[[housesList objectAtIndex:i] objectForKey:@"room"]];
+                        NSString *str1 = [NSString stringWithFormat:@"%@厅",[[housesList objectAtIndex:i] objectForKey:@"office"]];
+                        NSString *str2 = [NSString stringWithFormat:@"%@厨",[[housesList objectAtIndex:i] objectForKey:@"kitchen"]];
+                        NSString *str3 = [NSString stringWithFormat:@"%@卫",[[housesList objectAtIndex:i] objectForKey:@"guard"]];
+                        NSString *str4 = [str stringByAppendingString:str1];
+                        NSString *str5 = [str4 stringByAppendingString:str2];
+                        NSString *str6 = [str5 stringByAppendingString:str3];
+                        NSString *str7 = [[[housesList objectAtIndex:i] objectForKey:@"community_name"] stringByAppendingString:str6];
+                        NSString *str8 = [NSString stringWithFormat:@"-面积%@平米",[[housesList objectAtIndex:i] objectForKey:@"area"]];
+                        NSString *floor = [[housesList objectAtIndex:i] objectForKey:@"floor"];
+                        NSString *houseFloor = [[housesList objectAtIndex:i] objectForKey:@"house_floor"];
+                        NSString *str9 = [NSString stringWithFormat:@"|%@/%@层",floor,houseFloor];
+                        NSString *str10 = [str7 stringByAppendingString:str8];
+                        NSString *titleStr = [str10 stringByAppendingString:str9];
+                        name.text = titleStr;
+                        name.font = [UIFont systemFontOfSize:13];
+                        name.textColor = [UIColor colorWithHexString:@"#555555"];
+                        name.numberOfLines = 2;
+                        [view addSubview:name];
+                        
+                        UILabel *price = [[UILabel alloc] initWithFrame:CGRectMake(12.5, CGRectGetMaxY(name.frame)+10, 50, 17)];
+                        //                    price.text = [NSString stringWithFormat:@"%@/%@",[[arr objectAtIndex:i] objectForKey:@"price"],[[arr objectAtIndex:i] objectForKey:@"unit"]];
+                        price.text = [NSString stringWithFormat:@"%@",[[housesList objectAtIndex:i] objectForKey:@"total_price"]];
+                        price.textColor = QIColor;
+                        price.font = [UIFont systemFontOfSize:18];
+                        
+                        [view addSubview:price];
+                    }
+            
+                }
+           
+                tableView.rowHeight = ((Main_width-24-7)/2+32.5+5)*4/2+5;
+            }else{
+                tableView.rowHeight = 0;
+            }
+        }
     }else if (indexPath.section==1){
         _menuScrollView = [[MenuScrollView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 200)];
         _menuScrollView.maxCol  =  4;
@@ -1396,7 +1389,13 @@
             [mulu addObject:model];
         }
         self.menuScrollView.dataArr = mulu;
-        tableView.rowHeight = 200;
+        
+        if (muluarr.count <= 8) {
+            tableView.rowHeight = 180;
+        }else{
+            tableView.rowHeight = 200;
+        }
+        
         
     }else{
         
@@ -1411,129 +1410,62 @@
             
             UILabel *fuLab = [[UILabel alloc]init];
             fuLab.frame = CGRectMake(CGRectGetMaxX(titleLab.frame)+10, 22, 113, 14);
-            fuLab.text = @"精选商品 放心购物";
+            fuLab.text = @"热卖精选 品质保证";
             fuLab.textColor = [UIColor colorWithHexString:@"#9C9C9C"];
             fuLab.font = [UIFont systemFontOfSize:13];
             [cell.contentView addSubview:fuLab];
             
             long m;
-            if (adCenterListArr.count%2==0) {
-                tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*adCenterListArr.count/2+5;
-                m = adCenterListArr.count;
+            if (centerguanggaoarr.count%2==0) {
+                tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*centerguanggaoarr.count/2+5;
+                m = centerguanggaoarr.count;
             }else{
-                tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*(adCenterListArr.count+1)/2+5;
-                m = adCenterListArr.count;
+                tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*(centerguanggaoarr.count+1)/2+5;
+                m = centerguanggaoarr.count;
             }
-            NSLog(@"jjjjjjjjj = %ld",m);
             for (int i=0; i<m; i++) {
                 if (i%2 == 0) {
-                    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+(Main_width-24+5)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5)];
+                    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+(Main_width-24+2)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5)];
                     view.backgroundColor = [UIColor whiteColor];
                     view.layer.cornerRadius = 3;
                     [cell.contentView addSubview:view];
-                    
-                    //                    UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
-                    //                    dianjibut.frame = view.frame;
-                    //                    dianjibut.tag = [[[arr objectAtIndex:i] objectForKey:@"id"] longValue];
-                    //                    [dianjibut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
-                    //                    [cell.contentView addSubview:dianjibut];
-                    
+
                     UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, (Main_width-24)/2/1.5)];
-                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[housesList objectAtIndex:i] objectForKey:@"head_img"]]];
+                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[centerguanggaoarr objectAtIndex:i] objectForKey:@"img"]]];
                     [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
                     imageview.backgroundColor = [UIColor yellowColor];
                     [view addSubview:imageview];
                     
+                    UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
+                    dianjibut.frame = imageview.frame;
+                    dianjibut.tag = i+indexPath.row;
+//                    [[[centerguanggaoarr objectAtIndex:i] objectForKey:@"id"] longValue];
+                    [dianjibut addTarget:self action:@selector(centerguanggao:) forControlEvents:UIControlEventTouchUpInside];
+                    [view addSubview:dianjibut];
+                    
                 }else{
-                    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+(Main_width-24+5)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5)];
+                    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+(Main_width-24+2)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5)];
                     view.backgroundColor = [UIColor whiteColor];
                     view.layer.cornerRadius = 3;
                     [cell.contentView addSubview:view];
                     
-                    //                    UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
-                    //                    dianjibut.frame = view.frame;
-                    //                    dianjibut.tag = [[[arr objectAtIndex:i] objectForKey:@"id"] longValue];
-                    //                    [dianjibut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
-                    //                    [cell.contentView addSubview:dianjibut];
-                    
                     UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, (Main_width-24)/2/1.5)];
-                    //                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[arr objectAtIndex:i] objectForKey:@"title_thumb_img"]]];
-                    //                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[housesList objectAtIndex:i] objectForKey:@"head_img"]]];
+                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[centerguanggaoarr objectAtIndex:i] objectForKey:@"img"]]];
                     [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
                     [view addSubview:imageview];
+                    
+                    UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
+                    dianjibut.frame = imageview.frame;
+                    dianjibut.tag = i+indexPath.row;
+//                    [[[centerguanggaoarr objectAtIndex:i] objectForKey:@"id"] longValue];
+                    [dianjibut addTarget:self action:@selector(centerguanggao:) forControlEvents:UIControlEventTouchUpInside];
+                    [view addSubview:dianjibut];
 
                 }
                 
             }
-//            if (m%2 == 0) {
-//                for (int i=0; i<2; i++) {
-//                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(12+(Main_width-24+5)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5)];
-//                    [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[adCenterListArr objectAtIndex:i+(indexPath.row-1)*2] objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-//                    imageview.backgroundColor = [UIColor yellowColor];
-//                    [cell.contentView addSubview:imageview];
-//                }
-//
-//            }else{
-//                for (int i=0; i<2; i++) {
-//                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(12+(Main_width-24+5)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5)];
-//                    [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[adCenterListArr objectAtIndex:i+(indexPath.row-1)*2] objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-//                    imageview.backgroundColor = [UIColor yellowColor];
-//                    [cell.contentView addSubview:imageview];
-//                }
-//            }
             
             tableView.rowHeight = 54+(Main_width-24)/2/1.5;
-            
-            //            if ([centerguanggaoarr isKindOfClass:[NSArray class]]) {
-            //
-            //                if (centerguanggaoarr.count%2 == 0) {
-            //                    for (int i=0; i<2; i++) {
-            //                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(12+(Main_width-24)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5)];
-            //                    [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerguanggaoarr objectAtIndex:i+(indexPath.row-1)*2] objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-            //                    [cell.contentView addSubview:imageview];
-            //
-            //                    UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-            //                    but.frame = CGRectMake(12+(Main_width-24)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5);
-            //                                    //but.backgroundColor = QIColor;
-            //                    but.tag = i+(indexPath.row-1)*2;
-            //                    [but addTarget:self action:@selector(centerguanggao:) forControlEvents:UIControlEventTouchUpInside];
-            //                                    [cell.contentView addSubview:but];
-            //                                }
-            //                        }else{
-            //                            if (indexPath.row == (centerguanggaoarr.count+1)/2) {
-            //                                for (int i=0; i<1; i++) {
-            //                        UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(12+(Main_width-24)*i/2, 0, Main_width/2-24/2, (Main_width-24)/2/1.5)];
-            //                        [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerguanggaoarr objectAtIndex:i+(indexPath.row-1)*2] objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-            //                        [cell.contentView addSubview:imageview];
-            //
-            //                        UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-            //                        but.frame = CGRectMake(12+(Main_width-24)*i/2, 0, Main_width/2-24/2, (Main_width-24)/2/1.5);
-            //                        //but.backgroundColor = QIColor;
-            //                        but.tag = i+(indexPath.row-1)*2;
-            //                        [but addTarget:self action:@selector(centerguanggao:) forControlEvents:UIControlEventTouchUpInside];
-            //                                        [cell.contentView addSubview:but];
-            //                                    }
-            //                    }else{
-            //                        for (int i=0; i<2; i++) {
-            //                        UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(12+(Main_width-24)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5)];
-            //                        [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerguanggaoarr objectAtIndex:i+(indexPath.row-1)*2] objectForKey:@"img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-            //                        [cell.contentView addSubview:imageview];
-            //
-            //                        UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-            //                        but.frame = CGRectMake(12+(Main_width-24)*i/2, CGRectGetMaxY(titleLab.frame)+18, Main_width/2-24/2, (Main_width-24)/2/1.5);
-            //                                        //but.backgroundColor = QIColor;
-            //                        but.tag = i+(indexPath.row-1)*2;
-            //                        [but addTarget:self action:@selector(centerguanggao:) forControlEvents:UIControlEventTouchUpInside];
-            //                                        [cell.contentView addSubview:but];
-            //                                    }
-            //                                }
-            //                            }
-            //
-            //                            tableView.rowHeight = (Main_width-24)/2/1.5+36;
-            //                        }else{
-            //                            tableView.rowHeight = 0;
-            //                        }
             
         }else{
             
@@ -1663,9 +1595,9 @@
 }
 - (void)centerguanggao:(UIButton *)sender
 {
-    NSLog(@"------%ld",sender.tag);
+    NSLog(@"sender.tag------%ld",sender.tag);
     NSString *url_type = [[centerguanggaoarr objectAtIndex:sender.tag] objectForKey:@"url_type"];
-    NSString *url_id = [[centerguanggaoarr objectAtIndex:sender.tag] objectForKey:@"url_id"];
+    NSString *url_id = [[centerguanggaoarr objectAtIndex:sender.tag] objectForKey:@"id"];
     NSString *urltypename = [[centerguanggaoarr objectAtIndex:sender.tag] objectForKey:@"type_name"];
     if ([url_type isEqualToString:@"5"]) {
         weixiuViewController *weixiu = [[weixiuViewController alloc] init];
@@ -2038,8 +1970,9 @@
 - (void)tiezixiangqing:(UIButton *)sender
 {
     circledetailsViewController *circle = [[circledetailsViewController alloc] init];
-    circle.id = [tieziDic objectForKey:@"id"];
-    circle.is_pro = [tieziDic objectForKey:@"is_pro"];
+    circle.id = [tieziDic objectForKey:@"id"];    
+//    circle.is_pro = [tieziDic objectForKey:@"is_pro"];
+     circle.is_pro = @"0";
     circle.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:circle animated:YES];
 }
@@ -2339,165 +2272,7 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section==3) {
-        //        if (indexPath.row>0) {
-        //            NSString *url_type = [[centerguanggaoarr objectAtIndex:indexPath.row-1] objectForKey:@"url_type"];
-        //            NSString *url_id = [[centerguanggaoarr objectAtIndex:indexPath.row-1] objectForKey:@"url_id"];
-        //            NSString *urltypename = [[centerguanggaoarr objectAtIndex:indexPath.row-1] objectForKey:@"type_name"];
-        //            if ([url_type isEqualToString:@"5"]) {
-        //                weixiuViewController *weixiu = [[weixiuViewController alloc] init];
-        //                weixiu.hidesBottomBarWhenPushed = YES;
-        //                [self.navigationController pushViewController:weixiu animated:YES];
-        //            }if ([url_type isEqualToString:@"3"]) {
-        //                acivityViewController *aciti = [[acivityViewController alloc] init];
-        //                aciti.hidesBottomBarWhenPushed = YES;
-        //                aciti.url = url_id;
-        //                [self.navigationController pushViewController:aciti animated:YES];
-        //            }if ([url_type isEqualToString:@"4"]) {
-        //                activitydetailsViewController *acti = [[activitydetailsViewController alloc] init];
-        //                acti.url = url_id;
-        //                acti.hidesBottomBarWhenPushed = YES;
-        //                [self.navigationController pushViewController:acti animated:YES];
-        //            }if ([url_type isEqualToString:@"7"]) {
-        //                NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",url_id];
-        //                UIWebView *callWebview = [[UIWebView alloc] init];
-        //                [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
-        //                [self.view addSubview:callWebview];
-        //            }if ([url_type isEqualToString:@"1"]) {
-        //                shangpinerjiViewController *erji = [[shangpinerjiViewController alloc] init];
-        //                NSString *type_name = [[centerguanggaoarr objectAtIndex:indexPath.row-1] objectForKey:@"type_name"];
-        //                NSRange range = [type_name rangeOfString:@"id/"]; //现获取要截取的字符串位置
-        //                NSString * result = [type_name substringFromIndex:range.location+3]; //截取字符串
-        //                erji.id = result;
-        //                erji.hidesBottomBarWhenPushed = YES;
-        //                [self.navigationController pushViewController:erji animated:YES];
-        //            }if ([url_type isEqualToString:@"6"]) {
-        //                //优惠券
-        //                NSString *type_name = [[centerguanggaoarr objectAtIndex:indexPath.row-1] objectForKey:@"type_name"];
-        //
-        //                WebViewController *web = [[WebViewController alloc] init];
-        //                web.url_type = @"2";
-        //                web.title = @"优惠券";
-        //                web.url = type_name;
-        //                web.hidesBottomBarWhenPushed = YES;
-        //                [self.navigationController pushViewController:web animated:YES];
-        //            }if ([url_type isEqualToString:@"8"]) {
-        //                youhuiquanViewController *youhuiquan = [[youhuiquanViewController alloc] init];
-        //                [self.navigationController presentViewController:youhuiquan animated:YES completion:nil];
-        //            }if ([url_type isEqualToString:@"9"]) {
-        //                youhuiquanxiangqingViewController *youhuiquan = [[youhuiquanxiangqingViewController alloc] init];
-        //                [self.navigationController presentViewController:youhuiquan animated:YES completion:nil];
-        //            }if ([url_type isEqualToString:@"2"]) {
-        //                GoodsDetailViewController *goods = [[GoodsDetailViewController alloc] init];
-        //                NSRange range = [urltypename rangeOfString:@"id/"]; //现获取要截取的字符串位置
-        //                NSString * result = [urltypename substringFromIndex:range.location+3]; //截取字符串
-        //                goods.IDstring = result;
-        //                goods.hidesBottomBarWhenPushed = YES;
-        //                [self.navigationController pushViewController:goods animated:YES];
-        //            }if ([url_type isEqualToString:@"10"]) {
-        //                WebViewController *web = [[WebViewController alloc] init];
-        //                web.url = url_id;
-        //                web.url_type = @"1";
-        //                //web.jpushstring = @"jpush";
-        //                web.title = @"小慧推荐";
-        //                web.hidesBottomBarWhenPushed = YES;
-        //                [self.navigationController pushViewController:web animated:YES];
-        //            }if ([url_type isEqualToString:@"11"]) {
-        //                noticeViewController *notice = [[noticeViewController alloc] init];
-        //                notice.hidesBottomBarWhenPushed = YES;
-        //                NSRange range = [url_id rangeOfString:@"id/"]; //现获取要截取的字符串位置
-        //                NSString * result = [url_id substringFromIndex:range.location+3]; //截取字符串
-        //                notice.id = result;
-        //                //notice.jpushstring = @"jpush";
-        //                [self.navigationController pushViewController:notice animated:YES];
-        //            }if ([url_type isEqualToString:@"12"]){
-        //
-        //            }if ([url_type isEqualToString:@"13"]){
-        //                circledetailsViewController *circle = [[circledetailsViewController alloc] init];
-        //                circle.id = url_id;
-        //                circle.hidesBottomBarWhenPushed = YES;
-        //                [self.navigationController pushViewController:circle animated:YES];
-        //            }if ([url_type isEqualToString:@"14"]){
-        //
-        //            }if ([url_type isEqualToString:@"15"]){
-        //                youxianjiaofeiViewController *youxian = [[youxianjiaofeiViewController alloc] init];
-        //                youxian.hidesBottomBarWhenPushed = YES;
-        //                [self.navigationController pushViewController:youxian animated:YES];
-        //            }if ([url_type isEqualToString:@"16"]){
-        //
-        //            }if ([url_type isEqualToString:@"17"]){
-        //                NSUserDefaults *userdf = [NSUserDefaults standardUserDefaults];
-        //                NSString *is_bind_property = [userdf objectForKey:@"is_bind_property"];
-        //
-        //                AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-        //                manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-        //                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        //                NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-        //                NSDictionary *dict = @{@"apk_token":uid_username};
-        //                NSString *strurl = [API stringByAppendingString:@"apk/property/binding_community"];
-        //                [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        //                    NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
-        //                    NSArray *arrrrr = [[NSArray alloc] init];
-        //                    if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-        //                        arrrrr = [responseObject objectForKey:@"data"];
-        //                        if (arrrrr.count>1) {
-        //                            selectHomeViewController *selecthome = [[selectHomeViewController alloc] init];
-        //                            selecthome.homeArr = arrrrr;
-        //                            selecthome.rukoubiaoshi = @"layakaimen";
-        //                            selecthome.hidesBottomBarWhenPushed = YES;
-        //                            [self.navigationController pushViewController:selecthome animated:YES];
-        //                        }else{
-        //                            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-        //                            manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-        //                            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        //                            NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-        //                            NSDictionary *dict = @{@"apk_token":uid_username,@"room_id":[[arrrrr objectAtIndex:0] objectForKey:@"room_id"]};
-        //                            NSString *strurl = [API stringByAppendingString:@"apk/property/checkIsAjb"];
-        //                            [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        //                                NSLog(@"%@-11111-%@",[responseObject objectForKey:@"msg"],responseObject);
-        //                                NSDictionary *dicccc = [[NSDictionary alloc] init];
-        //                                if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-        //                                    dicccc = [responseObject objectForKey:@"data"];
-        //                                    if ([dicccc isKindOfClass:[NSDictionary class]]) {
-        //                                        blueyaViewController *blueya = [[blueyaViewController alloc] init];
-        //                                        blueya.Dic = dicccc;
-        //                                        blueya.hidesBottomBarWhenPushed = YES;
-        //                                        [self.navigationController pushViewController:blueya animated:YES];
-        //                                    }else{
-        //                                        [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-        //                                    }
-        //                                }else{
-        //                                    [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-        //                                }
-        //                            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        //                                NSLog(@"failure--%@",error);
-        //                            }];
-        //                        }
-        //                        [defaults setObject:@"2" forKey:@"is_bind_property"];
-        //                        [userdf synchronize];
-        //                    }else{
-        //                        bangdingqianViewController *bangding = [[bangdingqianViewController alloc] init];
-        //                        bangding.hidesBottomBarWhenPushed = YES;
-        //                        [self.navigationController pushViewController:bangding animated:YES];
-        //                        [defaults setObject:@"1" forKey:@"is_bind_property"];
-        //                        [userdf synchronize];
-        //                    }
-        //                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        //                    NSLog(@"failure--%@",error);
-        //                }];
-        //            }if ([url_type isEqualToString:@"18"]){
-        //                FacePayViewController *face = [[FacePayViewController alloc] init];
-        //                face.hidesBottomBarWhenPushed = YES;
-        //                [self.navigationController pushViewController:face animated:YES];
-        //            }if ([url_type isEqualToString:@"19"]){
-        //                jujiayanglaoViewController *hujia = [[jujiayanglaoViewController alloc] init];
-        //                hujia.hidesBottomBarWhenPushed = YES;
-        //                [self.navigationController pushViewController:hujia animated:YES];
-        //            }if ([url_type isEqualToString:@"20"]){
-        //
-        //            }
-        //        }
-    }else if(indexPath.section==4){
+   if(indexPath.section==3){
         if (indexPath.row>1) {
             yuefunextViewController *yuefunext = [[yuefunextViewController alloc] init];
             yuefunext.hidesBottomBarWhenPushed = YES;
@@ -2505,7 +2280,7 @@
             yuefunext.content = [[xieyiarr objectAtIndex:indexPath.row] objectForKey:@"content"];
             [self.navigationController pushViewController:yuefunext animated:YES];
         }
-    }else if(indexPath.section==5){
+    }else if(indexPath.section==7){
         if (indexPath.row>0) {
             GoodsDetailViewController *goods = [[GoodsDetailViewController alloc] init];
             goods.IDstring = [[chanpinarr objectAtIndex:indexPath.row-1] objectForKey:@"id"];
@@ -2537,6 +2312,10 @@
     [view addSubview:but];
     [but addTarget:self action:@selector(selectxiaoqu) forControlEvents:UIControlEventTouchUpInside];
 }
+#pragma mark - 邻里交流更多按钮
+-(void)moreAction{
+   self.tabBarController.selectedIndex = 3;
+}
 #pragma mark - 物业公告文字滚动
 - (void)handleTopEventWithURLString:(NSString *)URLString {
     self.tabBarController.selectedIndex = 3;
@@ -2558,12 +2337,15 @@
     
     if (sender.tag == 100) {
         afteryanzhengViewController *afterVC = [[afteryanzhengViewController alloc]init];
+        afterVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:afterVC animated:YES];
     }else if (sender.tag == 101){
         ziyongliebiaoViewController *ziyongliebiaoVC = [[ziyongliebiaoViewController alloc]init];
+        ziyongliebiaoVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:ziyongliebiaoVC animated:YES];
     }else{
         gonggongbaoxiuViewController *gonggongbaoxiuVC = [[gonggongbaoxiuViewController alloc]init];
+        gonggongbaoxiuVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:gonggongbaoxiuVC animated:YES];
     }
     
@@ -2573,12 +2355,15 @@
     
     if (sender.tag == 100) {
         zuFangViewController *zuFangVC = [[zuFangViewController alloc]init];
+        zuFangVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:zuFangVC animated:YES];
     }else if (sender.tag == 101){
         shouFangViewController *shouFangVC = [[shouFangViewController alloc]init];
+         shouFangVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:shouFangVC animated:YES];
     }else{
         zushouweituoViewController *zushouweituoVC = [[zushouweituoViewController alloc]init];
+        zushouweituoVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:zushouweituoVC animated:YES];
     }
     

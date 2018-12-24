@@ -734,7 +734,7 @@
                 [cell addSubview:timeLab1];
 
                 UILabel *timeLab2 = [[UILabel alloc] initWithFrame:CGRectMake(10,CGRectGetMaxY(timeLab1.frame)+10, Main_width-20, 15)];
-                NSTimeInterval time2=[model.distribute_at doubleValue]+28800;
+                NSTimeInterval time2=[model.distribute_at doubleValue];
                 NSDate *detaildate2=[NSDate dateWithTimeIntervalSince1970:time2];
                 NSLog(@"date:%@",[detaildate2 description]);
                 NSDateFormatter *dateFormatter2 = [[NSDateFormatter alloc] init];

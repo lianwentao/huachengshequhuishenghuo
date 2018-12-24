@@ -22,9 +22,9 @@
 - (void)setupWithText:(NSString*)text {
     
     self.text = text;
-    self.textColor = [UIColor colorWithRed:252/255.0 green:90/255.0 blue:50/255.0 alpha:1];
+    self.textColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
     self.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
-    self.font = [UIFont systemFontOfSize:15];
+    self.font = [UIFont systemFontOfSize:13];
     UIFont* font = self.font;
     
     CGSize size = [text sizeWithAttributes:@{NSFontAttributeName: font}];
@@ -34,7 +34,7 @@
     
     self.frame = frame;
     
-    self.layer.cornerRadius = 5;
+    self.layer.cornerRadius = 2;
 //    self.layer.borderColor = self.textColor.CGColor;
     self.layer.borderColor = [UIColor redColor].CGColor;
 //    self.layer.borderWidth = 1.0;

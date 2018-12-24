@@ -18,11 +18,8 @@
 #import "MBProgressHUD+TVAssistant.h"
 #import "JSDropDownMenu.h"
 #import "zfListModel.h"
-//筛选
-#import "ZJChooseControlView.h"
-#import "ZJChooseShowView.h"
 
-@interface zuFangViewController ()<JSDropDownMenuDataSource,JSDropDownMenuDelegate,UITableViewDelegate,UITableViewDataSource,ZJChooseControlDelegate,UISearchBarDelegate>{
+@interface zuFangViewController ()<JSDropDownMenuDataSource,JSDropDownMenuDelegate,UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>{
     
     NSMutableArray *zuJinArr;
     NSMutableArray *mianJiArr;
@@ -40,8 +37,6 @@
 }
 @property(nonatomic ,strong) UITableView *tableView;
 @property (nonatomic,copy)NSString         *community_name;
-@property(nonatomic ,weak) ZJChooseControlView *chooseControlView;
-@property(nonatomic ,strong) ZJChooseShowView *showView;
 @end
 
 @implementation zuFangViewController
@@ -58,74 +53,7 @@
     
     [self createdaohangolan];
     [self shaixuanList];
-//    [self setUpAllView];
-   
 }
-//-(void)loadData{
-//    
-//    
-//    NSLog(@"_sfID = %@",_sfID);
-//    
-//    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-//    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"house_id":_sfID};
-//    
-//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-//    NSLog(@"dict = %@",dict);
-//    NSString *strurl = [API stringByAppendingString:@"secondHouseType/getLeaseDetails"];
-//    NSLog(@"strurl = %@",strurl);
-//    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        //        NSLog(@"gouwuche--%@",responseObject);
-//        
-//        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
-//        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-//        NSLog(@"dataStr = %@",dataStr);
-//        NSDictionary *dataDic = responseObject[@"data"];
-//        NSLog(@"dataDic = %@",dataDic);
-//        dataSourceArr = [NSMutableArray array];
-//        sfDetailModel *model =  [[sfDetailModel alloc]initWithDictionary:dataDic error:nil];
-//        [dataSourceArr addObject:model];
-//        
-//        tjArr = [NSMutableArray array];
-//        for (NSDictionary *tjDic in model.recommend) {
-//            tjListModel *tjModel = [[tjListModel alloc]initWithDictionary:tjDic error:NULL];
-//            [tjArr addObject:tjModel];
-//        }
-//        
-//        [self CreateTableview];
-//        [self loadFunctionView];
-//        
-//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//        NSLog(@"failure--%@",error);
-//    }];
-//}
--(void)setUpAllView{
-    NSArray *array = @[@"租金",@"面积",@"房型",@"排序"];
-    ZJChooseControlView *chooseView = [[ZJChooseControlView alloc]initWithFrame:CGRectMake(0, 64, Main_width, 45)];
-    chooseView.delegate = self;
-    chooseView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    chooseView.layer.borderWidth = 0.5;
-    [chooseView setUpAllViewWithTitleArr:array];
-    _chooseControlView = chooseView;
-    [self.view addSubview:chooseView];
-    [self.view addSubview:_tableView];
-}
--(ZJChooseShowView *)showView{
-    if (!_showView) {
-        _showView = [[ZJChooseShowView alloc]initWithFrame:CGRectMake(0, 109, Main_width, Main_Height - 109)];
-        _showView.hidden = YES;
-    }
-    return _showView;
-}
-
--(void)chooseControlWithBtnArray:(NSArray *)array button:(UIButton *)sender{
-    
-    [self.view addSubview:self.showView];
-    self.showView.hidden = NO;
-    [self.showView chooseControlViewBtnArray:array Action:sender];
-    
-}
-
 -(void)loadData{
 
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
@@ -409,6 +337,9 @@
     UIImageView *imgView = [[UIImageView alloc]init];
     imgView.frame = CGRectMake(10, 10, 100, 100);
     [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.head_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    imgView.userInteractionEnabled = YES;
+    imgView.clipsToBounds = YES;
+    imgView.contentMode = UIViewContentModeScaleAspectFill;
     [cell addSubview:imgView];
     
     UILabel *titleLab = [[UILabel alloc]init];
@@ -443,18 +374,17 @@
     rengZhengLab.textAlignment = NSTextAlignmentCenter;
     [cell addSubview:rengZhengLab];
     
-    NSArray *labArr = model.label;
-    NSDictionary *nameDic = labArr[0];
-   NSString *labStr = [nameDic objectForKey:@"label_name"];
-    
-    UILabel *biaoQianLab = [[UILabel alloc]init];
-    biaoQianLab.frame = CGRectMake(CGRectGetMaxX(rengZhengLab.frame)+5, CGRectGetMaxY(titleLab.frame)+5, 50, 20);
-    biaoQianLab.text = labStr;
-    biaoQianLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
-    biaoQianLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
-    biaoQianLab.font = [UIFont systemFontOfSize:15];
-    biaoQianLab.textAlignment = NSTextAlignmentCenter;
-    [cell addSubview:biaoQianLab];
+//    NSArray *labArr = model.label;
+//    NSDictionary *nameDic = labArr[0];
+//   NSString *labStr = [nameDic objectForKey:@"label_name"];
+//    UILabel *biaoQianLab = [[UILabel alloc]init];
+//    biaoQianLab.frame = CGRectMake(CGRectGetMaxX(rengZhengLab.frame)+5, CGRectGetMaxY(titleLab.frame)+5, 50, 20);
+//    biaoQianLab.text = labStr;
+//    biaoQianLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
+//    biaoQianLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
+//    biaoQianLab.font = [UIFont systemFontOfSize:15];
+//    biaoQianLab.textAlignment = NSTextAlignmentCenter;
+//    [cell addSubview:biaoQianLab];
     
     UILabel *priceLab = [[UILabel alloc]init];
     priceLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+5, 100, 30);
@@ -467,10 +397,19 @@
     
     UILabel *jPriceLab = [[UILabel alloc]init];
     jPriceLab.frame = CGRectMake(CGRectGetMaxX(priceLab.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+10, kScreen_Width-20-100-100, 20);
-    jPriceLab.text = @"1500元/平米";
-    //    jPriceLab = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
-    jPriceLab.textColor = [UIColor colorWithRed:162/255.0 green:162/255.0 blue:162/255.0 alpha:1];
-    jPriceLab.font = [UIFont systemFontOfSize:14];
+    NSString *str11 = [NSString stringWithFormat:@"|%@室",model.room];
+    NSString *str22 = [NSString stringWithFormat:@"%@厅",model.office];
+    NSString *str33 = [NSString stringWithFormat:@"%@厨",model.kitchen];
+    NSString *str44 = [NSString stringWithFormat:@"%@卫",model.guard];
+    NSString *str55 = [str11 stringByAppendingString:str22];
+    NSString *str66 = [str55 stringByAppendingString:str33];
+    NSString *str77 = [str66 stringByAppendingString:str44];
+    NSString *str99 = [NSString stringWithFormat:@"|%@平米",model.area];
+    NSString *str1099 = [str77 stringByAppendingString:str99];
+   
+    jPriceLab.text = str1099;
+    jPriceLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
+    jPriceLab.font = [UIFont systemFontOfSize:13];
     jPriceLab.textAlignment = NSTextAlignmentLeft;
     [cell addSubview:jPriceLab];
 
@@ -480,8 +419,8 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     zuFangDetailViewController *zfDetailVC = [[zuFangDetailViewController alloc] init];
-//    liebiao.id = [[fenleiArr objectAtIndex:indexPath.section-4] objectForKey:@"id"];
-//    liebiao.hidesBottomBarWhenPushed = YES;
+    zfListModel *model = dataSourceArr[indexPath.row];
+    zfDetailVC.zfID = model.id;
     [self.navigationController pushViewController:zfDetailVC animated:YES];
 }
 #pragma mark - UISearchBarDelegate 协议

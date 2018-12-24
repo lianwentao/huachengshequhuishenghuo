@@ -128,7 +128,7 @@
         marginX = (self.frame.size.width-textSize.width)/2;
     }
     
-    _cellTextLabel.frame = CGRectMake(marginX, 0, textSize.width, self.frame.size.height);
+    _cellTextLabel.frame = CGRectMake(0, 0, textSize.width, self.frame.size.height);
     
     if(_cellAccessoryView){
         _cellAccessoryView.frame = CGRectMake(_cellTextLabel.frame.origin.x+_cellTextLabel.frame.size.width+10, (self.frame.size.height-12)/2, 16, 12);

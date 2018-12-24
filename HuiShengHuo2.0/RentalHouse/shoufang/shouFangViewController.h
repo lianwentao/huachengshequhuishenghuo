@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface shouFangViewController : UIViewController
-
+@property (nonatomic,copy)NSString         *community_name;
 @end
