@@ -13,6 +13,10 @@
 #import "selectshangpuViewController.h"
 #import <AFNetworking.h>
 #import "MBProgressHUD+TVAssistant.h"
+#import "newselectxiaoquViewController.h"
+#import "newselctlouhaoViewController.h"
+#import "newselectdanyuanViewController.h"
+#import "newselectroomViewController.h"
 @interface yanzhengjiaofeiViewController ()
 {
     UITextField *textfield;
@@ -38,7 +42,10 @@
     NSString *mobeil;
     NSString *is_ym;
     
-    UILabel *label;
+    UILabel *xiaoqu;
+    UILabel *louhao;
+    UILabel *danyuan;
+    UILabel *roomhao;
     
 }
 
@@ -50,10 +57,12 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = BackColor;
-    self.title = @"缴费";
-    
+    self.title = @"验证房屋";
     [self createui];
-    
+    UISwipeGestureRecognizer *recognizer;
+    recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(viewTapped:)];
+    [recognizer setDirection:(UISwipeGestureRecognizerDirectionDown)];
+    [[self view] addGestureRecognizer:recognizer];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(change:) name:@"changetextfieldyanzheng" object:nil];
     // Do any additional setup after loading the view.
 }
@@ -75,8 +84,7 @@
     department_name = userinfo.userInfo[@"department_name"];
     floor = userinfo.userInfo[@"floor"];
     
-    
-    label.text = userinfo.userInfo[@"address"];
+//    label.text = userinfo.userInfo[@"address"];
    // [self post];
 }
 - (void)getData
@@ -87,8 +95,8 @@
     //2.封装参数
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    dict = @{@"room_id":room_id,@"key_str":textfield.text,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-    NSString *strurl = [API stringByAppendingString:@"property/getPersonalInfo"];
+    dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
        
         NSLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
@@ -97,7 +105,7 @@
             mobeil = [[responseObject objectForKey:@"data"] objectForKey:@"mp1"];
             is_ym = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"is_ym"]];
             [self bangding];
-
+            
         }else{
             [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }
@@ -138,56 +146,226 @@
 }
 - (void)createui
 {
-    UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(0, 10+RECTSTATUS.size.height+40, Main_width, 50)];
-    view1.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:view1];
-    
-    label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 50)];
-    label.text = @"请选择房屋";
-    label.font = font15;
-    label.alpha = 0.3;
-    [view1 addSubview:label];
-    
+    for (int i=0; i<5; i++) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height+50+58*i, Main_width, 50)];
+        view.backgroundColor = [UIColor whiteColor];
+        [self.view addSubview:view];
+        
+        if (i==0) {
+            xiaoqu = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 50)];
+            xiaoqu.text = @"请选择小区";
+            xiaoqu.font = font15;
+            xiaoqu.alpha = 0.5;
+            [view addSubview:xiaoqu];
+        }else if (i==1){
+            louhao = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 50)];
+            louhao.text = @"请选择楼号";
+            louhao.font = font15;
+            louhao.alpha = 0.5;
+            [view addSubview:louhao];
+        }else if (i==2){
+            danyuan = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 50)];
+            danyuan.text = @"请选择单元";
+            danyuan.font = font15;
+            danyuan.alpha = 0.5;
+            [view addSubview:danyuan];
+        }else if (i==3){
+            roomhao = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 50)];
+            roomhao.text = @"请选择房间号";
+            roomhao.font = font15;
+            roomhao.alpha = 0.5;
+            [view addSubview:roomhao];
+        }else{
+            textfield = [[UITextField alloc] initWithFrame:CGRectMake(10, 0, Main_width-60-10, 50)];
+            textfield.placeholder = @"请输入业主姓名或手机号";
+            textfield.font = [UIFont systemFontOfSize:15];
+            textfield.tag = 1000;
+            [view addSubview:textfield];
+        }
+        if (i<4) {
+            
+            UIImageView *youjiantou = [[UIImageView alloc] initWithFrame:CGRectMake(Main_width-40, 15, 20, 20)];
+            youjiantou.image = [UIImage imageNamed:@"youjiantou"];
+            [view addSubview:youjiantou];
+            
+            UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+            but.frame = CGRectMake(0, 0, Main_width, 50);
+            but.tag = i;
+            [but addTarget:self action:@selector(selectehouse:) forControlEvents:UIControlEventTouchUpInside];
+            [view addSubview:but];
+        }
+    }
     UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-    but.frame = CGRectMake(0, 0, Main_width, 50);
-    [but addTarget:self action:@selector(selectehouse) forControlEvents:UIControlEventTouchUpInside];
-    [view1 addSubview:but];
-    
-    UIView *view2 = [[UIView alloc] initWithFrame:CGRectMake(0, 70+RECTSTATUS.size.height+40, Main_width, 50)];
-    view2.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:view2];
-    
-    textfield = [[UITextField alloc] initWithFrame:CGRectMake(10, 0, Main_width-60-10, 50)];
-    textfield.placeholder = @"请输入业主姓名或手机号";
-    textfield.font = [UIFont systemFontOfSize:15];
-    [view2 addSubview:textfield];
-    
-    UIButton *yanzhengbut = [UIButton buttonWithType:UIButtonTypeCustom];
-    yanzhengbut.frame = CGRectMake(Main_width-60, 10, 50, 30);
-    yanzhengbut.backgroundColor = [UIColor colorWithRed:255/255.0 green:92/255.0 blue:34/255.0 alpha:1];
-    [yanzhengbut setTitle:@"验证" forState:UIControlStateNormal];
-    yanzhengbut.layer.cornerRadius = 2;
-    [yanzhengbut.titleLabel setFont:[UIFont systemFontOfSize:15]];
-    [yanzhengbut addTarget:self action:@selector(yanzheng) forControlEvents:UIControlEventTouchUpInside];
-    [yanzhengbut setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [view2 addSubview:yanzhengbut];
+    but.frame = CGRectMake(40, Main_Height-70, Main_width-80, 45);
+    but.backgroundColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
+    but.layer.cornerRadius = 5;
+    [but setTitle:@"提交房屋认证" forState:UIControlStateNormal];
+    //[but setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    but.titleLabel.font = [UIFont systemFontOfSize:20];
+    [but addTarget:self action:@selector(suer) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:but];
 }
-- (void)yanzheng
+- (void)suer
 {
-    if (room_id == nil) {
-        [MBProgressHUD showToastToView:self.view withText:@"请选择房屋"];
-    }else if ([textfield.text isEqualToString:@""]){
-        [MBProgressHUD showToastToView:self.view withText:@"请输入姓名或者手机号"];
+    WBLog(@"-%@-%@-%@-%@",community_id,building_id,units,code);
+    if (community_id.length == 0) {
+        [MBProgressHUD showToastToView:self.view withText:@"请先选择小区"];
+    }else if (building_id.length == 0){
+        [MBProgressHUD showToastToView:self.view withText:@"请先选择楼号"];
+    }else if (units.length == 0){
+        [MBProgressHUD showToastToView:self.view withText:@"请先选择单元号"];
+    }else if (code.length == 0){
+        [MBProgressHUD showToastToView:self.view withText:@"请先选择房间号"];
+    }else if (textfield.text.length == 0){
+        [MBProgressHUD showToastToView:self.view withText:@"请填写业主姓名或手机号"];
     }else{
-        [self getData];
+        [self bangdingyanzheng];
     }
 }
-- (void)selectehouse
+- (void)bangdingyanzheng
 {
-    XiaoquViewController *xiaoqu = [[XiaoquViewController alloc] init];
-    xiaoqu.biaojistr = @"yezhu";
-    xiaoqu.jiaofei = @"jiaofei";
-    [self.navigationController pushViewController:xiaoqu animated:YES];
+    NSString *nameorphone = textfield.text;
+    //初始化进度框，置于当前的View当中
+    static MBProgressHUD *_HUD;
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:_HUD];
+    
+    //如果设置此属性则当前的view置于后台
+    //_HUD.dimBackground = YES;
+    
+    //设置对话框文字
+    _HUD.labelText = @"绑定中...";
+    _HUD.labelFont = [UIFont systemFontOfSize:14];
+    
+    //显示对话框
+    [_HUD showAnimated:YES whileExecutingBlock:^{
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+        //2.封装参数
+        NSDictionary *dict = nil;
+        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"room_id":code,@"key_str":nameorphone};
+        NSString *strurl = [API stringByAppendingString:@"property/getPersonalInfo"];
+        [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            
+            NSLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
+            if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                [self newbangding:[responseObject objectForKey:@"data"]];
+            }else{
+                [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"failure--%@",error);
+        }];
+    }// 在HUD被隐藏后的回调
+       completionBlock:^{
+           //操作执行完后取消对话框
+           [_HUD removeFromSuperview];
+           _HUD = nil;
+       }];
+    
+}
+- (void)newbangding:(NSMutableDictionary *)Dictionary
+{
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    //2.封装参数
+    NSDictionary *dict = nil;
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"community_id":[Dictionary objectForKey:@"community_id"],@"community_name":[Dictionary objectForKey:@"community_name"],@"company_id":[Dictionary objectForKey:@"company_id"],@"company_name":[Dictionary objectForKey:@"company_name"],@"department_id":[Dictionary objectForKey:@"department_id"],@"department_name":[Dictionary objectForKey:@"department_name"],@"building_id":[Dictionary objectForKey:@"building_id"],@"building_name":[Dictionary objectForKey:@"building_name"],@"unit":[Dictionary objectForKey:@"unit"],@"floor":[Dictionary objectForKey:@"floor"],@"code":[Dictionary objectForKey:@"code"],@"room_id":[Dictionary objectForKey:@"room_id"],@"fullname":[Dictionary objectForKey:@"fullname"],@"mobile":[Dictionary objectForKey:@"mobile"],@"is_ym":[Dictionary objectForKey:@"is_ym"],@"house_type":[Dictionary objectForKey:@"houses_type"]};
+    WBLog(@"%@--%@",Dictionary,dict);
+    NSString *strurl = [API stringByAppendingString:@"property/pro_bind_user"];
+    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+
+        NSLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
+        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+            [self.navigationController popViewControllerAnimated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"shuaxinmyhome" object:nil userInfo:nil];
+        }else{
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"failure--%@",error);
+    }];
+}
+- (void)selectehouse:(UIButton *)sender
+{
+    if (sender.tag==0) {
+        newselectxiaoquViewController *vc = [[newselectxiaoquViewController alloc] init];
+        vc.returnValueBlock = ^(NSString *c_id,NSString *xiaoquname){
+            community_id = c_id;
+            xiaoqu.text = xiaoquname;
+        };
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if (sender.tag==1){
+        if (community_id.length == 0) {
+            [MBProgressHUD showToastToView:self.view withText:@"请先选择小区"];
+        }else{
+            newselctlouhaoViewController *vc = [[newselctlouhaoViewController alloc] init];
+            vc.returnValueBlock = ^(NSString *blockid,NSString *blockname){
+                building_id = blockid;
+                louhao.text = blockname;
+            };
+            vc.c_id = community_id;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }else if (sender.tag==2){
+        if (community_id.length == 0) {
+            [MBProgressHUD showToastToView:self.view withText:@"请先选择小区"];
+        }else if (building_id.length == 0){
+            [MBProgressHUD showToastToView:self.view withText:@"请先选择楼号"];
+        }else{
+            newselectdanyuanViewController *vc = [[newselectdanyuanViewController alloc] init];
+            vc.returnValueBlock = ^(NSString *blockid,NSString *blockname){
+                units = blockid;
+                danyuan.text = blockname;
+            };
+            vc.c_id = community_id;
+            vc.buildid = building_id;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }else {
+        if (community_id.length == 0) {
+            [MBProgressHUD showToastToView:self.view withText:@"请先选择小区"];
+        }else if (building_id.length == 0){
+            [MBProgressHUD showToastToView:self.view withText:@"请先选择楼号"];
+        }else if (units.length == 0){
+            [MBProgressHUD showToastToView:self.view withText:@"请先选择单元号"];
+        }else{
+            newselectroomViewController *vc = [[newselectroomViewController alloc] init];
+            vc.returnValueBlock = ^(NSString *blockid,NSString *blockname){
+                code = blockid;
+                roomhao.text = blockname;
+            };
+            vc.c_id = community_id;
+            vc.buildid = building_id;
+            vc.danyuanid = units;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }
+}
+#pragma  mark - textField delegate
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    NSLog(@"点击空白");
+    [textfield endEditing:YES];
+}
+//点击空白处的手势要实现的方法
+-(void)viewTapped:(UISwipeGestureRecognizer *)recognizer
+{
+    UITextField * field=(UITextField *)[self.view viewWithTag:1000];
+    
+    if(recognizer.direction==UISwipeGestureRecognizerDirectionDown) {
+        
+        
+        
+        NSLog(@"swipe down");
+        
+        
+        [field resignFirstResponder];
+    }
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
