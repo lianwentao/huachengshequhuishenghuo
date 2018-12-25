@@ -66,7 +66,7 @@
         _pickerView.delegate = self;
         [_pickerView setTitleHeight:40 pickerViewHeight:165];
         // 关闭默认支持打开上次的结果
-        //        _pickerView.isAutoOpenLast = NO;
+                _pickerView.isAutoOpenLast = YES;
     }
     return _pickerView;
 }
@@ -354,19 +354,6 @@
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    //2.封装参数
-    //NSLog(@"===%@",_region_id);
-    //3.发送GET请求
-    /*
-     第一个参数:请求路径(NSString)+ 不需要加参数
-     第二个参数:发送给服务器的参数数据
-     第三个参数:progress 进度回调
-     第四个参数:success  成功之后的回调(此处的成功或者是失败指的是整个请求)
-     task:请求任务
-     responseObject:注意!!!响应体信息--->(json--->oc))
-     task.response: 响应头信息
-     第五个参数:failure 失败之后的回调
-     */
     NSString *url = [API stringByAppendingString:@"site/getCommunityByCity"];
     NSDictionary *dict = [[NSDictionary alloc] init];
     dict = @{@"region_name":location_region_name};

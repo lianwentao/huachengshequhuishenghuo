@@ -886,7 +886,9 @@
         view.frame = CGRectMake(12, bannerView.frame.size.height+10, Main_width-24, 15+width+15+20+10+15+width+20+15);
     }
     view.layer.cornerRadius = 5;
-    view.backgroundColor = [UIColor whiteColor];
+    view.clipsToBounds = YES;
+    view.layer.borderColor = [UIColor colorWithHexString:@"#EFEFEF"].CGColor;
+    view.layer.borderWidth = 1;
     [_tabHeadView addSubview:view];
     
     CGFloat labelwidth = (Main_width-24)/5;
@@ -1040,12 +1042,16 @@
         backscrollview.contentSize = CGSizeMake(125*pro_discount_listArr.count+16*(pro_discount_listArr.count-1), 212);
         backscrollview.showsVerticalScrollIndicator = NO;
         backscrollview.showsHorizontalScrollIndicator = NO;
+       
         [_tabHeadView addSubview:backscrollview];
         
         for (int i=0; i<pro_discount_listArr.count; i++) {
             UIView *backview = [[UIView alloc] initWithFrame:CGRectMake((125+16)*i, 0, 125, 212)];
             backview.backgroundColor = [UIColor whiteColor];
             backview.layer.cornerRadius = 5;
+            backview.clipsToBounds = YES;
+            backview.layer.borderColor = [UIColor colorWithHexString:@"#F1F1F1"].CGColor;
+            backview.layer.borderWidth=1;
             [backscrollview addSubview:backview];
             
             UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(5, 16, 117, 100)];
@@ -1099,8 +1105,8 @@
             //                    label3.textColor = [UIColor whiteColor];
             //                    label3.textAlignment = NSTextAlignmentRight;
             //                    label3.font = [UIFont systemFontOfSize:14];
-            NSDictionary *dicttime = @{@"tag":[NSString stringWithFormat:@"%d",i]};
-            countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDownAction) userInfo:dicttime repeats:YES]; //启动倒计时后会每秒钟调用一次方法 countDownAction
+            //NSDictionary *dicttime = @{@"tag":[NSString stringWithFormat:@"%d",i]};
+            //countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countDownAction) userInfo:dicttime repeats:YES]; //启动倒计时后会每秒钟调用一次方法 countDownAction
             //设置倒计时显示的时间
             NSString *str_day = [NSString stringWithFormat:@"%ld",secondsCountDown/3600/24];
             NSString *str_hour = [NSString stringWithFormat:@"%ld",secondsCountDown/3600%24];//时
@@ -1300,6 +1306,9 @@
     [gengduohaohuo addSubview:fuLab];
     [_tabHeadView addSubview:gengduohaohuo];
     
+    UIView *bottomline = [[UIView alloc] initWithFrame:CGRectMake(15, gengduohaohuo.frame.size.height+gengduohaohuo.frame.origin.y, Main_width-30, 1)];
+    bottomline.backgroundColor = [UIColor colorWithHexString:@"#F1F1F1"];
+    [_tabHeadView addSubview:bottomline];
     
     _mainTableView.tableHeaderView = _tabHeadView;
     

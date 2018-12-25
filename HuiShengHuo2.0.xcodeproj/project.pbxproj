@@ -407,6 +407,10 @@
 		28BCB79B2009E24D00ADA953 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BCB79A2009E24D00ADA953 /* CoreLocation.framework */; };
 		28BCB79D2009E27300ADA953 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BCB79C2009E27300ADA953 /* Security.framework */; };
 		28BCB79F2009E28000ADA953 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28BCB79E2009E28000ADA953 /* WebKit.framework */; };
+		28BCBE2721D1EA1C00E3F4A0 /* newselectxiaoquViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BCBE2621D1EA1C00E3F4A0 /* newselectxiaoquViewController.m */; };
+		28BCBE2A21D1EB8200E3F4A0 /* newselctlouhaoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BCBE2921D1EB8200E3F4A0 /* newselctlouhaoViewController.m */; };
+		28BCBE2D21D1EB9E00E3F4A0 /* newselectdanyuanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BCBE2C21D1EB9E00E3F4A0 /* newselectdanyuanViewController.m */; };
+		28BCBE3021D1EBB400E3F4A0 /* newselectroomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BCBE2F21D1EBB400E3F4A0 /* newselectroomViewController.m */; };
 		28BD21DD1FF0AB450028CD2A /* louhaoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD21DC1FF0AB450028CD2A /* louhaoViewController.m */; };
 		28BD21E01FF0AB540028CD2A /* danyuanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD21DF1FF0AB540028CD2A /* danyuanViewController.m */; };
 		28BD21E31FF0AB760028CD2A /* roomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD21E21FF0AB760028CD2A /* roomViewController.m */; };
@@ -1671,6 +1675,14 @@
 		28BCB79E2009E28000ADA953 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		28BCB7A02009E28900ADA953 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		28BCB7A22009E95300ADA953 /* HuiShengHuo2.0.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HuiShengHuo2.0.entitlements; sourceTree = "<group>"; };
+		28BCBE2521D1EA1C00E3F4A0 /* newselectxiaoquViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = newselectxiaoquViewController.h; sourceTree = "<group>"; };
+		28BCBE2621D1EA1C00E3F4A0 /* newselectxiaoquViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = newselectxiaoquViewController.m; sourceTree = "<group>"; };
+		28BCBE2821D1EB8200E3F4A0 /* newselctlouhaoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = newselctlouhaoViewController.h; sourceTree = "<group>"; };
+		28BCBE2921D1EB8200E3F4A0 /* newselctlouhaoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = newselctlouhaoViewController.m; sourceTree = "<group>"; };
+		28BCBE2B21D1EB9E00E3F4A0 /* newselectdanyuanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = newselectdanyuanViewController.h; sourceTree = "<group>"; };
+		28BCBE2C21D1EB9E00E3F4A0 /* newselectdanyuanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = newselectdanyuanViewController.m; sourceTree = "<group>"; };
+		28BCBE2E21D1EBB400E3F4A0 /* newselectroomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = newselectroomViewController.h; sourceTree = "<group>"; };
+		28BCBE2F21D1EBB400E3F4A0 /* newselectroomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = newselectroomViewController.m; sourceTree = "<group>"; };
 		28BD21DB1FF0AB450028CD2A /* louhaoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = louhaoViewController.h; sourceTree = "<group>"; };
 		28BD21DC1FF0AB450028CD2A /* louhaoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = louhaoViewController.m; sourceTree = "<group>"; };
 		28BD21DE1FF0AB540028CD2A /* danyuanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = danyuanViewController.h; sourceTree = "<group>"; };
@@ -2981,6 +2993,7 @@
 		284D852B212EADF000BF8ED2 /* wuyejiaofei */ = {
 			isa = PBXGroup;
 			children = (
+				28BCBE1821D1C53900E3F4A0 /* newyanzheng */,
 				284D852C212EAE5400BF8ED2 /* afteryanzhengViewController.h */,
 				284D852D212EAE5400BF8ED2 /* afteryanzhengViewController.m */,
 				284D852F212EB82C00BF8ED2 /* yanzhengjiaofeiViewController.h */,
@@ -4093,6 +4106,21 @@
 				28B74A321FCC1B3C00EBFE82 /* WXApiObject.h */,
 			);
 			path = OpenSDK1.8.1;
+			sourceTree = "<group>";
+		};
+		28BCBE1821D1C53900E3F4A0 /* newyanzheng */ = {
+			isa = PBXGroup;
+			children = (
+				28BCBE2521D1EA1C00E3F4A0 /* newselectxiaoquViewController.h */,
+				28BCBE2621D1EA1C00E3F4A0 /* newselectxiaoquViewController.m */,
+				28BCBE2821D1EB8200E3F4A0 /* newselctlouhaoViewController.h */,
+				28BCBE2921D1EB8200E3F4A0 /* newselctlouhaoViewController.m */,
+				28BCBE2B21D1EB9E00E3F4A0 /* newselectdanyuanViewController.h */,
+				28BCBE2C21D1EB9E00E3F4A0 /* newselectdanyuanViewController.m */,
+				28BCBE2E21D1EBB400E3F4A0 /* newselectroomViewController.h */,
+				28BCBE2F21D1EBB400E3F4A0 /* newselectroomViewController.m */,
+			);
+			path = newyanzheng;
 			sourceTree = "<group>";
 		};
 		28BD21D71FF090500028CD2A /* wuyeyanzheng */ = {
@@ -6748,6 +6776,7 @@
 				28A83CA4205F4634009ED444 /* HXDatePhotoToolManager.m in Sources */,
 				8460371421CDD4E500D83490 /* UIAlertView+JKBlock.m in Sources */,
 				846037AE21CDD4E500D83490 /* DataSourceModel.m in Sources */,
+				28BCBE2D21D1EB9E00E3F4A0 /* newselectdanyuanViewController.m in Sources */,
 				286DE84720C194E60010F410 /* UITableView+XY.m in Sources */,
 				28855DD9201C759E005B249B /* PYSearchConst.m in Sources */,
 				2856E1131FD796F400CD0DCA /* gouwudingdanTableViewCell.m in Sources */,
@@ -6817,6 +6846,7 @@
 				2810CA4F21C4F64800587324 /* ziyonggongdanViewController.m in Sources */,
 				845C561821A7F528002F509D /* businessViewController.m in Sources */,
 				846036C321CDD4E500D83490 /* NSData+JKPCM.m in Sources */,
+				28BCBE2A21D1EB8200E3F4A0 /* newselctlouhaoViewController.m in Sources */,
 				285DED801FD2810E00B0812F /* CMInputView.m in Sources */,
 				28E96D8B20BC1811007E353B /* WRNavigationBar.m in Sources */,
 				28BD21DD1FF0AB450028CD2A /* louhaoViewController.m in Sources */,
@@ -6890,6 +6920,7 @@
 				846037A421CDD4E500D83490 /* XLsn0wLoadPercentView.m in Sources */,
 				287D63A72012F0580099EF3C /* pingjiaViewController.m in Sources */,
 				845C561A21A7F528002F509D /* itemButton.m in Sources */,
+				28BCBE3021D1EBB400E3F4A0 /* newselectroomViewController.m in Sources */,
 				2846A75220013DAF003C3B78 /* noticeViewController.m in Sources */,
 				845C564E21A7F529002F509D /* sfListModel.m in Sources */,
 				845C561E21A7F528002F509D /* JSONModelArray.m in Sources */,
@@ -7243,6 +7274,7 @@
 				28F5B204209461B10058AAC2 /* UIImage+XYGif.m in Sources */,
 				847CC2CA21BFB11F002E241D /* searchServiceModel.m in Sources */,
 				28A83CCC205F95E8009ED444 /* LSPTitleView.m in Sources */,
+				28BCBE2721D1EA1C00E3F4A0 /* newselectxiaoquViewController.m in Sources */,
 				8460375C21CDD4E500D83490 /* UINavigationController+JKStackManager.m in Sources */,
 				2880DA5B206139570096E86D /* bangdingqianViewController.m in Sources */,
 				28A716BE2061F00A0050D446 /* selectHomeViewController.m in Sources */,
