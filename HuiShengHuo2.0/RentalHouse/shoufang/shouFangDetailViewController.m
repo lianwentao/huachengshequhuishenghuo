@@ -240,7 +240,7 @@
         NSString *str6 = [str5 stringByAppendingString:str3];
         NSString *str7 = [model.community_name stringByAppendingString:str6];
         NSString *str8 = [NSString stringWithFormat:@"-面积%@平米",model.area];
-        NSString *str9 = [NSString stringWithFormat:@"|%@/%@层",model.floor,model.house_floor];
+        NSString *str9 = [NSString stringWithFormat:@"|%@/%@层",model.house_floor,model.floor];
         NSString *str10 = [str7 stringByAppendingString:str8];
         NSString *titleStr = [str10 stringByAppendingString:str9];
         NSLog(@"titleStr = %@",titleStr);
@@ -573,7 +573,7 @@
         
         UILabel *priceLab = [[UILabel alloc]init];
         priceLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+5, 100, 30);
-        priceLab.text = tjModel.total_price;
+        priceLab.text = tjModel.unit_price;
         //    priceLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
         priceLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
         priceLab.font = [UIFont systemFontOfSize:17];

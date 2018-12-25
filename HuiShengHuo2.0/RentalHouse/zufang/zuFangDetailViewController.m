@@ -72,17 +72,17 @@
         zfDetailModel *model =  [[zfDetailModel alloc]initWithDictionary:dataDic error:nil];
         [dataSourceArr addObject:model];
          NSLog(@"dataSourceArr = %@",dataSourceArr);
-
-//        tjArr = [NSMutableArray array];
-//        if (![model.recommend isKindOfClass:[NSNull class]]) {
-//
-//            for (NSDictionary *tjDic in model.recommend) {
-//                tjListModel *tjModel = [[tjListModel alloc]initWithDictionary:tjDic error:NULL];
-//                [tjArr addObject:tjModel];
-//            }
-//        }
-//        NSLog(@"tjArr = %@",tjArr);
         
+        NSArray *recommendArr = dataDic[@"recommend"];
+         NSLog(@"recommendArr = %@",recommendArr);
+         tjArr = [NSMutableArray array];
+        if ([recommendArr isKindOfClass:[NSArray class]] && recommendArr.count != 0) {
+            for (NSDictionary *tjDic in recommendArr) {
+                tjListModel *tjModel = [[tjListModel alloc]initWithDictionary:tjDic error:NULL];
+                [tjArr addObject:tjModel];
+            }
+        }
+        NSLog(@"tjArr = %@",tjArr);
         [self CreateTableview];
         [self loadFunctionView];
         
@@ -223,7 +223,7 @@
         NSString *str6 = [str5 stringByAppendingString:str3];
         NSString *str7 = [model.community_name stringByAppendingString:str6];
         NSString *str8 = [NSString stringWithFormat:@"-面积%@平米",model.area];
-        NSString *str9 = [NSString stringWithFormat:@"|%@/%@层",model.floor,model.house_floor];
+        NSString *str9 = [NSString stringWithFormat:@"|%@/%@层",model.house_floor,model.floor];
         NSString *str10 = [str7 stringByAppendingString:str8];
         NSString *titleStr = [str10 stringByAppendingString:str9];
         NSLog(@"titleStr = %@",titleStr);
@@ -264,7 +264,7 @@
         tag.frame = rect;
         
         UILabel *sjLab = [[UILabel alloc]init];
-        sjLab.frame = CGRectMake(10, CGRectGetMaxY(tag.frame)+5, kScreenWidth/3+17, 35);
+        sjLab.frame = CGRectMake(10, CGRectGetMaxY(rengZhengLab.frame)+5, kScreenWidth/3+17, 35);
         sjLab.text = @"房租(月付价)";
         sjLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
         sjLab.font = [UIFont systemFontOfSize:18];
@@ -288,13 +288,13 @@
 //        [cell addSubview:priceLab2];
         
         UIView *line1 = [[UIView alloc]init];
-        line1.frame = CGRectMake(CGRectGetMaxX(sjLab.frame), CGRectGetMaxY(tag.frame)+5, .5, 75);
+        line1.frame = CGRectMake(CGRectGetMaxX(sjLab.frame), CGRectGetMaxY(rengZhengLab.frame)+5, .5, 75);
         line1.backgroundColor = [UIColor lightGrayColor];
         [cell addSubview:line1];
         
         
         UILabel *hxLab = [[UILabel alloc]init];
-        hxLab.frame = CGRectMake(CGRectGetMaxX(line1.frame)+3, CGRectGetMaxY(tag.frame)+5, kScreenWidth/3-3, 35);
+        hxLab.frame = CGRectMake(CGRectGetMaxX(line1.frame)+3, CGRectGetMaxY(rengZhengLab.frame)+5, kScreenWidth/3-3, 35);
         hxLab.text = @"户型";
         hxLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
         hxLab.font = [UIFont systemFontOfSize:18];
@@ -317,12 +317,12 @@
         [cell addSubview:hxLab1];
         
         UIView *line2 = [[UIView alloc]init];
-        line2.frame = CGRectMake(CGRectGetMaxX(hxLab.frame), CGRectGetMaxY(tag.frame)+5, .5, 75);
+        line2.frame = CGRectMake(CGRectGetMaxX(hxLab.frame), CGRectGetMaxY(rengZhengLab.frame)+5, .5, 75);
         line2.backgroundColor = [UIColor lightGrayColor];
         [cell addSubview:line2];
         
         UILabel *mjLab = [[UILabel alloc]init];
-        mjLab.frame = CGRectMake(CGRectGetMaxX(line2.frame)+3, CGRectGetMaxY(tag.frame)+5, kScreenWidth/3-3, 35);
+        mjLab.frame = CGRectMake(CGRectGetMaxX(line2.frame)+3, CGRectGetMaxY(rengZhengLab.frame)+5, kScreenWidth/3-3, 35);
         mjLab.text = @"面积";
         mjLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
         mjLab.font = [UIFont systemFontOfSize:18];
@@ -506,7 +506,7 @@
        
         NSArray *recommendArr = dataDic[@"recommend"];
        if ([recommendArr isKindOfClass:[NSArray class]] && recommendArr.count != 0) {
-           
+          
            tjListModel *tjModel = tjArr[indexPath.row];
 
             UIImageView *imgView = [[UIImageView alloc]init];
@@ -563,7 +563,7 @@
 
             UILabel *priceLab = [[UILabel alloc]init];
             priceLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+5, 100, 30);
-            priceLab.text = tjModel.total_price;
+            priceLab.text = tjModel.unit_price;
             //    priceLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
             priceLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
             priceLab.font = [UIFont systemFontOfSize:17];

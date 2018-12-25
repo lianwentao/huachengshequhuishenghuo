@@ -1307,8 +1307,8 @@
                         NSString *str6 = [str5 stringByAppendingString:str3];
                         NSString *str7 = [[[housesList objectAtIndex:i] objectForKey:@"community_name"] stringByAppendingString:str6];
                         NSString *str8 = [NSString stringWithFormat:@"-面积%@平米",[[housesList objectAtIndex:i] objectForKey:@"area"]];
-                        NSString *floor = [[housesList objectAtIndex:i] objectForKey:@"floor"];
-                        NSString *houseFloor = [[housesList objectAtIndex:i] objectForKey:@"house_floor"];
+                        NSString *floor = [[housesList objectAtIndex:i] objectForKey:@"house_floor"];
+                        NSString *houseFloor = [[housesList objectAtIndex:i] objectForKey:@"floor"];
                         NSString *str9 = [NSString stringWithFormat:@"|%@/%@层",floor,houseFloor];
                         NSString *str10 = [str7 stringByAppendingString:str8];
                         NSString *titleStr = [str10 stringByAppendingString:str9];
