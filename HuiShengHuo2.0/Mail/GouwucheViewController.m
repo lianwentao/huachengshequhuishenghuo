@@ -626,12 +626,19 @@
         NSString *strurl = [API stringByAppendingString:@"shop/submit_order_before"];
         [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             //
-            SuredingdanViewController *sure = [[SuredingdanViewController alloc] init];
-            sure.Dic = [responseObject objectForKey:@"data"];
-            sure.jsonstring = jsonString;
-            [self.navigationController pushViewController:sure animated:YES];
+            WBLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+            NSString *status = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"status"]];
+            if ([status isEqualToString:@"1"]) {
+                SuredingdanViewController *sure = [[SuredingdanViewController alloc] init];
+                sure.Dic = [responseObject objectForKey:@"data"];
+                sure.jsonstring = jsonString;
+                [self.navigationController pushViewController:sure animated:YES];
+            }else{
+                [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+            }
+            
             //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
-            NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+            
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             NSLog(@"failure--%@",error);
         }];

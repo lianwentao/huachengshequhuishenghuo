@@ -543,7 +543,7 @@
     _mainTableView.dataSource = self;
     _mainTableView.showsVerticalScrollIndicator = NO;
     //注意：这里不能使用动态高度_headimageHeight, 不然tableView会往下移，在iphone X下，头部不放大的时候，上方依然会有白色空白
-    _mainTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(getdata)];
+    _mainTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(shuaxin)];
     
     _mainTableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);//内容视图开始正常显示的坐标为(0, HeaderImageViewHeight)
     
@@ -1441,7 +1441,6 @@
                 
             }
             [self createui];
-            [_mainTableView.mj_header endRefreshing];
             [self.mainTableView reloadData];
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
@@ -1452,6 +1451,75 @@
            [_HUD removeFromSuperview];
            _HUD = nil;
        }];
+}
+-(void)shuaxin
+{
+    //1.创建会话管理者
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    //2.封装参数
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"]};
+    //3.发送GET请求
+    /*
+     */
+    NSString *strurl = [API stringByAppendingString:@"shop/shop_index"];
+    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        //[_DataArr addObjectsFromArray:[responseObject objectForKey:@"data"]];
+        //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
+        WBLog(@"getversion41---success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+        centerArr = [[NSArray alloc] init];//头部广告下分类
+        shangpinArr = [[NSArray alloc] init];
+        fenleiArr = [[NSArray alloc] init];//下面的tableview数据
+        pro_discount_listArr = [[NSArray alloc] init];//限时抢购
+        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+            
+            HeaDataArr = [[NSArray alloc] init];//头部
+            HeaDataArr = [[responseObject objectForKey:@"data"] objectForKey:@"ad_hc_shopindex"];
+            NSLog(@"headarr==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
+            //NSLog(@"success--%@--%@",[responseObject class],responseObject);
+            
+            NSMutableArray *imagearr = [NSMutableArray array];
+            bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)) viewSize:CGSizeMake(Main_width,Main_width/(1.87))];
+            
+            if ([HeaDataArr isKindOfClass:[NSArray class]]) {
+                for (int i=0; i<HeaDataArr.count; i++) {
+                    NSString *strurl = [API_img stringByAppendingString:[[HeaDataArr objectAtIndex:i]objectForKey:@"img"]];
+                    NSLog(@"%@",strurl);
+                    [imagearr addObject:strurl];
+                    bannerView.items = imagearr;
+                }
+            }else{
+                imagearr  =  nil;
+                
+            }
+            //            centerArr = [[responseObject objectForKey:@"data"] objectForKey:@"cate_list"];ad_hc_shop_center
+            fenleiArr = [[responseObject objectForKey:@"data"] objectForKey:@"hot_cate_list"];
+            centerArr = [[responseObject objectForKey:@"data"] objectForKey:@"cate_list"];
+            shangpinArr = [[responseObject objectForKey:@"data"] objectForKey:@"ad_hc_shop_center"];
+            pro_discount_listArr = [[[responseObject objectForKey:@"data"] objectForKey:@"pro_discount_list"] objectForKey:@"list"];
+            
+            NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+            NSMutableArray *titlearr = [NSMutableArray arrayWithCapacity:0];
+            for (int i=0; i<fenleiArr.count; i++) {
+                version41mallchildViewController *vc = [[version41mallchildViewController alloc] init];
+                [arr addObject:vc];
+                vc.id = [[fenleiArr objectAtIndex:i] objectForKey:@"id"];
+                [titlearr addObject:[[fenleiArr objectAtIndex:i] objectForKey:@"cate_name"]];
+            }
+            NSArray *titleArray = titlearr;
+            SegmentView *segmentView = [[SegmentView alloc] initWithFrame:CGRectMake(0, NAVHEIGHT, Main_width, Main_Height-NAVHEIGHT) controllers:arr titleArray:titleArray parentController:self];
+            //注意：不能通过初始化方法传递selectedIndex的初始值，因为内部使用的是Masonry布局的方式, 否则设置selectedIndex不起作用
+            
+            _segmentView = segmentView;
+        }else{
+            
+        }
+        [_mainTableView.mj_header endRefreshing];
+        [self.mainTableView reloadData];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
 }
 -(void) countDownAction{
     int i = [[countDownTimer.userInfo objectForKey:@"tag"] intValue];
