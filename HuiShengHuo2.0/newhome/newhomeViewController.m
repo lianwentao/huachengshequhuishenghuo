@@ -70,6 +70,8 @@
 #import "zuFangViewController.h"//租房
 #import "shouFangViewController.h"//售房
 #import "zushouweituoViewController.h"//发布租售
+#import "zuFangDetailViewController.h"
+#import "shouFangDetailViewController.h"
 @interface newhomeViewController ()<UITableViewDelegate,UITableViewDataSource,MenuScrollViewDeleagte,TextInfoViewDelegate>
 {
     NSArray *topArr;
@@ -1054,7 +1056,7 @@
             [cell.contentView addSubview:bgView];
         }
         
-        tableView.rowHeight = 53+66;
+        tableView.rowHeight = 53+68;
         
     }else if(indexPath.section==5){
         
@@ -1261,27 +1263,31 @@
                         view.backgroundColor = [UIColor whiteColor];
                         view.layer.cornerRadius = 3;
                         [cell.contentView addSubview:view];
-                        
-                        //                    UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
-                        //                    dianjibut.frame = view.frame;
-                        //                    dianjibut.tag = [[[arr objectAtIndex:i] objectForKey:@"id"] longValue];
-                        //                    [dianjibut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
-                        //                    [cell.contentView addSubview:dianjibut];
-                        
+
                         UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, 110)];
                         NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[housesList objectAtIndex:i] objectForKey:@"head_img"]]];
-                        NSLog(@"kkkkkkkkkkkkkkkkk = %@",url);
+                        imageview.userInteractionEnabled = YES;
+                        imageview.clipsToBounds = YES;
+                        imageview.contentMode = UIViewContentModeScaleAspectFill;
                         [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
                         
+                        UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
+                        dianjibut.frame = view.frame;
+                        dianjibut.tag = [[[housesList objectAtIndex:i] objectForKey:@"id"] longValue];
+                        [dianjibut setTitle:[[housesList objectAtIndex:i] objectForKey:@"house_type"]  forState:UIControlStateNormal];
+                        [dianjibut setTitleColor:[UIColor clearColor]];
+                        [dianjibut addTarget:self action:@selector(fangWuDetail:) forControlEvents:UIControlEventTouchUpInside];
+                        [cell addSubview:dianjibut];
+
                         NSInteger houseType = [[[housesList objectAtIndex:i] objectForKey:@"house_type"] integerValue];
                         if (houseType == 1) {
-                            
                             UIImageView *smallImg = [[UIImageView alloc]init];
                             smallImg.frame = CGRectMake(10, 10, 30, 30);
                             smallImg.image = [UIImage imageNamed:@"zu"];
                             [imageview addSubview:smallImg];
                             [view addSubview:imageview];
                             
+                           
                         }else{
                             UIImageView *smallImg = [[UIImageView alloc]init];
                             smallImg.frame = CGRectMake(10, 10, 30, 30);
@@ -1327,19 +1333,18 @@
                         view.layer.cornerRadius = 3;
                         [cell.contentView addSubview:view];
                         
-                        //                    UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
-                        //                    dianjibut.frame = view.frame;
-                        //                    dianjibut.tag = [[[arr objectAtIndex:i] objectForKey:@"id"] longValue];
-                        //                    [dianjibut addTarget:self action:@selector(pushgoods:) forControlEvents:UIControlEventTouchUpInside];
-                        //                    [cell.contentView addSubview:dianjibut];
-                        
                         UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, 110)];
-                        //                    NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[arr objectAtIndex:i] objectForKey:@"title_thumb_img"]]];
-                        //                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
                         NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[housesList objectAtIndex:i] objectForKey:@"head_img"]]];
-                        NSLog(@"iiiiiiiiiiiiiiiii = %@",url);
                         [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
                         [view addSubview:imageview];
+                        
+                        UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
+                        dianjibut.frame = view.frame;
+                        dianjibut.tag = [[[housesList objectAtIndex:i] objectForKey:@"id"] longValue];
+                        [dianjibut setTitle:[[housesList objectAtIndex:i] objectForKey:@"house_type"]  forState:UIControlStateNormal];
+                        [dianjibut setTitleColor:[UIColor clearColor]];
+                        [dianjibut addTarget:self action:@selector(fangWuDetail:) forControlEvents:UIControlEventTouchUpInside];
+                        [cell addSubview:dianjibut];
                         
                         NSInteger houseType = [[[housesList objectAtIndex:i] objectForKey:@"house_type"] integerValue];
                         if (houseType == 1) {
@@ -1356,6 +1361,7 @@
                             smallImg.image = [UIImage imageNamed:@"shou"];
                             [imageview addSubview:smallImg];
                             [view addSubview:imageview];
+    
                         }
                         
                         UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(12.5, 5+imageview.frame.size.height, view.frame.size.width-25, 40)];
@@ -2431,5 +2437,20 @@
         [self.navigationController pushViewController:zushouweituoVC animated:YES];
     }
     
+}
+-(void)fangWuDetail:(UIButton *)sender{
+    
+    NSInteger houseType = [sender.titleLabel.text integerValue];
+    if (houseType == 1) {
+        zuFangDetailViewController *zuVC = [[zuFangDetailViewController alloc]init];
+        zuVC.zfID = [NSString stringWithFormat:@"%ld",sender.tag];
+        zuVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:zuVC animated:YES];
+    }else{
+        shouFangDetailViewController *shouVC = [[shouFangDetailViewController alloc]init];
+        shouVC.sfID = [NSString stringWithFormat:@"%ld",sender.tag];
+        shouVC.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:shouVC animated:YES];
+    }
 }
 @end

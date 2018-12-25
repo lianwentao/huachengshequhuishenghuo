@@ -528,6 +528,7 @@
 		844A648221B21503005B04A1 /* VOTagList.m in Sources */ = {isa = PBXBuildFile; fileRef = 844A648121B21502005B04A1 /* VOTagList.m */; };
 		844A648521B21D69005B04A1 /* scoreDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 844A648421B21D69005B04A1 /* scoreDetailModel.m */; };
 		844A648821B2854C005B04A1 /* newFwDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 844A648721B2854C005B04A1 /* newFwDetailModel.m */; };
+		844EED0D21D1B7FE00B629D9 /* tjListModel1.m in Sources */ = {isa = PBXBuildFile; fileRef = 844EED0C21D1B7FE00B629D9 /* tjListModel1.m */; };
 		845C561821A7F528002F509D /* businessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845C558121A7F527002F509D /* businessViewController.m */; };
 		845C561921A7F528002F509D /* fengLeiDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 845C558321A7F527002F509D /* fengLeiDetailViewController.m */; };
 		845C561A21A7F528002F509D /* itemButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 845C558521A7F527002F509D /* itemButton.m */; };
@@ -1885,6 +1886,8 @@
 		844A648421B21D69005B04A1 /* scoreDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = scoreDetailModel.m; sourceTree = "<group>"; };
 		844A648621B2854C005B04A1 /* newFwDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = newFwDetailModel.h; sourceTree = "<group>"; };
 		844A648721B2854C005B04A1 /* newFwDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = newFwDetailModel.m; sourceTree = "<group>"; };
+		844EED0B21D1B7FE00B629D9 /* tjListModel1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tjListModel1.h; sourceTree = "<group>"; };
+		844EED0C21D1B7FE00B629D9 /* tjListModel1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = tjListModel1.m; sourceTree = "<group>"; };
 		845C558021A7F527002F509D /* businessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = businessViewController.h; sourceTree = "<group>"; };
 		845C558121A7F527002F509D /* businessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = businessViewController.m; sourceTree = "<group>"; };
 		845C558221A7F527002F509D /* fengLeiDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fengLeiDetailViewController.h; sourceTree = "<group>"; };
@@ -5008,6 +5011,8 @@
 				845C55FD21A7F528002F509D /* sfListModel.m */,
 				845C55FE21A7F528002F509D /* tjListModel.h */,
 				845C55FF21A7F528002F509D /* tjListModel.m */,
+				844EED0B21D1B7FE00B629D9 /* tjListModel1.h */,
+				844EED0C21D1B7FE00B629D9 /* tjListModel1.m */,
 				847448C421D0667900F87718 /* labelModel.h */,
 				847448C521D0667900F87718 /* labelModel.m */,
 			);
@@ -7313,6 +7318,7 @@
 				8460379A21CDD4E500D83490 /* XLButton.m in Sources */,
 				284D852E212EAE5400BF8ED2 /* afteryanzhengViewController.m in Sources */,
 				8460375121CDD4E500D83490 /* UIImageView+XLsn0w.m in Sources */,
+				844EED0D21D1B7FE00B629D9 /* tjListModel1.m in Sources */,
 				846036EF21CDD4E500D83490 /* NSObject+JKEasyCopy.m in Sources */,
 				2856E11F1FD7E10000CD0DCA /* dingdandetailsViewController.m in Sources */,
 				846036F621CDD4E500D83490 /* NSRunLoop+JKPerformBlock.m in Sources */,
