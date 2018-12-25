@@ -1,17 +1,16 @@
 //
-//  tjListModel.h
+//  tjListModel1.h
 //  HuiShengHuo2.0
 //
-//  Created by admin on 2018/11/19.
+//  Created by admin on 2018/12/25.
 //  Copyright © 2018年 晋中华晟. All rights reserved.
 //
 
 #import "JSONModel.h"
 
-@interface tjListModel : JSONModel
+@interface tjListModel1 : JSONModel
 @property (nonatomic ,strong)NSString *id;
 @property (nonatomic ,strong)NSString *total_price;
-//@property (nonatomic ,strong)NSArray *label;
 @property (nonatomic ,strong)NSString *house_floor;
 @property (nonatomic ,strong)NSString *kitchen;
 @property (nonatomic ,strong)NSString *guard;

@@ -35,4 +35,5 @@
 @property (nonatomic ,strong)NSString *houseid;
 @property (nonatomic ,strong)NSString *elevator;
 @property (nonatomic ,strong)NSString *lease_term;
+@property (nonatomic ,strong)NSString *content;
 @end

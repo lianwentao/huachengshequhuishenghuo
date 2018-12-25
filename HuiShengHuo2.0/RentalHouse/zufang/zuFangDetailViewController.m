@@ -29,6 +29,8 @@
     NSMutableArray *tjArr;
     NSMutableArray *labelArr;
     JKBannarView *bannerView;
+    NSDictionary *dataDic;
+    UILabel *contentlabel;
 }
 
 @end
@@ -64,7 +66,7 @@
         NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
         NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 //        NSLog(@"dataStr = %@",dataStr);
-        NSDictionary *dataDic = responseObject[@"data"];
+        dataDic = responseObject[@"data"];
         NSLog(@"dataDic = %@",dataDic);
         dataSourceArr = [NSMutableArray array];
         zfDetailModel *model =  [[zfDetailModel alloc]initWithDictionary:dataDic error:nil];
@@ -123,19 +125,24 @@
     }else if(section == 3){
         return 1;
     }else{
-//        if (![model.recommend isKindOfClass:[NSNull class]]) {
-//            return model.recommend.count;
-//        }else{
-//            return 0;
-//        }
-        return 2;
+        NSArray *recommendArr = dataDic[@"recommend"];
+        if ([recommendArr isKindOfClass:[NSArray class]] && recommendArr.count != 0) {
+            return recommendArr.count;
+        }else{
+            return 0;
+        }
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     
     if (section == 4) {
-        return 50;
+        NSArray *recommendArr = dataDic[@"recommend"];
+        if ([recommendArr isKindOfClass:[NSArray class]] && recommendArr.count != 0) {
+            return 50;
+        }else{
+            return 0.001;
+        }
     } else {
         return 0.001;
     }
@@ -154,9 +161,21 @@
     }else if (indexPath.section == 2){
         return 170;
     }else if (indexPath.section == 3){
-        return 170;
+        zfDetailModel *model = dataSourceArr[0];
+        NSString *base64 = model.content;
+        NSData *data1 = [[NSData alloc] initWithBase64EncodedString:base64 options:0];
+        NSString *labeltext = [[NSString alloc] initWithData:data1 encoding:NSUTF8StringEncoding];
+        NSDictionary *attrs = @{NSFontAttributeName :[UIFont systemFontOfSize:16]};
+        CGSize maxSize = CGSizeMake(Main_width-20, MAXFLOAT);
+        CGSize size = [labeltext boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
+        return 70+size.height+10;
     }else{
-        return 120;
+        NSArray *recommendArr = dataDic[@"recommend"];
+        if ([recommendArr isKindOfClass:[NSArray class]] && recommendArr.count != 0) {
+            return 120;
+        }else{
+            return 0;
+        }
     }
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -467,98 +486,124 @@
         titleLab.textAlignment = NSTextAlignmentLeft;
         [cell addSubview:titleLab];
         
+        zfDetailModel *model = dataSourceArr[0];
+        NSString *base64 = model.content;
+        contentlabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(titleLab.frame)+10, Main_width-20, 0)];
+        contentlabel.numberOfLines = 0;
+        CGSize size;
+        if (base64!=nil) {
+            NSData *data1 = [[NSData alloc] initWithBase64EncodedString:base64 options:0];
+            NSString *labeltext = [[NSString alloc] initWithData:data1 encoding:NSUTF8StringEncoding];
+            contentlabel.font = [UIFont systemFontOfSize:16];
+            contentlabel.text = labeltext;
+            size = [contentlabel sizeThatFits:CGSizeMake(contentlabel.frame.size.width, MAXFLOAT)];
+            contentlabel.frame = CGRectMake(contentlabel.frame.origin.x, contentlabel.frame.origin.y, size.width,  size.height);
+            [cell addSubview:contentlabel];
+        }
+        
         
     }else{
-//        zfDetailModel *model = dataSourceArr[0];
-//       if (![model.recommend isKindOfClass:[NSNull class]]) {
-//            tjListModel *tjModel = tjArr[indexPath.row];
-//
-//            UIImageView *imgView = [[UIImageView alloc]init];
-//            imgView.frame = CGRectMake(10, 10, 100, 100);
-//            [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:tjModel.head_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-//            [cell addSubview:imgView];
-//
-//            UILabel *titleLab = [[UILabel alloc]init];
-//            titleLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, 10, kScreenWidth-20-5-100, 40);
-//            NSString *str = [NSString stringWithFormat:@"-%@室",tjModel.room];
-//            NSString *str1 = [NSString stringWithFormat:@"%@厅",tjModel.office];
-//            NSString *str2 = [NSString stringWithFormat:@"%@厨",tjModel.kitchen];
-//            NSString *str3 = [NSString stringWithFormat:@"%@卫",tjModel.guard];
-//            NSString *str4 = [str stringByAppendingString:str1];
-//            NSString *str5 = [str4 stringByAppendingString:str2];
-//            NSString *str6 = [str5 stringByAppendingString:str3];
-//            NSString *str7 = [tjModel.community_name stringByAppendingString:str6];
-//            NSString *str8 = [NSString stringWithFormat:@"-面积%@平米",tjModel.area];
-//            NSString *str9 = [NSString stringWithFormat:@"|%@/%@层",tjModel.floor,tjModel.house_floor];
-//            NSString *str10 = [str7 stringByAppendingString:str8];
-//            NSString *titleStr = [str10 stringByAppendingString:str9];
-//            NSLog(@"titleStr = %@",titleStr);
-//            titleLab.text = titleStr;
-//            titleLab.textColor = [UIColor grayColor];
-//            titleLab.font = [UIFont systemFontOfSize:15];
-//            titleLab.numberOfLines = 2;
-//            titleLab.textAlignment = NSTextAlignmentLeft;
-//            [cell addSubview:titleLab];
-//
-//            UILabel *rengZhengLab = [[UILabel alloc]init];
-//            rengZhengLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(titleLab.frame)+5, 80, 20);
-//            rengZhengLab.text = @"物业认证";
-//            rengZhengLab.backgroundColor = [UIColor colorWithRed:252/255.0 green:88/255.0 blue:48/255.0 alpha:1];
-//            rengZhengLab.textColor = [UIColor whiteColor];
-//            rengZhengLab.font = [UIFont systemFontOfSize:15];
-//            rengZhengLab.textAlignment = NSTextAlignmentCenter;
-//            [cell addSubview:rengZhengLab];
-//
-//            UILabel *biaoQianLab = [[UILabel alloc]init];
-//            biaoQianLab.frame = CGRectMake(CGRectGetMaxX(rengZhengLab.frame)+5, CGRectGetMaxY(titleLab.frame)+5, 50, 20);
-//            NSArray *labArr = tjModel.label;
-//            NSDictionary *nameDic = labArr[0];
-//            NSString *labStr = [nameDic objectForKey:@"label_name"];
-//            biaoQianLab.text = labStr;
-//            biaoQianLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
-//            biaoQianLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
-//            biaoQianLab.font = [UIFont systemFontOfSize:15];
-//            biaoQianLab.textAlignment = NSTextAlignmentCenter;
-//            [cell addSubview:biaoQianLab];
-//
-//            UILabel *priceLab = [[UILabel alloc]init];
-//            priceLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+5, 100, 30);
-//            priceLab.text = tjModel.total_price;
-//            //    priceLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
-//            priceLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
-//            priceLab.font = [UIFont systemFontOfSize:17];
-//            priceLab.textAlignment = NSTextAlignmentLeft;
-//            [cell addSubview:priceLab];
-//
-//            UILabel *jPriceLab = [[UILabel alloc]init];
-//            jPriceLab.frame = CGRectMake(CGRectGetMaxX(priceLab.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+10, 100, 20);
-//            jPriceLab.text = [NSString stringWithFormat:@"%@元/平米",tjModel.unit_price];
-//            //    jPriceLab = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
-//            jPriceLab.textColor = [UIColor colorWithRed:162/255.0 green:162/255.0 blue:162/255.0 alpha:1];
-//            jPriceLab.font = [UIFont systemFontOfSize:14];
-//            jPriceLab.textAlignment = NSTextAlignmentRight;
-//            [cell addSubview:jPriceLab];
-//        }else{
-//
-//        }
+       
+        NSArray *recommendArr = dataDic[@"recommend"];
+       if ([recommendArr isKindOfClass:[NSArray class]] && recommendArr.count != 0) {
+           
+           tjListModel *tjModel = tjArr[indexPath.row];
+
+            UIImageView *imgView = [[UIImageView alloc]init];
+            imgView.frame = CGRectMake(10, 10, 100, 100);
+            [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:tjModel.head_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [cell addSubview:imgView];
+
+            UILabel *titleLab = [[UILabel alloc]init];
+            titleLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, 10, kScreenWidth-20-5-100, 40);
+            NSString *str = [NSString stringWithFormat:@"-%@室",tjModel.room];
+            NSString *str1 = [NSString stringWithFormat:@"%@厅",tjModel.office];
+            NSString *str2 = [NSString stringWithFormat:@"%@厨",tjModel.kitchen];
+            NSString *str3 = [NSString stringWithFormat:@"%@卫",tjModel.guard];
+            NSString *str4 = [str stringByAppendingString:str1];
+            NSString *str5 = [str4 stringByAppendingString:str2];
+            NSString *str6 = [str5 stringByAppendingString:str3];
+            NSString *str7 = [tjModel.community_name stringByAppendingString:str6];
+            NSString *str8 = [NSString stringWithFormat:@"-面积%@平米",tjModel.area];
+            NSString *str9 = [NSString stringWithFormat:@"|%@/%@层",tjModel.floor,tjModel.house_floor];
+            NSString *str10 = [str7 stringByAppendingString:str8];
+            NSString *titleStr = [str10 stringByAppendingString:str9];
+            NSLog(@"titleStr = %@",titleStr);
+            titleLab.text = titleStr;
+            titleLab.textColor = [UIColor grayColor];
+            titleLab.font = [UIFont systemFontOfSize:15];
+            titleLab.numberOfLines = 2;
+            titleLab.textAlignment = NSTextAlignmentLeft;
+            [cell addSubview:titleLab];
+
+            UILabel *rengZhengLab = [[UILabel alloc]init];
+            rengZhengLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(titleLab.frame)+5, 80, 20);
+            rengZhengLab.text = @"物业认证";
+            rengZhengLab.backgroundColor = [UIColor colorWithRed:252/255.0 green:88/255.0 blue:48/255.0 alpha:1];
+            rengZhengLab.textColor = [UIColor whiteColor];
+            rengZhengLab.font = [UIFont systemFontOfSize:15];
+            rengZhengLab.textAlignment = NSTextAlignmentCenter;
+            [cell addSubview:rengZhengLab];
+
+           
+           labelArr = [[recommendArr objectAtIndex:indexPath.row] objectForKey:@"label"];
+           if ([labelArr isKindOfClass:[NSArray class]] && labelArr.count != 0) {
+               
+               UILabel *biaoQianLab = [[UILabel alloc]init];
+               biaoQianLab.frame = CGRectMake(CGRectGetMaxX(rengZhengLab.frame)+5, CGRectGetMaxY(titleLab.frame)+5, 50, 20);
+               NSDictionary *nameDic = labelArr[0];
+               NSString *labStr = [nameDic objectForKey:@"label_name"];
+               biaoQianLab.text = labStr;
+               biaoQianLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
+               biaoQianLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
+               biaoQianLab.font = [UIFont systemFontOfSize:15];
+               biaoQianLab.textAlignment = NSTextAlignmentCenter;
+               [cell addSubview:biaoQianLab];
+           }
+
+            UILabel *priceLab = [[UILabel alloc]init];
+            priceLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+5, 100, 30);
+            priceLab.text = tjModel.total_price;
+            //    priceLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
+            priceLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
+            priceLab.font = [UIFont systemFontOfSize:17];
+            priceLab.textAlignment = NSTextAlignmentLeft;
+            [cell addSubview:priceLab];
+
+            UILabel *jPriceLab = [[UILabel alloc]init];
+            jPriceLab.frame = CGRectMake(CGRectGetMaxX(priceLab.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+10, 100, 20);
+            jPriceLab.text = [NSString stringWithFormat:@"%@元/平米",tjModel.unit_price];
+            //    jPriceLab = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
+            jPriceLab.textColor = [UIColor colorWithRed:162/255.0 green:162/255.0 blue:162/255.0 alpha:1];
+            jPriceLab.font = [UIFont systemFontOfSize:14];
+            jPriceLab.textAlignment = NSTextAlignmentRight;
+            [cell addSubview:jPriceLab];
+        }else{
+
+        }
     }
     return cell;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section == 4) {
-        
-        UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
-        headerView.backgroundColor = [UIColor whiteColor];
-        
-        UILabel *titleLab = [[UILabel alloc]init];
-        titleLab.frame = CGRectMake(10, 10, 150, 50);
-        titleLab.text = @"推荐房屋";
-        titleLab.font = [UIFont systemFontOfSize:20];
-        titleLab.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
-        titleLab.textAlignment = NSTextAlignmentLeft;
-        [headerView addSubview:titleLab];
-        return headerView;
+        NSArray *recommendArr = dataDic[@"recommend"];
+        if ([recommendArr isKindOfClass:[NSArray class]] && recommendArr.count != 0) {
+            
+            UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
+            headerView.backgroundColor = [UIColor whiteColor];
+            
+            UILabel *titleLab = [[UILabel alloc]init];
+            titleLab.frame = CGRectMake(10, 10, 150, 50);
+            titleLab.text = @"推荐房屋";
+            titleLab.font = [UIFont systemFontOfSize:20];
+            titleLab.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
+            titleLab.textAlignment = NSTextAlignmentLeft;
+            [headerView addSubview:titleLab];
+            return headerView;
+        }else{
+            return nil;
+        }
         
     }else {
         
@@ -649,6 +694,18 @@
     NSLog(@"content: %@ index: %zd", content, index);
     
 }
-
+#pragma mark 获得高度
+-(float)getContactHeight:(NSString*)contact
+{
+    NSDictionary *attrs = @{NSFontAttributeName : [UIFont systemFontOfSize:16]};
+    CGSize maxSize = CGSizeMake(Main_width-20, MAXFLOAT);
+    
+    // 计算文字占据的高度
+    CGSize size = [contact boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
+    
+    
+    return size.height;
+    
+}
 
 @end

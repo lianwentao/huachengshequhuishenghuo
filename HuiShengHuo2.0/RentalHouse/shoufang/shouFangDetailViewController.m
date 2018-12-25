@@ -26,6 +26,7 @@
 #import "XLPhotoBrowser.h"
 #import "sfDetailModel.h"
 #import "tjListModel.h"
+
 @interface shouFangDetailViewController ()<UITableViewDelegate,UITableViewDataSource,PTLMenuButtonDelegate, KMTagListViewDelegate>
 {
     UITableView *tableView;
@@ -34,6 +35,11 @@
     NSMutableArray *tjArr;
     NSMutableArray *labelArr;
     JKBannarView *bannerView;
+    UILabel *contentlabel;
+    
+    tjListModel *tjModel;
+    NSDictionary *dataDic;
+  
     
 }
 
@@ -47,9 +53,6 @@
     
    
     [self loadData];
-    [self CreateTableview];
-    [self loadFunctionView];
-    
     [self wr_setNavBarBarTintColor:BackColor];
     [self wr_setNavBarBackgroundAlpha:0];
     
@@ -74,18 +77,23 @@
         NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
         NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSLog(@"dataStr = %@",dataStr);
-        NSDictionary *dataDic = responseObject[@"data"];
+        dataDic = responseObject[@"data"];
         NSLog(@"dataDic = %@",dataDic);
         dataSourceArr = [NSMutableArray array];
        sfDetailModel *model =  [[sfDetailModel alloc]initWithDictionary:dataDic error:nil];
         [dataSourceArr addObject:model];
         
         tjArr = [NSMutableArray array];
-        for (NSDictionary *tjDic in model.recommend) {
-            tjListModel *tjModel = [[tjListModel alloc]initWithDictionary:tjDic error:NULL];
-            [tjArr addObject:tjModel];
+        if ([model.recommend isKindOfClass:[NSArray class]]) {
+            
+            for (NSDictionary *tjDic in model.recommend) {
+                    tjModel = [[tjListModel alloc]initWithDictionary:tjDic error:NULL];
+                    [tjArr addObject:tjModel];
+                
+            }
+            
         }
-        
+
         [self CreateTableview];
         [self loadFunctionView];
         
@@ -129,14 +137,24 @@
     }else if(section == 3){
         return 1;
     }else{
-        return model.recommend.count;
+        NSArray *recommendArr = dataDic[@"recommend"];
+        if ([recommendArr isKindOfClass:[NSArray class]] && recommendArr.count != 0) {
+            return recommendArr.count;
+        }else{
+            return 0;
+        }
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     
     if (section == 4) {
-        return 50;
+        NSArray *recommendArr = dataDic[@"recommend"];
+        if ([recommendArr isKindOfClass:[NSArray class]] && recommendArr.count != 0) {
+            return 50;
+        }else{
+            return 0.001;
+        }
     } else {
         return 0.001;
     }
@@ -155,9 +173,21 @@
     }else if (indexPath.section == 2){
         return 170;
     }else if (indexPath.section == 3){
-        return 170;
+        sfDetailModel *model = dataSourceArr[0];
+        NSString *base64 = model.content;
+        NSData *data1 = [[NSData alloc] initWithBase64EncodedString:base64 options:0];
+        NSString *labeltext = [[NSString alloc] initWithData:data1 encoding:NSUTF8StringEncoding];
+        NSDictionary *attrs = @{NSFontAttributeName :[UIFont systemFontOfSize:16]};
+        CGSize maxSize = CGSizeMake(Main_width-20, MAXFLOAT);
+        CGSize size = [labeltext boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
+       return 70+size.height+10;
     }else{
-        return 120;
+        NSArray *recommendArr = dataDic[@"recommend"];
+        if ([recommendArr isKindOfClass:[NSArray class]] && recommendArr.count != 0) {
+            return 120;
+        }else{
+            return 0;
+        }
     }
 }
 
@@ -174,24 +204,28 @@
     if (indexPath.section == 0) {
         sfDetailModel *model = dataSourceArr[0];
         NSMutableArray *imagearr = [NSMutableArray array];
-        bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)) viewSize:CGSizeMake(Main_width,Main_width/(1.87))];
-        
-        for (int i=0; i<model.house_img.count; i++) {
-            NSString *strurl = [API_img stringByAppendingString:[[model.house_img objectAtIndex:i]objectForKey:@"path"]];
-            NSString *strurl1 = [strurl stringByAppendingString:Image1080];
-            NSString *strurl2 = [strurl1 stringByAppendingString:[[model.house_img objectAtIndex:i]objectForKey:@"house_imgs_name"]];
-            NSLog(@"strurl = %@",strurl2);
-            [imagearr addObject:strurl2];
-            bannerView.items = imagearr;
-        }
-        
-        [bannerView imageViewClick:^(JKBannarView * _Nonnull barnerview, NSInteger index) {
+        if ([model.house_img isKindOfClass:[NSArray class]]) {
             
-            XLPhotoBrowser *browser = [XLPhotoBrowser showPhotoBrowserWithImages:imagearr currentImageIndex:index];
-            browser.browserStyle = XLPhotoBrowserStylePageControl;
-        }];
-       
-         [cell.contentView addSubview:bannerView];
+            bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)) viewSize:CGSizeMake(Main_width,Main_width/(1.87))];
+            
+            for (int i=0; i<model.house_img.count; i++) {
+                NSString *strurl = [API_img stringByAppendingString:[[model.house_img objectAtIndex:i]objectForKey:@"path"]];
+                NSString *strurl1 = [strurl stringByAppendingString:Image1080];
+                NSString *strurl2 = [strurl1 stringByAppendingString:[[model.house_img objectAtIndex:i]objectForKey:@"house_imgs_name"]];
+                NSLog(@"strurl = %@",strurl2);
+                [imagearr addObject:strurl2];
+                bannerView.items = imagearr;
+            }
+            
+            [bannerView imageViewClick:^(JKBannarView * _Nonnull barnerview, NSInteger index) {
+                
+                XLPhotoBrowser *browser = [XLPhotoBrowser showPhotoBrowserWithImages:imagearr currentImageIndex:index];
+                browser.browserStyle = XLPhotoBrowserStylePageControl;
+            }];
+            
+            [cell.contentView addSubview:bannerView];
+        }
+
        
     }else if (indexPath.section == 1){
         
@@ -231,8 +265,8 @@
         rengZhengLab.textAlignment = NSTextAlignmentCenter;
         [cell addSubview:rengZhengLab];
         
+        
         KMTagListView *tag = [[KMTagListView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(rengZhengLab.frame)+5, CGRectGetMaxY(titleLab.frame), kScreenWidth-20-5-80, 0)];
-        tag.delegate_ = self;
         
         if ([model.label isKindOfClass:[NSArray class]]) {
             labelArr = [NSMutableArray array];
@@ -241,17 +275,19 @@
                 NSString *labStr = [dic objectForKey:@"label_name"];
                 [labelArr addObject:labStr];
             }
+            tag.delegate_ = self;
+            [tag setupSubViewsWithTitles:labelArr];
+            [cell addSubview:tag];
+            
+            CGRect rect = tag.frame;
+            rect.size.height = tag.contentSize.height;
+            tag.frame = rect;
         }
 
-        [tag setupSubViewsWithTitles:labelArr];
-        [cell addSubview:tag];
         
-        CGRect rect = tag.frame;
-        rect.size.height = tag.contentSize.height;
-        tag.frame = rect;
         
         UILabel *sjLab = [[UILabel alloc]init];
-        sjLab.frame = CGRectMake(10, CGRectGetMaxY(tag.frame)+5, kScreenWidth/3+17, 35);
+        sjLab.frame = CGRectMake(10, CGRectGetMaxY(rengZhengLab.frame)+5, kScreenWidth/3+17, 35);
         sjLab.text = @"售价/单价";
         sjLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
         sjLab.font = [UIFont systemFontOfSize:18];
@@ -275,13 +311,13 @@
         [cell addSubview:priceLab2];
         
         UIView *line1 = [[UIView alloc]init];
-        line1.frame = CGRectMake(CGRectGetMaxX(sjLab.frame), CGRectGetMaxY(tag.frame)+5, .5, 75);
+        line1.frame = CGRectMake(CGRectGetMaxX(sjLab.frame), CGRectGetMaxY(rengZhengLab.frame)+5, .5, 75);
         line1.backgroundColor = [UIColor lightGrayColor];
         [cell addSubview:line1];
         
         
         UILabel *hxLab = [[UILabel alloc]init];
-        hxLab.frame = CGRectMake(CGRectGetMaxX(line1.frame)+5, CGRectGetMaxY(tag.frame)+5, kScreenWidth/3-3, 35);
+        hxLab.frame = CGRectMake(CGRectGetMaxX(line1.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+5, kScreenWidth/3-3, 35);
         hxLab.text = @"户型";
         hxLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
         hxLab.font = [UIFont systemFontOfSize:18];
@@ -304,12 +340,12 @@
         [cell addSubview:hxLab1];
         
         UIView *line2 = [[UIView alloc]init];
-        line2.frame = CGRectMake(CGRectGetMaxX(hxLab.frame), CGRectGetMaxY(tag.frame)+5, .5, 75);
+        line2.frame = CGRectMake(CGRectGetMaxX(hxLab.frame), CGRectGetMaxY(rengZhengLab.frame)+5, .5, 75);
         line2.backgroundColor = [UIColor lightGrayColor];
         [cell addSubview:line2];
         
         UILabel *mjLab = [[UILabel alloc]init];
-        mjLab.frame = CGRectMake(CGRectGetMaxX(line2.frame)+5, CGRectGetMaxY(tag.frame)+5, kScreenWidth/3-3, 35);
+        mjLab.frame = CGRectMake(CGRectGetMaxX(line2.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+5, kScreenWidth/3-3, 35);
         mjLab.text = @"面积";
         mjLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
         mjLab.font = [UIFont systemFontOfSize:18];
@@ -458,10 +494,24 @@
         titleLab.textAlignment = NSTextAlignmentLeft;
         [cell addSubview:titleLab];
         
+        sfDetailModel *model = dataSourceArr[0];
+        NSString *base64 = model.content;
+        contentlabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(titleLab.frame)+10, Main_width-20, 0)];
+        contentlabel.numberOfLines = 0;
+        CGSize size;
+        if (base64!=nil) {
+            NSData *data1 = [[NSData alloc] initWithBase64EncodedString:base64 options:0];
+            NSString *labeltext = [[NSString alloc] initWithData:data1 encoding:NSUTF8StringEncoding];
+            contentlabel.font = [UIFont systemFontOfSize:16];
+            contentlabel.text = labeltext;
+            size = [contentlabel sizeThatFits:CGSizeMake(contentlabel.frame.size.width, MAXFLOAT)];
+            contentlabel.frame = CGRectMake(contentlabel.frame.origin.x, contentlabel.frame.origin.y, size.width,  size.height);
+            [cell addSubview:contentlabel];
+        }
         
     }else{
         
-        tjListModel *tjModel = tjArr[indexPath.row];
+        tjModel = tjArr[indexPath.row];
         
         UIImageView *imgView = [[UIImageView alloc]init];
         imgView.frame = CGRectMake(10, 10, 100, 100);
@@ -503,17 +553,23 @@
         rengZhengLab.textAlignment = NSTextAlignmentCenter;
         [cell addSubview:rengZhengLab];
         
-        UILabel *biaoQianLab = [[UILabel alloc]init];
-        biaoQianLab.frame = CGRectMake(CGRectGetMaxX(rengZhengLab.frame)+5, CGRectGetMaxY(titleLab.frame)+5, 50, 20);
-        NSArray *labArr = tjModel.label;
-        NSDictionary *nameDic = labArr[0];
-        NSString *labStr = [nameDic objectForKey:@"label_name"];
-        biaoQianLab.text = labStr;
-        biaoQianLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
-        biaoQianLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
-        biaoQianLab.font = [UIFont systemFontOfSize:15];
-        biaoQianLab.textAlignment = NSTextAlignmentCenter;
-        [cell addSubview:biaoQianLab];
+        
+        NSArray *recommendArr = dataDic[@"recommend"];
+        labelArr = [[recommendArr objectAtIndex:indexPath.row] objectForKey:@"label"];
+        if ([labelArr isKindOfClass:[NSArray class]] && labelArr.count != 0) {
+            
+            UILabel *biaoQianLab = [[UILabel alloc]init];
+            biaoQianLab.frame = CGRectMake(CGRectGetMaxX(rengZhengLab.frame)+5, CGRectGetMaxY(titleLab.frame)+5, 50, 20);
+            NSDictionary *nameDic = labelArr[0];
+            NSString *labStr = [nameDic objectForKey:@"label_name"];
+            biaoQianLab.text = labStr;
+            biaoQianLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
+            biaoQianLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
+            biaoQianLab.font = [UIFont systemFontOfSize:15];
+            biaoQianLab.textAlignment = NSTextAlignmentCenter;
+            [cell addSubview:biaoQianLab];
+        }
+        
         
         UILabel *priceLab = [[UILabel alloc]init];
         priceLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+5, 100, 30);
@@ -549,24 +605,28 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section == 4) {
-        
-        UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
-        headerView.backgroundColor = [UIColor whiteColor];
-        
-        UILabel *titleLab = [[UILabel alloc]init];
-        titleLab.frame = CGRectMake(10, 10, 150, 50);
-        titleLab.text = @"推荐房屋";
-        titleLab.font = [UIFont systemFontOfSize:20];
-        titleLab.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
-        titleLab.textAlignment = NSTextAlignmentLeft;
-        [headerView addSubview:titleLab];
-        return headerView;
+        NSArray *recommendArr = dataDic[@"recommend"];
+        if ([recommendArr isKindOfClass:[NSArray class]] && recommendArr.count != 0) {
+            
+            UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 50)];
+            headerView.backgroundColor = [UIColor whiteColor];
+            
+            UILabel *titleLab = [[UILabel alloc]init];
+            titleLab.frame = CGRectMake(10, 10, 150, 50);
+            titleLab.text = @"推荐房屋";
+            titleLab.font = [UIFont systemFontOfSize:20];
+            titleLab.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
+            titleLab.textAlignment = NSTextAlignmentLeft;
+            [headerView addSubview:titleLab];
+            return headerView;
+        }else{
+            return nil;
+        }
         
     }else {
         
         return nil;
     }
-    
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -664,5 +724,18 @@
     
 }
 
+#pragma mark 获得高度
+-(float)getContactHeight:(NSString*)contact
+{
+    NSDictionary *attrs = @{NSFontAttributeName : [UIFont systemFontOfSize:16]};
+    CGSize maxSize = CGSizeMake(Main_width-20, MAXFLOAT);
+    
+    // 计算文字占据的高度
+    CGSize size = [contact boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil].size;
+    
+    
+    return size.height;
+    
+}
 
 @end

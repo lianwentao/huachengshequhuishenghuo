@@ -40,6 +40,9 @@
     NSInteger pageNum;
     NSMutableArray *dataSourceArr;
     UISearchBar *customSearchBar;
+    
+    NSMutableArray *kkkArr;
+    NSMutableArray *labelArr;
    
 }
 @property(nonatomic ,strong) UITableView *tableView;
@@ -62,8 +65,7 @@
    self.view.backgroundColor = [UIColor whiteColor];
     // 设置导航控制器的代理为self
 //    self.navigationController.delegate = self;
-    [self loadData2];
-    [self loadData1];
+    [self loadData];
     [self CreateTableview];
     
     
@@ -75,69 +77,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shaixuan3:) name:@"shaixuan3" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shaixuan4:) name:@"shaixuan4" object:nil];
     
-
-}
--(void)loadData2{
-    
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSString *www = [userinfo objectForKey:@"token"];
-    NSLog(@"www = %@",www);
-    
-    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"houses_type":@"1"};
-    
-    NSLog(@"dict = %@",dict);
-    
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSLog(@"dict = %@",dict);
-    //secondHouseType/getmoney secondHouseType/getacreage  secondHouseType/gethousetype secondHouseType/getdefault
-    NSString *strurl = [API stringByAppendingString:@"secondHouseType/getacreage"];
-    NSLog(@"strurl = %@",strurl);
-    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        //        NSLog(@"gouwuche--%@",responseObject);
-        
-        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSLog(@"发反反复复方法dataStr = %@",dataStr);
-        
-        
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"failure--%@",error);
-    }];
-    
 }
 -(void)loadData{
-
-    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSString *www = [userinfo objectForKey:@"token"];
-    NSLog(@"www = %@",www);
-
-    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-    
-    NSLog(@"dict = %@",dict);
-
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSLog(@"dict = %@",dict);
-    //secondHouseType/getmoney secondHouseType/getacreage  secondHouseType/gethousetype secondHouseType/getdefault
-    NSString *strurl = [API stringByAppendingString:@"secondHouseType/getdefault"];
-    NSLog(@"strurl = %@",strurl);
-    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        NSLog(@"gouwuche--%@",responseObject);
-        
-        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSLog(@"dataStr = %@",dataStr);
-        
-
-
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"failure--%@",error);
-    }];
-    
-}
--(void)loadData1{
     
     
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
@@ -188,6 +129,7 @@
         [_tableView.mj_header endRefreshing];
         [_tableView.mj_footer endRefreshing];
         dataSourceArr = [NSMutableArray array];
+        kkkArr = responseObject[@"data"][@"list"];
         for (NSDictionary *dic in dataArr) {
             zfListModel *model =  [[zfListModel alloc]initWithDictionary:dic error:nil];
              [dataSourceArr addObject:model];
@@ -316,7 +258,7 @@
         _moneyTwo = [array objectAtIndex:1];
         
     }
-    [self loadData1];
+    [self loadData];
 }
 - (void)shaixuan2:(NSNotification *)userinfo{
     NSString *str = [userinfo.userInfo objectForKey:@"shaiXuanStr2"];
@@ -336,7 +278,7 @@
         _acreageOne = [array objectAtIndex:0];
         _acreageTwo = [array objectAtIndex:1];
     }
-    [self loadData1];
+    [self loadData];
 }
 - (void)shaixuan3:(NSNotification *)userinfo{
     NSString *str = [userinfo.userInfo objectForKey:@"shaiXuanStr3"];
@@ -352,7 +294,7 @@
     }else if ([str isEqualToString:@"四室"]) {
         _housetype = @"4";
     }
-    [self loadData1];
+    [self loadData];
 }
 - (void)shaixuan4:(NSNotification *)userinfo{
    
@@ -369,13 +311,13 @@
     }else if ([str isEqualToString:@"面积从大到小"]) {
         _defaultType = @"4";
     }
-    [self loadData1];
+    [self loadData];
 }
 - (void)upDataId:(NSNotification *)userinfo{
     NSString *str = [userinfo.userInfo objectForKey:@"id"];
     NSLog(@"str = %@",str);
     _money = str;
-    [self loadData1];
+    [self loadData];
 }
 
 #pragma mark - 租房列表
@@ -384,6 +326,7 @@
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:_tableView];
     
     WS(ws);
@@ -391,12 +334,12 @@
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [ws.tableView.mj_footer endRefreshing];
         pageNum = 1;
-        [ws loadData1];
+        [ws loadData];
         
     }];
     self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [ws.tableView.mj_header endRefreshing];
-        [ws loadData1];
+        [ws loadData];
     }];
     [self.tableView.mj_header beginRefreshing];
 
@@ -470,17 +413,19 @@
     rengZhengLab.textAlignment = NSTextAlignmentCenter;
     [cell addSubview:rengZhengLab];
     
-//    NSArray *labArr = model.label;
-//    NSDictionary *nameDic = labArr[0];
-//   NSString *labStr = [nameDic objectForKey:@"label_name"];
-//    UILabel *biaoQianLab = [[UILabel alloc]init];
-//    biaoQianLab.frame = CGRectMake(CGRectGetMaxX(rengZhengLab.frame)+5, CGRectGetMaxY(titleLab.frame)+5, 50, 20);
-//    biaoQianLab.text = labStr;
-//    biaoQianLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
-//    biaoQianLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
-//    biaoQianLab.font = [UIFont systemFontOfSize:15];
-//    biaoQianLab.textAlignment = NSTextAlignmentCenter;
-//    [cell addSubview:biaoQianLab];
+    labelArr = [[kkkArr objectAtIndex:indexPath.row] objectForKey:@"label"];
+    if ([labelArr isKindOfClass:[NSArray class]] && labelArr.count != 0) {
+        UILabel *biaoQianLab = [[UILabel alloc]init];
+        biaoQianLab.frame = CGRectMake(CGRectGetMaxX(rengZhengLab.frame)+5, CGRectGetMaxY(titleLab.frame)+5, 50, 20);
+        NSDictionary *nameDic = labelArr[0];
+        NSString *labStr = [nameDic objectForKey:@"label_name"];
+        biaoQianLab.text = labStr;
+        biaoQianLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
+        biaoQianLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
+        biaoQianLab.font = [UIFont systemFontOfSize:15];
+        biaoQianLab.textAlignment = NSTextAlignmentCenter;
+        [cell addSubview:biaoQianLab];
+    }
     
     UILabel *priceLab = [[UILabel alloc]init];
     priceLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+5, 100, 30);

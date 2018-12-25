@@ -7,7 +7,7 @@
 //
 
 #import "fabuzufangViewController.h"
-
+#import "zuFangViewController.h"
 @interface fabuzufangViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 {
     UITableView *TabbleView;
@@ -326,6 +326,9 @@
             
             NSLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
             if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                
+                zuFangViewController *zfVC = [[zuFangViewController alloc]init];
+                [self.navigationController pushViewController:zfVC animated:YES];
                 
             }else{
                 [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];

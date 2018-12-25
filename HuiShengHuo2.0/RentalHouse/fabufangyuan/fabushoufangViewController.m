@@ -9,6 +9,7 @@
 #import "fabushoufangViewController.h"
 #import <AFNetworking.h>
 #import "MBProgressHUD+TVAssistant.h"
+#import "shouFangViewController.h"
 @interface fabushoufangViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 {
     UITableView *TabbleView;
@@ -343,7 +344,8 @@
             
             NSLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
             if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-                
+                shouFangViewController *sfVC = [[shouFangViewController alloc]init];
+                [self.navigationController pushViewController:sfVC animated:YES];
             }else{
                 [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
             }

@@ -9,6 +9,7 @@
 #import "JSONModel.h"
 
 @interface sfDetailModel : JSONModel
+@property (nonatomic ,strong)NSString *content;
 @property (nonatomic ,strong)NSString *adminid;
 @property (nonatomic ,strong)NSString *administrator_img;
 @property (nonatomic ,strong)NSString *area;
