@@ -38,7 +38,7 @@
 - (void)SetTabBar
 {
     UINavigationController *HomeNavigation = [[UINavigationController alloc] initWithRootViewController:[[newhomeViewController alloc] init]];
-    UINavigationController *MailNavigation = [[UINavigationController alloc] initWithRootViewController:[[version41mallViewController alloc] init]];
+    UINavigationController *MailNavigation = [[UINavigationController alloc] initWithRootViewController:[[newMallViewController alloc] init]];
     UINavigationController *ServiceNavigation = [[UINavigationController alloc] initWithRootViewController:[[newserviceViewController alloc] init]];
     UINavigationController *CircleNavigation = [[UINavigationController alloc] initWithRootViewController:[[MoreViewController alloc] init]];
     UINavigationController *MainNavigation = [[UINavigationController alloc] initWithRootViewController:[[MainViewController alloc] init]];

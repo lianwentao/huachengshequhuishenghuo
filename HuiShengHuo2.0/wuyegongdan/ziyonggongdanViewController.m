@@ -415,6 +415,7 @@
            }];
     }
 }
+
 #pragma mark - 支付预付款
 -(void)zhiFuAction:(NSString *)ordid :(NSString *)price
 {
@@ -428,6 +429,7 @@
         allpay.rukoubiaoshi = @"wuyegongdanfukuan";
         allpay.price = price;
         allpay.prepay = @"1";//预付款
+        allpay.prepayrukou = @"0";//1是订单详情进入订单中心，0代表下单时进入
         [self.navigationController pushViewController:allpay animated:YES];
     }];
 }
