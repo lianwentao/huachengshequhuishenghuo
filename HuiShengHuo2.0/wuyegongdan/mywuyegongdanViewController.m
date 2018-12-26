@@ -8,7 +8,8 @@
 
 #import "mywuyegongdanViewController.h"
 #import "mywuyegongdanchildViewController.h"
-@interface mywuyegongdanViewController ()<FSPageContentViewDelegate,FSSegmentTitleViewDelegate>{
+#import "UIViewController+BackButtonHandler.h"
+@interface mywuyegongdanViewController ()<FSPageContentViewDelegate,FSSegmentTitleViewDelegate,BackButtonHandlerProtocol>{
     NSArray *dataarr;
 }
 

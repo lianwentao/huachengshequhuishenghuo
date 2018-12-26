@@ -227,6 +227,7 @@
         mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
         if ([_prepay isEqualToString:@"1"]) {
             vc.titleselect = @"0";
+            [self dingdantuisong:_order_id];
         }else{
             vc.titleselect = @"1";
         }
@@ -323,6 +324,7 @@
         mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
         if ([_prepay isEqualToString:@"1"]) {
             vc.titleselect = @"0";
+            [self dingdantuisong:_order_id];
         }else{
             vc.titleselect = @"1";
         }
@@ -333,6 +335,24 @@
         [self.navigationController pushViewController:dingdan animated:YES];
     }
     [self GeneralButtonAction1];
+}
+- (void)dingdantuisong:(NSString *)gongdanid
+{
+    //1.创建会话管理者
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    NSString *url = [API stringByAppendingString:@"Jpush/userToWorkerSubmit"];
+    NSDictionary *dict = [[NSDictionary alloc] init];
+    dict = @{@"id":gongdanid,@"type":@"1"};
+    
+    NSLog(@"dict--%@",dict);
+    [manager POST:url parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        WBLog(@"location--%@--%@",[responseObject class],responseObject);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        NSLog(@"failure--%@",error);
+    }];
 }
 - (void)GeneralButtonAction1{
     //初始化进度框，置于当前的View当中
@@ -912,6 +932,7 @@
         mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
         if ([_prepay isEqualToString:@"1"]) {
             vc.titleselect = @"0";
+            [self dingdantuisong:_order_id];
         }else{
             vc.titleselect = @"1";
         }
