@@ -16,7 +16,6 @@
 #import "dingdanViewController.h"
 #import "fuwudingdanViewController.h"
 #import "GouwucheViewController.h"
-#import "UIViewController+BackButtonHandler.h"
 #import "ScanViewController.h"
 #import "BestpaySDK.h"
 #import "BestpayNativeModel.h"
@@ -68,14 +67,8 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self post];
     
-//    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [backBtn setTitle:@"返回" forState:UIControlStateNormal];
-//    [backBtn addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-//    backBtn.frame = CGRectMake(0, 0, 60, 40);
-//    [backBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//    UIBarButtonItem *item = [[UIBarButtonItem alloc]initWithCustomView:backBtn];
-//    self.navigationItem.leftBarButtonItem = item;
 }
+
 #pragma mark ------联网请求---
 -(void)post{
     //1.创建会话管理者
@@ -114,7 +107,7 @@
 }
 -(BOOL)navigationShouldPopOnBackButton {
     [self backBtnClicked];
-    
+
     return YES;
 }
 - (void)backBtnClicked

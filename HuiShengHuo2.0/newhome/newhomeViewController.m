@@ -63,7 +63,7 @@
 
 #import "XLsn0wTextCarousel.h"
 #import "DataSourceModel.h"
-#import "XLsn0w.h"
+
 #import "afteryanzhengViewController.h"//物业缴费
 #import "ziyongliebiaoViewController.h"//家用报修
 #import "gonggongbaoxiuViewController.h"//公共报修
@@ -1275,7 +1275,8 @@
                         dianjibut.frame = view.frame;
                         dianjibut.tag = [[[housesList objectAtIndex:i] objectForKey:@"id"] longValue];
                         [dianjibut setTitle:[[housesList objectAtIndex:i] objectForKey:@"house_type"]  forState:UIControlStateNormal];
-                        [dianjibut setTitleColor:[UIColor clearColor]];
+                        [dianjibut setTitleColor:[UIColor clearColor] forState:UIControlStateNormal];
+//                        [dianjibut setTitleColor:[UIColor clearColor]];
                         [dianjibut addTarget:self action:@selector(fangWuDetail:) forControlEvents:UIControlEventTouchUpInside];
                         [cell addSubview:dianjibut];
 
@@ -1342,7 +1343,7 @@
                         dianjibut.frame = view.frame;
                         dianjibut.tag = [[[housesList objectAtIndex:i] objectForKey:@"id"] longValue];
                         [dianjibut setTitle:[[housesList objectAtIndex:i] objectForKey:@"house_type"]  forState:UIControlStateNormal];
-                        [dianjibut setTitleColor:[UIColor clearColor]];
+                        [dianjibut setTitleColor:[UIColor clearColor] forState:UIControlStateNormal];
                         [dianjibut addTarget:self action:@selector(fangWuDetail:) forControlEvents:UIControlEventTouchUpInside];
                         [cell addSubview:dianjibut];
                         

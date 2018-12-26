@@ -16,7 +16,7 @@
 #import "sfHuoDongDetailViewController.h"
 #import <AFNetworking.h>
 #import "JKBannarView.h"
-
+#import "UIViewController+BackButtonHandler.h"
 #define kScreenHeight   ([UIScreen mainScreen].bounds.size.height)
 #define kScreenWidth    ([UIScreen mainScreen].bounds.size.width)
 #define NAV_HEIGHT 64
@@ -57,7 +57,11 @@
     [self wr_setNavBarBackgroundAlpha:0];
     
 }
-
+-(BOOL)navigationShouldPopOnBackButton {
+    NSLog(@"123456");
+    
+    return YES;
+}
 -(void)loadData{
 
     

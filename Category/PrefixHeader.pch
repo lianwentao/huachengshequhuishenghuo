@@ -50,6 +50,7 @@ typedef NS_ENUM(NSInteger, OffsetType) {
 
 #define randomColor random(arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256))
 //11.23新增
+#import "UIViewController+BackButtonHandler.h"
 #import "UIButton+WebCache.h"
 #import "myserviceViewController.h"
 #import "myservicechildViewController.h"

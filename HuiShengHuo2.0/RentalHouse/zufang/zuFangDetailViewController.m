@@ -16,6 +16,7 @@
 #import "tjListModel.h"
 #import "XLPhotoBrowser.h"
 #import "JKBannarView.h"
+#import "UIViewController+BackButtonHandler.h"
 #define kScreenHeight   ([UIScreen mainScreen].bounds.size.height)
 #define kScreenWidth    ([UIScreen mainScreen].bounds.size.width)
 #define NAV_HEIGHT 64

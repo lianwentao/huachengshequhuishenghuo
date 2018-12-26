@@ -1019,8 +1019,10 @@
                 [cell addSubview:quXiaoLab];
 
                 UILabel *quXiaoLab1 = [[UILabel alloc] initWithFrame:CGRectMake(10,CGRectGetMaxY(quXiaoLab.frame)+10, Main_width-20, 15)];
-                NSString *timeStr7 = @"等待1~3个工作日退还您支付的预付费用";
-                quXiaoLab1.text = [NSString stringWithFormat:@"%@",timeStr7];
+                if ([model.work_type isEqualToString:@"1"]) {
+                    NSString *timeStr7 = @"等待1~3个工作日退还您支付的预付费用";
+                    quXiaoLab1.text = [NSString stringWithFormat:@"%@",timeStr7];
+                }
                 quXiaoLab1.textColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
                 quXiaoLab1.font = [UIFont systemFontOfSize:13];
                 quXiaoLab1.textAlignment = NSTextAlignmentLeft;
