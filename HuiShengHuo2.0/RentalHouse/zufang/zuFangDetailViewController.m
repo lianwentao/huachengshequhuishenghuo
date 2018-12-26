@@ -158,7 +158,7 @@
     if (indexPath.section == 0) {
         return 200;
     }else if (indexPath.section == 1){
-        return 300;
+        return 280;
     }else if (indexPath.section == 2){
         return 170;
     }else if (indexPath.section == 3){
@@ -342,6 +342,7 @@
         UIImageView *imgView = [[UIImageView alloc]init];
         imgView.frame = CGRectMake(10, CGRectGetMaxY(mjLab1.frame)+15, kScreenWidth-20, 76);
         imgView.image = [UIImage imageNamed:@"ic_houserent_tips"];
+        imgView.userInteractionEnabled = YES;
         [cell addSubview:imgView];
         
         UILabel *ttLab = [[UILabel alloc]init];
@@ -357,10 +358,13 @@
         [imgView addSubview:ttLab1];
         
         
-        kuodabuttondianjifanwei *ckxqBtn = [[kuodabuttondianjifanwei alloc]initWithFrame:CGRectMake(10, CGRectGetMaxY(mjLab1.frame)+5, kScreenWidth-20, 115)];
-        ckxqBtn.frame = CGRectMake(10, CGRectGetMaxY(mjLab1.frame)+5, kScreenWidth-20, 115);
-        ckxqBtn.backgroundColor = [UIColor purpleColor];
-        ckxqBtn.layer.cornerRadius = 3.0;
+        kuodabuttondianjifanwei *ckxqBtn = [[kuodabuttondianjifanwei alloc]initWithFrame:CGRectMake(Main_width-38-74, 40, 74, 25)];
+        [ckxqBtn setEnlargeEdgeWithTop:30 right:15 bottom:5 left:100];
+        [ckxqBtn setTitleColor:[UIColor colorWithHexString:@"#FF5722"] forState:UIControlStateNormal];
+        ckxqBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+        ckxqBtn.layer.cornerRadius = 12.5;
+        [ckxqBtn.layer setBorderWidth:1.0];
+        ckxqBtn.layer.borderColor=[UIColor colorWithHexString:@"#FF5722"].CGColor;
         [ckxqBtn setTitle:@"查看详情 " forState:UIControlStateNormal];
         [ckxqBtn addTarget:self action:@selector(ckxqAction) forControlEvents:UIControlEventTouchUpInside];
         [imgView addSubview:ckxqBtn];

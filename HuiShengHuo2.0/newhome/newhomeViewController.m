@@ -1269,7 +1269,7 @@
                         imageview.userInteractionEnabled = YES;
                         imageview.clipsToBounds = YES;
                         imageview.contentMode = UIViewContentModeScaleAspectFill;
-                        [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                        [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"背景图1.5"]];
                         
                         UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
                         dianjibut.frame = view.frame;
@@ -1320,9 +1320,14 @@
                         name.numberOfLines = 2;
                         [view addSubview:name];
                         
-                        UILabel *price = [[UILabel alloc] initWithFrame:CGRectMake(12.5, CGRectGetMaxY(name.frame)+10, 50, 17)];
-                        //                    price.text = [NSString stringWithFormat:@"%@/%@",[[housesList objectAtIndex:i] objectForKey:@"total_price"],[[housesList objectAtIndex:i] objectForKey:@"unit_price"]];
-                        price.text = [NSString stringWithFormat:@"%@",[[housesList objectAtIndex:i] objectForKey:@"total_price"]];
+                    
+                        UILabel *price = [[UILabel alloc] initWithFrame:CGRectMake(12.5, CGRectGetMaxY(name.frame)+10, view.frame.size.width-25, 17)];
+                        if (houseType == 1) {
+                            price.text = [NSString stringWithFormat:@"%@元/月",[[housesList objectAtIndex:i] objectForKey:@"unit_price"]];
+                        }else{
+                            price.text = [NSString stringWithFormat:@"%@",[[housesList objectAtIndex:i] objectForKey:@"total_price"]];
+                        }
+                        
                         price.textColor = QIColor;
                         price.font = [UIFont systemFontOfSize:18];
                         
@@ -1336,7 +1341,10 @@
                         
                         UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, 110)];
                         NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[housesList objectAtIndex:i] objectForKey:@"head_img"]]];
-                        [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                        imageview.userInteractionEnabled = YES;
+                        imageview.clipsToBounds = YES;
+                        imageview.contentMode = UIViewContentModeScaleAspectFill;
+                        [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"背景图1.5"]];
                         [view addSubview:imageview];
                         
                         UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -1386,9 +1394,12 @@
                         name.numberOfLines = 2;
                         [view addSubview:name];
                         
-                        UILabel *price = [[UILabel alloc] initWithFrame:CGRectMake(12.5, CGRectGetMaxY(name.frame)+10, 50, 17)];
-                        //                    price.text = [NSString stringWithFormat:@"%@/%@",[[arr objectAtIndex:i] objectForKey:@"price"],[[arr objectAtIndex:i] objectForKey:@"unit"]];
-                        price.text = [NSString stringWithFormat:@"%@",[[housesList objectAtIndex:i] objectForKey:@"total_price"]];
+                        UILabel *price = [[UILabel alloc] initWithFrame:CGRectMake(12.5, CGRectGetMaxY(name.frame)+10, view.frame.size.width-25, 17)];
+                        if (houseType == 1) {
+                            price.text = [NSString stringWithFormat:@"%@元/月",[[housesList objectAtIndex:i] objectForKey:@"unit_price"]];
+                        }else{
+                            price.text = [NSString stringWithFormat:@"%@",[[housesList objectAtIndex:i] objectForKey:@"total_price"]];
+                        }
                         price.textColor = QIColor;
                         price.font = [UIFont systemFontOfSize:18];
                         
