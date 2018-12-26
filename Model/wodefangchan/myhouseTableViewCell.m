@@ -32,13 +32,14 @@
     _detailslabel.font = font15;
     [self.contentView addSubview:_detailslabel];
     
-    _jingjirenimg = [[UIImageView alloc] initWithFrame:CGRectMake(_imageview.frame.size.width+_imageview.frame.origin.x+10, _imageview.frame.size.height+_imageview.frame.origin.y+15, 30, 30)];
+    _jingjirenimg = [[UIImageView alloc] initWithFrame:CGRectMake(_imageview.frame.size.width+_imageview.frame.origin.x+10, _detailslabel.frame.size.height+_detailslabel.frame.origin.y+10, 30, 30)];
     _jingjirenimg.layer.cornerRadius = 15;
     
-    _namelabel = [[UILabel alloc] initWithFrame:CGRectMake(_jingjirenimg.frame.size.width+_jingjirenimg.frame.origin.x+10, _imageview.frame.size.height+_imageview.frame.origin.y+15, 150, 30)];
+    _namelabel = [[UILabel alloc] initWithFrame:CGRectMake(_jingjirenimg.frame.size.width+_jingjirenimg.frame.origin.x+10, _detailslabel.frame.size.height+_detailslabel.frame.origin.y+10, 150, 30)];
+    _namelabel.font = Font(15);
     
     _callbut = [UIButton buttonWithType:UIButtonTypeCustom];
-    _callbut.frame = CGRectMake(Main_width-30-20, _imageview.frame.size.height+_imageview.frame.origin.y+15, 30, 30);
+    _callbut.frame = CGRectMake(Main_width-30-20, _detailslabel.frame.size.height+_detailslabel.frame.origin.y+10, 30, 30);
     [_callbut setImage:[UIImage imageNamed:@"phone"] forState:UIControlStateNormal];
     
     _pricelabel = [[UILabel alloc] initWithFrame:CGRectMake(_imageview.frame.origin.x+10+_imageview.frame.size.width, 130-12-17, (Main_width-40-_imageview.frame.size.width)/2, 17)];
@@ -55,7 +56,7 @@
 - (void)setModel:(myhousemodel *)model
 {
     if (![model.status isEqualToString:@"1"]) {
-        _namelabel.text = model.name;
+        _namelabel.text = [NSString stringWithFormat:@"经纪人:%@",model.name];
         [_jingjirenimg sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.jingjirenimg]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
         [self.contentView addSubview:_namelabel];
         [self.contentView addSubview:_jingjirenimg];

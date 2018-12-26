@@ -518,7 +518,7 @@
                 type = [shuifeiDic objectForKey:@"type"];
                 amount = shuitextfield.text;
                 type_cn = [shuifeiDic objectForKey:@"type_cn"];
-                float upper_limit = [[shuifeiDic objectForKey:@"upper_limit"] floatValue];
+                float upper_limit = [[[shuifeiDic objectForKey:@"upper_limit"] objectForKey:@"info"] floatValue];
                 float j = [shuitextfield.text floatValue];
                 float i = [jieyu floatValue] + j;
                 float shengyu = upper_limit - [jieyu floatValue];
@@ -559,7 +559,7 @@
                 amount = diantextfield.text;
                 type_cn = [dianfeiDic objectForKey:@"type_cn"];
                 
-                float upper_limit = [[dianfeiDic objectForKey:@"upper_limit"] floatValue];
+                float upper_limit = [[[dianfeiDic objectForKey:@"upper_limit"] objectForKey:@"info"] floatValue];
                 float j = [diantextfield.text floatValue];
                 float i = [jieyu floatValue] + j;
                 float shengyu = upper_limit - [jieyu floatValue];
