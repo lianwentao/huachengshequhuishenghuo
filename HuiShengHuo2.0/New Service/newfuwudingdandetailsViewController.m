@@ -138,7 +138,7 @@
     }
     if (indexPath.row== 0) {
         UIImageView *imgview = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 40, 40)];
-        [imgview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[datadic objectForKey:@"title_img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+        [imgview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[datadic objectForKey:@"title_img"]]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
         [cell.contentView addSubview:imgview];
         
         UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(imgview.frame.size.width+15+imgview.frame.origin.x, 15, Main_width/2, 40)];

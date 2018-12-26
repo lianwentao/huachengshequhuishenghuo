@@ -484,7 +484,7 @@
 
             UIImageView *imgView = [[UIImageView alloc]init];
             imgView.frame = CGRectMake(10+(i*70),16, 60, 60);
-            [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_repairImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_repairImgArr[i]]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
             imgView.layer.cornerRadius = 5;
             imgView.clipsToBounds = YES;
             imgView.contentMode = UIViewContentModeScaleAspectFill;
@@ -975,7 +975,7 @@
                     
                     UIImageView *imgView = [[UIImageView alloc]init];
                     imgView.frame = CGRectMake(10+(i*90),16, 50, 50);
-                    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_completeImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_completeImgArr[i]]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
                     imgView.layer.cornerRadius = 25;
                     imgView.clipsToBounds = YES;
                     [backscrollview addSubview:imgView];
@@ -1241,7 +1241,6 @@
 //
 //                 UIImageView *imgView = [[UIImageView alloc]init];
 //                 imgView.frame = CGRectMake(10+(i*90),16, 50, 50);
-//                 [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:_completeImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
 //                 imgView.layer.cornerRadius = 25;
 //                 imgView.clipsToBounds = YES;
 //                 [backscrollview addSubview:imgView];

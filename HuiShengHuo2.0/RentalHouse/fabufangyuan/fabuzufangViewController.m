@@ -299,6 +299,17 @@
 
 - (void)post
 {
+    NSString *user_name = textfieldname.text;
+    NSString *phoneStr = textfieldphone.text;
+    NSString *roomStr = textfield1.text;
+    NSString *officeStr = textfield2.text;
+    NSString *kitchenStr = textfield3.text;
+    NSString *guardStr = textfield4.text;
+    NSString *floorStr = textfieldlouceng.text;
+    NSString *house_floorStr = textfieldzonglouceng.text;
+    NSString *areaStr = textfieldmianji.text;
+    NSString *unit_priceStr = textfielddanjia.text;
+   
     //初始化进度框，置于当前的View当中
     static MBProgressHUD *_HUD;
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -320,7 +331,7 @@
         //2.封装参数
         NSDictionary *dict = nil;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"user_name":textfieldname.text,@"user_phone":textfieldphone.text,@"community_name":[userinfo objectForKey:@"community_name"],@"room":textfield1.text,@"office":textfield2.text,@"kitchen":textfield3.text,@"guard":textfield4.text,@"floor":textfieldlouceng.text,@"house_floor":textfieldzonglouceng.text,@"area":textfieldmianji.text,@"unit_price":textfielddanjia.text};
+        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"user_name":user_name,@"user_phone":phoneStr,@"community_name":[userinfo objectForKey:@"community_name"],@"room":roomStr,@"office":officeStr,@"kitchen":kitchenStr,@"guard":guardStr,@"floor":floorStr,@"house_floor":house_floorStr,@"area":areaStr,@"unit_price":unit_priceStr};
         NSString *strurl = [API stringByAppendingString:@"personalHouse/housesLeaseAddDo"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             

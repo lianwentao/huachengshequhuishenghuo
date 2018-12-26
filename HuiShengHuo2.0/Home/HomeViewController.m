@@ -796,7 +796,7 @@
             }else{
                 UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15, 5, kScreen_Width-30, (kScreen_Width-30)/2.2)];
                 NSString *strurl = [API_img stringByAppendingString:[[ad_listArr objectAtIndex:indexPath.row-1] objectForKey:@"img"]];
-                [imageview sd_setImageWithURL:[NSURL URLWithString: strurl] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                [imageview sd_setImageWithURL:[NSURL URLWithString: strurl] placeholderImage:[UIImage imageNamed:@"展位图正"]];
                 [cell.contentView addSubview:imageview];
                 UIBezierPath * bezierPath = [UIBezierPath bezierPathWithRoundedRect:imageview.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight | UIRectCornerBottomLeft|UIRectCornerBottomRight cornerRadii:CGSizeMake(5, 5)];
                 CAShapeLayer *maskLayer = [CAShapeLayer layer];

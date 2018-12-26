@@ -152,7 +152,7 @@
         
         NSString  *imageStr=imageArray[i];
         if ([imageStr hasPrefix:@"http"]) {
-            [imageview  sd_setImageWithURL:[NSURL URLWithString:imageStr] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [imageview  sd_setImageWithURL:[NSURL URLWithString:imageStr] placeholderImage:[UIImage imageNamed:@"展位图正"]];
         }else{
             imageview.image=[UIImage  imageNamed:imageStr];
         }

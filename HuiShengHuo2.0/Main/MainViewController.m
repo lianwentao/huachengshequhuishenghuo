@@ -622,10 +622,10 @@
                     NSString *imgstring = [_Datadic objectForKey:@"avatars"];
                     if ([imgstring rangeOfString:@"http://"].location == NSNotFound) {
                         NSString *strurl = [API_img stringByAppendingString:imgstring];
-                        [touxiangimage sd_setImageWithURL:[NSURL URLWithString: strurl] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                        [touxiangimage sd_setImageWithURL:[NSURL URLWithString: strurl] placeholderImage:[UIImage imageNamed:@"展位图正"]];
                     } else {
                         NSString *imgstring = [_Datadic objectForKey:@"avatars"];
-                        [touxiangimage sd_setImageWithURL:[NSURL URLWithString:imgstring] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                        [touxiangimage sd_setImageWithURL:[NSURL URLWithString:imgstring] placeholderImage:[UIImage imageNamed:@"展位图正"]];
                     }
                 }
                 [view4 addSubview:touxiangimage];

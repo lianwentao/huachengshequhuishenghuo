@@ -607,7 +607,7 @@
             if ([imgarr isKindOfClass:[NSArray class]]) {
                 NSString *imagestring = [[[[tieziarr objectAtIndex:indexPath.row-1] objectForKey:@"img_list"] objectAtIndex:0] objectForKey:@"img"];
                 
-                [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
             }
             _imageview.userInteractionEnabled = YES;
             _imageview.clipsToBounds = YES;
@@ -636,7 +636,7 @@
             UIImageView *touxiang = [[UIImageView alloc] initWithFrame:CGRectMake(10, contentlabel.frame.size.height+contentlabel.frame.origin.y+10, 20, 20)];
             touxiang.layer.cornerRadius = 10;
             NSString *imagestring1 = [[tieziarr objectAtIndex:indexPath.row-1] objectForKey:@"avatars"];
-            [touxiang sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring1]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [touxiang sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring1]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
             [backview addSubview:touxiang];
             
             UILabel *zuozhe = [[UILabel alloc] initWithFrame:CGRectMake(10+20+5, contentlabel.frame.size.height+contentlabel.frame.origin.y+10, Main_width-24-20-80-10-40, 20)];
@@ -759,7 +759,7 @@
             NSString *title = [[chanpinarr objectAtIndex:indexPath.row-1] objectForKey:@"title"];
             NSString *nowprice = [[chanpinarr objectAtIndex:indexPath.row-1] objectForKey:@"price"];
             NSString *yuanprice = [[chanpinarr objectAtIndex:indexPath.row-1] objectForKey:@"original"];
-            [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
             
             if ([is_time isEqualToString:@"1"]) {
                 _is_hotnewimage.image = [UIImage imageNamed:@"秒杀"];

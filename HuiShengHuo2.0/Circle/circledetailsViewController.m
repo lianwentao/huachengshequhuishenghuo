@@ -374,7 +374,7 @@
                 UIImageView *imageview = [[UIImageView alloc] init];
                 NSString *imgstr1 = [[_DataimgArr objectAtIndex:i] objectForKey:@"img"];
                 NSString *imgurl1 = [API_img stringByAppendingString:imgstr1];
-                [imageview sd_setImageWithURL:[NSURL URLWithString:imgurl1] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                [imageview sd_setImageWithURL:[NSURL URLWithString:imgurl1] placeholderImage:[UIImage imageNamed:@"展位图正"]];
                 
                 //float j = imageview.image.size.width/(screen_Width-20);
                 float j = [[[_DataimgArr objectAtIndex:i] objectForKey:@"img_size"] floatValue];

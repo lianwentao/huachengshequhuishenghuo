@@ -159,7 +159,7 @@
             NSString *content = [NSString stringWithFormat:@"%@.%@",[[dataArr objectAtIndex:indexPath.row-1] objectForKey:@"order_num"],[[dataArr objectAtIndex:indexPath.row-1] objectForKey:@"title"]];
             float height = 2;
             _imageview.frame = CGRectMake(15, 0, Main_width-30, (Main_width-30)/height);
-            [_imageview sd_setImageWithURL:[NSURL URLWithString:imageviewurl] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [_imageview sd_setImageWithURL:[NSURL URLWithString:imageviewurl] placeholderImage:[UIImage imageNamed:@"展位图正"]];
             
             _content.frame = CGRectMake(125, _imageview.frame.size.height-40, _imageview.frame.size.width-125, 40);
             _content.text = content;

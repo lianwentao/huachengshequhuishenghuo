@@ -204,8 +204,7 @@
     if (indexPath.section == 0) {
         sfDetailModel *model = dataSourceArr[0];
         NSMutableArray *imagearr = [NSMutableArray array];
-        if ([model.house_img isKindOfClass:[NSArray class]]) {
-            
+        if ([model.house_img isKindOfClass:[NSArray class]] && model.house_img.count != 0) {
             bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)) viewSize:CGSizeMake(Main_width,Main_width/(1.87))];
             
             for (int i=0; i<model.house_img.count; i++) {
@@ -224,8 +223,16 @@
             }];
             
             [cell.contentView addSubview:bannerView];
+        }else{
+            UIImageView *topImg = [[UIImageView alloc]init];
+            topImg.frame = CGRectMake(0, 0, Main_width, Main_width/(1.87));
+            NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:model.head_img]];
+            topImg.userInteractionEnabled = YES;
+            topImg.clipsToBounds = YES;
+            topImg.contentMode = UIViewContentModeScaleAspectFill;
+            [topImg sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"背景图2.5"]];
+            [cell.contentView addSubview:topImg];
         }
-
        
     }else if (indexPath.section == 1){
         
@@ -538,7 +545,7 @@
         
         UIImageView *imgView = [[UIImageView alloc]init];
         imgView.frame = CGRectMake(10, 10, 100, 100);
-        [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:tjModel.head_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+        [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:tjModel.head_img]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
         imgView.userInteractionEnabled = YES;
         imgView.clipsToBounds = YES;
         imgView.contentMode = UIViewContentModeScaleAspectFill;
@@ -675,9 +682,9 @@
     sfDetailModel *model = dataSourceArr[0];
     
     UIImageView *logoImg = [[UIImageView alloc]init];
-//    [logoImg sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.administrator_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    [logoImg sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.administrator_img]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
     logoImg.frame = CGRectMake(10, 10, 40, 40);
-    logoImg.layer.cornerRadius = 15;
+    logoImg.layer.cornerRadius = 20;
     logoImg.clipsToBounds = YES;
     [functionView addSubview:logoImg];
     

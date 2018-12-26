@@ -100,7 +100,7 @@
     
     [view setBackgroundColor:[UIColor whiteColor]];
     //获取截取的背景图片，便于达到模糊背景效果
-    UIImageView *imgView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    UIImageView *imgView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"背景图2.5"]];
     //模糊效果层
     UIView *blurView =[[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreen_Width, kScreen_Height)];
     [blurView setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:0.8]];

@@ -74,7 +74,7 @@
         _contentimageview.userInteractionEnabled = YES;
         _contentimageview.clipsToBounds = YES;
         _contentimageview.contentMode = UIViewContentModeScaleAspectFill;
-        [_contentimageview sd_setImageWithURL:[NSURL URLWithString:imgurl] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+        [_contentimageview sd_setImageWithURL:[NSURL URLWithString:imgurl] placeholderImage:[UIImage imageNamed:@"展位图正"]];
     }
     _titlelabel.text = model.title;
     

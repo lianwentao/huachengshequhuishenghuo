@@ -36,7 +36,7 @@
 {
     float height = [model.img_size floatValue];
     _imageview.frame = CGRectMake(15, 0, Main_width-30, (Main_width-30)/height);
-    [_imageview sd_setImageWithURL:[NSURL URLWithString:model.imageviewurl] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    [_imageview sd_setImageWithURL:[NSURL URLWithString:model.imageviewurl] placeholderImage:[UIImage imageNamed:@"展位图正"]];
     
     _content.frame = CGRectMake(125, _imageview.frame.size.height-40, _imageview.frame.size.width-125, 40);
     _content.text = model.content;

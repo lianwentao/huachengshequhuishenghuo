@@ -147,7 +147,7 @@
         UIImageView *imgv2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, 5, 70, 70)];
         imgv2.clipsToBounds = YES;
         imgv2.layer.cornerRadius = 35;
-        [imgv2 sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[datadic objectForKey:@"logo"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+        [imgv2 sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[datadic objectForKey:@"logo"]]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
         [view1 addSubview:imgv2];
         
         UIImageView *imgv3 = [[UIImageView alloc] initWithFrame:CGRectMake(42, 20+140, 27, 27)];

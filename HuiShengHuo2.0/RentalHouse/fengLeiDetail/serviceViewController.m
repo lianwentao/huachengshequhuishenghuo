@@ -167,7 +167,7 @@
     fwListModel *model = _dataSourceArr[indexPath.row];
     UIImageView *imgView = [[UIImageView alloc]init];
     imgView.frame = CGRectMake(10, 10,Main_width-20, (Main_width-40)/2.5);
-    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.title_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.title_img]] placeholderImage:[UIImage imageNamed:@"展位图长2.5"]];
     imgView.layer.cornerRadius = 5;
     imgView.clipsToBounds = YES;
     [cell addSubview:imgView];

@@ -192,24 +192,36 @@
     if (indexPath.section == 0) {
         zfDetailModel *model = dataSourceArr[0];
         NSMutableArray *imagearr = [NSMutableArray array];
-        bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)) viewSize:CGSizeMake(Main_width,Main_width/(1.87))];
-        
-        for (int i=0; i<model.house_img.count; i++) {
-            NSString *strurl = [API_img stringByAppendingString:[[model.house_img objectAtIndex:i]objectForKey:@"path"]];
-            NSString *strurl1 = [strurl stringByAppendingString:Image1080];
-            NSString *strurl2 = [strurl1 stringByAppendingString:[[model.house_img objectAtIndex:i]objectForKey:@"house_imgs_name"]];
-            NSLog(@"strurl = %@",strurl2);
-            [imagearr addObject:strurl2];
-            bannerView.items = imagearr;
-        }
-        
-        [bannerView imageViewClick:^(JKBannarView * _Nonnull barnerview, NSInteger index) {
+        if ([model.house_img isKindOfClass:[NSArray class]] && model.house_img.count != 0) {
+            bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)) viewSize:CGSizeMake(Main_width,Main_width/(1.87))];
             
-            XLPhotoBrowser *browser = [XLPhotoBrowser showPhotoBrowserWithImages:imagearr currentImageIndex:index];
-            browser.browserStyle = XLPhotoBrowserStylePageControl;
-        }];
-        
-        [cell.contentView addSubview:bannerView];
+            for (int i=0; i<model.house_img.count; i++) {
+                NSString *strurl = [API_img stringByAppendingString:[[model.house_img objectAtIndex:i]objectForKey:@"path"]];
+                NSString *strurl1 = [strurl stringByAppendingString:Image1080];
+                NSString *strurl2 = [strurl1 stringByAppendingString:[[model.house_img objectAtIndex:i]objectForKey:@"house_imgs_name"]];
+                NSLog(@"strurl = %@",strurl2);
+                [imagearr addObject:strurl2];
+                bannerView.items = imagearr;
+            }
+            
+            [bannerView imageViewClick:^(JKBannarView * _Nonnull barnerview, NSInteger index) {
+                
+                XLPhotoBrowser *browser = [XLPhotoBrowser showPhotoBrowserWithImages:imagearr currentImageIndex:index];
+                browser.browserStyle = XLPhotoBrowserStylePageControl;
+            }];
+            
+            [cell.contentView addSubview:bannerView];
+        }else{
+            UIImageView *topImg = [[UIImageView alloc]init];
+            topImg.frame = CGRectMake(0, 0, Main_width, Main_width/(1.87));
+            NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:model.head_img]];
+            topImg.userInteractionEnabled = YES;
+            topImg.clipsToBounds = YES;
+            topImg.contentMode = UIViewContentModeScaleAspectFill;
+            [topImg sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"背景图2.5"]];
+            [cell.contentView addSubview:topImg];
+        }
+       
         
     }else if (indexPath.section == 1){
         
@@ -535,7 +547,7 @@
 
             UIImageView *imgView = [[UIImageView alloc]init];
             imgView.frame = CGRectMake(10, 10, 100, 100);
-            [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:tjModel.head_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:tjModel.head_img]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
             [cell addSubview:imgView];
 
             UILabel *titleLab = [[UILabel alloc]init];
@@ -641,12 +653,13 @@
     UIView *functionView = [[UIView alloc]initWithFrame:CGRectMake(0, contentY, kScreenWidth, 50)];
     functionView.backgroundColor = [UIColor colorWithRed:243/255.0 green:247/255.0 blue:248/255.0 alpha:1];
     
+    zfDetailModel *model = dataSourceArr[0];
     contentY += 30;
     
     UIImageView *logoImg = [[UIImageView alloc]init];
-    logoImg.backgroundColor = [UIColor purpleColor];
-    logoImg.frame = CGRectMake(10, 10, 30, 30);
-    logoImg.layer.cornerRadius = 15;
+    [logoImg sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.administrator_img]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
+    logoImg.frame = CGRectMake(10, 10, 40, 40);
+    logoImg.layer.cornerRadius = 20;
     logoImg.clipsToBounds = YES;
     [functionView addSubview:logoImg];
     
@@ -660,7 +673,7 @@
     
     UILabel *jjlab1 = [[UILabel alloc]init];
     jjlab1.frame = CGRectMake(CGRectGetMaxX(logoImg.frame)+3, CGRectGetMaxY(jjlab.frame), kScreenWidth/2-10-30, 15);
-    jjlab1.text = @"华晟科技测试";
+    jjlab1.text = model.name;
     jjlab1.textColor = [UIColor grayColor];
     jjlab1.font = [UIFont systemFontOfSize:14];
     jjlab1.textAlignment = NSTextAlignmentLeft;

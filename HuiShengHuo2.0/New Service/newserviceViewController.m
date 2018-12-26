@@ -635,7 +635,7 @@
                 [scrollview addSubview:view];
                 
                 UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 242, 97)];
-                [img sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[imgarr objectAtIndex:i] objectForKey:@"title_img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                [img sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[imgarr objectAtIndex:i] objectForKey:@"title_img"]]] placeholderImage:[UIImage imageNamed:@"展位图长1.5"]];
                 img.clipsToBounds = YES;
                 img.layer.cornerRadius = 7;
                 [view addSubview:img];
@@ -697,7 +697,7 @@
                 [scrollview addSubview:backview];
                 
                 UIImageView *imgview1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 158, 80)];
-                [imgview1 sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[info objectAtIndex:i] objectForKey:@"index_img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                [imgview1 sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[info objectAtIndex:i] objectForKey:@"index_img"]]] placeholderImage:[UIImage imageNamed:@"展位图长1.5"]];
                 imgview1.contentMode = UIViewContentModeScaleAspectFill;
                 [backview addSubview:imgview1];
                 
@@ -708,7 +708,7 @@
                 [backview addSubview:view];
                 
                 UIImageView *imgview2 = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, 40, 40)];
-                [imgview2 sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[info objectAtIndex:i] objectForKey:@"logo"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                [imgview2 sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[info objectAtIndex:i] objectForKey:@"logo"]]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
                 imgview2.clipsToBounds = YES;
                 imgview2.layer.cornerRadius = 20;
                 [view addSubview:imgview2];
@@ -799,7 +799,7 @@
             
             
             UIImageView *imgview = [[UIImageView alloc] initWithFrame:CGRectMake(15, 20, Main_width-30, (Main_width-30)/[[[item objectAtIndex:indexPath.row-1] objectForKey:@"title_img_size"] floatValue])];
-            [imgview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[item objectAtIndex:indexPath.row-1] objectForKey:@"title_img"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [imgview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[item objectAtIndex:indexPath.row-1] objectForKey:@"title_img"]]] placeholderImage:[UIImage imageNamed:@"展位图长1.5"]];
             imgview.clipsToBounds = YES;
             imgview.layer.cornerRadius = 10;
             [cell.contentView addSubview:imgview];
@@ -819,7 +819,7 @@
             UIImageView *touxiang = [[UIImageView alloc] initWithFrame:CGRectMake(15, label1.frame.size.height+label1.frame.origin.y+15, 20, 20)];
             touxiang.clipsToBounds = YES;
             touxiang.layer.cornerRadius = 10;
-            [touxiang sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[item objectAtIndex:indexPath.row-1] objectForKey:@"logo"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [touxiang sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[item objectAtIndex:indexPath.row-1] objectForKey:@"logo"]]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
             [cell.contentView addSubview:touxiang];
             
             UILabel *label2 = [[UILabel alloc] init];

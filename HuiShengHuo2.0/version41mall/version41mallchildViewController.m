@@ -86,7 +86,7 @@
         
         UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, view.frame.size.width)];
         NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[liebiaoArr objectAtIndex:indexPath.row*2] objectForKey:@"title_thumb_img"]]];
-        [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+        [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"展位图正"]];
         [view addSubview:imageview];
         
         UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(12.5, 5+imageview.frame.size.height, view.frame.size.width-25, 40)];
@@ -176,7 +176,7 @@
         
         UIImageView *imageview1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view1.frame.size.width, view1.frame.size.width)];
         NSURL *url1 = [NSURL URLWithString:[API_img stringByAppendingString:[[liebiaoArr objectAtIndex:indexPath.row*2+1] objectForKey:@"title_thumb_img"]]];
-        [imageview1 sd_setImageWithURL:url1 placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+        [imageview1 sd_setImageWithURL:url1 placeholderImage:[UIImage imageNamed:@"展位图正"]];
         [view1 addSubview:imageview1];
         
         UILabel *name1 = [[UILabel alloc] initWithFrame:CGRectMake(12.5, 5+imageview1.frame.size.height, view1.frame.size.width-25, 40)];

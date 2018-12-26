@@ -173,7 +173,7 @@
     shopPingLunModel *model = dataSourceArr[indexPath.section];
     UIImageView *headImg = [[UIImageView alloc]init];
     headImg.frame = CGRectMake(10, 10, 50, 50);
-    [headImg sd_setImageWithURL:[NSURL URLWithString:model.avatars] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    [headImg sd_setImageWithURL:[NSURL URLWithString:model.avatars] placeholderImage:[UIImage imageNamed:@"展位图正"]];
     headImg.layer.cornerRadius = 25;
     headImg.clipsToBounds = YES;
     headImg.backgroundColor = [UIColor yellowColor];

@@ -68,7 +68,7 @@
 }
 - (void)setModel:(newfuwudingdanmodel *)model
 {
-     [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.imgstring]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+     [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.imgstring]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
     _namelabel.text = model.fuwuname;
     _addresslabel.text = model.address;
     

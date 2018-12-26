@@ -141,7 +141,7 @@
         avravsimageview.backgroundColor = [UIColor lightGrayColor];
         NSString *imgstr = [[_DataArr objectAtIndex:indexPath.row-2] objectForKey:@"avatars"];
         NSString *imgurl = [API_img stringByAppendingString:imgstr];
-        [avravsimageview sd_setImageWithURL:[NSURL URLWithString:imgurl] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+        [avravsimageview sd_setImageWithURL:[NSURL URLWithString:imgurl] placeholderImage:[UIImage imageNamed:@"展位图正"]];
         [cell.contentView addSubview:avravsimageview];
         
         UILabel *timelabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 20, screen_Width-70, 20)];

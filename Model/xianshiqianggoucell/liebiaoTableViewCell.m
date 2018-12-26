@@ -71,7 +71,7 @@
 }
 - (void)setModel:(liebiaomodel *)model
 {
-    [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.imagestring]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.imagestring]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
     
     if ([model.is_time isEqualToString:@"1"]) {
         _is_hotnewimage.image = [UIImage imageNamed:@"秒杀"];

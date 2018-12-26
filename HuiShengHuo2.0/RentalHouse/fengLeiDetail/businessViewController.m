@@ -192,11 +192,9 @@
     businessVCModel *model = _dataSourceArr[indexPath.row];
     UIImageView *imgView = [[UIImageView alloc]init];
     imgView.frame = CGRectMake(10, 10, 60, 60);
-    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.logo]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.logo]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
     imgView.layer.cornerRadius = 30;
     imgView.clipsToBounds = YES;
-    
-    //    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.head_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
     [cell addSubview:imgView];
     
     //    UIButton *imgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -269,7 +267,7 @@
        
         UIImageView *imgView = [[UIImageView alloc]init];
         imgView.frame = CGRectMake(0,0 , Main_width-40, (Main_width-40)/2.5);
-        [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:titleImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+        [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:titleImgArr[i]]] placeholderImage:[UIImage imageNamed:@"展位图长2.5"]];
         imgView.layer.cornerRadius = 5;
         imgView.clipsToBounds = YES;
         [view addSubview:imgView];

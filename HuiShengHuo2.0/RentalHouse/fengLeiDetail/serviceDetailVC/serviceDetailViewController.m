@@ -322,7 +322,7 @@
         
         UIImageView *imgView = [[UIImageView alloc]init];
         imgView.frame = CGRectMake(0, 0, Main_width, Main_width/2.5);
-        [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.title_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+        [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.title_img]] placeholderImage:[UIImage imageNamed:@"展位图长2.5"]];
         [cell addSubview:imgView];
         
     }else if (indexPath.section == 1){
@@ -404,7 +404,7 @@
             headImg.frame = CGRectMake(10, CGRectGetMaxY(imgView.frame)+10, 40, 40);
             headImg.layer.cornerRadius = 20;
             headImg.clipsToBounds = YES;
-            [headImg sd_setImageWithURL:[NSURL URLWithString:model.avatars] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [headImg sd_setImageWithURL:[NSURL URLWithString:model.avatars] placeholderImage:[UIImage imageNamed:@"展位图正"]];
             [cell addSubview:headImg];
             
             UILabel *nameLab = [[UILabel alloc]init];
@@ -450,7 +450,7 @@
         CGFloat height = 0;
         for (int i = 0; i < imgSizeArr.count; i++) {
             UIImageView *imgView = [[UIImageView alloc]init];
-            [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imgListArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imgListArr[i]]] placeholderImage:[UIImage imageNamed:@"展位图长2.5"]];
             height += (Main_width-20)/[imgSizeArr[i] floatValue];
             NSLog(@"height = %lf",height);
             CGFloat Y;
@@ -470,7 +470,7 @@
         logoImg.frame = CGRectMake(10, 10, 50, 50);
         logoImg.layer.cornerRadius = 25;
         logoImg.clipsToBounds = YES;
-        [logoImg sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:iiModel.logo]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+        [logoImg sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:iiModel.logo]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
         [cell addSubview:logoImg];
         
         UILabel *titleLab = [[UILabel alloc]init];
@@ -568,12 +568,6 @@
             backscrollview.showsHorizontalScrollIndicator = NO;
             [cell addSubview:backscrollview];
             for (int i=0; i<titleImgArr.count; i++) {
-                
-                //            UIImageView *imgView = [[UIImageView alloc]init];
-                //            imgView.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, (Main_width-40)/2.5);
-                //            [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:titleImgArr[i]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
-                //            imgView.layer.cornerRadius = 5;
-                //            [backscrollview addSubview:imgView];
                 
                 UIButton *imgBtn = [UIButton buttonWithType:UIButtonTypeCustom];
                 imgBtn.frame = CGRectMake(10+(i*(Main_width-30)),0 , Main_width-40, (Main_width-40)/2.5);

@@ -118,10 +118,10 @@
         avravsimageview.layer.cornerRadius = 20;
         NSString *imgstr = [[_DataArr objectAtIndex:indexPath.row-2] objectForKey:@"avatars"];
         if ([imgstr isKindOfClass:[NSNull class]]) {
-            avravsimageview.image = [UIImage imageNamed:@"201995-120HG1030762"];
+            avravsimageview.image = [UIImage imageNamed:@"展位图正"];
         }else{
             NSString *imgurl = [API_img stringByAppendingString:imgstr];
-            [avravsimageview sd_setImageWithURL:[NSURL URLWithString:imgurl] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [avravsimageview sd_setImageWithURL:[NSURL URLWithString:imgurl] placeholderImage:[UIImage imageNamed:@"展位图正"]];
         }
         [cell.contentView addSubview:avravsimageview];
         

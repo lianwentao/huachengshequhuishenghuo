@@ -453,7 +453,7 @@
     WBLog(@"dataarr--%@--%ld",_DataArr,_DataArr.count);
     UIImageView *imgview = [[UIImageView alloc] initWithFrame:CGRectMake(15, 20, Main_width-30, (Main_width-30)/2.5)];
     NSString *str1 = [NSString stringWithFormat:@"%@%@",API_img,[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"title_img"]];
-    [imgview sd_setImageWithURL:[NSURL URLWithString:str1] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    [imgview sd_setImageWithURL:[NSURL URLWithString:str1] placeholderImage:[UIImage imageNamed:@"展位图长2.5"]];
     imgview.clipsToBounds = YES;
     imgview.layer.cornerRadius = 10;
     [cell.contentView addSubview:imgview];

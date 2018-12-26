@@ -318,9 +318,9 @@
 - (void)post
 {
     NSString *nameStr = textfieldname.text;
-     NSString *phoneStr = textfieldphone.text;
-     NSString *roomStr = textfield1.text;
-     NSString *officeStr = textfield2.text;
+    NSString *phoneStr = textfieldphone.text;
+    NSString *roomStr = textfield1.text;
+    NSString *officeStr = textfield2.text;
     NSString *kitchenStr = textfield3.text;
     NSString *guardStr = textfield4.text;
     NSString *floorStr = textfieldlouceng.text;

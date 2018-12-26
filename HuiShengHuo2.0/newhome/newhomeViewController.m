@@ -1098,7 +1098,7 @@
             imglistarr = [tieziDic objectForKey:@"img_list"];
             
             NSString *imagestring = [[[tieziDic objectForKey:@"img_list"] objectAtIndex:0] objectForKey:@"img"];
-            [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
             
             UILabel *titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, Main_width-24-20-80-10, 40)];
             NSData *data1 = [[NSData alloc] initWithBase64EncodedString:[tieziDic objectForKey:@"title"] options:0];
@@ -1120,7 +1120,7 @@
             
             UIImageView *touxiang = [[UIImageView alloc] initWithFrame:CGRectMake(10, contentlabel.frame.size.height+contentlabel.frame.origin.y+10, 20, 20)];
             NSString *imagestring1 = [tieziDic objectForKey:@"avatars"];
-            [touxiang sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring1]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [touxiang sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring1]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
             touxiang.layer.cornerRadius = 10;
             touxiang.clipsToBounds = YES;
             [backview addSubview:touxiang];
@@ -1471,7 +1471,7 @@
 
                     UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, (Main_width-24)/2/1.5)];
                     NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[centerguanggaoarr objectAtIndex:i] objectForKey:@"img"]]];
-                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"展位图长1.5"]];
                     imageview.backgroundColor = [UIColor yellowColor];
                     [view addSubview:imageview];
                     
@@ -1490,7 +1490,7 @@
                     
                     UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, (Main_width-24)/2/1.5)];
                     NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[centerguanggaoarr objectAtIndex:i] objectForKey:@"img"]]];
-                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"展位图长1.5"]];
                     [view addSubview:imageview];
                     
                     UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -1560,7 +1560,7 @@
             NSString *title = [[chanpinarr objectAtIndex:indexPath.row-1] objectForKey:@"title"];
             NSString *nowprice = [[chanpinarr objectAtIndex:indexPath.row-1] objectForKey:@"price"];
             NSString *yuanprice = [[chanpinarr objectAtIndex:indexPath.row-1] objectForKey:@"original"];
-            [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:imagestring]] placeholderImage:[UIImage imageNamed:@"展位图长1.5"]];
             
             if ([is_time isEqualToString:@"1"]) {
                 _is_hotnewimage.image = [UIImage imageNamed:@"秒杀"];

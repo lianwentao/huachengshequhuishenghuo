@@ -895,7 +895,7 @@
     if (centerArr.count<6){
         for (int i=0; i<centerArr.count; i++) {
             UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15+i*30+i*width, 15, width, width)];
-            [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
             [view addSubview:imageview];
             
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(i*labelwidth, 15+width+15, labelwidth, 20)];
@@ -914,7 +914,7 @@
         for (int i=0; i<9; i++) {
             if (i<5) {
                 UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15+i*30+i*width, 15, width, width)];
-                [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
                 [view addSubview:imageview];
                 
                 UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(i*labelwidth, 15+width+15, labelwidth, 20)];
@@ -932,7 +932,7 @@
                 
                 UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15+(i-5)*30+(i-5)*width, 15+width+15+20+10, width, width)];
                 
-                [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
                 [view addSubview:imageview];
                 
                 UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake((i-5)*labelwidth, 15+width+15+20+10+15+width, labelwidth, 20)];
@@ -942,7 +942,7 @@
                 [view addSubview:label];
                 
                 
-                [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
                 label.text = [[centerArr objectAtIndex:i] objectForKey:@"cate_name"];
                 UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
                 but.frame = CGRectMake(labelwidth*(i-5), 15+width+15+20+10, labelwidth, labelwidth);
@@ -975,7 +975,7 @@
         for (int i=0; i<centerArr.count; i++) {
             if (i<5) {
                 UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15+i*30+i*width, 15, width, width)];
-                [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
                 [view addSubview:imageview];
                 
                 UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(i*labelwidth, 15+width+15, labelwidth, 20)];
@@ -991,7 +991,7 @@
                 [view addSubview:but];
             }else{
                 UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15+(i-5)*30+(i-5)*width, 15+width+15+20+10, width, width)];
-                [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                [imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[centerArr objectAtIndex:i] objectForKey:@"icon"]]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
                 [view addSubview:imageview];
                 
                 UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake((i-5)*labelwidth, 15+width+15+20+10+15+width, labelwidth, 20)];
@@ -1064,7 +1064,7 @@
             
             UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(5, 16, 117, 100)];
             NSString *imgstr = [NSString stringWithFormat:@"%@%@",API_img,[[pro_discount_listArr objectAtIndex:i] objectForKey:@"title_thumb_img"]];
-            [imageview sd_setImageWithURL:[NSURL URLWithString:imgstr] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [imageview sd_setImageWithURL:[NSURL URLWithString:imgstr] placeholderImage:[UIImage imageNamed:@"展位图长1.5"]];
             [backview addSubview:imageview];
             
             NSString *is_hot = [NSString stringWithFormat:@"%@",[[pro_discount_listArr objectAtIndex:i] objectForKey:@"is_hot"]];
@@ -1254,7 +1254,7 @@
                     
                     UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, (Main_width-24)/2/1.5)];
                     NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[shangpinArr objectAtIndex:i] objectForKey:@"img"]]];
-                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"展位图长1.5"]];
                     imageview.backgroundColor = [UIColor yellowColor];
                     [view addSubview:imageview];
                     
@@ -1272,7 +1272,7 @@
                     
                     UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, (Main_width-24)/2/1.5)];
                     NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[shangpinArr objectAtIndex:i] objectForKey:@"img"]]];
-                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"展位图长1.5"]];
                     [view addSubview:imageview];
                     
                                     UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];

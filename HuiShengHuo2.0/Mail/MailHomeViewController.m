@@ -592,7 +592,7 @@
                 imageview.image = [UIImage imageNamed:@"quanbu"];
             }else{
                 NSString *strurl = [API_img stringByAppendingString:[[areaArr objectAtIndex:i-1] objectForKey:@"icon"]];
-                [imageview sd_setImageWithURL:[NSURL URLWithString: strurl] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                [imageview sd_setImageWithURL:[NSURL URLWithString: strurl] placeholderImage:[UIImage imageNamed:@"展位图正"]];
                 
             }
             
@@ -631,7 +631,7 @@
             
             UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15, 5, kScreen_Width-30, (kScreen_Width-30)/(2.5))];
             NSString *strurl = [API_img stringByAppendingString:[[centerArr objectAtIndex:indexPath.row-1] objectForKey:@"img"]];
-            [imageview sd_setImageWithURL:[NSURL URLWithString: strurl] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [imageview sd_setImageWithURL:[NSURL URLWithString: strurl] placeholderImage:[UIImage imageNamed:@"展位图长2.5"]];
             [cell.contentView addSubview:imageview];
             UIBezierPath * bezierPath = [UIBezierPath bezierPathWithRoundedRect:imageview.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight | UIRectCornerBottomLeft|UIRectCornerBottomRight cornerRadii:CGSizeMake(5, 5)];
             CAShapeLayer *maskLayer = [CAShapeLayer layer];
@@ -651,7 +651,7 @@
         }if (indexPath.row>0) {
             UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15, 5, kScreen_Width-30, (kScreen_Width-30)/(2.5))];
             NSString *strurl = [API_img stringByAppendingString:[[robArr objectAtIndex:indexPath.row-1] objectForKey:@"index_img"]];
-            [imageview sd_setImageWithURL:[NSURL URLWithString: strurl] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [imageview sd_setImageWithURL:[NSURL URLWithString: strurl] placeholderImage:[UIImage imageNamed:@"展位图长2.5"]];
             [cell.contentView addSubview:imageview];
             UIBezierPath * bezierPath = [UIBezierPath bezierPathWithRoundedRect:imageview.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight cornerRadii:CGSizeMake(5, 5)];
             CAShapeLayer *maskLayer = [CAShapeLayer layer];

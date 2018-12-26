@@ -155,7 +155,7 @@
             
             UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 75+55, Main_width-0, Main_width/1.5)];
             NSString *url = [[model.imageArr objectAtIndex:0] objectForKey:@"img"];
-            [img sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:url]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+            [img sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:url]] placeholderImage:[UIImage imageNamed:@"展位图长1.5"]];
             [self.contentView addSubview:img];
             img.userInteractionEnabled = YES;
             img.clipsToBounds = YES;
@@ -178,7 +178,7 @@
                     CGFloat width = (Main_width - 36)/3;
                     UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake((3+width)*i+15, 75+55, width, width)];
                     NSString *url = [[model.imageArr objectAtIndex:i] objectForKey:@"img"];
-                    [img sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:url]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    [img sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:url]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
                     [self.contentView addSubview:img];
                     img.clipsToBounds = YES;
                     img.contentMode = UIViewContentModeScaleAspectFill;
@@ -193,7 +193,7 @@
                     CGFloat width = (Main_width - 36)/3;
                     UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake((3+width)*i+15, 75+55, width, width)];
                     NSString *url = [[model.imageArr objectAtIndex:i] objectForKey:@"img"];
-                    [img sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:url]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+                    [img sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:url]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
                     [self.contentView addSubview:img];
                     img.clipsToBounds = YES;
                     img.contentMode = UIViewContentModeScaleAspectFill;

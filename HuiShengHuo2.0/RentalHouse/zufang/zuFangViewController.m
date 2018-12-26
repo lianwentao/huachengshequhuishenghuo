@@ -375,7 +375,7 @@
     
     UIImageView *imgView = [[UIImageView alloc]init];
     imgView.frame = CGRectMake(10, 10, 100, 100);
-    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.head_img]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.head_img]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
     imgView.userInteractionEnabled = YES;
     imgView.clipsToBounds = YES;
     imgView.contentMode = UIViewContentModeScaleAspectFill;
