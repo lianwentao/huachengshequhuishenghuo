@@ -13,4 +13,8 @@
 @property (nonatomic,copy)NSString *price;
 @property (nonatomic,copy)NSString *status;
 @property (nonatomic,copy)NSString *imgstring;
+@property (nonatomic,copy)NSString *house_type;
+@property (nonatomic,copy)NSString *name;
+@property(nonatomic,copy)NSString *phone;
+@property(nonatomic,copy)NSString *jingjirenimg;
 @end

@@ -518,16 +518,16 @@
                 type = [shuifeiDic objectForKey:@"type"];
                 amount = shuitextfield.text;
                 type_cn = [shuifeiDic objectForKey:@"type_cn"];
-                
+                float upper_limit = [[shuifeiDic objectForKey:@"upper_limit"] floatValue];
                 float j = [shuitextfield.text floatValue];
                 float i = [jieyu floatValue] + j;
-                float shengyu = 300 - [jieyu floatValue];
+                float shengyu = upper_limit - [jieyu floatValue];
                 
                 if (shuitextfield.text.length == 0) {
                     [MBProgressHUD showToastToView:self.view withText:@"请输入缴费金额"];
                 }else if (j<=0) {
                     [MBProgressHUD showToastToView:self.view withText:@"金额必须大于0"];
-                }else if (i>300){
+                }else if (i>upper_limit){
                     [MBProgressHUD showToastToView:self.view withText:[NSString stringWithFormat:@"您剩余缴费金额上限为:%.2f元",shengyu]];
                 } else{
                     //1.创建会话管理者
@@ -559,16 +559,16 @@
                 amount = diantextfield.text;
                 type_cn = [dianfeiDic objectForKey:@"type_cn"];
                 
-                
+                float upper_limit = [[dianfeiDic objectForKey:@"upper_limit"] floatValue];
                 float j = [diantextfield.text floatValue];
                 float i = [jieyu floatValue] + j;
-                float shengyu = 300 - [jieyu floatValue];
+                float shengyu = upper_limit - [jieyu floatValue];
                 
                 if (diantextfield.text.length == 0) {
                     [MBProgressHUD showToastToView:self.view withText:@"请输入缴费金额"];
                 }else if (j<=0) {
                     [MBProgressHUD showToastToView:self.view withText:@"金额必须大于0"];
-                }else if (i>300){
+                }else if (i>upper_limit){
                     [MBProgressHUD showToastToView:self.view withText:[NSString stringWithFormat:@"您剩余缴费金额上限为:%.2f元",shengyu]];
                 } else{
                     //1.创建会话管理者

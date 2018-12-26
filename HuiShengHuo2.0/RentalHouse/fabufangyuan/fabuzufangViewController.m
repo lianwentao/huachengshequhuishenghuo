@@ -290,7 +290,7 @@
         [MBProgressHUD showToastToView:self.view withText:@"请输入总楼层"];
     }else if (textfieldmianji.text.length==0){
         [MBProgressHUD showToastToView:self.view withText:@"请输入面积"];
-    }else if (totaltextfield.text.length==0){
+    }else if (textfieldzujin.text.length==0){
         [MBProgressHUD showToastToView:self.view withText:@"请输入租金"];
     } else{
         [self post];
@@ -308,7 +308,7 @@
     NSString *floorStr = textfieldlouceng.text;
     NSString *house_floorStr = textfieldzonglouceng.text;
     NSString *areaStr = textfieldmianji.text;
-    NSString *unit_priceStr = textfielddanjia.text;
+    NSString *unit_priceStr = textfieldzujin.text;
    
     //初始化进度框，置于当前的View当中
     static MBProgressHUD *_HUD;
@@ -331,7 +331,9 @@
         //2.封装参数
         NSDictionary *dict = nil;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+
         dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"user_name":user_name,@"user_phone":phoneStr,@"community_name":[userinfo objectForKey:@"community_name"],@"room":roomStr,@"office":officeStr,@"kitchen":kitchenStr,@"guard":guardStr,@"floor":floorStr,@"house_floor":house_floorStr,@"area":areaStr,@"unit_price":unit_priceStr};
+
         NSString *strurl = [API stringByAppendingString:@"personalHouse/housesLeaseAddDo"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             

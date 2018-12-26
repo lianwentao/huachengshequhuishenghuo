@@ -25,7 +25,6 @@
 - (void)SetUpUI
 {
     _imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, 100, 100)];
-    _imageview.image = [UIImage imageNamed:@"启动页2"];
     [self.contentView addSubview:_imageview];
     
     _detailslabel = [[UILabel alloc] initWithFrame:CGRectMake(_imageview.frame.origin.x+10+_imageview.frame.size.width, 15, Main_width-40-_imageview.frame.size.width, 40)];
@@ -33,22 +32,67 @@
     _detailslabel.font = font15;
     [self.contentView addSubview:_detailslabel];
     
+    _jingjirenimg = [[UIImageView alloc] initWithFrame:CGRectMake(_imageview.frame.size.width+_imageview.frame.origin.x+10, _imageview.frame.size.height+_imageview.frame.origin.y+15, 30, 30)];
+    _jingjirenimg.layer.cornerRadius = 15;
+    
+    _namelabel = [[UILabel alloc] initWithFrame:CGRectMake(_jingjirenimg.frame.size.width+_jingjirenimg.frame.origin.x+10, _imageview.frame.size.height+_imageview.frame.origin.y+15, 150, 30)];
+    
+    _callbut = [UIButton buttonWithType:UIButtonTypeCustom];
+    _callbut.frame = CGRectMake(Main_width-30-20, _imageview.frame.size.height+_imageview.frame.origin.y+15, 30, 30);
+    [_callbut setImage:[UIImage imageNamed:@"phone"] forState:UIControlStateNormal];
+    
     _pricelabel = [[UILabel alloc] initWithFrame:CGRectMake(_imageview.frame.origin.x+10+_imageview.frame.size.width, 130-12-17, (Main_width-40-_imageview.frame.size.width)/2, 17)];
     _pricelabel.font = font18;
     _pricelabel.textColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
     [self.contentView addSubview:_pricelabel];
     
     _statuslabel = [[UILabel alloc] initWithFrame:CGRectMake(_pricelabel.frame.size.width+_pricelabel.frame.origin.x, 130-12-17, (Main_width-40-_imageview.frame.size.width)/2, 17)];
-    _statuslabel.font = font18;
+    _statuslabel.font = Font(15);
     
     _statuslabel.textAlignment = NSTextAlignmentRight;
     [self.contentView addSubview:_statuslabel];
 }
 - (void)setModel:(myhousemodel *)model
 {
+    if (![model.status isEqualToString:@"1"]) {
+        _namelabel.text = model.name;
+        [_jingjirenimg sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.jingjirenimg]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+        [self.contentView addSubview:_namelabel];
+        [self.contentView addSubview:_jingjirenimg];
+        [self.contentView addSubview:_callbut];
+    }
+    [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.imgstring]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
     _detailslabel.text = model.details;
     _pricelabel.text = model.price;
-    _statuslabel.text = model.status;
+    
+    NSString *statustext;
+    NSString *statusimg;
+    if ([model.status isEqualToString:@"1"]) {
+        statustext = @"未审核";
+        statusimg = @"shenhezhong";
+    }else if ([model.status isEqualToString:@"2"]){
+        if ([model.house_type isEqualToString:@"1"]) {
+            statustext = @"未出租";
+        }else{
+            statustext = @"未售";
+        }
+        
+        statusimg = @"weishou";
+    }else{
+        if ([model.house_type isEqualToString:@"1"]) {
+            statustext = @"已出租";
+        }else{
+            statustext = @"已售";
+        }
+        statusimg = @"yishou";
+    }
+    NSMutableAttributedString * attrubedStr = [[NSMutableAttributedString alloc]initWithString:statustext];
+    NSTextAttachment * attach = [[NSTextAttachment alloc]init];
+    attach.image = [UIImage imageNamed:statusimg];
+    attach.bounds = CGRectMake(0, 0, 15, 15);
+    NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attach];
+    [attrubedStr insertAttributedString:string atIndex:0];
+    _statuslabel.attributedText = attrubedStr;
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
