@@ -2074,7 +2074,7 @@
             LoginViewController *login = [[LoginViewController alloc] init];
             [self presentViewController:login animated:YES completion:nil];
         }else{
-            weixiuViewController *weixiu = [[weixiuViewController alloc] init];
+            gonggongbaoxiuViewController *weixiu = [[gonggongbaoxiuViewController alloc] init];
             weixiu.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:weixiu animated:YES];
         }

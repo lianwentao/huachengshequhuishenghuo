@@ -65,7 +65,7 @@
    self.view.backgroundColor = [UIColor whiteColor];
     // 设置导航控制器的代理为self
 //    self.navigationController.delegate = self;
-    [self loadData];
+//    [self loadData];
     [self CreateTableview];
     
     
@@ -109,14 +109,14 @@
     if (_moneyOne == NULL) {
         _moneyOne = @"";
     }
-    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":@"",@"community_name":_community_name};
+    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":[NSString stringWithFormat:@"%ld",pageNum],@"community_name":_community_name};
     
     NSLog(@"dict = %@",dict);
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSLog(@"dict = %@",dict);
-    NSString *strurl = [API stringByAppendingString:@"secondHouseType/getSellList"];
+    NSString *strurl = [API stringByAppendingString:@"secondHouseType/getLeaseList"];
     NSLog(@"strurl = %@",strurl);
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 //        NSLog(@"gouwuche--%@",responseObject);
@@ -124,19 +124,28 @@
         NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
         NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSLog(@"dataStr = %@",dataStr);
-        NSArray *dataArr = responseObject[@"data"][@"list"];
-        NSLog(@"dataSourceArr = %@",dataArr);
-        [_tableView.mj_header endRefreshing];
-        [_tableView.mj_footer endRefreshing];
-        dataSourceArr = [NSMutableArray array];
-        kkkArr = responseObject[@"data"][@"list"];
-        for (NSDictionary *dic in dataArr) {
-            zfListModel *model =  [[zfListModel alloc]initWithDictionary:dic error:nil];
-             [dataSourceArr addObject:model];
-            
-        }
-         [_tableView reloadData];
         
+        NSString *stringnumber = [[responseObject objectForKey:@"data"] objectForKey:@"CountPage"];
+        NSInteger i = [stringnumber integerValue];
+        [_tableView.mj_header endRefreshing];
+        if (pageNum>i) {
+            _tableView.mj_footer.state = MJRefreshStateNoMoreData;
+            [_tableView.mj_footer resetNoMoreData];
+        }else{
+           
+            NSArray *dataArr = responseObject[@"data"][@"list"];
+            dataSourceArr = [[NSMutableArray alloc]init];
+            for (NSDictionary *dic in dataArr) {
+                zfListModel *model =  [[zfListModel alloc]initWithDictionary:dic error:nil];
+                [dataSourceArr addObject:model];   
+            }
+            NSLog(@"dataSourceArr = %@",dataSourceArr);
+//            [_tableView reloadData];
+            kkkArr = responseObject[@"data"][@"list"];
+        }
+        
+        [_tableView.mj_footer endRefreshing];
+        [_tableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
     }];
@@ -227,16 +236,16 @@
 {
     // 第1列 高度
     if (index == 0) {
-        return 280;
+        return 300;
     }
     // 第2列 高度
     if (index == 1) {
-        return 280;
+        return 300;
     }
     // 第3列 高度
-    return 230;
+    return 250;
     // 第4列 高度
-    return 230;
+    return 250;
 }
 
 - (void)shaixuan1:(NSNotification *)userinfo{
@@ -329,19 +338,21 @@
     _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:_tableView];
     
-    WS(ws);
     dataSourceArr = [[NSMutableArray alloc] init];
+    WS(ws);
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [ws.tableView.mj_footer endRefreshing];
         pageNum = 1;
         [ws loadData];
         
     }];
+     [self.tableView.mj_header beginRefreshing];
     self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [ws.tableView.mj_header endRefreshing];
+         pageNum = pageNum+1;
         [ws loadData];
     }];
-    [self.tableView.mj_header beginRefreshing];
+   
 
 }
 #pragma mark - TableView的代理方法

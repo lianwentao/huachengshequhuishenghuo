@@ -157,7 +157,7 @@
         
     }else if ([model.work_status isEqualToString:@"5"]){
         WBLog(@"************55555555555");
-        if ([_score isKindOfClass:[NSNull class]]) {
+        if ([_score isKindOfClass:[NSNull class]] || [model.work_type isEqualToString:@"2"]) {
             WBLog(@"************55555555555----有评价按钮");
             UIButton *rightBtn3 = [UIButton buttonWithType:UIButtonTypeSystem];
             rightBtn3.frame = CGRectMake(0, 0, 58, 35);

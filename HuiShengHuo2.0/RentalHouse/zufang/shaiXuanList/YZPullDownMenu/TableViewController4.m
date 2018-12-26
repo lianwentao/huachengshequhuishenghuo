@@ -38,7 +38,9 @@ static NSString * const ID = @"cell";
 {
     return self.titleArray.count;
 }
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 50;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TableViewCell1 *cell = [tableView dequeueReusableCellWithIdentifier:ID];

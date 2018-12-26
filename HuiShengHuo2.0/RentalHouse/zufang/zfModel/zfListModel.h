@@ -10,8 +10,6 @@
 
 @interface zfListModel : JSONModel
 @property (nonatomic ,strong)NSString *id;
-@property (nonatomic ,strong)NSString *total_price;
-//@property (nonatomic ,strong)NSArray *label;
 @property (nonatomic ,strong)NSString *house_floor;
 @property (nonatomic ,strong)NSString *kitchen;
 @property (nonatomic ,strong)NSString *guard;
@@ -21,7 +19,6 @@
 @property (nonatomic ,strong)NSString *office;
 @property (nonatomic ,strong)NSString *community_name;
 @property (nonatomic ,strong)NSString *room;
-//@property (nonatomic ,strong)NSString *label_id;
 @property (nonatomic ,strong)NSString *house_type;
 @property (nonatomic ,strong)NSString *floor;
 @property (nonatomic ,strong)NSString *status;

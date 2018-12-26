@@ -242,18 +242,17 @@
 // 返回下拉菜单每列对应的高度
 - (CGFloat)pullDownMenu:(YZPullDownMenu *)pullDownMenu heightForColAtIndex:(NSInteger)index
 {
-    // 第1列 高度
     if (index == 0) {
-        return 280;
+        return 300;
     }
     // 第2列 高度
     if (index == 1) {
-        return 280;
+        return 300;
     }
     // 第3列 高度
-    return 230;
+    return 250;
     // 第4列 高度
-    return 230;
+    return 250;
 }
 
 - (void)shaixuan5:(NSNotification *)userinfo{

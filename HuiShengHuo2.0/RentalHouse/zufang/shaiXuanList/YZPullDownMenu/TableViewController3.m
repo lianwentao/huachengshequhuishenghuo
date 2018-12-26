@@ -33,7 +33,9 @@ static NSString * const ID = @"cell";
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_selectedCol inSection:0];
     [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 }
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 50;
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.titleArray.count;

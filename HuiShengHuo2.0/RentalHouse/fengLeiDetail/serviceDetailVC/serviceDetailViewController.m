@@ -711,6 +711,8 @@
 -(void)shopAction:(UIButton *)sender{
     insinfoModel *iiModel = insinfoArr[0];
     newshangjiaViewController *bdVC = [[newshangjiaViewController alloc]init];
+    bdVC.titleStr = iiModel.name;
+    bdVC.img = iiModel.logo;
     bdVC.shangjiaid = iiModel.id;
     [self.navigationController pushViewController:bdVC animated:YES];
 }
