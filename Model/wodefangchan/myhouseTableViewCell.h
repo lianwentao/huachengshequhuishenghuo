@@ -17,4 +17,8 @@
 @property(nonatomic,strong)UILabel *pricelabel;
 @property(nonatomic,strong)UILabel *statuslabel;
 @property(nonatomic,strong)UIImageView *imageview;
+@property(nonatomic,strong)UIImageView *jingjirenimg;
+@property(nonatomic,strong)UILabel *namelabel;
+@property(nonatomic,strong)UIButton *callbut;
+
 @end

@@ -290,7 +290,7 @@
         [MBProgressHUD showToastToView:self.view withText:@"请输入总楼层"];
     }else if (textfieldmianji.text.length==0){
         [MBProgressHUD showToastToView:self.view withText:@"请输入面积"];
-    }else if (totaltextfield.text.length==0){
+    }else if (textfieldzujin.text.length==0){
         [MBProgressHUD showToastToView:self.view withText:@"请输入租金"];
     } else{
         [self post];
@@ -320,7 +320,7 @@
         //2.封装参数
         NSDictionary *dict = nil;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"user_name":textfieldname.text,@"user_phone":textfieldphone.text,@"community_name":[userinfo objectForKey:@"community_name"],@"room":textfield1.text,@"office":textfield2.text,@"kitchen":textfield3.text,@"guard":textfield4.text,@"floor":textfieldlouceng.text,@"house_floor":textfieldzonglouceng.text,@"area":textfieldmianji.text,@"unit_price":textfielddanjia.text};
+        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"user_name":textfieldname.text,@"user_phone":textfieldphone.text,@"community_name":[userinfo objectForKey:@"community_name"],@"room":textfield1.text,@"office":textfield2.text,@"kitchen":textfield3.text,@"guard":textfield4.text,@"floor":textfieldlouceng.text,@"house_floor":textfieldzonglouceng.text,@"area":textfieldmianji.text,@"unit_price":textfieldzujin.text};
         NSString *strurl = [API stringByAppendingString:@"personalHouse/housesLeaseAddDo"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
