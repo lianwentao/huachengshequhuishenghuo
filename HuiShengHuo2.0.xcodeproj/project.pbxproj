@@ -128,6 +128,7 @@
 		284F86C32064E8F20068CB0B /* libAJBDoor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 284F86C22064E8F10068CB0B /* libAJBDoor.a */; };
 		284F86CF206526AD0068CB0B /* dropdownMenu_cornerIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 284F86CC206526AD0068CB0B /* dropdownMenu_cornerIcon.png */; };
 		284F86D0206526AD0068CB0B /* LMJDropdownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 284F86CE206526AD0068CB0B /* LMJDropdownMenu.m */; };
+		285302B921D36AD2005C02CB /* newxianshichildViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 285302B821D36AD2005C02CB /* newxianshichildViewController.m */; };
 		285371551FC910B100D0376E /* DWQCartTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 285371321FC910B100D0376E /* DWQCartTableViewCell.m */; };
 		285371561FC910B100D0376E /* DWQTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 285371341FC910B100D0376E /* DWQTableHeaderView.m */; };
 		285371611FC910B100D0376E /* UIViewExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 285371431FC910B100D0376E /* UIViewExt.m */; };
@@ -858,6 +859,8 @@
 		284F86CC206526AD0068CB0B /* dropdownMenu_cornerIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dropdownMenu_cornerIcon.png; sourceTree = "<group>"; };
 		284F86CD206526AD0068CB0B /* LMJDropdownMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMJDropdownMenu.h; sourceTree = "<group>"; };
 		284F86CE206526AD0068CB0B /* LMJDropdownMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMJDropdownMenu.m; sourceTree = "<group>"; };
+		285302B721D36AD2005C02CB /* newxianshichildViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = newxianshichildViewController.h; sourceTree = "<group>"; };
+		285302B821D36AD2005C02CB /* newxianshichildViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = newxianshichildViewController.m; sourceTree = "<group>"; };
 		285371311FC910B100D0376E /* DWQCartTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWQCartTableViewCell.h; sourceTree = "<group>"; };
 		285371321FC910B100D0376E /* DWQCartTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWQCartTableViewCell.m; sourceTree = "<group>"; };
 		285371331FC910B100D0376E /* DWQTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWQTableHeaderView.h; sourceTree = "<group>"; };
@@ -2162,6 +2165,8 @@
 				28453FE421C25BE900FB47CD /* shangpinliebiaochildViewController.m */,
 				28F2C176216CF014001E0EB7 /* newxianshiqianggouViewController.h */,
 				28F2C177216CF014001E0EB7 /* newxianshiqianggouViewController.m */,
+				285302B721D36AD2005C02CB /* newxianshichildViewController.h */,
+				285302B821D36AD2005C02CB /* newxianshichildViewController.m */,
 			);
 			path = newmall;
 			sourceTree = "<group>";
@@ -4720,6 +4725,7 @@
 				28C7413120663B8A0018E19F /* LSXPlacehoderTextView.m in Sources */,
 				28AE471920118E8B002E3095 /* MD5.m in Sources */,
 				846D2D2921AB8CE000221687 /* BaseView.m in Sources */,
+				285302B921D36AD2005C02CB /* newxianshichildViewController.m in Sources */,
 				28E28E38219D794600BF066C /* zushouweituoViewController.m in Sources */,
 				28A83C9E205F4634009ED444 /* HXCustomNavigationController.m in Sources */,
 				285DB56E1FC6904100400EA6 /* XiaoquViewController.m in Sources */,

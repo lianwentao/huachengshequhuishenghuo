@@ -515,7 +515,7 @@
             
             if (_tmpBtn.tag == 1) {
                 jieyu = [NSString stringWithFormat:@"%@",[[shuifeiDic objectForKey:@"info"] objectForKey:@"SMay_acc"]];
-                type = @"36864";
+                type = [shuifeiDic objectForKey:@"type"];
                 amount = shuitextfield.text;
                 type_cn = [shuifeiDic objectForKey:@"type_cn"];
                 
@@ -535,7 +535,7 @@
                     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
                     //2.封装参数
                     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"type":type,@"type_cn":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"category_id":type,@"category_name":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
                     NSString *strurl = [API stringByAppendingString:@"property/create_order"];
                     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                         NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -554,7 +554,7 @@
                 }
             }else{
                 jieyu = [NSString stringWithFormat:@"%@",[[dianfeiDic objectForKey:@"info"] objectForKey:@"DMay_acc"]];
-                type = @"36865";
+                type = [dianfeiDic objectForKey:@"type"];
                 amount = diantextfield.text;
                 amount = diantextfield.text;
                 type_cn = [dianfeiDic objectForKey:@"type_cn"];
@@ -576,7 +576,7 @@
                     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
                     //2.封装参数
                     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"type":type,@"type_cn":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"category_id":type,@"category_name":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
                     NSString *strurl = [API stringByAppendingString:@"property/create_order"];
                     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                         NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
