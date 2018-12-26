@@ -286,9 +286,9 @@
         [MBProgressHUD showToastToView:self.view withText:@"请输入户型"];
     }else if (textfieldlouceng.text.length==0){
         [MBProgressHUD showToastToView:self.view withText:@"请输入楼层"];
-    }else if (textfieldmianji.text.length==0){
+    }else if (textfieldzonglouceng.text.length==0){
         [MBProgressHUD showToastToView:self.view withText:@"请输入总楼层"];
-    }else if (textfielddanjia.text.length==0){
+    }else if (textfieldmianji.text.length==0){
         [MBProgressHUD showToastToView:self.view withText:@"请输入面积"];
     }else if (totaltextfield.text.length==0){
         [MBProgressHUD showToastToView:self.view withText:@"请输入租金"];

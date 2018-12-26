@@ -16,7 +16,8 @@
 #import "PYSearch.h"
 #import "searchreslutsViewController.h"
 #import "MBProgressHUD+TVAssistant.h"
-@interface newxianshiqianggouViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource>
+#import "newxianshichildViewController.h"
+@interface newxianshiqianggouViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,FSPageContentViewDelegate,FSSegmentTitleViewDelegate>
 {
     UITableView *_TableView;
     
@@ -33,7 +34,8 @@
     NSArray *_searcharr;
     int _pagenum;
 }
-
+@property (nonatomic, strong) FSPageContentView *pageContentView;
+@property (nonatomic, strong) FSSegmentTitleView *titleView;
 @end
 
 @implementation newxianshiqianggouViewController
@@ -49,40 +51,40 @@
     ///[self createdaohangolan];
     
     self.title = @"限时抢购";
-    [self createUI];
-    UIScrollView *_scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44, Main_width, 50)];
-    //   _scrollView.delegate = self;//设置代理
-    [_scrollView setContentSize:CGSizeMake(Main_width, 50)];
-    _scrollView.backgroundColor = [UIColor whiteColor];
-    _scrollView.showsVerticalScrollIndicator = NO;
-    _scrollView.showsHorizontalScrollIndicator = NO;
-    _scrollView.bounces = NO;
-    _scrollView.pagingEnabled = NO;
-    [self.view addSubview:_scrollView];
-    
-    NSArray *arr = @[@"正在抢购",@"准备活动"];
-    for (int i=0; i<2; i++) {
-        UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-        but.frame = CGRectMake(i*Main_width/2, 0, Main_width/2, 50);
-        //but.backgroundColor = [arrrrrrrr objectAtIndex:i];
-        [but setTitle:[arr objectAtIndex:i] forState:UIControlStateNormal];
-        [but setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [but setTitleColor:QIColor forState:UIControlStateSelected];
-        but.titleLabel.font = [UIFont systemFontOfSize:16];
-        but.tag = i;
-        [but addTarget:self action:@selector(selectbut:) forControlEvents:UIControlEventTouchUpInside];
-        [_scrollView addSubview:but];
-        
-        if (i==0) {
-            but.selected = YES;
-            _tmpBtn = but;
-        }
-    }
-    isstar = @"1";
-    [self getdata];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bupeisong) name:@"bupeisong" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(kucunbuzu) name:@"kucunbuzu" object:nil];//liebiaojiarugouwuche
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gouwuche:) name:@"liebiaojiarugouwuche" object:nil];
+    [self setui];
+//    UIScrollView *_scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44, Main_width, 50)];
+//    //   _scrollView.delegate = self;//设置代理
+//    [_scrollView setContentSize:CGSizeMake(Main_width, 50)];
+//    _scrollView.backgroundColor = [UIColor whiteColor];
+//    _scrollView.showsVerticalScrollIndicator = NO;
+//    _scrollView.showsHorizontalScrollIndicator = NO;
+//    _scrollView.bounces = NO;
+//    _scrollView.pagingEnabled = NO;
+//    [self.view addSubview:_scrollView];
+//
+//    NSArray *arr = @[@"正在抢购",@"准备活动"];
+//    for (int i=0; i<2; i++) {
+//        UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+//        but.frame = CGRectMake(i*Main_width/2, 0, Main_width/2, 50);
+//        //but.backgroundColor = [arrrrrrrr objectAtIndex:i];
+//        [but setTitle:[arr objectAtIndex:i] forState:UIControlStateNormal];
+//        [but setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//        [but setTitleColor:QIColor forState:UIControlStateSelected];
+//        but.titleLabel.font = [UIFont systemFontOfSize:16];
+//        but.tag = i;
+//        [but addTarget:self action:@selector(selectbut:) forControlEvents:UIControlEventTouchUpInside];
+//        [_scrollView addSubview:but];
+//
+//        if (i==0) {
+//            but.selected = YES;
+//            _tmpBtn = but;
+//        }
+//    }
+//    isstar = @"1";
+//    [self getdata];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bupeisong) name:@"bupeisong" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(kucunbuzu) name:@"kucunbuzu" object:nil];//liebiaojiarugouwuche
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gouwuche:) name:@"liebiaojiarugouwuche" object:nil];
     // Do any additional setup after loading the view.
 }
 - (BOOL)navigationShouldPopOnBackButton{
@@ -133,6 +135,41 @@
         [MBProgressHUD showToastToView:self.view withText:@"加载失败"];
         NSLog(@"failure--%@",error);
     }];
+}
+
+- (void)setui
+{
+    
+    
+    
+    NSMutableArray *childVCs = [[NSMutableArray alloc]init];
+    for (int i=0; i<2; i++) {
+        newxianshichildViewController *vc = [[newxianshichildViewController alloc] init];
+        vc.start = [NSString stringWithFormat:@"%d",i+1];
+        [childVCs addObject:vc];
+    }
+    
+    self.titleView = [[FSSegmentTitleView alloc]initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44, CGRectGetWidth(self.view.bounds), 50) titles:@[@"限时抢购",@"准备活动"] delegate:self indicatorType:FSIndicatorTypeEqualTitle];
+    self.titleView.titleSelectFont = [UIFont systemFontOfSize:17];
+    self.titleView.backgroundColor = [UIColor colorWithRed:(244)/255.0 green:(247)/255.0 blue:(248)/255.0 alpha:0.54];
+    self.titleView.titleNormalColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.54];
+    
+    [self.view addSubview:_titleView];
+    
+    self.pageContentView = [[FSPageContentView alloc]initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44+50, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) - 90) childVCs:childVCs parentVC:self delegate:self];
+    
+    //self.pageContentView.contentViewCanScroll = YES;//设置滑动属性
+    [self.view addSubview:_pageContentView];
+}
+#pragma mark --
+- (void)FSSegmentTitleView:(FSSegmentTitleView *)titleView startIndex:(NSInteger)startIndex endIndex:(NSInteger)endIndex
+{
+    self.pageContentView.contentViewCurrentIndex = endIndex;
+}
+
+- (void)FSContenViewDidEndDecelerating:(FSPageContentView *)contentView startIndex:(NSInteger)startIndex endIndex:(NSInteger)endIndex
+{
+    self.titleView.selectIndex = endIndex;
 }
 #pragma mark - 自定义导航栏
 - (void)createdaohangolan
