@@ -158,7 +158,7 @@
     if (indexPath.section == 0) {
         return 200;
     }else if (indexPath.section == 1){
-        return 330;
+        return 300;
     }else if (indexPath.section == 2){
         return 170;
     }else if (indexPath.section == 3){
@@ -338,13 +338,32 @@
         mjLab1.textAlignment = NSTextAlignmentLeft;
         [cell addSubview:mjLab1];
         
-        UIButton *ckxqBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        UIImageView *imgView = [[UIImageView alloc]init];
+        imgView.frame = CGRectMake(10, CGRectGetMaxY(mjLab1.frame)+15, kScreenWidth-20, 76);
+        imgView.image = [UIImage imageNamed:@"ic_houserent_tips"];
+        [cell addSubview:imgView];
+        
+        UILabel *ttLab = [[UILabel alloc]init];
+        ttLab.frame = CGRectMake(17, 14, 93, 18);
+        ttLab.text = @"租房小贴士";
+        ttLab.font = [UIFont systemFontOfSize:18];
+        [imgView addSubview:ttLab];
+        
+        UILabel *ttLab1 = [[UILabel alloc]init];
+        ttLab1.frame = CGRectMake(17, 14+18+13, 185, 16);
+        ttLab1.text = @"定金、签约和月付注意事项";
+        ttLab1.font = [UIFont systemFontOfSize:15];
+        [imgView addSubview:ttLab1];
+        
+        
+        kuodabuttondianjifanwei *ckxqBtn = [[kuodabuttondianjifanwei alloc]initWithFrame:CGRectMake(10, CGRectGetMaxY(mjLab1.frame)+5, kScreenWidth-20, 115)];
         ckxqBtn.frame = CGRectMake(10, CGRectGetMaxY(mjLab1.frame)+5, kScreenWidth-20, 115);
         ckxqBtn.backgroundColor = [UIColor purpleColor];
         ckxqBtn.layer.cornerRadius = 3.0;
         [ckxqBtn setTitle:@"查看详情 " forState:UIControlStateNormal];
         [ckxqBtn addTarget:self action:@selector(ckxqAction) forControlEvents:UIControlEventTouchUpInside];
-        [cell addSubview:ckxqBtn];
+        [imgView addSubview:ckxqBtn];
         
         
     }else if (indexPath.section == 2){
@@ -394,7 +413,7 @@
         
         UILabel *lcLab1 = [[UILabel alloc]init];
         lcLab1.frame = CGRectMake(CGRectGetMaxX(lcLab.frame), CGRectGetMaxY(fkLab.frame), kScreenWidth/2-10-50, 30);
-        lcLab1.text = [NSString stringWithFormat:@"%@/%@层",model.floor,model.house_floor];
+        lcLab1.text = [NSString stringWithFormat:@"%@/%@层",model.house_floor,model.floor];
         lcLab1.font = [UIFont systemFontOfSize:18];
         lcLab1.textAlignment = NSTextAlignmentLeft;
         lcLab1.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
@@ -526,7 +545,7 @@
             NSString *str6 = [str5 stringByAppendingString:str3];
             NSString *str7 = [tjModel.community_name stringByAppendingString:str6];
             NSString *str8 = [NSString stringWithFormat:@"-面积%@平米",tjModel.area];
-            NSString *str9 = [NSString stringWithFormat:@"|%@/%@层",tjModel.floor,tjModel.house_floor];
+            NSString *str9 = [NSString stringWithFormat:@"|%@/%@层",tjModel.house_floor,tjModel.floor];
             NSString *str10 = [str7 stringByAppendingString:str8];
             NSString *titleStr = [str10 stringByAppendingString:str9];
             NSLog(@"titleStr = %@",titleStr);

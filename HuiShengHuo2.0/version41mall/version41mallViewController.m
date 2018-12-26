@@ -1032,10 +1032,18 @@
         [xianshitoubu addSubview:fuLab];
         [_tabHeadView addSubview:xianshitoubu];
         
-        UIButton *morebut = [UIButton buttonWithType:UIButtonTypeCustom];
-        morebut.frame = CGRectMake(Main_width-50, 10, 40, 15);
-        morebut.backgroundColor = QIColor;
-        //[cell.contentView addSubview:morebut];
+        UIButton *moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        moreBtn.frame = CGRectMake(Main_width-10-50, 17, 50, 19);
+        [moreBtn setTitle:@"更多 >" forState:UIControlStateNormal];
+        [moreBtn setTitleColor:[UIColor colorWithHexString:@"#9C9C9C"] forState:UIControlStateNormal];
+        moreBtn.titleLabel.font = [UIFont boldSystemFontOfSize:13];
+        [moreBtn addTarget:self action:@selector(moreAction) forControlEvents:UIControlEventTouchUpInside];
+        [xianshitoubu addSubview:moreBtn];
+        
+//        UIButton *morebut = [UIButton buttonWithType:UIButtonTypeCustom];
+//        morebut.frame = CGRectMake(Main_width-50, 10, 40, 15);
+//        morebut.backgroundColor = QIColor;
+//        //[cell.contentView addSubview:morebut];
         
         
         UIScrollView *backscrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(18, 8+xianshitoubu.frame.size.height+xianshitoubu.frame.origin.y, Main_width-18*2, 212)];
@@ -1587,7 +1595,11 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(void)moreAction{
+ 
+    newxianshiqianggouViewController *xsqgVC = [[newxianshiqianggouViewController alloc]init];
+    [self.navigationController pushViewController:xsqgVC animated:YES];
+}
 /*
 #pragma mark - Navigation
 
