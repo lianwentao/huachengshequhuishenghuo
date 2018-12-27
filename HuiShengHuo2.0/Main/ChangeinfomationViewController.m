@@ -73,6 +73,7 @@
      task.response: 响应头信息
      第五个参数:failure 失败之后的回调
      */
+    
     NSString *strurl = [API stringByAppendingString:@"userCenter/edit_center"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 //        _DataArr = [[NSMutableArray alloc] init];
@@ -205,7 +206,6 @@
             [imageview sd_setImageWithURL:[NSURL URLWithString:_imagestr] placeholderImage:[UIImage imageNamed:@"facehead1"]];
         }
         
-        [imageview sd_setImageWithURL:[NSURL URLWithString:strurl] placeholderImage:[UIImage imageNamed:@"facehead1"]];
         imageview.userInteractionEnabled = YES;
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc]initWithTarget:self
                                                                                    action:@selector(alertcontroller:)];
@@ -218,6 +218,7 @@
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section==1) {
         if (indexPath.row==1) {
@@ -227,12 +228,13 @@
                                        message: nil
                                        preferredStyle:UIAlertControllerStyleActionSheet];
             [alert addAction:[UIAlertAction actionWithTitle:@"男" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                dict = @{@"sex":@"1"};
+                dict = @{@"sex":@"1",@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+                
                 _sexlabel.text = @"男";
                 [self post];
             }]];
             [alert addAction:[UIAlertAction actionWithTitle:@"女" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                dict = @{@"sex":@"2"};
+                dict = @{@"sex":@"2",@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
                 _sexlabel.text = @"女";
                 [self post];
             }]];
@@ -255,10 +257,11 @@
 #pragma mark - 生日选择器
 - (void)createBirthday
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     ASBirthSelectSheet *datesheet = [[ASBirthSelectSheet alloc] initWithFrame:self.view.bounds];
     datesheet.GetSelectDate = ^(NSString *dateStr) {
         _birthdaylabel.text = dateStr;
-        dict = @{@"birthday":dateStr};
+        dict = @{@"birthday":dateStr,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
         [self post];
     };
     [self.view addSubview:datesheet];

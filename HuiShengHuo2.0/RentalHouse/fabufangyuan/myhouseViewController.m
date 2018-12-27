@@ -31,7 +31,7 @@
     self.titleView.titleSelectFont = [UIFont systemFontOfSize:17];
     self.titleView.backgroundColor = [UIColor colorWithRed:(244)/255.0 green:(247)/255.0 blue:(248)/255.0 alpha:0.54];
     self.titleView.titleNormalColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.54];
-    self.titleView.selectIndex = 0;
+    
     [self.view addSubview:_titleView];
     
     NSMutableArray *childVCs = [[NSMutableArray alloc]init];
@@ -42,10 +42,17 @@
         [childVCs addObject:vc];
     }
     self.pageContentView = [[FSPageContentView alloc]initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44+50, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) - 90) childVCs:childVCs parentVC:self delegate:self];
-    self.pageContentView.contentViewCurrentIndex = 0;
+    
     //    self.pageContentView.contentViewCanScroll = NO;//设置滑动属性
     [self.view addSubview:_pageContentView];
     
+    if (_selectindex.length == 0) {
+        self.titleView.selectIndex = 0;
+        self.pageContentView.contentViewCurrentIndex = 0;
+    }else{
+        self.titleView.selectIndex = [_selectindex integerValue];
+        self.pageContentView.contentViewCurrentIndex = [_selectindex integerValue];
+    }
     
     // Do any additional setup after loading the view.
 }

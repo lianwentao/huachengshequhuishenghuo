@@ -10,4 +10,5 @@
 
 @interface myhouseViewController : UIViewController
 
+@property(nonatomic,copy)NSString *selectindex;
 @end

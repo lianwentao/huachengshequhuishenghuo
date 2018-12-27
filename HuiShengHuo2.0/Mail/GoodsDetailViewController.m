@@ -475,7 +475,7 @@ static NSString * LINKEDME_SHORT_URL;
                 imageview = [[UIImageView alloc] init];
                 imageview.frame = CGRectMake(0, 0, self.view.frame.size.width, screen_Width);
                 NSString *strurl = [API_img stringByAppendingString:[_DataDic objectForKey:@"title_img"]];
-                [imageview sd_setImageWithURL:[NSURL URLWithString: strurl]];
+                [imageview sd_setImageWithURL:[NSURL URLWithString: strurl] placeholderImage:[UIImage imageNamed:@"展位图正"]];
                 [cell.contentView addSubview:imageview];
                 
                 
