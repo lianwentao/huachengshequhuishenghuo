@@ -169,6 +169,13 @@
         label2.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
         label2.text = [NSString stringWithFormat:@"地址:%@",[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"address"]];
         [cell.contentView addSubview:label2];
+        
+        UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+        [but setImage:[UIImage imageNamed:@"shanchu"] forState:UIControlStateNormal];
+        [but addTarget:self action:@selector(jiatingchengyuan:) forControlEvents:UIControlEventTouchUpInside];
+        but.frame = CGRectMake(Main_width-25-20, 32.5, 25, 25);
+        but.tag = indexPath.row;
+        [cell.contentView addSubview:but];
     }
     return cell;
 }
@@ -189,6 +196,53 @@
             [self.navigationController pushViewController:xiangqing animated:YES];
         }
     }
+}
+- (void)jiatingchengyuan:(UIButton *)sender
+{
+    //初始化警告框
+    UIAlertController*alert = [UIAlertController
+                               alertControllerWithTitle:@"提示"
+                               message: @"是否解除绑定"
+                               preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction
+                      actionWithTitle:@"取消"
+                      style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                      {
+                          
+                      }]];
+    [alert addAction:[UIAlertAction
+                      actionWithTitle:@"确定"
+                      style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                      {
+                          
+                          //1.创建会话管理者
+                          AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                          manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+                          //2.封装参数
+                          NSDictionary *dict = nil;
+                          NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                          dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"id":[[_DataArr objectAtIndex:sender.tag] objectForKey:@"id"]};
+                          NSString *strurl = [API stringByAppendingString:@"property/unsetBinding"];
+                          [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                              _DataArr = [[NSArray alloc] init];
+                              NSLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
+                              if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                                  [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                                  [self getData];
+                                  [_TableView reloadData];
+                              }else{
+                                  [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+                              }
+                              
+                              
+                          } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                              NSLog(@"failure--%@",error);
+                          }];
+                      }]];
+    //弹出提示框
+    [self presentViewController:alert
+                       animated:YES completion:nil];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -131,33 +131,38 @@
 }
 - (void)sure
 {
-    
+    long i = [labelnum.text longLongValue];
+    WBLog(@"***--%@",labelnum.text);
     __weak typeof(self) weakself = self;
     NSString *tagstrimg = [[_Dataarr objectAtIndex:_tmpBtn.tag] objectForKey:@"id"];
     if (weakself.returnValueBlock) {
-        if (_Limit==0) {
-            weakself.returnValueBlock(_tmpBtn.titleLabel.text,labelnum.text,tagstrimg,[labelkucun.text longLongValue],_Labelyixuan.text);
+        if (i==0) {
+            
         }else{
             //将自己的值传出去，完成传值
-            weakself.returnValueBlock(_tmpBtn.titleLabel.text,labelnum.text,tagstrimg,_Limit-_LimitAll,_Labelyixuan.text);
+//            weakself.returnValueBlock(_tmpBtn.titleLabel.text,labelnum.text,tagstrimg,_Limit-_LimitAll,_Labelyixuan.text);
+            weakself.returnValueBlock(_tmpBtn.titleLabel.text,labelnum.text,tagstrimg,[labelkucun.text longLongValue],_Labelyixuan.text);
+            [self.navigationController popViewControllerAnimated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"jiarugouwuchedonghua" object:nil userInfo:nil];
         }
     }
-    long i = [labelnum.text longLongValue];
+    
     if (i==0) {
-        if (_limtcart>0) {
-            GouwucheViewController *gouwuche = [[GouwucheViewController alloc] init];
-            [self.navigationController pushViewController:gouwuche animated:YES];
-        }if (_limtcart==0&&_limitord>0) {
-            dingdanViewController *dingdan = [[dingdanViewController alloc] init];
-            [self.navigationController pushViewController:dingdan animated:YES];
-        }
+//        if (_limtcart>0) {
+//
+//            GouwucheViewController *gouwuche = [[GouwucheViewController alloc] init];
+//            [self.navigationController pushViewController:gouwuche animated:YES];
+//        }if (_limtcart==0&&_limitord>0) {
+//            dingdanViewController *dingdan = [[dingdanViewController alloc] init];
+//            [self.navigationController pushViewController:dingdan animated:YES];
+//        }
     }else{
+        WBLog(@"***--&&&&%@",labelnum.text);
         if ([_tag isEqualToString:@"1"]) {
             //[self.navigationController popViewControllerAnimated:YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"lijigoumai" object:nil userInfo:nil];
         }else{
-            [self.navigationController popViewControllerAnimated:YES];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"jiarugouwuchedonghua" object:nil userInfo:nil];
+            
         }
     }
 }
@@ -165,7 +170,7 @@
 {
     int i = [labelnum.text intValue];
     long j = [labelkucun.text longLongValue];
-    if (sender.tag==0) {
+    if (sender.tag==1) {
         
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
@@ -183,6 +188,7 @@
                 //            _limtcart = cartnum;
                 //            _limitord = ordernum;
                 //            _LimitAll = cartnum+ordernum;
+                
                 labelnum.text = [NSString stringWithFormat:@"%d",i+1];
             }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
                 [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
@@ -211,7 +217,7 @@
         }];
     }else{
         if (i>1) {
-            i--;
+            labelnum.text = [NSString stringWithFormat:@"%d",i-1];
         }
     }
     
@@ -289,6 +295,7 @@
             }
             //                [self logout];
         }else{
+            labelnum.text = @"0";
             [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -390,10 +397,53 @@
     
     NSString *price = [[_Dataarr objectAtIndex:sender.tag] objectForKey:@"price"];
     _Labelyixuan.text = price;
-    
-    labelnum.text = @"1";
-    
     _tagidstring = [[_Dataarr objectAtIndex:sender.tag] objectForKey:@"id"];
+    //1.创建会话管理者
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    //2.封装参数
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict = @{@"p_id":_IDstring,@"tagid":[NSString stringWithFormat:@"%@",_tagidstring],@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"num":@"1"};
+    NSLog(@"%@",dict);
+    NSString *strurl = [API stringByAppendingString:@"shop/check_shop_limit"];
+    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"111---success--%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
+        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+            //            _Limit = [[[responseObject objectForKey:@"data"] objectForKey:@"limit"] integerValue];
+            //            long cartnum = [[[responseObject objectForKey:@"data"] objectForKey:@"cart_num"] integerValue];
+            //            long ordernum = [[[responseObject objectForKey:@"data"] objectForKey:@"order_num"] integerValue];
+            //            _limtcart = cartnum;
+            //            _limitord = ordernum;
+            //            _LimitAll = cartnum+ordernum;
+            labelnum.text = @"1";
+        }else if ([[responseObject objectForKey:@"status"] integerValue]==2){
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+            NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            [userinfo removeObjectForKey:@"username"];
+            [userinfo removeObjectForKey:@"phone_type"];
+            [userinfo removeObjectForKey:@"uid"];
+            [userinfo removeObjectForKey:@"pwd"];
+            [userinfo removeObjectForKey:@"is_bind_property"];
+            [userinfo removeObjectForKey:@"Cookie"];
+            [userinfo removeObjectForKey:@"is_new"];
+            [userinfo removeObjectForKey:@"token"];
+            [userinfo removeObjectForKey:@"tokenSecret"];
+            NSHTTPCookieStorage *manager = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+            NSArray *cookieStorage = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+            for (NSHTTPCookie *cookie in cookieStorage) {
+                [manager deleteCookie:cookie];
+            }
+            //                [self logout];
+        }else{
+            labelnum.text = @"0";
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        NSLog(@"failure--%@",error);
+    }];
+    
+    
     WBLog(@"%@",_tagidstring);
 }
 - (void)didReceiveMemoryWarning {

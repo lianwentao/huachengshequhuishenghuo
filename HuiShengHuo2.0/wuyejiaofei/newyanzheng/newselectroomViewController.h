@@ -15,4 +15,6 @@ typedef void(^ReturnString) (NSString *c_id,NSString *xiaoqu,NSString *house_typ
 @property (nonatomic,copy)NSString *c_id;
 @property (nonatomic,copy)NSString *buildid;
 @property (nonatomic,copy)NSString *danyuanid;
+
+@property (nonatomic,copy)NSString *housetype;
 @end

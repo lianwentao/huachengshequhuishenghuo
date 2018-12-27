@@ -1249,13 +1249,13 @@
                 if (i%2 == 0) {
                     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+(Main_width-24+2)*i/2, 0, Main_width/2-24/2, 120)];
                     view.backgroundColor = [UIColor whiteColor];
-                    view.layer.cornerRadius = 3;
                     [meiribiguangguanggao addSubview:view];
                     
                     UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, (Main_width-24)/2/1.5)];
+                    imageview.clipsToBounds = YES;
+                    imageview.layer.cornerRadius = 3;
                     NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[shangpinArr objectAtIndex:i] objectForKey:@"img"]]];
                     [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"展位图长1.5"]];
-                    imageview.backgroundColor = [UIColor yellowColor];
                     [view addSubview:imageview];
                     
                                     UIButton *dianjibut = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -1267,10 +1267,11 @@
                 }else{
                     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+(Main_width-24+2)*i/2, 0, Main_width/2-24/2, 120)];
                     view.backgroundColor = [UIColor whiteColor];
-                    view.layer.cornerRadius = 3;
                     [meiribiguangguanggao addSubview:view];
                     
                     UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, (Main_width-24)/2/1.5)];
+                    imageview.clipsToBounds = YES;
+                    imageview.layer.cornerRadius = 3;
                     NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[shangpinArr objectAtIndex:i] objectForKey:@"img"]]];
                     [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"展位图长1.5"]];
                     [view addSubview:imageview];

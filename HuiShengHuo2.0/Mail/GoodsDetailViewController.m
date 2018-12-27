@@ -1011,7 +1011,6 @@ static NSString * LINKEDME_SHORT_URL;
 }
 -(void)post1{
     //1.创建会话管理者
-    sleep(1);//未获取到代理返回的tagname，这里延迟一秒是为了获得返回的数据
     NSLog(@"blocktagname--%@",blocktagname);
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];

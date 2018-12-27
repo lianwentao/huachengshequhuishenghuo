@@ -181,7 +181,7 @@
                 UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
                 but.frame = CGRectMake(0, 0, Main_width, 50);
                 but.tag = i;
-                [but addTarget:self action:@selector(selectehouse:) forControlEvents:UIControlEventTouchUpInside];
+                [but addTarget:self action:@selector(selectehouse1:) forControlEvents:UIControlEventTouchUpInside];
                 [view addSubview:but];
             }
         }
@@ -250,18 +250,30 @@
 - (void)suer
 {
     WBLog(@"-%@-%@-%@-%@",community_id,building_id,units,code);
-    if (community_id.length == 0) {
-        [MBProgressHUD showToastToView:self.view withText:@"请先选择小区"];
-    }else if (building_id.length == 0){
-        [MBProgressHUD showToastToView:self.view withText:@"请先选择楼号"];
-    }else if (units.length == 0){
-        [MBProgressHUD showToastToView:self.view withText:@"请先选择单元号"];
-    }else if (code.length == 0){
-        [MBProgressHUD showToastToView:self.view withText:@"请先选择房间号"];
-    }else if (textfield.text.length == 0){
-        [MBProgressHUD showToastToView:self.view withText:@"请填写业主姓名或手机号"];
+    if ([_house_type isEqualToString:@"2"]||[_house_type isEqualToString:@"4"]) {
+        if (community_id.length == 0) {
+            [MBProgressHUD showToastToView:self.view withText:@"请先选择小区"];
+        }else if (code.length == 0){
+            [MBProgressHUD showToastToView:self.view withText:@"请先选择房间号"];
+        }else if (textfield.text.length == 0){
+            [MBProgressHUD showToastToView:self.view withText:@"请填写业主姓名或手机号"];
+        }else{
+            [self bangdingyanzheng];
+        }
     }else{
-        [self bangdingyanzheng];
+        if (community_id.length == 0) {
+            [MBProgressHUD showToastToView:self.view withText:@"请先选择小区"];
+        }else if (building_id.length == 0){
+            [MBProgressHUD showToastToView:self.view withText:@"请先选择楼号"];
+        }else if (units.length == 0){
+            [MBProgressHUD showToastToView:self.view withText:@"请先选择单元号"];
+        }else if (code.length == 0){
+            [MBProgressHUD showToastToView:self.view withText:@"请先选择房间号"];
+        }else if (textfield.text.length == 0){
+            [MBProgressHUD showToastToView:self.view withText:@"请填写业主姓名或手机号"];
+        }else{
+            [self bangdingyanzheng];
+        }
     }
 }
 - (void)bangdingyanzheng
@@ -315,7 +327,12 @@
     //2.封装参数
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"community_id":[Dictionary objectForKey:@"community_id"],@"community_name":[Dictionary objectForKey:@"community_name"],@"company_id":[Dictionary objectForKey:@"company_id"],@"company_name":[Dictionary objectForKey:@"company_name"],@"department_id":[Dictionary objectForKey:@"department_id"],@"department_name":[Dictionary objectForKey:@"department_name"],@"building_id":[Dictionary objectForKey:@"building_id"],@"building_name":[Dictionary objectForKey:@"building_name"],@"unit":[Dictionary objectForKey:@"unit"],@"floor":[Dictionary objectForKey:@"floor"],@"code":[Dictionary objectForKey:@"code"],@"room_id":[Dictionary objectForKey:@"room_id"],@"fullname":[Dictionary objectForKey:@"fullname"],@"mobile":[Dictionary objectForKey:@"mobile"],@"is_ym":[Dictionary objectForKey:@"is_ym"],@"house_type":[Dictionary objectForKey:@"houses_type"]};
+    if ([_house_type isEqualToString:@"2"]||[_house_type isEqualToString:@"4"]) {
+        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"community_id":[Dictionary objectForKey:@"community_id"],@"community_name":[Dictionary objectForKey:@"community_name"],@"company_id":[Dictionary objectForKey:@"company_id"],@"company_name":[Dictionary objectForKey:@"company_name"],@"department_id":[Dictionary objectForKey:@"department_id"],@"department_name":[Dictionary objectForKey:@"department_name"],@"building_id":[Dictionary objectForKey:@"building_id"],@"building_name":[Dictionary objectForKey:@"building_name"],@"code":[Dictionary objectForKey:@"code"],@"room_id":[Dictionary objectForKey:@"room_id"],@"fullname":[Dictionary objectForKey:@"fullname"],@"mobile":[Dictionary objectForKey:@"mobile"],@"is_ym":[Dictionary objectForKey:@"is_ym"],@"house_type":[Dictionary objectForKey:@"houses_type"]};
+    }else{
+        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"community_id":[Dictionary objectForKey:@"community_id"],@"community_name":[Dictionary objectForKey:@"community_name"],@"company_id":[Dictionary objectForKey:@"company_id"],@"company_name":[Dictionary objectForKey:@"company_name"],@"department_id":[Dictionary objectForKey:@"department_id"],@"department_name":[Dictionary objectForKey:@"department_name"],@"building_id":[Dictionary objectForKey:@"building_id"],@"building_name":[Dictionary objectForKey:@"building_name"],@"unit":[Dictionary objectForKey:@"unit"],@"floor":[Dictionary objectForKey:@"floor"],@"code":[Dictionary objectForKey:@"code"],@"room_id":[Dictionary objectForKey:@"room_id"],@"fullname":[Dictionary objectForKey:@"fullname"],@"mobile":[Dictionary objectForKey:@"mobile"],@"is_ym":[Dictionary objectForKey:@"is_ym"],@"house_type":[Dictionary objectForKey:@"houses_type"]};
+    }
+    
     WBLog(@"%@--%@",Dictionary,dict);
     NSString *strurl = [API stringByAppendingString:@"property/pro_bind_user"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -336,16 +353,13 @@
     if (sender.tag==0) {
         newselectxiaoquViewController *vc = [[newselectxiaoquViewController alloc] init];
         vc.returnValueBlock = ^(NSString *c_id,NSString *xiaoquname,NSString *house_type){
+            
+            _house_type = @"2";
+            [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+            [self createui];
             community_id = c_id;
             xiaoqu.text = xiaoquname;
-            _house_type = house_type;
-            if ([_house_type isEqualToString:@"2"]||[_house_type isEqualToString:@"4"]) {
-                 [self createui];
-            }else{
-                
-            }
         };
-        
         [self.navigationController pushViewController:vc animated:YES];
     }else if (sender.tag==1){
         if (community_id.length == 0) {
@@ -381,6 +395,35 @@
             [MBProgressHUD showToastToView:self.view withText:@"请先选择楼号"];
         }else if (units.length == 0){
             [MBProgressHUD showToastToView:self.view withText:@"请先选择单元号"];
+        }else{
+            newselectroomViewController *vc = [[newselectroomViewController alloc] init];
+            vc.returnValueBlock = ^(NSString *blockid,NSString *blockname,NSString *house_type){
+                code = blockid;
+                roomhao.text = blockname;
+            };
+            vc.c_id = community_id;
+            vc.buildid = building_id;
+            vc.danyuanid = units;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }
+}
+- (void)selectehouse1:(UIButton *)sender
+{
+    if (sender.tag==0) {
+        newselectxiaoquViewController *vc = [[newselectxiaoquViewController alloc] init];
+        vc.returnValueBlock = ^(NSString *c_id,NSString *xiaoquname,NSString *house_type){
+            
+            _house_type = @"1";
+            [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+            [self createui];
+            community_id = c_id;
+            xiaoqu.text = xiaoquname;
+        };
+        [self.navigationController pushViewController:vc animated:YES];
+    }else {
+        if (community_id.length == 0) {
+            [MBProgressHUD showToastToView:self.view withText:@"请先选择小区"];
         }else{
             newselectroomViewController *vc = [[newselectroomViewController alloc] init];
             vc.returnValueBlock = ^(NSString *blockid,NSString *blockname,NSString *house_type){
