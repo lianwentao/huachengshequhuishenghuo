@@ -62,7 +62,7 @@
     
     if (weakself.returnValueBlock) {
         //将自己的值传出去，完成传值
-        weakself.returnValueBlock([[_DataArr objectAtIndex:indexPath.row] objectForKey:@"buildsing_id"],[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"buildsing_id"]);
+        weakself.returnValueBlock([[_DataArr objectAtIndex:indexPath.row] objectForKey:@"buildsing_id"],[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"buildsing_id"],[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"buildsing_id"]);
     }
     [self.navigationController popViewControllerAnimated:YES];
 }

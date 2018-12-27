@@ -47,6 +47,7 @@
     UILabel *danyuan;
     UILabel *roomhao;
     
+    NSString *_house_type;
 }
 
 @end
@@ -63,30 +64,30 @@
     recognizer = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(viewTapped:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionDown)];
     [[self view] addGestureRecognizer:recognizer];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(change:) name:@"changetextfieldyanzheng" object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(change:) name:@"changetextfieldyanzheng" object:nil];
     // Do any additional setup after loading the view.
 }
-- (void)change:(NSNotification *)userinfo
-{
-    NSLog(@"--dizhi%@",userinfo.userInfo[@"address"]);
-    //houselabel.text = userinfo.userInfo[@"address"];
-    //@"community_id":_community_id,@"building_id":_build_id,@"units":@"",@"room_id":[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"code"]
-    community_id = userinfo.userInfo[@"community_id"];
-    community_name = userinfo.userInfo[@"community_name"];
-    building_id = userinfo.userInfo[@"building_id"];
-    building_name = userinfo.userInfo[@"build_name"];
-    units = userinfo.userInfo[@"units"];
-    room_id = userinfo.userInfo[@"room_id"];
-    code = userinfo.userInfo[@"code"];
-    company_id = userinfo.userInfo[@"company_id"];
-    company_name = userinfo.userInfo[@"company_name"];
-    department_id = userinfo.userInfo[@"department_id"];
-    department_name = userinfo.userInfo[@"department_name"];
-    floor = userinfo.userInfo[@"floor"];
-    
-//    label.text = userinfo.userInfo[@"address"];
-   // [self post];
-}
+//- (void)change:(NSNotification *)userinfo
+//{
+//    NSLog(@"--dizhi%@",userinfo.userInfo[@"address"]);
+//    //houselabel.text = userinfo.userInfo[@"address"];
+//    //@"community_id":_community_id,@"building_id":_build_id,@"units":@"",@"room_id":[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"code"]
+//    community_id = userinfo.userInfo[@"community_id"];
+//    community_name = userinfo.userInfo[@"community_name"];
+//    building_id = userinfo.userInfo[@"building_id"];
+//    building_name = userinfo.userInfo[@"build_name"];
+//    units = userinfo.userInfo[@"units"];
+//    room_id = userinfo.userInfo[@"room_id"];
+//    code = userinfo.userInfo[@"code"];
+//    company_id = userinfo.userInfo[@"company_id"];
+//    company_name = userinfo.userInfo[@"company_name"];
+//    department_id = userinfo.userInfo[@"department_id"];
+//    department_name = userinfo.userInfo[@"department_name"];
+//    floor = userinfo.userInfo[@"floor"];
+//
+////    label.text = userinfo.userInfo[@"address"];
+//   // [self post];
+//}
 - (void)getData
 {
     //1.创建会话管理者
@@ -146,55 +147,96 @@
 }
 - (void)createui
 {
-    for (int i=0; i<5; i++) {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height+50+58*i, Main_width, 50)];
-        view.backgroundColor = [UIColor whiteColor];
-        [self.view addSubview:view];
-        
-        if (i==0) {
-            xiaoqu = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 50)];
-            xiaoqu.text = @"请选择小区";
-            xiaoqu.font = font15;
-            xiaoqu.alpha = 0.5;
-            [view addSubview:xiaoqu];
-        }else if (i==1){
-            louhao = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 50)];
-            louhao.text = @"请选择楼号";
-            louhao.font = font15;
-            louhao.alpha = 0.5;
-            [view addSubview:louhao];
-        }else if (i==2){
-            danyuan = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 50)];
-            danyuan.text = @"请选择单元";
-            danyuan.font = font15;
-            danyuan.alpha = 0.5;
-            [view addSubview:danyuan];
-        }else if (i==3){
-            roomhao = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 50)];
-            roomhao.text = @"请选择房间号";
-            roomhao.font = font15;
-            roomhao.alpha = 0.5;
-            [view addSubview:roomhao];
-        }else{
-            textfield = [[UITextField alloc] initWithFrame:CGRectMake(10, 0, Main_width-60-10, 50)];
-            textfield.placeholder = @"请输入业主姓名或手机号";
-            textfield.font = [UIFont systemFontOfSize:15];
-            textfield.tag = 1000;
-            [view addSubview:textfield];
+    if ([_house_type isEqualToString:@"2"]||[_house_type isEqualToString:@"4"]) {
+        for (int i=0; i<3; i++) {
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height+50+58*i, Main_width, 50)];
+            view.backgroundColor = [UIColor whiteColor];
+            [self.view addSubview:view];
+            
+            if (i==0) {
+                xiaoqu = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 50)];
+                xiaoqu.text = @"请选择小区";
+                xiaoqu.font = font15;
+                xiaoqu.alpha = 0.5;
+                [view addSubview:xiaoqu];
+            }else if (i==1){
+                roomhao = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 50)];
+                roomhao.text = @"请选择房间号";
+                roomhao.font = font15;
+                roomhao.alpha = 0.5;
+                [view addSubview:roomhao];
+            }else{
+                textfield = [[UITextField alloc] initWithFrame:CGRectMake(10, 0, Main_width-60-10, 50)];
+                textfield.placeholder = @"请输入业主姓名或手机号";
+                textfield.font = [UIFont systemFontOfSize:15];
+                textfield.tag = 1000;
+                [view addSubview:textfield];
+            }
+            if (i<2) {
+                
+                UIImageView *youjiantou = [[UIImageView alloc] initWithFrame:CGRectMake(Main_width-40, 15, 20, 20)];
+                youjiantou.image = [UIImage imageNamed:@"youjiantou"];
+                [view addSubview:youjiantou];
+                
+                UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+                but.frame = CGRectMake(0, 0, Main_width, 50);
+                but.tag = i;
+                [but addTarget:self action:@selector(selectehouse:) forControlEvents:UIControlEventTouchUpInside];
+                [view addSubview:but];
+            }
         }
-        if (i<4) {
+    }else{
+        for (int i=0; i<5; i++) {
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height+50+58*i, Main_width, 50)];
+            view.backgroundColor = [UIColor whiteColor];
+            [self.view addSubview:view];
             
-            UIImageView *youjiantou = [[UIImageView alloc] initWithFrame:CGRectMake(Main_width-40, 15, 20, 20)];
-            youjiantou.image = [UIImage imageNamed:@"youjiantou"];
-            [view addSubview:youjiantou];
-            
-            UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-            but.frame = CGRectMake(0, 0, Main_width, 50);
-            but.tag = i;
-            [but addTarget:self action:@selector(selectehouse:) forControlEvents:UIControlEventTouchUpInside];
-            [view addSubview:but];
+            if (i==0) {
+                xiaoqu = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 50)];
+                xiaoqu.text = @"请选择小区";
+                xiaoqu.font = font15;
+                xiaoqu.alpha = 0.5;
+                [view addSubview:xiaoqu];
+            }else if (i==1){
+                louhao = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 50)];
+                louhao.text = @"请选择楼号";
+                louhao.font = font15;
+                louhao.alpha = 0.5;
+                [view addSubview:louhao];
+            }else if (i==2){
+                danyuan = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 50)];
+                danyuan.text = @"请选择单元";
+                danyuan.font = font15;
+                danyuan.alpha = 0.5;
+                [view addSubview:danyuan];
+            }else if (i==3){
+                roomhao = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width-20, 50)];
+                roomhao.text = @"请选择房间号";
+                roomhao.font = font15;
+                roomhao.alpha = 0.5;
+                [view addSubview:roomhao];
+            }else{
+                textfield = [[UITextField alloc] initWithFrame:CGRectMake(10, 0, Main_width-60-10, 50)];
+                textfield.placeholder = @"请输入业主姓名或手机号";
+                textfield.font = [UIFont systemFontOfSize:15];
+                textfield.tag = 1000;
+                [view addSubview:textfield];
+            }
+            if (i<4) {
+                
+                UIImageView *youjiantou = [[UIImageView alloc] initWithFrame:CGRectMake(Main_width-40, 15, 20, 20)];
+                youjiantou.image = [UIImage imageNamed:@"youjiantou"];
+                [view addSubview:youjiantou];
+                
+                UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+                but.frame = CGRectMake(0, 0, Main_width, 50);
+                but.tag = i;
+                [but addTarget:self action:@selector(selectehouse:) forControlEvents:UIControlEventTouchUpInside];
+                [view addSubview:but];
+            }
         }
     }
+    
     UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
     but.frame = CGRectMake(40, Main_Height-70, Main_width-80, 45);
     but.backgroundColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
@@ -293,9 +335,15 @@
 {
     if (sender.tag==0) {
         newselectxiaoquViewController *vc = [[newselectxiaoquViewController alloc] init];
-        vc.returnValueBlock = ^(NSString *c_id,NSString *xiaoquname){
+        vc.returnValueBlock = ^(NSString *c_id,NSString *xiaoquname,NSString *house_type){
             community_id = c_id;
             xiaoqu.text = xiaoquname;
+            _house_type = house_type;
+            if ([_house_type isEqualToString:@"2"]||[_house_type isEqualToString:@"4"]) {
+                 [self createui];
+            }else{
+                
+            }
         };
         
         [self.navigationController pushViewController:vc animated:YES];
@@ -304,7 +352,7 @@
             [MBProgressHUD showToastToView:self.view withText:@"请先选择小区"];
         }else{
             newselctlouhaoViewController *vc = [[newselctlouhaoViewController alloc] init];
-            vc.returnValueBlock = ^(NSString *blockid,NSString *blockname){
+            vc.returnValueBlock = ^(NSString *blockid,NSString *blockname,NSString *house_type){
                 building_id = blockid;
                 louhao.text = blockname;
             };
@@ -318,7 +366,7 @@
             [MBProgressHUD showToastToView:self.view withText:@"请先选择楼号"];
         }else{
             newselectdanyuanViewController *vc = [[newselectdanyuanViewController alloc] init];
-            vc.returnValueBlock = ^(NSString *blockid,NSString *blockname){
+            vc.returnValueBlock = ^(NSString *blockid,NSString *blockname,NSString *house_type){
                 units = blockid;
                 danyuan.text = blockname;
             };
@@ -335,7 +383,7 @@
             [MBProgressHUD showToastToView:self.view withText:@"请先选择单元号"];
         }else{
             newselectroomViewController *vc = [[newselectroomViewController alloc] init];
-            vc.returnValueBlock = ^(NSString *blockid,NSString *blockname){
+            vc.returnValueBlock = ^(NSString *blockid,NSString *blockname,NSString *house_type){
                 code = blockid;
                 roomhao.text = blockname;
             };

@@ -356,6 +356,7 @@
             NSLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
             if ([[responseObject objectForKey:@"status"] integerValue]==1) {
                 myhouseViewController *sfVC = [[myhouseViewController alloc]init];
+                sfVC.selectindex = @"0";
                 [self.navigationController pushViewController:sfVC animated:YES];
             }else{
                 [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];

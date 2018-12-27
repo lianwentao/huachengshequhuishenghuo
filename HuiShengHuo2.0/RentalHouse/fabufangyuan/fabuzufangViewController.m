@@ -341,6 +341,7 @@
             if ([[responseObject objectForKey:@"status"] integerValue]==1) {
                 
                 myhouseViewController *zfVC = [[myhouseViewController alloc]init];
+                zfVC.selectindex = @"1";
                 [self.navigationController pushViewController:zfVC animated:YES];
                 
             }else{

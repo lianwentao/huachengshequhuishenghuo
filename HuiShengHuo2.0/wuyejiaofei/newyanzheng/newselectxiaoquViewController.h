@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-typedef void(^ReturnString) (NSString *c_id,NSString *xiaoqu);
+typedef void(^ReturnString) (NSString *c_id,NSString *xiaoqu,NSString *house_type);
 @interface newselectxiaoquViewController : UIViewController
-@property(nonatomic, copy) ReturnString returnValueBlock;
+@property(nonatomic, strong) ReturnString returnValueBlock;
 @end

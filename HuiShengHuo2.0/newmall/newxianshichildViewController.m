@@ -266,9 +266,10 @@
                 }
                 [liebiaoArr addObjectsFromArray:arr];
             }
-            [_TableView.mj_footer endRefreshing];
-            [_TableView reloadData];
+            
         }
+        [_TableView.mj_footer endRefreshing];
+        [_TableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         NSLog(@"failure--%@",error);
