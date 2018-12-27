@@ -17,6 +17,7 @@
 #import "XLPhotoBrowser.h"
 #import "JKBannarView.h"
 #import "UIViewController+BackButtonHandler.h"
+#import "LoginViewController.h"
 #define kScreenHeight   ([UIScreen mainScreen].bounds.size.height)
 #define kScreenWidth    ([UIScreen mainScreen].bounds.size.width)
 #define NAV_HEIGHT 64
@@ -528,10 +529,16 @@
         contentlabel.numberOfLines = 0;
         CGSize size;
         if (base64!=nil) {
+            
+            
+          
             NSData *data1 = [[NSData alloc] initWithBase64EncodedString:base64 options:0];
+//            NSAttributedString * attrStr = [[NSAttributedString alloc]initWithData:data1 options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }  documentAttributes:nil error:nil];
+//            [contentlabel  setAttributedText:attrStr];
             NSString *labeltext = [[NSString alloc] initWithData:data1 encoding:NSUTF8StringEncoding];
             contentlabel.font = [UIFont systemFontOfSize:16];
             contentlabel.text = labeltext;
+            NSLog(@"labeltext = %@",labeltext);
             size = [contentlabel sizeThatFits:CGSizeMake(contentlabel.frame.size.width, MAXFLOAT)];
             contentlabel.frame = CGRectMake(contentlabel.frame.origin.x, contentlabel.frame.origin.y, size.width,  size.height);
             [cell addSubview:contentlabel];
@@ -716,11 +723,19 @@
     
 }
 -(void)callAction:(UIButton *)sender{
+    NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+    NSString *str = [userdefaults objectForKey:@"token"];
+    if (str==nil) {
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self presentViewController:login animated:YES completion:nil];
+    }else{
     NSString *telStr = [NSString stringWithFormat:@"%ld",sender.tag];
     NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",telStr];
     UIWebView *callWebview = [[UIWebView alloc] init];
     [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
-    [self.view addSubview:callWebview];
+        [self.view addSubview:callWebview];
+        
+    }
 }
 -(void)ckxqAction{
     

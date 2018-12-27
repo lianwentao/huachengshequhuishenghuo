@@ -136,27 +136,48 @@
 
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSLog(@"dict = %@",dict);
     NSString *strurl = [API stringByAppendingString:@"secondHouseType/getSellList"];
     NSLog(@"strurl = %@",strurl);
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        //        NSLog(@"gouwuche--%@",responseObject);
-
         NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
         NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSLog(@"dataStr = %@",dataStr);
         NSArray *dataArr = responseObject[@"data"][@"list"];
+        kkkArr = responseObject[@"data"][@"list"];
+//        [_tableView.mj_header endRefreshing];
+//        [_tableView.mj_footer endRefreshing];
+//        dataSourceArr = [NSMutableArray array];
+//
+//        kkkArr = responseObject[@"data"][@"list"];
+//        for (NSDictionary *dic in dataArr) {
+//            model =  [[sfListModel alloc]initWithDictionary:dic error:nil];
+//            [dataSourceArr addObject:model];
+//        }
+//
+//        [_tableView reloadData];
+        
         [_tableView.mj_header endRefreshing];
         [_tableView.mj_footer endRefreshing];
-        dataSourceArr = [NSMutableArray array];
-
-        kkkArr = responseObject[@"data"][@"list"];
-        for (NSDictionary *dic in dataArr) {
-            model =  [[sfListModel alloc]initWithDictionary:dic error:nil];
-            [dataSourceArr addObject:model];
+        if (pageNum == 1) {
+            dataSourceArr = [[NSMutableArray alloc]init];
         }
-
-        [_tableView reloadData];
+        if (![dataArr isKindOfClass:[NSArray class]]) {
+            [_tableView reloadData];
+            [_tableView.mj_footer endRefreshingWithNoMoreData];
+            return ;
+        }
+        if ([dataArr count] < 10) {
+            [_tableView.mj_footer endRefreshingWithNoMoreData];
+        }
+        dataSourceArr = [NSMutableArray array];
+        for (NSDictionary *dic in dataArr) {
+            
+            sfListModel *model =  [[sfListModel alloc]initWithDictionary:dic error:nil];
+            
+            [dataSourceArr addObject:model];
+            
+        }
+        [self.tableView reloadData];
 
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
@@ -263,7 +284,7 @@
 }
 
 - (void)shaixuan5:(NSNotification *)userinfo{
-    NSString *str = [userinfo.userInfo objectForKey:@"shaiXuanStr1"];
+    NSString *str = [userinfo.userInfo objectForKey:@"shaiXuanStr5"];
     NSLog(@"str = %@",str);
     if ([str isEqualToString:@"不限"]) {
         _money = @"0";
@@ -475,17 +496,17 @@
     
     UILabel *jPriceLab = [[UILabel alloc]init];
     jPriceLab.frame = CGRectMake(CGRectGetMaxX(priceLab.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+10, kScreen_Width-20-100-100, 20);
-    NSString *str11 = [NSString stringWithFormat:@"|%@室",model.room];
-    NSString *str22 = [NSString stringWithFormat:@"%@厅",model.office];
-    NSString *str33 = [NSString stringWithFormat:@"%@厨",model.kitchen];
-    NSString *str44 = [NSString stringWithFormat:@"%@卫",model.guard];
-    NSString *str55 = [str11 stringByAppendingString:str22];
-    NSString *str66 = [str55 stringByAppendingString:str33];
-    NSString *str77 = [str66 stringByAppendingString:str44];
-    NSString *str99 = [NSString stringWithFormat:@"|%@平米",model.area];
-    NSString *str1099 = [str77 stringByAppendingString:str99];
+//    NSString *str11 = [NSString stringWithFormat:@"|%@室",model.room];
+//    NSString *str22 = [NSString stringWithFormat:@"%@厅",model.office];
+//    NSString *str33 = [NSString stringWithFormat:@"%@厨",model.kitchen];
+//    NSString *str44 = [NSString stringWithFormat:@"%@卫",model.guard];
+//    NSString *str55 = [str11 stringByAppendingString:str22];
+//    NSString *str66 = [str55 stringByAppendingString:str33];
+//    NSString *str77 = [str66 stringByAppendingString:str44];
+//    NSString *str99 = [NSString stringWithFormat:@"|%@平米",model.area];
+//    NSString *str1099 = [str77 stringByAppendingString:str99];
     
-    jPriceLab.text = str1099;
+    jPriceLab.text = [NSString stringWithFormat:@"%@元/平米",model.unit_price];;
     jPriceLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
     jPriceLab.font = [UIFont systemFontOfSize:13];
     jPriceLab.textAlignment = NSTextAlignmentLeft;

@@ -26,7 +26,7 @@
 #import "XLPhotoBrowser.h"
 #import "sfDetailModel.h"
 #import "tjListModel.h"
-
+#import "LoginViewController.h"
 @interface shouFangDetailViewController ()<UITableViewDelegate,UITableViewDataSource,PTLMenuButtonDelegate, KMTagListViewDelegate>
 {
     UITableView *tableView;
@@ -727,11 +727,20 @@
     
 }
 -(void)callAction:(UIButton *)sender{
+    
+    NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+    NSString *str = [userdefaults objectForKey:@"token"];
+    if (str==nil) {
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self presentViewController:login animated:YES completion:nil];
+    }else{
     NSString *telStr = [NSString stringWithFormat:@"%ld",sender.tag];
     NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",telStr];
     UIWebView *callWebview = [[UIWebView alloc] init];
     [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
-    [self.view addSubview:callWebview];
+        [self.view addSubview:callWebview];
+        
+    }
 }
 -(void)ckxqAction{
     

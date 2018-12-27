@@ -43,6 +43,8 @@
     
     NSMutableArray *kkkArr;
     NSMutableArray *labelArr;
+    
+     NSMutableArray *housetypeArr;
    
 }
 @property(nonatomic ,strong) UITableView *tableView;
@@ -65,7 +67,7 @@
    self.view.backgroundColor = [UIColor whiteColor];
     // 设置导航控制器的代理为self
 //    self.navigationController.delegate = self;
-//    [self loadData];
+    [self loadData3];
     [self CreateTableview];
     
     
@@ -110,6 +112,7 @@
     if (_moneyOne == NULL) {
         _moneyOne = @"";
     }
+    
     NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":[NSString stringWithFormat:@"%ld",pageNum],@"community_name":_community_name,@"community_id":[userinfo objectForKey:@"community_id"]};
     
     NSLog(@"dict = %@",dict);
@@ -125,19 +128,40 @@
         NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSLog(@"dataStr = %@",dataStr);
         
+        NSArray *dataArr = responseObject[@"data"][@"list"];
+         kkkArr = responseObject[@"data"][@"list"];
+//        [_tableView.mj_header endRefreshing];
+//        [_tableView.mj_footer endRefreshing];
+//        NSArray *dataArr = responseObject[@"data"][@"list"];
+//        dataSourceArr = [[NSMutableArray alloc]init];
+//        for (NSDictionary *dic in dataArr) {
+//            zfListModel *model =  [[zfListModel alloc]initWithDictionary:dic error:nil];
+//            [dataSourceArr addObject:model];
+//        }
+//        NSLog(@"dataSourceArr = %@",dataSourceArr);
+////            [_tableView reloadData];
+//        kkkArr = responseObject[@"data"][@"list"];
+//        [_tableView reloadData];
         
         [_tableView.mj_header endRefreshing];
         [_tableView.mj_footer endRefreshing];
-        NSArray *dataArr = responseObject[@"data"][@"list"];
-        dataSourceArr = [[NSMutableArray alloc]init];
+        if (pageNum == 1) {
+            dataSourceArr = [[NSMutableArray alloc]init];
+        }
+        if (![dataArr isKindOfClass:[NSArray class]]) {
+            [_tableView reloadData];
+            [_tableView.mj_footer endRefreshingWithNoMoreData];
+            return ;
+        }
+        if ([dataArr count] < 10) {
+            [_tableView.mj_footer endRefreshingWithNoMoreData];
+        }
+        dataSourceArr = [NSMutableArray array];
         for (NSDictionary *dic in dataArr) {
-            zfListModel *model =  [[zfListModel alloc]initWithDictionary:dic error:nil];
+           zfListModel *model =  [[zfListModel alloc]initWithDictionary:dic error:nil];
             [dataSourceArr addObject:model];
         }
-        NSLog(@"dataSourceArr = %@",dataSourceArr);
-//            [_tableView reloadData];
-        kkkArr = responseObject[@"data"][@"list"];
-        [_tableView reloadData];
+        [self.tableView reloadData];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
@@ -150,7 +174,7 @@
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     [self.navigationItem setTitleView:view];
     //设置搜索框
-    UISearchBar *customSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(10,5, (self.view.frame.size.width-120), 34)];
+    customSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(10,5, (self.view.frame.size.width-120), 34)];
     customSearchBar.delegate = self;
     customSearchBar.showsCancelButton = NO;
     customSearchBar.placeholder = @"请输入小区或地址";
@@ -173,6 +197,37 @@
     [self loadData];
 }
 #pragma mark - 租房筛选框
+
+-(void)loadData3{
+    
+    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    
+    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    
+    NSLog(@"dict = %@",dict);
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    NSLog(@"dict = %@",dict);
+    NSString *strurl = [API stringByAppendingString:@"secondHouseType/gethousetype"];
+    NSLog(@"strurl = %@",strurl);
+    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSLog(@"dataStr = %@",dataStr);
+        NSArray *arr = responseObject[@"data"];
+        housetypeArr = [NSMutableArray array];
+        for (int i = 0; i<arr.count; i++) {
+            NSString *price = [[arr objectAtIndex:i] objectForKey:@"id"];
+            [housetypeArr addObject:price];
+        }
+        NSLog(@"housetypeArr = %@",housetypeArr);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"failure--%@",error);
+    }];
+    
+}
 -(void)shaixuanList{
     
     // 创建下拉菜单
@@ -290,7 +345,7 @@
 }
 - (void)shaixuan3:(NSNotification *)userinfo{
     NSString *str = [userinfo.userInfo objectForKey:@"shaiXuanStr3"];
-    NSLog(@"str = %@",str);
+
     if ([str isEqualToString:@"不限"]) {
         _housetype = @"0";
     }else if ([str isEqualToString:@"一室"]) {
@@ -331,20 +386,21 @@
     _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:_tableView];
     
-    dataSourceArr = [[NSMutableArray alloc] init];
+    
     WS(ws);
+    dataSourceArr = [[NSMutableArray alloc] init];
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [ws.tableView.mj_footer endRefreshing];
         pageNum = 1;
         [ws loadData];
         
     }];
-     [self.tableView.mj_header beginRefreshing];
-    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+    _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [ws.tableView.mj_header endRefreshing];
          pageNum = pageNum+1;
         [ws loadData];
     }];
+    [_tableView.mj_header beginRefreshing];
    
 
 }
@@ -482,7 +538,7 @@
 
 // 键盘中，搜索按钮被按下，执行的方法
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    NSLog(@"---%@",searchBar.text);
+    NSLog(@"滚滚滚滚滚滚---%@",searchBar.text);
     [customSearchBar resignFirstResponder];// 放弃第一响应者
     _community_name = searchBar.text;
     [self loadData];
