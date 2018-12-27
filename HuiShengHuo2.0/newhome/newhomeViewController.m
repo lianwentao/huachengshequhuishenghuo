@@ -2417,21 +2417,40 @@
 //}
 #pragma mark - 物业缴费
 -(void)wuYeJiaoFei:(UIButton *)sender{
-    
-    if (sender.tag == 100) {
-        afteryanzhengViewController *afterVC = [[afteryanzhengViewController alloc]init];
-        afterVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:afterVC animated:YES];
-    }else if (sender.tag == 101){
-        ziyongliebiaoViewController *ziyongliebiaoVC = [[ziyongliebiaoViewController alloc]init];
-        ziyongliebiaoVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:ziyongliebiaoVC animated:YES];
+    NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+    NSString *str = [userdefaults objectForKey:@"token"];
+    NSString *is_bind_property = [userdefaults objectForKey:@"is_bind_property"];
+    if (str==nil) {
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self presentViewController:login animated:YES completion:nil];
     }else{
-        gonggongbaoxiuViewController *gonggongbaoxiuVC = [[gonggongbaoxiuViewController alloc]init];
-        gonggongbaoxiuVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:gonggongbaoxiuVC animated:YES];
+        if (sender.tag == 100) {
+            afteryanzhengViewController *afterVC = [[afteryanzhengViewController alloc]init];
+            afterVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:afterVC animated:YES];
+        }else if (sender.tag == 101){
+            
+            if ([is_bind_property isEqualToString:@"2"]) {
+                ziyongliebiaoViewController *ziyongliebiaoVC = [[ziyongliebiaoViewController alloc]init];
+                ziyongliebiaoVC.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:ziyongliebiaoVC animated:YES];
+            }else{
+                afteryanzhengViewController *afterVC = [[afteryanzhengViewController alloc]init];
+                afterVC.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:afterVC animated:YES];
+            }
+        }else{
+            if ([is_bind_property isEqualToString:@"2"]) {
+                ziyongliebiaoViewController *ziyongliebiaoVC = [[ziyongliebiaoViewController alloc]init];
+                ziyongliebiaoVC.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:ziyongliebiaoVC animated:YES];
+            }else{
+                gonggongbaoxiuViewController *gonggongbaoxiuVC = [[gonggongbaoxiuViewController alloc]init];
+                gonggongbaoxiuVC.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:gonggongbaoxiuVC animated:YES];
+            }
+        }
     }
-    
 }
 #pragma mark - 租房，售房，发布
 -(void)zuShouFang:(UIButton *)sender{
@@ -2445,11 +2464,17 @@
          shouFangVC.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:shouFangVC animated:YES];
     }else{
-        zushouweituoViewController *zushouweituoVC = [[zushouweituoViewController alloc]init];
-        zushouweituoVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:zushouweituoVC animated:YES];
+        NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+        NSString *str = [userdefaults objectForKey:@"token"];
+        if (str==nil) {
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self presentViewController:login animated:YES completion:nil];
+        }else{
+            zushouweituoViewController *zushouweituoVC = [[zushouweituoViewController alloc]init];
+            zushouweituoVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:zushouweituoVC animated:YES];
+        }
     }
-    
 }
 -(void)fangWuDetail:(UIButton *)sender{
     

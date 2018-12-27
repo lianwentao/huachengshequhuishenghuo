@@ -99,7 +99,7 @@
     
     if (weakself.returnValueBlock) {
         //将自己的值传出去，完成传值
-        weakself.returnValueBlock(str,p.name);
+        weakself.returnValueBlock(str,p.name,p.is_new);
     }
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -124,7 +124,7 @@
             p.city_id = [[arr objectAtIndex:i] objectForKey:@"city_id"];
             p.region_id = [[arr objectAtIndex:i] objectForKey:@"region_id"];
             p.id = [[arr objectAtIndex:i] objectForKey:@"id"];
-            p.is_new = [[arr objectAtIndex:i] objectForKey:@"is_new"];
+            p.is_new = [[arr objectAtIndex:i] objectForKey:@"houses_type"];//这里is_new没用到，所以改成house——type
             [_Dataarr addObject:p];
         }
         //根据Person对象的 name 属性 按中文 对 Person数组 排序
