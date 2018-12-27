@@ -208,6 +208,7 @@
 		2865570C1FFCD723008E912D /* JKBannerCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2865570A1FFCD723008E912D /* JKBannerCollectionViewCell.m */; };
 		2865570F1FFCFA27008E912D /* weixiuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2865570E1FFCFA27008E912D /* weixiuViewController.m */; };
 		28662D032022AB1900583093 /* GZActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 28662D022022AB1900583093 /* GZActionSheet.m */; };
+		2868552A21D4C1AC005829FC /* baoxiushuomingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2868552921D4C1AC005829FC /* baoxiushuomingViewController.m */; };
 		28695349219E9CCD0081C57D /* fabuzufangViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28695348219E9CCD0081C57D /* fabuzufangViewController.m */; };
 		2869534C219E9CD90081C57D /* fabushoufangViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2869534B219E9CD90081C57D /* fabushoufangViewController.m */; };
 		2869E624212C080200FAAC5C /* selectxiaoquViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2869E623212C080200FAAC5C /* selectxiaoquViewController.m */; };
@@ -1008,6 +1009,8 @@
 		2865570E1FFCFA27008E912D /* weixiuViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = weixiuViewController.m; sourceTree = "<group>"; };
 		28662D012022AB1900583093 /* GZActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GZActionSheet.h; sourceTree = "<group>"; };
 		28662D022022AB1900583093 /* GZActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GZActionSheet.m; sourceTree = "<group>"; };
+		2868552821D4C1AC005829FC /* baoxiushuomingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = baoxiushuomingViewController.h; sourceTree = "<group>"; };
+		2868552921D4C1AC005829FC /* baoxiushuomingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = baoxiushuomingViewController.m; sourceTree = "<group>"; };
 		28695347219E9CCD0081C57D /* fabuzufangViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fabuzufangViewController.h; sourceTree = "<group>"; };
 		28695348219E9CCD0081C57D /* fabuzufangViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = fabuzufangViewController.m; sourceTree = "<group>"; };
 		2869534A219E9CD90081C57D /* fabushoufangViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fabushoufangViewController.h; sourceTree = "<group>"; };
@@ -1858,6 +1861,8 @@
 				2810CA5421C4F68300587324 /* ziyongliebiaoViewController.m */,
 				28D64A7F21C77F530077FFCA /* ziyongliebiaochildViewController.h */,
 				28D64A8021C77F530077FFCA /* ziyongliebiaochildViewController.m */,
+				2868552821D4C1AC005829FC /* baoxiushuomingViewController.h */,
+				2868552921D4C1AC005829FC /* baoxiushuomingViewController.m */,
 				2810CA5621C4F6FB00587324 /* mywuyegongdanViewController.h */,
 				2810CA5721C4F6FB00587324 /* mywuyegongdanViewController.m */,
 				28D64A8221C7B8220077FFCA /* mywuyegongdanchildViewController.h */,
@@ -4663,6 +4668,7 @@
 				28A4F03D1FD6509600DF4AED /* mycircleViewController.m in Sources */,
 				845C563D21A7F529002F509D /* zfListModel.m in Sources */,
 				282805B5219AD72500B0DD7D /* SDWebImageTransition.m in Sources */,
+				2868552A21D4C1AC005829FC /* baoxiushuomingViewController.m in Sources */,
 				8405970221B12B210052B99D /* serviceModel.m in Sources */,
 				28F6468C21CDF0C4006C6281 /* SegmentViewController.m in Sources */,
 				2895C1902079228900A5DA4B /* blueyaViewController.m in Sources */,

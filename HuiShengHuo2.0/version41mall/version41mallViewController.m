@@ -564,7 +564,7 @@
         
     }
     //view.frame.size.height+view.frame.origin.y+H1+10+H2+10/////15+width+15+20+10+15+width+20+15
-    _tabHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)+10+2*(Main_width-24-30*5)/5+15+15+20+10+15+20+15+H1+10+H2)];
+    _tabHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.5)+10+2*(Main_width-24-30*5)/5+15+15+20+10+15+20+15+H1+10+H2)];
     
     
     
@@ -1270,8 +1270,6 @@
                     [meiribiguangguanggao addSubview:view];
                     
                     UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, (Main_width-24)/2/1.5)];
-                    imageview.clipsToBounds = YES;
-                    imageview.layer.cornerRadius = 3;
                     NSURL *url = [NSURL URLWithString:[API_img stringByAppendingString:[[shangpinArr objectAtIndex:i] objectForKey:@"img"]]];
                     [imageview sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"展位图长1.5"]];
                     [view addSubview:imageview];
@@ -1697,7 +1695,7 @@
                 //NSLog(@"success--%@--%@",[responseObject class],responseObject);
                 
                 NSMutableArray *imagearr = [NSMutableArray array];
-                bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)) viewSize:CGSizeMake(Main_width,Main_width/(1.87))];
+                bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.5)) viewSize:CGSizeMake(Main_width,Main_width/(1.5))];
                 
                 if ([HeaDataArr isKindOfClass:[NSArray class]]) {
                     for (int i=0; i<HeaDataArr.count; i++) {
@@ -1772,7 +1770,7 @@
             //NSLog(@"success--%@--%@",[responseObject class],responseObject);
             
             NSMutableArray *imagearr = [NSMutableArray array];
-            bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)) viewSize:CGSizeMake(Main_width,Main_width/(1.87))];
+            bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.5)) viewSize:CGSizeMake(Main_width,Main_width/(1.5))];
             
             if ([HeaDataArr isKindOfClass:[NSArray class]]) {
                 for (int i=0; i<HeaDataArr.count; i++) {

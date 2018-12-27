@@ -465,7 +465,7 @@
             topArr = [dataDic objectForKey:@"ad_top_list"];
             centerguanggaoarr = [NSArray array];
             centerguanggaoarr = [dataDic objectForKey:@"ad_center_list"];
-            bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, 150) viewSize:CGSizeMake(Main_width,150)];
+            bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/1.5) viewSize:CGSizeMake(Main_width,Main_width/1.5)];
             NSMutableArray *imagearr = [NSMutableArray arrayWithCapacity:0];
             if ([topArr isKindOfClass:[NSArray class]]) {
                 for (int i=0; i<topArr.count; i++) {
@@ -829,7 +829,7 @@
                     
                 }
             }];
-            tableView.rowHeight = 150;
+            tableView.rowHeight = Main_width/1.5;
         }else{
             tableView.rowHeight = RECTSTATUS.size.height+44;
         }

@@ -8,6 +8,7 @@
 
 #import "ziyongliebiaochildViewController.h"
 #import "ziyonggongdanViewController.h"
+#import "yuefunextViewController.h"
 @interface ziyongliebiaochildViewController ()<UITableViewDelegate,UITableViewDataSource>{
     UITableView *_TableView;
 }
@@ -82,7 +83,8 @@
     [but setTitle:@"服务说明" forState:UIControlStateNormal];
     but.titleLabel.font = Font(15);
     [but setTitleColor:[UIColor colorWithHexString:@"#555555"] forState:UIControlStateNormal];
-    [but addTarget:self action:@selector(pushshuming) forControlEvents:UIControlEventTouchUpInside];
+    but.tag = indexPath.row;
+    [but addTarget:self action:@selector(pushshuming:) forControlEvents:UIControlEventTouchUpInside];
     but.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [cell.contentView addSubview:but];
     
@@ -103,8 +105,13 @@
     vc.type_pid = [[_arr objectAtIndex:indexPath.row] objectForKey:@"pid"];
     [self.navigationController pushViewController:vc animated:YES];
 }
-- (void)pushshuming{
-    WBLog(@"aaaa");
+- (void)pushshuming:(UIButton *)sender
+{
+    yuefunextViewController *yuefunext = [[yuefunextViewController alloc] init];
+    yuefunext.hidesBottomBarWhenPushed = YES;
+    yuefunext.title = [[_arr objectAtIndex:sender.tag] objectForKey:@"type_name"];
+    yuefunext.content = [[_arr objectAtIndex:sender.tag] objectForKey:@"type_content"];
+    [self.navigationController pushViewController:yuefunext animated:YES];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

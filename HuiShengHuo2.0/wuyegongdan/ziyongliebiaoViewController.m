@@ -102,6 +102,16 @@
     //self.pageContentView.contentViewCanScroll = YES;//设置滑动属性
     [self.view addSubview:_pageContentView];
 }
+#pragma mark --
+- (void)FSSegmentTitleView:(FSSegmentTitleView *)titleView startIndex:(NSInteger)startIndex endIndex:(NSInteger)endIndex
+{
+    self.pageContentView.contentViewCurrentIndex = endIndex;
+}
+
+- (void)FSContenViewDidEndDecelerating:(FSPageContentView *)contentView startIndex:(NSInteger)startIndex endIndex:(NSInteger)endIndex
+{
+    self.titleView.selectIndex = endIndex;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
