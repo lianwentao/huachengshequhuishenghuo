@@ -29,6 +29,11 @@
     _Tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width, Main_Height) ];
     _Tableview.delegate = self;
     _Tableview.dataSource = self;
+    _Tableview.estimatedRowHeight = 0;
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.001)];
+    _Tableview.tableHeaderView = view;
+    UIView *view1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.001)];
+    _Tableview.tableFooterView = view1;
     [self.view addSubview:_Tableview];
 }
 #pragma mark - UITableView -

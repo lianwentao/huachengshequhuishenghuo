@@ -354,7 +354,7 @@
         newselectxiaoquViewController *vc = [[newselectxiaoquViewController alloc] init];
         vc.returnValueBlock = ^(NSString *c_id,NSString *xiaoquname,NSString *house_type){
             
-            _house_type = @"2";
+            _house_type = house_type;
             [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
             [self createui];
             community_id = c_id;
@@ -414,7 +414,7 @@
         newselectxiaoquViewController *vc = [[newselectxiaoquViewController alloc] init];
         vc.returnValueBlock = ^(NSString *c_id,NSString *xiaoquname,NSString *house_type){
             
-            _house_type = @"1";
+            _house_type = house_type;
             [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
             [self createui];
             community_id = c_id;

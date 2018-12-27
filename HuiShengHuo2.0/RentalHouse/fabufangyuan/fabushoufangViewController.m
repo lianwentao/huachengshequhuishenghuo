@@ -118,6 +118,7 @@
         
         textfieldphone = [[UITextField alloc] initWithFrame:CGRectMake(125, 24, Main_width-30-140, 30)];
         textfieldphone.placeholder = @"请输入手机号码";
+        textfieldphone.keyboardType = UIKeyboardTypeNumberPad;
         textfieldphone.tag = 1;
         textfieldphone.delegate = self;
         textfieldphone.font = font15;
@@ -141,6 +142,8 @@
         [cell.contentView addSubview:label];
         textfield1 = [[UITextField alloc] initWithFrame:CGRectMake(125, 24, 30, 30)];
         textfield1.font = font15;
+        textfield1.keyboardType = UIKeyboardTypeNumberPad;
+        textfield1.textAlignment=NSTextAlignmentCenter;
         [cell.contentView addSubview:textfield1];
         UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(125+30, 24, 15, 30)];
         label1.text = @"室";
@@ -152,6 +155,8 @@
         
         textfield2 = [[UITextField alloc] initWithFrame:CGRectMake(125+30+15, 24, 30, 30)];
         textfield2.font = font15;
+        textfield2.keyboardType = UIKeyboardTypeNumberPad;
+        textfield2.textAlignment=NSTextAlignmentCenter;
         [cell.contentView addSubview:textfield2];
         UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(125+30+15+30, 24, 15, 30)];
         label2.text = @"厅";
@@ -163,6 +168,8 @@
         
         textfield3 = [[UITextField alloc] initWithFrame:CGRectMake(125+30+15+45, 24, 30, 30)];
         textfield3.font = font15;
+        textfield3.keyboardType = UIKeyboardTypeNumberPad;
+        textfield3.textAlignment=NSTextAlignmentCenter;
         [cell.contentView addSubview:textfield3];
         UILabel *label3 = [[UILabel alloc] initWithFrame:CGRectMake(125+30+15+45+30, 24, 15, 30)];
         label3.text = @"厨";
@@ -174,6 +181,8 @@
         
         textfield4 = [[UITextField alloc] initWithFrame:CGRectMake(125+30+15+45*2, 24, 30, 30)];
         textfield4.font = font15;
+        textfield4.keyboardType = UIKeyboardTypeNumberPad;
+        textfield4.textAlignment=NSTextAlignmentCenter;
         [cell.contentView addSubview:textfield4];
         UILabel *label4 = [[UILabel alloc] initWithFrame:CGRectMake(125+30+15+45*2+30, 24, 15, 30)];
         label4.text = @"卫";
@@ -190,6 +199,7 @@
         
         textfieldlouceng = [[UITextField alloc] initWithFrame:CGRectMake(125, 24, Main_width-30-140, 30)];
         textfieldlouceng.placeholder = @"请输入楼层";
+        textfieldlouceng.keyboardType = UIKeyboardTypeNumberPad;
         textfieldlouceng.tag = 3;
         textfieldlouceng.delegate = self;
         textfieldlouceng.font = font15;
@@ -208,6 +218,7 @@
         
         textfieldzonglouceng = [[UITextField alloc] initWithFrame:CGRectMake(125, 24, Main_width-30-140, 30)];
         textfieldzonglouceng.placeholder = @"请输入总楼层";
+        textfieldzonglouceng.keyboardType = UIKeyboardTypeNumberPad;
         textfieldzonglouceng.tag = 4;
         textfieldzonglouceng.delegate = self;
         textfieldzonglouceng.font = font15;
@@ -269,7 +280,7 @@
         
         
         UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(Main_width-90, 24, 75, 30)];
-        label1.text = @"元";
+        label1.text = @"万元";
         label1.font = font15;
         label1.textAlignment = NSTextAlignmentRight;
         [cell.contentView addSubview:label1];
@@ -384,8 +395,8 @@
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField{
     
-    long zongjia = [textfielddanjia.text longLongValue]*[textfieldmianji.text floatValue];
-    totaltextfield.text = [NSString stringWithFormat:@"%ld",zongjia];
+    float zongjia = [textfielddanjia.text floatValue]*[textfieldmianji.text floatValue];
+    totaltextfield.text = [NSString stringWithFormat:@"%.2f",zongjia/10000];
     
 }
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {

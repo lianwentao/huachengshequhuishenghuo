@@ -40,10 +40,11 @@
     
     _callbut = [UIButton buttonWithType:UIButtonTypeCustom];
     _callbut.frame = CGRectMake(Main_width-30-20, _detailslabel.frame.size.height+_detailslabel.frame.origin.y+10, 30, 30);
+    
     [_callbut setImage:[UIImage imageNamed:@"phone"] forState:UIControlStateNormal];
     
     _pricelabel = [[UILabel alloc] initWithFrame:CGRectMake(_imageview.frame.origin.x+10+_imageview.frame.size.width, 130-12-17, (Main_width-40-_imageview.frame.size.width)/2, 17)];
-    _pricelabel.font = font18;
+    _pricelabel.font = font15;
     _pricelabel.textColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
     [self.contentView addSubview:_pricelabel];
     
@@ -61,15 +62,23 @@
         [self.contentView addSubview:_namelabel];
         [self.contentView addSubview:_jingjirenimg];
         [self.contentView addSubview:_callbut];
+        _callbut.tag = [[NSString stringWithFormat:@"%@",model.phone] integerValue];
+        [_callbut addTarget:self action:@selector(calljingjiren:) forControlEvents:UIControlEventTouchUpInside];
     }
     [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.imgstring]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
     _detailslabel.text = model.details;
-    _pricelabel.text = model.price;
+    if ([model.house_type isEqualToString:@"1"]) {
+        _pricelabel.text = [NSString stringWithFormat:@"%@元/月",model.price];
+    }else{
+        _pricelabel.text = [NSString stringWithFormat:@"%.2f万元",[model.price floatValue]/1000];
+    }
+    
     
     NSString *statustext;
     NSString *statusimg;
     if ([model.status isEqualToString:@"1"]) {
         statustext = @"未审核";
+        _statuslabel.textColor = [UIColor colorWithHexString:@"#FF3939"];
         statusimg = @"shenhezhong";
     }else if ([model.status isEqualToString:@"2"]){
         if ([model.house_type isEqualToString:@"1"]) {
@@ -77,7 +86,7 @@
         }else{
             statustext = @"未售";
         }
-        
+        _statuslabel.textColor = [UIColor colorWithHexString:@"#FF3939"];
         statusimg = @"weishou";
     }else{
         if ([model.house_type isEqualToString:@"1"]) {
@@ -86,11 +95,12 @@
             statustext = @"已售";
         }
         statusimg = @"yishou";
+        _statuslabel.textColor = [UIColor colorWithHexString:@"#18B632"];
     }
     NSMutableAttributedString * attrubedStr = [[NSMutableAttributedString alloc]initWithString:statustext];
     NSTextAttachment * attach = [[NSTextAttachment alloc]init];
     attach.image = [UIImage imageNamed:statusimg];
-    attach.bounds = CGRectMake(0, 0, 15, 15);
+    attach.bounds = CGRectMake(0, 5, 15, 15);
     NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attach];
     [attrubedStr insertAttributedString:string atIndex:0];
     _statuslabel.attributedText = attrubedStr;
@@ -100,5 +110,11 @@
 
     // Configure the view for the selected state
 }
-
+- (void)calljingjiren:(UIButton *)sender
+{
+    NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",[NSString stringWithFormat:@"%ld",sender.tag]];
+    UIWebView *callWebview = [[UIWebView alloc] init];
+    [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+    [self.contentView addSubview:callWebview];
+}
 @end

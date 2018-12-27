@@ -19,6 +19,15 @@
 
 @implementation myhouseViewController
 
+-(BOOL)navigationShouldPopOnBackButton {
+    [self backBtnClicked];
+    
+    return YES;
+}
+- (void)backBtnClicked
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     
