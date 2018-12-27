@@ -713,21 +713,27 @@ static NSString * LINKEDME_SHORT_URL;
 //                label1.textAlignment = NSTextAlignmentCenter;
 //                [view addSubview:label1];
             }if (indexPath.row==7) {
-                tableView.rowHeight = 50;
+                
                 UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Main_width, 10)];
                 lineview.backgroundColor = BackColor;
                 [cell.contentView addSubview:lineview];
-                NSMutableArray *arr = [_DataDic objectForKey:@"goods_tag"];
-                for (int i=0; i<arr.count; i++) {
-                    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(10+i*self.view.frame.size.width/4, 17.5, 25, 25)];
-                    NSString *strurl = [API_img stringByAppendingString:[[arr objectAtIndex:i] objectForKey:@"c_img"]];
-                    [imageview sd_setImageWithURL:[NSURL URLWithString: strurl]];
-                    [cell.contentView addSubview:imageview];
-                    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12+25+self.view.frame.size.width/4*i, 17.5, self.view.frame.size.width/4-25, 25)];
-                    label.font = [UIFont systemFontOfSize:13];
-                    label.text = [[arr objectAtIndex:i] objectForKey:@"c_name"];
-                    [cell.contentView addSubview:label];
+                NSArray *arr = [_DataDic objectForKey:@"goods_tag"];
+                if ([arr isKindOfClass:[NSArray class]]) {
+                    for (int i=0; i<arr.count; i++) {
+                        UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(10+i*self.view.frame.size.width/4, 17.5, 25, 25)];
+                        NSString *strurl = [API_img stringByAppendingString:[[arr objectAtIndex:i] objectForKey:@"c_img"]];
+                        [imageview sd_setImageWithURL:[NSURL URLWithString: strurl]];
+                        [cell.contentView addSubview:imageview];
+                        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12+25+self.view.frame.size.width/4*i, 17.5, self.view.frame.size.width/4-25, 25)];
+                        label.font = [UIFont systemFontOfSize:13];
+                        label.text = [[arr objectAtIndex:i] objectForKey:@"c_name"];
+                        [cell.contentView addSubview:label];
+                    }
+                    tableView.rowHeight = 50;
+                }else{
+                    tableView.rowHeight = 0;
                 }
+                
             }if (indexPath.row==8) {
                 cell.backgroundColor = HColor(244, 247, 248);
                 tableView.rowHeight = 10;

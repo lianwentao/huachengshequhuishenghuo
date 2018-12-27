@@ -47,7 +47,7 @@
 #import "rentalhouseViewController.h"
 #import "afteryanzhengViewController.h"
 #import "myhouseViewController.h"
-#import "orderDetailsViewController.h"
+#import "mywuyegongdanViewController.h"
 @interface MainViewController ()<UITableViewDataSource,UITableViewDelegate,UINavigationControllerDelegate,UIAlertViewDelegate>{
     UITableView *_Hometableview;
     NSMutableDictionary *_Datadic;
@@ -1010,7 +1010,7 @@
         myservice.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:myservice animated:YES];
     }else if (sender.tag==1){
-        orderDetailsViewController *vc = [[orderDetailsViewController alloc] init];
+        mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }else{
