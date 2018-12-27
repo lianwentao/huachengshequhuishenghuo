@@ -561,6 +561,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
         NSLog(@"%@",error);
     }];
 }
+
 - (void)huoquaccesstoken
 {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];

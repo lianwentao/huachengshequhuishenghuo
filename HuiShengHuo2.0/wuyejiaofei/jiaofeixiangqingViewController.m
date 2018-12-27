@@ -368,12 +368,34 @@
         label.font = font18;
         [cell.contentView addSubview:label];
     }else{
+        
+        
+        
         UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width/2, 35)];
         NSLog(@"%@",[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] class]);
         if ([[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] isKindOfClass:[NSNull class]]||[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] isEqualToString:@""]) {
-            label1.text = [[arr objectAtIndex:indexPath.row-1] objectForKey:@"bill_time"];
+            NSTimeInterval interval    =[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"bill_time"] doubleValue];
+            NSDate *date               = [NSDate dateWithTimeIntervalSince1970:interval];
+            
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            NSString *dateString       = [formatter stringFromDate: date];
+            label1.text = dateString;
         }else{
-          label1.text = [NSString stringWithFormat:@"%@/%@",[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"],[[arr objectAtIndex:indexPath.row-1] objectForKey:@"enddate"]];
+            NSTimeInterval interval    =[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] doubleValue];
+            NSDate *date               = [NSDate dateWithTimeIntervalSince1970:interval];
+            
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"yyyy-MM-dd"];
+            NSString *dateString       = [formatter stringFromDate: date];
+            
+            NSTimeInterval interval1    =[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"enddate"] doubleValue];
+            NSDate *date1               = [NSDate dateWithTimeIntervalSince1970:interval1];
+            
+            NSDateFormatter *formatter1 = [[NSDateFormatter alloc] init];
+            [formatter1 setDateFormat:@"yyyy-MM-dd"];
+            NSString *dateString1       = [formatter stringFromDate: date1];
+            label1.text = [NSString stringWithFormat:@"%@/%@",dateString,dateString1];
         }
         
         label1.font = font15;
