@@ -84,7 +84,7 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     dict = @{@"room_id":_room_id,@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-    NSString *strurl = [API stringByAppendingString:@"property/getBillByRoom"];
+    NSString *strurl = [API stringByAppendingString:@"property/get_room_bill"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSLog(@"---%@--%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -94,9 +94,10 @@
             shuifeiDic = [[responseObject objectForKey:@"data"] objectForKey:@"shuifei"];
             roominfodic = [[responseObject objectForKey:@"data"] objectForKey:@"room_info"];
             is_available = [NSString stringWithFormat:@"%@",[[responseObject objectForKey:@"data"] objectForKey:@"is_available"]];
-            [self createtableview];
+            
 //            [self createUI];
         }
+        [self createtableview];
         [_TableView reloadData];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

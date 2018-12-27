@@ -241,7 +241,7 @@
     but.frame = CGRectMake(40, Main_Height-70, Main_width-80, 45);
     but.backgroundColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
     but.layer.cornerRadius = 5;
-    [but setTitle:@"提交房屋认证" forState:UIControlStateNormal];
+    [but setTitle:@"确定" forState:UIControlStateNormal];
     //[but setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     but.titleLabel.font = [UIFont systemFontOfSize:20];
     [but addTarget:self action:@selector(suer) forControlEvents:UIControlEventTouchUpInside];

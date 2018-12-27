@@ -70,7 +70,7 @@
     if ([model.house_type isEqualToString:@"1"]) {
         _pricelabel.text = [NSString stringWithFormat:@"%@元/月",model.price];
     }else{
-        _pricelabel.text = [NSString stringWithFormat:@"%.2f万元",[model.price floatValue]/1000];
+        _pricelabel.text = [NSString stringWithFormat:@"%.2f万元",[model.price floatValue]];
     }
     
     
@@ -100,7 +100,7 @@
     NSMutableAttributedString * attrubedStr = [[NSMutableAttributedString alloc]initWithString:statustext];
     NSTextAttachment * attach = [[NSTextAttachment alloc]init];
     attach.image = [UIImage imageNamed:statusimg];
-    attach.bounds = CGRectMake(0, 5, 15, 15);
+    attach.bounds = CGRectMake(0, -3, 15, 15);
     NSAttributedString *string = [NSAttributedString attributedStringWithAttachment:attach];
     [attrubedStr insertAttributedString:string atIndex:0];
     _statuslabel.attributedText = attrubedStr;

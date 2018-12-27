@@ -12,10 +12,13 @@
 #import "MJRefresh.h"
 #import "myhouseTableViewCell.h"
 #import "myhousemodel.h"
+#import "shouFangDetailViewController.h"
+#import "zuFangDetailViewController.h"
 @interface ChildViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     UITableView *_TableView;
     NSMutableArray *modelArr;
+    NSMutableArray *_dataarr;
     int _pnum;
 }
 
@@ -101,6 +104,7 @@
 }
 - (void)getdata
 {
+    _dataarr = [NSMutableArray arrayWithCapacity:0];
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
@@ -116,15 +120,16 @@
             NSArray *arr = [[NSArray alloc] init];
             [modelArr removeAllObjects];
             arr = [[responseObject objectForKey:@"data"] objectForKey:@"houseList"];
+            [_dataarr addObjectsFromArray:arr];
             for (int i=0; i<arr.count; i++) {
                 
                 myhousemodel *model = [[myhousemodel alloc] init];
                 model.details = [NSString stringWithFormat:@"%@-%@室%@厅%@卫-面积%@平米|%@/%@层",[[arr objectAtIndex:i] objectForKey:@"community_name"],[[arr objectAtIndex:i] objectForKey:@"room"],[[arr objectAtIndex:i] objectForKey:@"office"],[[arr objectAtIndex:i] objectForKey:@"guard"],[[arr objectAtIndex:i] objectForKey:@"area"],[[arr objectAtIndex:i] objectForKey:@"house_floor"],[[arr objectAtIndex:i] objectForKey:@"floor"]];
                 model.house_type = _house_type;
                 if ([_house_type isEqualToString:@"1"]) {
-                    model.price = [NSString stringWithFormat:@"%@元",[[arr objectAtIndex:i] objectForKey:@"unit_price"]];
+                    model.price = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"unit_price"]];
                 }else{
-                    model.price = [NSString stringWithFormat:@"%@元",[[arr objectAtIndex:i] objectForKey:@"total_price"]];
+                    model.price = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"total_price"]];
                 }
                 model.status = [[arr objectAtIndex:i] objectForKey:@"status"];
                 model.imgstring = [[arr objectAtIndex:i] objectForKey:@"head_img"];
@@ -141,6 +146,19 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
     }];
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([_house_type isEqualToString:@"1"]) {
+        zuFangDetailViewController *vc = [[zuFangDetailViewController alloc] init];
+        vc.zfID  = [[_dataarr objectAtIndex:indexPath.row] objectForKey:@"houseid"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else{
+        shouFangDetailViewController *vc = [[shouFangDetailViewController alloc] init];
+        vc.sfID  = [[_dataarr objectAtIndex:indexPath.row] objectForKey:@"houseid"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

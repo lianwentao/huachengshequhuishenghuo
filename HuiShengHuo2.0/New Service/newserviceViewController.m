@@ -577,7 +577,7 @@
             NSMutableArray *mulu = [NSMutableArray arrayWithCapacity:0];
             CustomerScrollViewModel * model = [[CustomerScrollViewModel alloc ] init];
             model.name = @"全部";
-            model.icon = @"快捷按钮全部";
+            model.icon = @"ic_servicex_cate";
             [mulu addObject:model];
             for (int i=0; i<category.count; i++) {
                 CustomerScrollViewModel * model1 = [[CustomerScrollViewModel alloc ] init];
