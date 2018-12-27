@@ -579,7 +579,7 @@
         //NSLog(@"success--%@--%@",[responseObject class],responseObject);
         
         NSMutableArray *imagearr = [NSMutableArray array];
-        bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)) viewSize:CGSizeMake(Main_width,Main_width/(1.87))];
+        bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(2.5)) viewSize:CGSizeMake(Main_width,Main_width/(2.5))];
         
         if ([HeaDataArr isKindOfClass:[NSArray class]]) {
             for (int i=0; i<HeaDataArr.count; i++) {
@@ -1027,7 +1027,7 @@
                     [self.navigationController pushViewController:xinfang animated:YES];
                 }
             }];
-            tableView.rowHeight = Main_width/(1.87);
+            tableView.rowHeight = Main_width/(2.5);
         }else{
             tableView.rowHeight = RECTSTATUS.size.height+44;
         }

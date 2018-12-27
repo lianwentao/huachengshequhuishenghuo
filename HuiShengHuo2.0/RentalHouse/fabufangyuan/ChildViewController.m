@@ -120,9 +120,13 @@
                 
                 myhousemodel *model = [[myhousemodel alloc] init];
                 model.details = [NSString stringWithFormat:@"%@-%@室%@厅%@卫-面积%@平米|%@/%@层",[[arr objectAtIndex:i] objectForKey:@"community_name"],[[arr objectAtIndex:i] objectForKey:@"room"],[[arr objectAtIndex:i] objectForKey:@"office"],[[arr objectAtIndex:i] objectForKey:@"guard"],[[arr objectAtIndex:i] objectForKey:@"area"],[[arr objectAtIndex:i] objectForKey:@"house_floor"],[[arr objectAtIndex:i] objectForKey:@"floor"]];
-                model.price = [NSString stringWithFormat:@"%@元",[[arr objectAtIndex:i] objectForKey:@"total_price"]];
-                model.status = [[arr objectAtIndex:i] objectForKey:@"status"];
                 model.house_type = _house_type;
+                if ([_house_type isEqualToString:@"1"]) {
+                    model.price = [NSString stringWithFormat:@"%@元",[[arr objectAtIndex:i] objectForKey:@"unit_price"]];
+                }else{
+                    model.price = [NSString stringWithFormat:@"%@元",[[arr objectAtIndex:i] objectForKey:@"total_price"]];
+                }
+                model.status = [[arr objectAtIndex:i] objectForKey:@"status"];
                 model.imgstring = [[arr objectAtIndex:i] objectForKey:@"head_img"];
                 model.name = [[arr objectAtIndex:i] objectForKey:@"name"];
                 model.phone = [[arr objectAtIndex:i] objectForKey:@"phone"];

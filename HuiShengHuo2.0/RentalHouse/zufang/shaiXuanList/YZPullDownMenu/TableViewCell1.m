@@ -9,6 +9,13 @@
 #import "TableViewCell1.h"
 
 @implementation TableViewCell1
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    return self;
+}
 
 - (void)awakeFromNib {
     [super awakeFromNib];

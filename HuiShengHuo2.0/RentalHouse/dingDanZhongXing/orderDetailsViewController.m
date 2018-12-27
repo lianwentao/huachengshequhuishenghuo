@@ -24,6 +24,7 @@
     CGFloat height;
     
     UIImageView *starView ;
+    NSDictionary *dataDic;
 }
 @property (nonatomic , strong)UITableView *tableView;
 @property (nonatomic , strong)NSMutableArray *dataSourceArr ;
@@ -97,7 +98,7 @@
             NSInteger status = [responseObject[@"status"] integerValue];
             if (status == 1) {
                 
-                NSDictionary *dataDic = responseObject[@"data"];
+                dataDic = responseObject[@"data"];
                 NSLog(@"dataDic = %@",dataDic);
                 _score = dataDic[@"score"];
                 NSLog(@"_score = %@",[dataDic[@"score"] class]);
@@ -1376,7 +1377,7 @@
                                           [self.navigationController popToViewController:vc animated:YES];
                                       }
                                   }
-                                  [self dingdantuisong:[[responseObject objectForKey:@"data"] objectForKey:@"id"]];
+                                  [self dingdantuisong:[dataDic objectForKey:@"id"]];
                               }else{
                                   [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
                               }

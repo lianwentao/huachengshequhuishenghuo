@@ -354,7 +354,7 @@
         newselectxiaoquViewController *vc = [[newselectxiaoquViewController alloc] init];
         vc.returnValueBlock = ^(NSString *c_id,NSString *xiaoquname,NSString *house_type){
             
-            _house_type = @"2";
+            _house_type = house_type;
             [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
             [self createui];
             community_id = c_id;
@@ -404,6 +404,7 @@
             vc.c_id = community_id;
             vc.buildid = building_id;
             vc.danyuanid = units;
+            vc.housetype = _house_type;
             [self.navigationController pushViewController:vc animated:YES];
         }
     }
@@ -414,7 +415,7 @@
         newselectxiaoquViewController *vc = [[newselectxiaoquViewController alloc] init];
         vc.returnValueBlock = ^(NSString *c_id,NSString *xiaoquname,NSString *house_type){
             
-            _house_type = @"1";
+            _house_type = house_type;
             [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
             [self createui];
             community_id = c_id;
@@ -433,6 +434,7 @@
             vc.c_id = community_id;
             vc.buildid = building_id;
             vc.danyuanid = units;
+            vc.housetype = _house_type;
             [self.navigationController pushViewController:vc animated:YES];
         }
     }
