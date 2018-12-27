@@ -100,7 +100,8 @@
     NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
     
     if ([_biaojistr isEqualToString:@"yezhu"]) {
-        _strurl = [API stringByAppendingString:@"property/get_pro_com"];
+//        _strurl = [API stringByAppendingString:@"property/get_pro_com"];
+        _strurl = [API stringByAppendingString:@"site/get_community/city/418"];
     }else{
         _strurl = [API stringByAppendingString:@"site/get_community/city/418"];
     }

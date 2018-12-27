@@ -406,7 +406,7 @@
 }
 - (void)createui
 {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width, Main_Height)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width, Main_Height-49)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -2441,13 +2441,14 @@
             }
         }else{
             if ([is_bind_property isEqualToString:@"2"]) {
-                ziyongliebiaoViewController *ziyongliebiaoVC = [[ziyongliebiaoViewController alloc]init];
-                ziyongliebiaoVC.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:ziyongliebiaoVC animated:YES];
-            }else{
                 gonggongbaoxiuViewController *gonggongbaoxiuVC = [[gonggongbaoxiuViewController alloc]init];
                 gonggongbaoxiuVC.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:gonggongbaoxiuVC animated:YES];
+            }else{
+                
+                afteryanzhengViewController *afterVC = [[afteryanzhengViewController alloc]init];
+                afterVC.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:afterVC animated:YES];
             }
         }
     }

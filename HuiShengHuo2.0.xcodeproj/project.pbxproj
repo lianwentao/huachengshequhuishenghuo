@@ -4087,7 +4087,6 @@
 		845C558821A7F528002F509D /* zufang */ = {
 			isa = PBXGroup;
 			children = (
-				845C558921A7F528002F509D /* Commit */,
 				845C558A21A7F528002F509D /* huoDongDetailViewController.h */,
 				845C558B21A7F528002F509D /* huoDongDetailViewController.m */,
 				845C558C21A7F528002F509D /* JSONModel */,
@@ -4103,13 +4102,6 @@
 				845C55F321A7F528002F509D /* zuFangDetailViewController.m */,
 			);
 			path = zufang;
-			sourceTree = "<group>";
-		};
-		845C558921A7F528002F509D /* Commit */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Commit;
 			sourceTree = "<group>";
 		};
 		845C558C21A7F528002F509D /* JSONModel */ = {

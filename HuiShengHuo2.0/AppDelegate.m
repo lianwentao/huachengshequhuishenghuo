@@ -82,6 +82,7 @@ void uncaughtExceptionHandler(NSException *exception) {
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     tabBarController = [[TabBarViewController alloc]init];
     tabBarController.delegate = self;
+    [[UITabBar appearance] setTranslucent:NO];
     
     UIFont *font = [UIFont systemFontOfSize:20.f];
     

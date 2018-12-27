@@ -84,71 +84,25 @@
 }
 - (void)wxlogstasus1
 {
-    //初始化进度框，置于当前的View当中
-    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:_HUD];
-    
-    //如果设置此属性则当前的view置于后台
-    //_HUD.dimBackground = YES;
-    
-    //设置对话框文字
-    _HUD.labelText = @"登录中,请稍后...";
-    _HUD.labelFont = [UIFont systemFontOfSize:14];
-    //细节文字
-    //_HUD.detailsLabelText = @"请耐心等待";
-    
-    //显示对话框
-    [_HUD showAnimated:YES whileExecutingBlock:^{
-        //对话框显示时需要执行的操作
-        [self dismissViewControllerAnimated:YES completion:nil];
-        
-    }// 在HUD被隐藏后的回调
-       completionBlock:^{
-           //操作执行完后取消对话框
-           [_HUD removeFromSuperview];
-           _HUD = nil;
-       }];
+    [self dismissViewControllerAnimated:YES completion:nil];
     
 }
 - (void)wxlogstasus:(NSNotification *)info
 {
-    //初始化进度框，置于当前的View当中
-    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:_HUD];
-    
-    //如果设置此属性则当前的view置于后台
-    //_HUD.dimBackground = YES;
-    
-    //设置对话框文字
-    _HUD.labelText = @"登录中,请稍后...";
-    _HUD.labelFont = [UIFont systemFontOfSize:14];
-    //细节文字
-    //_HUD.detailsLabelText = @"请耐心等待";
-    
-    //显示对话框
-    [_HUD showAnimated:YES whileExecutingBlock:^{
-        //对话框显示时需要执行的操作
-        NSString *status = [info.userInfo objectForKey:@"status"];
-        wxuserinfodic = [info.userInfo objectForKey:@"wx_userinfo"];
-        WXcode = [info.userInfo objectForKey:@"wxcode"];
-        NSLog(@"%@",[info.userInfo objectForKey:@"status"]);
-        if ([status isEqualToString:@"100"]) {
-            RigistViewController *rigist = [[RigistViewController alloc] init];
-            rigist.wxinfo = [info.userInfo objectForKey:@"wx_userinfo"];
-            [self presentViewController:rigist animated:YES completion:nil];
-        }else if ([status isEqualToString:@"1"]){
-            
-        }else{
-            NSLog(@"登录失败");
-        }
+    //对话框显示时需要执行的操作
+    NSString *status = [info.userInfo objectForKey:@"status"];
+    wxuserinfodic = [info.userInfo objectForKey:@"wx_userinfo"];
+    WXcode = [info.userInfo objectForKey:@"wxcode"];
+    NSLog(@"%@",[info.userInfo objectForKey:@"status"]);
+    if ([status isEqualToString:@"100"]) {
+        RigistViewController *rigist = [[RigistViewController alloc] init];
+        rigist.wxinfo = [info.userInfo objectForKey:@"wx_userinfo"];
+        [self presentViewController:rigist animated:YES completion:nil];
+    }else if ([status isEqualToString:@"1"]){
         
-    }// 在HUD被隐藏后的回调
-       completionBlock:^{
-           //操作执行完后取消对话框
-           [_HUD removeFromSuperview];
-           _HUD = nil;
-       }];
-    
+    }else{
+        NSLog(@"登录失败");
+    }
 }
 
 //获取ip地址

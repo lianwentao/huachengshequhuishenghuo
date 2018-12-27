@@ -63,10 +63,10 @@
             dataarr = [[NSArray alloc] init];
             if ([[responseObject objectForKey:@"status"] integerValue]==1) {
                 dataarr = [responseObject objectForKey:@"data"];
+                [self setui];
             }else{
                 [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
             }
-            [self setui];
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             WBLog(@"failure--%@",error);
             [MBProgressHUD showToastToView:self.view withText:@"加载失败"];
@@ -83,24 +83,26 @@
 {
     NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
     NSMutableArray *childVCs = [[NSMutableArray alloc]init];
-    for (int i=0; i<dataarr.count; i++) {
-        [arr addObject:[dataarr[i] objectForKey:@"type_name"]];
-        ziyongliebiaochildViewController *vc = [[ziyongliebiaochildViewController alloc] init];
-        vc.arr = [dataarr[i] objectForKey:@"list"];
-        [childVCs addObject:vc];
+    if ([dataarr isKindOfClass:[NSArray class]]&&dataarr.count>0) {
+        for (int i=0; i<dataarr.count; i++) {
+            [arr addObject:[dataarr[i] objectForKey:@"type_name"]];
+            ziyongliebiaochildViewController *vc = [[ziyongliebiaochildViewController alloc] init];
+            vc.arr = [dataarr[i] objectForKey:@"list"];
+            [childVCs addObject:vc];
+        }
+        
+        self.titleView = [[FSSegmentTitleView alloc]initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44, CGRectGetWidth(self.view.bounds), 50) titles:arr delegate:self indicatorType:FSIndicatorTypeEqualTitle];
+        self.titleView.titleSelectFont = [UIFont systemFontOfSize:17];
+        self.titleView.backgroundColor = [UIColor colorWithRed:(244)/255.0 green:(247)/255.0 blue:(248)/255.0 alpha:0.54];
+        self.titleView.titleNormalColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.54];
+        self.titleView.selectIndex = 0;
+        [self.view addSubview:_titleView];
+        
+        self.pageContentView = [[FSPageContentView alloc]initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44+50, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) - 90) childVCs:childVCs parentVC:self delegate:self];
+        self.pageContentView.contentViewCurrentIndex = 0;
+        //self.pageContentView.contentViewCanScroll = YES;//设置滑动属性
+        [self.view addSubview:_pageContentView];
     }
-    
-    self.titleView = [[FSSegmentTitleView alloc]initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44, CGRectGetWidth(self.view.bounds), 50) titles:arr delegate:self indicatorType:FSIndicatorTypeEqualTitle];
-    self.titleView.titleSelectFont = [UIFont systemFontOfSize:17];
-    self.titleView.backgroundColor = [UIColor colorWithRed:(244)/255.0 green:(247)/255.0 blue:(248)/255.0 alpha:0.54];
-    self.titleView.titleNormalColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.54];
-    self.titleView.selectIndex = 0;
-    [self.view addSubview:_titleView];
-    
-    self.pageContentView = [[FSPageContentView alloc]initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44+50, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) - 90) childVCs:childVCs parentVC:self delegate:self];
-    self.pageContentView.contentViewCurrentIndex = 0;
-    //self.pageContentView.contentViewCanScroll = YES;//设置滑动属性
-    [self.view addSubview:_pageContentView];
 }
 #pragma mark --
 - (void)FSSegmentTitleView:(FSSegmentTitleView *)titleView startIndex:(NSInteger)startIndex endIndex:(NSInteger)endIndex
