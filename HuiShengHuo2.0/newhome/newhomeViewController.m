@@ -835,7 +835,7 @@
         }
     }else if(indexPath.section==2){
        
-            if ([gongGaoArr isKindOfClass:[NSArray class]]) {
+            if ([gongGaoArr isKindOfClass:[NSArray class]] && gongGaoArr.count != 0) {
                 NSMutableArray *titleArray = [NSMutableArray array];
                 for (int m = 0; m < gongGaoArr.count; m++) {
                     NSDictionary *dic = gongGaoArr[m];
@@ -931,6 +931,7 @@
             tableView.rowHeight = 53;
             
         }else if(indexPath.row==1){
+            
             for (int i=0; i<2; i++) {
                 UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(15+i*((Main_width-30)/2), 0, (Main_width-30)/2, 150)];
                 backview.backgroundColor = [UIColor whiteColor];
@@ -1247,7 +1248,7 @@
         }else{
 
             //新加租售房列表
-            if ([housesList isKindOfClass:[NSArray class]]) {
+            if ([housesList isKindOfClass:[NSArray class]] && housesList.count != 0) {
              
                 long number;
                 if (housesList.count%2==0) {

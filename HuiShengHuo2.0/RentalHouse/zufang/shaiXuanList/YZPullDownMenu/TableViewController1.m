@@ -15,6 +15,7 @@ static NSString * const ID = @"cell";
 @property (nonatomic, assign) NSInteger selectedCol;
 @property (nonatomic, strong) UITextField *field1;
 @property (nonatomic, strong) UITextField *field2;
+@property (nonatomic, strong)NSMutableArray *dataArr;
 @end
 
 @implementation TableViewController1
@@ -27,8 +28,34 @@ static NSString * const ID = @"cell";
     _titleArray = @[@"不限", @"500以下", @"500-1000元", @"1000-1500元", @"1500-2000元"];
     
     [self.tableView registerClass:[TableViewCell1 class] forCellReuseIdentifier:ID];
+    
+    [self loadData];
 }
-
+-(void)loadData{
+    
+    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+   
+    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"houses_type":@"1"};
+    
+    NSLog(@"dict = %@",dict);
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    NSLog(@"dict = %@",dict);
+    NSString *strurl = [API stringByAppendingString:@"secondHouseType/getmoney"];
+    NSLog(@"strurl = %@",strurl);
+    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSLog(@"dataStr = %@",dataStr);
+        
+       
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"failure--%@",error);
+    }];
+    
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -40,14 +67,14 @@ static NSString * const ID = @"cell";
 {
     return self.titleArray.count+1;
 }
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 50;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TableViewCell1 *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     
-    if (indexPath.row == 0) {
-        [cell setSelected:YES animated:NO];
-    }
+
     if (indexPath.row == 5) {
         
         UILabel *lab = [[UILabel alloc]init];
@@ -101,9 +128,7 @@ static NSString * const ID = @"cell";
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 50;
-}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _selectedCol = indexPath.row;
