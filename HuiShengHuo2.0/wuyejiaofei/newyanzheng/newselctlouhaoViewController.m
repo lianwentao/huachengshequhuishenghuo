@@ -52,7 +52,7 @@
     if (cell == nil){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CELL"];
     }
-    cell.textLabel.text = [[_DataArr objectAtIndex:indexPath.row] objectForKey:@"buildsing_id"];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@号楼",[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"buildsing_id"]];
     
     return cell;
 }

@@ -53,7 +53,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CELL"];
     }
     
-    cell.textLabel.text = [[_DataArr objectAtIndex:indexPath.row] objectForKey:@"unit"];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@单元",[[_DataArr objectAtIndex:indexPath.row] objectForKey:@"unit"]];
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

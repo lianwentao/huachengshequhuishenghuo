@@ -73,9 +73,10 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = [[NSDictionary alloc] init];
     if ([_housetype isEqualToString:@"2"]||[_housetype isEqualToString:@"4"]) {
-        dict = @{@"community_id":_c_id,@"buildsing_id":_buildid,@"units":_danyuanid,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-    }else{
         dict = @{@"community_id":_c_id,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    }else{
+        dict = @{@"community_id":_c_id,@"buildsing_id":_buildid,@"units":_danyuanid,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+        
     }
     NSString *url = [API stringByAppendingString:@"property/get_pro_room"];
     
@@ -84,8 +85,13 @@
     NSLog(@"dict--%@",dict);
     [manager POST:url parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         WBLog(@"location--%@--%@",[responseObject class],responseObject);
-        _DataArr = [NSArray array];
-        _DataArr = [responseObject objectForKey:@"data"];
+        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+            _DataArr = [NSArray array];
+            _DataArr = [responseObject objectForKey:@"data"];
+        }else{
+            
+        }
+        
         [_Tableview reloadData];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {

@@ -404,6 +404,7 @@
             vc.c_id = community_id;
             vc.buildid = building_id;
             vc.danyuanid = units;
+            vc.housetype = _house_type;
             [self.navigationController pushViewController:vc animated:YES];
         }
     }
@@ -433,6 +434,7 @@
             vc.c_id = community_id;
             vc.buildid = building_id;
             vc.danyuanid = units;
+            vc.housetype = _house_type;
             [self.navigationController pushViewController:vc animated:YES];
         }
     }
