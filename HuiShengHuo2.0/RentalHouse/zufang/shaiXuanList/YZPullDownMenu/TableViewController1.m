@@ -49,7 +49,11 @@ static NSString * const ID = @"cell";
         NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
         NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSLog(@"dataStr = %@",dataStr);
+        NSArray *arr = responseObject[@"data"];
+        _dataArr = [NSMutableArray array];
+        for (int i = 0; i<arr.count; i++) {
         
+        }
        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
