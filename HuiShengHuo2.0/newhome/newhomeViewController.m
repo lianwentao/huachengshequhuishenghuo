@@ -1334,6 +1334,8 @@
                         
                         [view addSubview:price];
                         
+                        tableView.rowHeight = ((Main_width-24-7)/2+32.5+5)*4/2+5;
+                        
                     }else{
                         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+((Main_width-24-7)/2+7), 10+((Main_width-24-7)/2+32.5+5)*(i/2), (Main_width-24-7)/2, 200)];
                         view.backgroundColor = [UIColor whiteColor];
@@ -1405,11 +1407,13 @@
                         price.font = [UIFont systemFontOfSize:18];
                         
                         [view addSubview:price];
+                        
+                         tableView.rowHeight = (((Main_width-24-7)/2+32.5+5)*4/2+5)/2;
                     }
             
                 }
            
-                tableView.rowHeight = ((Main_width-24-7)/2+32.5+5)*4/2+5;
+                
             }else{
                 tableView.rowHeight = 0;
             }

@@ -138,7 +138,7 @@ static NSString * const ID = @"cell";
     }else{
         
         _textlab = [[UILabel alloc]init];
-        _textlab.frame = CGRectMake(0, 0, Main_width, 50);
+        _textlab.frame = CGRectMake(10, 0, Main_width, 50);
         _textlab.text = _titleArray[indexPath.row];
         _textlab.textAlignment = NSTextAlignmentLeft;
         _textlab.font = [UIFont systemFontOfSize:15];
@@ -150,20 +150,16 @@ static NSString * const ID = @"cell";
 }
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    _selectedCol = indexPath.row;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+//    _selectedCol = indexPath.row;
+//
+//    // 选中当前
+//    TableViewCell1 *cell = [tableView cellForRowAtIndexPath:indexPath];
     
-    // 选中当前
-    TableViewCell1 *cell = [tableView cellForRowAtIndexPath:indexPath];
-    
-    if (indexPath.row == 5) {
-       
-    }else{
+    if (indexPath.row != 5) {
         // 更新菜单标题
         [[NSNotificationCenter defaultCenter] postNotificationName:YZUpdateMenuTitleNote object:self userInfo:@{@"title":_textlab.text}];
     }
-  
 }
 -(void)sureAction:(UIButton *)sender{
     
