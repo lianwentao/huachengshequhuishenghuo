@@ -130,7 +130,7 @@
         _moneyOne = @"";
     }
 
-    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":@"",@"community_name":_community_name};
+    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":@"",@"community_name":_community_name,@"community_id":[userinfo objectForKey:@"community_id"]};
 
     NSLog(@"dict = %@",dict);
 
@@ -228,8 +228,8 @@
     button.titleLabel.font = [UIFont systemFontOfSize:15];
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [button setTitleColor:[UIColor colorWithHexString:@"#FF5722"] forState:UIControlStateSelected];
-    [button setImage:[UIImage imageNamed:@"标签-向下箭头"] forState:UIControlStateNormal];
-    [button setImage:[UIImage imageNamed:@"标签-向上箭头"] forState:UIControlStateSelected];
+    [button setImage:[UIImage imageNamed:@"ic_arrow_down_grey"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"ic_arrow_up_grey"] forState:UIControlStateSelected];
     return button;
 }
 
@@ -242,17 +242,24 @@
 // 返回下拉菜单每列对应的高度
 - (CGFloat)pullDownMenu:(YZPullDownMenu *)pullDownMenu heightForColAtIndex:(NSInteger)index
 {
+    // 第1列 高度
     if (index == 0) {
-        return 300;
+        return 50*6;
     }
     // 第2列 高度
     if (index == 1) {
-        return 300;
+        return 50*6;
     }
     // 第3列 高度
-    return 250;
+    if (index == 2) {
+        return 50*5;
+    }
     // 第4列 高度
-    return 250;
+    if (index == 3) {
+        return 50*5;
+    }
+    
+    return 0;
 }
 
 - (void)shaixuan5:(NSNotification *)userinfo{
@@ -298,7 +305,7 @@
 }
 - (void)shaixuan3:(NSNotification *)userinfo{
     NSString *str = [userinfo.userInfo objectForKey:@"shaiXuanStr3"];
-    NSLog(@"str = %@",str);
+    NSLog(@"_housetypestr = %@",str);
     if ([str isEqualToString:@"不限"]) {
         _housetype = @"0";
     }else if ([str isEqualToString:@"一室"]) {

@@ -29,7 +29,7 @@ static NSString * const ID = @"cell";
     
     [self.tableView registerClass:[TableViewCell1 class] forCellReuseIdentifier:ID];
     
-    [self loadData];
+   
 }
 -(void)loadData{
     
@@ -52,7 +52,9 @@ static NSString * const ID = @"cell";
         NSArray *arr = responseObject[@"data"];
         _dataArr = [NSMutableArray array];
         for (int i = 0; i<arr.count; i++) {
-        
+         NSString *price = [[arr objectAtIndex:i] objectForKey:@"price"];
+            [_dataArr addObject:price];
+            
         }
        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -77,6 +79,7 @@ static NSString * const ID = @"cell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TableViewCell1 *cell = [tableView dequeueReusableCellWithIdentifier:ID];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
 
     if (indexPath.row == 5) {
@@ -151,11 +154,18 @@ static NSString * const ID = @"cell";
 -(void)sureAction:(UIButton *)sender{
     
     if (sender.tag == 105) {
-        
-        NSString *hxstr1 = [NSString stringWithFormat:@"-%@",_field2.text];
-        NSString *newStr = [_field1.text stringByAppendingString:hxstr1];
-        // 更新菜单标题
-        [[NSNotificationCenter defaultCenter] postNotificationName:YZUpdateMenuTitleNote object:self userInfo:@{@"title":newStr}];
+        NSInteger str1 = [_field1.text integerValue];
+        NSInteger str2 = [_field2.text integerValue];
+        if (str1 >= str2) {
+            
+            [MBProgressHUD showToastToView:self.view withText:@"低价不能大于高价"];
+        }else{
+            NSString *hxstr1 = [NSString stringWithFormat:@"-%@",_field2.text];
+            NSString *newStr = [_field1.text stringByAppendingString:hxstr1];
+            // 更新菜单标题
+            [[NSNotificationCenter defaultCenter] postNotificationName:YZUpdateMenuTitleNote object:self userInfo:@{@"title":newStr}];
+        }
+       
     }
 }
 @end

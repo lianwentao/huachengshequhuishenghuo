@@ -167,7 +167,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.section == 0) {
-        return 200;
+        return Main_width/(1.87);
     }else if (indexPath.section == 1){
         return 280;
     }else if (indexPath.section == 2){
@@ -505,7 +505,7 @@
         NSTimeInterval time = [model.release_time doubleValue];
         NSDate *detaildate = [NSDate dateWithTimeIntervalSince1970:time];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        [dateFormatter setDateFormat:@"yyyy.MM.dd"];
         NSString *currentDateStr = [dateFormatter stringFromDate: detaildate];
         fbsjLab1.text = currentDateStr;
         fbsjLab1.font = [UIFont systemFontOfSize:18];
@@ -676,8 +676,12 @@
 - (void)loadFunctionView {
     CGFloat contentY = kScreenHeight-50;
     UIView *functionView = [[UIView alloc]initWithFrame:CGRectMake(0, contentY, kScreenWidth, 50)];
-    functionView.backgroundColor = [UIColor colorWithRed:243/255.0 green:247/255.0 blue:248/255.0 alpha:1];
+    functionView.backgroundColor = [UIColor whiteColor];
     
+    UIView *line = [[UIView alloc]init];
+    line.frame = CGRectMake(0, 0, functionView.frame.size.width, .5);
+    line.backgroundColor = [UIColor lightGrayColor];
+    [functionView addSubview:line];                    
     contentY += 30;
     sfDetailModel *model = dataSourceArr[0];
     

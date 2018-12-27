@@ -82,6 +82,7 @@
     
     
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    
     if (_community_name == NULL) {
         _community_name = @"";
     }
@@ -109,13 +110,12 @@
     if (_moneyOne == NULL) {
         _moneyOne = @"";
     }
-    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":[NSString stringWithFormat:@"%ld",pageNum],@"community_name":_community_name};
+    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":[NSString stringWithFormat:@"%ld",pageNum],@"community_name":_community_name,@"community_id":[userinfo objectForKey:@"community_id"]};
     
     NSLog(@"dict = %@",dict);
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSLog(@"dict = %@",dict);
     NSString *strurl = [API stringByAppendingString:@"secondHouseType/getLeaseList"];
     NSLog(@"strurl = %@",strurl);
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -125,27 +125,20 @@
         NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSLog(@"dataStr = %@",dataStr);
         
-        NSString *stringnumber = [[responseObject objectForKey:@"data"] objectForKey:@"CountPage"];
-        NSInteger i = [stringnumber integerValue];
-        [_tableView.mj_header endRefreshing];
-        if (pageNum>i) {
-            _tableView.mj_footer.state = MJRefreshStateNoMoreData;
-            [_tableView.mj_footer resetNoMoreData];
-        }else{
-           
-            NSArray *dataArr = responseObject[@"data"][@"list"];
-            dataSourceArr = [[NSMutableArray alloc]init];
-            for (NSDictionary *dic in dataArr) {
-                zfListModel *model =  [[zfListModel alloc]initWithDictionary:dic error:nil];
-                [dataSourceArr addObject:model];   
-            }
-            NSLog(@"dataSourceArr = %@",dataSourceArr);
-//            [_tableView reloadData];
-            kkkArr = responseObject[@"data"][@"list"];
-        }
         
+        [_tableView.mj_header endRefreshing];
         [_tableView.mj_footer endRefreshing];
+        NSArray *dataArr = responseObject[@"data"][@"list"];
+        dataSourceArr = [[NSMutableArray alloc]init];
+        for (NSDictionary *dic in dataArr) {
+            zfListModel *model =  [[zfListModel alloc]initWithDictionary:dic error:nil];
+            [dataSourceArr addObject:model];
+        }
+        NSLog(@"dataSourceArr = %@",dataSourceArr);
+//            [_tableView reloadData];
+        kkkArr = responseObject[@"data"][@"list"];
         [_tableView reloadData];
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
     }];
@@ -220,8 +213,8 @@
     button.titleLabel.font = [UIFont systemFontOfSize:15];
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [button setTitleColor:[UIColor colorWithHexString:@"#FF5722"] forState:UIControlStateSelected];
-    [button setImage:[UIImage imageNamed:@"标签-向下箭头"] forState:UIControlStateNormal];
-    [button setImage:[UIImage imageNamed:@"标签-向上箭头"] forState:UIControlStateSelected];
+    [button setImage:[UIImage imageNamed:@"ic_arrow_down_grey"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"ic_arrow_up_grey"] forState:UIControlStateSelected];
     return button;
 }
 
@@ -236,16 +229,22 @@
 {
     // 第1列 高度
     if (index == 0) {
-        return 300;
+        return 50*6;
     }
     // 第2列 高度
     if (index == 1) {
-        return 300;
+        return 50*6;
     }
     // 第3列 高度
-    return 250;
+    if (index == 2) {
+        return 50*5;
+    }
     // 第4列 高度
-    return 250;
+    if (index == 3) {
+        return 50*5;
+    }
+    
+    return 0;
 }
 
 - (void)shaixuan1:(NSNotification *)userinfo{
@@ -320,12 +319,6 @@
     }else if ([str isEqualToString:@"面积从大到小"]) {
         _defaultType = @"4";
     }
-    [self loadData];
-}
-- (void)upDataId:(NSNotification *)userinfo{
-    NSString *str = [userinfo.userInfo objectForKey:@"id"];
-    NSLog(@"str = %@",str);
-    _money = str;
     [self loadData];
 }
 
@@ -443,7 +436,7 @@
     priceLab.text = [NSString stringWithFormat:@"%@元/月",model.unit_price];
 //    priceLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
     priceLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
-    priceLab.font = [UIFont systemFontOfSize:18];
+    priceLab.font = [UIFont systemFontOfSize:15];
     priceLab.textAlignment = NSTextAlignmentLeft;
     [cell addSubview:priceLab];
     
@@ -467,6 +460,7 @@
 
     return cell;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -492,6 +486,7 @@
     [customSearchBar resignFirstResponder];// 放弃第一响应者
     _community_name = searchBar.text;
     [self loadData];
+     _community_name = @"";
     
 }
 

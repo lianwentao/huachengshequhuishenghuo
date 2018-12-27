@@ -44,7 +44,7 @@ static NSString * const ID = @"cell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TableViewCell1 *cell = [tableView dequeueReusableCellWithIdentifier:ID];
-    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.row == 0) {
         [cell setSelected:YES animated:NO];
     }

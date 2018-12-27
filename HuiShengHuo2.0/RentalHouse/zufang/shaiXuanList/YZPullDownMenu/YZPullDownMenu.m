@@ -164,6 +164,7 @@ NSString * const YZUpdateMenuTitleNote5 = @"YZUpdateMenuTitleNote5";
         
         // 设置按钮标题
         [btn setTitle:allValues.firstObject forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor colorWithHexString:@"#FF5722"] forState:UIControlStateNormal];
         NSDictionary *dict = [[NSDictionary alloc] init];
         dict = @{@"shaiXuanStr1":allValues.firstObject};
         [[NSNotificationCenter defaultCenter] postNotificationName:@"shaixuan1" object:nil userInfo:dict];
@@ -188,6 +189,7 @@ NSString * const YZUpdateMenuTitleNote5 = @"YZUpdateMenuTitleNote5";
         
         // 设置按钮标题
         [btn setTitle:allValues.firstObject forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor colorWithHexString:@"#FF5722"] forState:UIControlStateNormal];
         NSDictionary *dict = [[NSDictionary alloc] init];
         dict = @{@"shaiXuanStr2":allValues.firstObject};
         [[NSNotificationCenter defaultCenter] postNotificationName:@"shaixuan2" object:nil userInfo:dict];
@@ -214,6 +216,7 @@ NSString * const YZUpdateMenuTitleNote5 = @"YZUpdateMenuTitleNote5";
         
         // 设置按钮标题
         [btn setTitle:allValues.firstObject forState:UIControlStateNormal];
+       [btn setTitleColor:[UIColor colorWithHexString:@"#FF5722"] forState:UIControlStateNormal];
         NSDictionary *dict = [[NSDictionary alloc] init];
         dict = @{@"shaiXuanStr3":allValues.firstObject};
         [[NSNotificationCenter defaultCenter] postNotificationName:@"shaixuan3" object:nil userInfo:dict];
@@ -238,6 +241,7 @@ NSString * const YZUpdateMenuTitleNote5 = @"YZUpdateMenuTitleNote5";
         
         // 设置按钮标题
         [btn setTitle:allValues.firstObject forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor colorWithHexString:@"#FF5722"] forState:UIControlStateNormal];
         NSDictionary *dict = [[NSDictionary alloc] init];
         dict = @{@"shaiXuanStr4":allValues.firstObject};
         [[NSNotificationCenter defaultCenter] postNotificationName:@"shaixuan4" object:nil userInfo:dict];
@@ -262,6 +266,7 @@ NSString * const YZUpdateMenuTitleNote5 = @"YZUpdateMenuTitleNote5";
         
         // 设置按钮标题
         [btn setTitle:allValues.firstObject forState:UIControlStateNormal];
+        [btn setTitleColor:[UIColor colorWithHexString:@"#FF5722"] forState:UIControlStateNormal];
         NSDictionary *dict = [[NSDictionary alloc] init];
         dict = @{@"shaiXuanStr5":allValues.firstObject};
         [[NSNotificationCenter defaultCenter] postNotificationName:@"shaixuan5" object:nil userInfo:dict];
