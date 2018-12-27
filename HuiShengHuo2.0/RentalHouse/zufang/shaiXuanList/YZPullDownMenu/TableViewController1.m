@@ -16,6 +16,7 @@ static NSString * const ID = @"cell";
 @property (nonatomic, strong) UITextField *field1;
 @property (nonatomic, strong) UITextField *field2;
 @property (nonatomic, strong)NSMutableArray *dataArr;
+@property (nonatomic, strong) UILabel *textlab;
 @end
 
 @implementation TableViewController1
@@ -78,7 +79,16 @@ static NSString * const ID = @"cell";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    TableViewCell1 *cell = [tableView dequeueReusableCellWithIdentifier:ID];
+    
+    static NSString *cellIndetifier = @"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIndetifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        
+        cell.userInteractionEnabled = YES;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;    //点击的时候无效果
+    }
+//    TableViewCell1 *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
 
@@ -127,9 +137,14 @@ static NSString * const ID = @"cell";
         [cell addSubview:sureBtn];
         
     }else{
-        cell.textLabel.text = _titleArray[indexPath.row];
-        cell.textLabel.font = [UIFont systemFontOfSize:15];
-        cell.textLabel.tag = indexPath.row;
+        
+        _textlab = [[UILabel alloc]init];
+        _textlab.frame = CGRectMake(0, 0, Main_width, 50);
+        _textlab.text = _titleArray[indexPath.row];
+        _textlab.textAlignment = NSTextAlignmentLeft;
+        _textlab.font = [UIFont systemFontOfSize:15];
+        _textlab.tag = indexPath.row;
+        [cell addSubview:_textlab];
     }
     
     return cell;
@@ -147,7 +162,7 @@ static NSString * const ID = @"cell";
        
     }else{
         // 更新菜单标题
-        [[NSNotificationCenter defaultCenter] postNotificationName:YZUpdateMenuTitleNote object:self userInfo:@{@"title":cell.textLabel.text}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:YZUpdateMenuTitleNote object:self userInfo:@{@"title":_textlab.text}];
     }
   
 }

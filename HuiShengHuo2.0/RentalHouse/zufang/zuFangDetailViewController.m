@@ -11,7 +11,7 @@
 #import "MJRefresh.h"
 #import "PTLMenuButton.h"
 #import "KMTagListView.h"
-#import "huoDongDetailViewController.h"
+#import "sfHuoDongDetailViewController.h"
 #import "zfDetailModel.h"
 #import "tjListModel.h"
 #import "XLPhotoBrowser.h"
@@ -739,7 +739,7 @@
 }
 -(void)ckxqAction{
     
-    huoDongDetailViewController *hdDetailVC = [[huoDongDetailViewController alloc]init];
+    sfHuoDongDetailViewController *hdDetailVC = [[sfHuoDongDetailViewController alloc]init];
     [self.navigationController pushViewController:hdDetailVC animated:YES];
 }
 - (int)navBarBottom

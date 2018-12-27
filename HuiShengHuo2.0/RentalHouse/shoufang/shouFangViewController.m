@@ -213,12 +213,12 @@
     
     // 创建下拉菜单
     YZPullDownMenu *menu = [[YZPullDownMenu alloc] init];
-    menu.frame = CGRectMake(0, 64, Main_width, 44);
+    menu.frame = CGRectMake(0, RECTSTATUS.size.height+44, Main_width, 44);
     [self.view addSubview:menu];
     // 设置下拉菜单代理
     menu.dataSource = self;
     // 初始化标题
-    _titles = @[@"租金",@"面积",@"房型",@"排序"];
+    _titles = @[@"售价",@"面积",@"房型",@"排序"];
     // 添加子控制器
     [self setupAllChildViewController];
 }
@@ -361,7 +361,7 @@
 
 #pragma mark - 租房列表
 - (void)CreateTableview{
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 110, self.view.frame.size.width, self.view.frame.size.height-110)style:UITableViewStylePlain ];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44+44, self.view.frame.size.width, self.view.frame.size.height-RECTSTATUS.size.height+44-44)style:UITableViewStylePlain ];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;
