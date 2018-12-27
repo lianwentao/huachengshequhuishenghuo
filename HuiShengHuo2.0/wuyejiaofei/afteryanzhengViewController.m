@@ -63,6 +63,8 @@
             _DataArr = [responseObject objectForKey:@"data"];
 //            _DicData = [[NSDictionary alloc] init];
 //            _DicData = [responseObject objectForKey:@"data"];
+        }else{
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }
         [_TableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
