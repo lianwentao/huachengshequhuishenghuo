@@ -1557,7 +1557,7 @@
             NSString *is_hot = [NSString stringWithFormat:@"%@",[[chanpinarr objectAtIndex:indexPath.row-1] objectForKey:@"is_hot"]];
             NSString *is_new = [NSString stringWithFormat:@"%@",[[chanpinarr objectAtIndex:indexPath.row-1] objectForKey:@"is_new"]];
             NSString *is_time = [NSString stringWithFormat:@"%@",[[chanpinarr objectAtIndex:indexPath.row-1] objectForKey:@"discount"]];
-            NSString *kucun = [[chanpinarr objectAtIndex:indexPath.row-1] objectForKey:@"title_img"];
+            NSString *kucun = [[chanpinarr objectAtIndex:indexPath.row-1] objectForKey:@"inventory"];
             NSString *title = [[chanpinarr objectAtIndex:indexPath.row-1] objectForKey:@"title"];
             NSString *nowprice = [[chanpinarr objectAtIndex:indexPath.row-1] objectForKey:@"price"];
             NSString *yuanprice = [[chanpinarr objectAtIndex:indexPath.row-1] objectForKey:@"original"];
@@ -1575,9 +1575,9 @@
             
             int kuncun = [kucun intValue];
             if (kuncun <= 0) {
-                _maiwanlemelabel.hidden = YES;
-            }else{
                 _maiwanlemelabel.hidden = NO;
+            }else{
+                _maiwanlemelabel.hidden = YES;
             }
             
             _titlelabel.text = title;

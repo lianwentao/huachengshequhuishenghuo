@@ -43,6 +43,8 @@
     
     NSMutableArray *kkkArr;
     NSMutableArray *labelArr;
+    
+     NSMutableArray *housetypeArr;
    
 }
 @property(nonatomic ,strong) UITableView *tableView;
@@ -65,7 +67,7 @@
    self.view.backgroundColor = [UIColor whiteColor];
     // 设置导航控制器的代理为self
 //    self.navigationController.delegate = self;
-//    [self loadData];
+    [self loadData3];
     [self CreateTableview];
     
     
@@ -82,6 +84,7 @@
     
     
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    
     if (_community_name == NULL) {
         _community_name = @"";
     }
@@ -109,13 +112,13 @@
     if (_moneyOne == NULL) {
         _moneyOne = @"";
     }
-    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":[NSString stringWithFormat:@"%ld",pageNum],@"community_name":_community_name};
+    
+    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":[NSString stringWithFormat:@"%ld",pageNum],@"community_name":_community_name,@"community_id":[userinfo objectForKey:@"community_id"]};
     
     NSLog(@"dict = %@",dict);
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSLog(@"dict = %@",dict);
     NSString *strurl = [API stringByAppendingString:@"secondHouseType/getLeaseList"];
     NSLog(@"strurl = %@",strurl);
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -125,27 +128,41 @@
         NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSLog(@"dataStr = %@",dataStr);
         
-        NSString *stringnumber = [[responseObject objectForKey:@"data"] objectForKey:@"CountPage"];
-        NSInteger i = [stringnumber integerValue];
-        [_tableView.mj_header endRefreshing];
-        if (pageNum>i) {
-            _tableView.mj_footer.state = MJRefreshStateNoMoreData;
-            [_tableView.mj_footer resetNoMoreData];
-        }else{
-           
-            NSArray *dataArr = responseObject[@"data"][@"list"];
-            dataSourceArr = [[NSMutableArray alloc]init];
-            for (NSDictionary *dic in dataArr) {
-                zfListModel *model =  [[zfListModel alloc]initWithDictionary:dic error:nil];
-                [dataSourceArr addObject:model];   
-            }
-            NSLog(@"dataSourceArr = %@",dataSourceArr);
-//            [_tableView reloadData];
-            kkkArr = responseObject[@"data"][@"list"];
-        }
+        NSArray *dataArr = responseObject[@"data"][@"list"];
+         kkkArr = responseObject[@"data"][@"list"];
+//        [_tableView.mj_header endRefreshing];
+//        [_tableView.mj_footer endRefreshing];
+//        NSArray *dataArr = responseObject[@"data"][@"list"];
+//        dataSourceArr = [[NSMutableArray alloc]init];
+//        for (NSDictionary *dic in dataArr) {
+//            zfListModel *model =  [[zfListModel alloc]initWithDictionary:dic error:nil];
+//            [dataSourceArr addObject:model];
+//        }
+//        NSLog(@"dataSourceArr = %@",dataSourceArr);
+////            [_tableView reloadData];
+//        kkkArr = responseObject[@"data"][@"list"];
+//        [_tableView reloadData];
         
+        [_tableView.mj_header endRefreshing];
         [_tableView.mj_footer endRefreshing];
-        [_tableView reloadData];
+        if (pageNum == 1) {
+            dataSourceArr = [[NSMutableArray alloc]init];
+        }
+        if (![dataArr isKindOfClass:[NSArray class]]) {
+            [_tableView reloadData];
+            [_tableView.mj_footer endRefreshingWithNoMoreData];
+            return ;
+        }
+        if ([dataArr count] < 10) {
+            [_tableView.mj_footer endRefreshingWithNoMoreData];
+        }
+        dataSourceArr = [NSMutableArray array];
+        for (NSDictionary *dic in dataArr) {
+           zfListModel *model =  [[zfListModel alloc]initWithDictionary:dic error:nil];
+            [dataSourceArr addObject:model];
+        }
+        [self.tableView reloadData];
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
     }];
@@ -157,7 +174,7 @@
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     [self.navigationItem setTitleView:view];
     //设置搜索框
-    UISearchBar *customSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(10,5, (self.view.frame.size.width-120), 34)];
+    customSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(10,5, (self.view.frame.size.width-120), 34)];
     customSearchBar.delegate = self;
     customSearchBar.showsCancelButton = NO;
     customSearchBar.placeholder = @"请输入小区或地址";
@@ -180,6 +197,37 @@
     [self loadData];
 }
 #pragma mark - 租房筛选框
+
+-(void)loadData3{
+    
+    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    
+    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    
+    NSLog(@"dict = %@",dict);
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    NSLog(@"dict = %@",dict);
+    NSString *strurl = [API stringByAppendingString:@"secondHouseType/gethousetype"];
+    NSLog(@"strurl = %@",strurl);
+    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSLog(@"dataStr = %@",dataStr);
+        NSArray *arr = responseObject[@"data"];
+        housetypeArr = [NSMutableArray array];
+        for (int i = 0; i<arr.count; i++) {
+            NSString *price = [[arr objectAtIndex:i] objectForKey:@"id"];
+            [housetypeArr addObject:price];
+        }
+        NSLog(@"housetypeArr = %@",housetypeArr);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"failure--%@",error);
+    }];
+    
+}
 -(void)shaixuanList{
     
     // 创建下拉菜单
@@ -220,8 +268,8 @@
     button.titleLabel.font = [UIFont systemFontOfSize:15];
     [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [button setTitleColor:[UIColor colorWithHexString:@"#FF5722"] forState:UIControlStateSelected];
-    [button setImage:[UIImage imageNamed:@"标签-向下箭头"] forState:UIControlStateNormal];
-    [button setImage:[UIImage imageNamed:@"标签-向上箭头"] forState:UIControlStateSelected];
+    [button setImage:[UIImage imageNamed:@"ic_arrow_down_grey"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"ic_arrow_up_grey"] forState:UIControlStateSelected];
     return button;
 }
 
@@ -236,16 +284,22 @@
 {
     // 第1列 高度
     if (index == 0) {
-        return 300;
+        return 50*6;
     }
     // 第2列 高度
     if (index == 1) {
-        return 300;
+        return 50*6;
     }
     // 第3列 高度
-    return 250;
+    if (index == 2) {
+        return 50*5;
+    }
     // 第4列 高度
-    return 250;
+    if (index == 3) {
+        return 50*5;
+    }
+    
+    return 0;
 }
 
 - (void)shaixuan1:(NSNotification *)userinfo{
@@ -291,7 +345,7 @@
 }
 - (void)shaixuan3:(NSNotification *)userinfo{
     NSString *str = [userinfo.userInfo objectForKey:@"shaiXuanStr3"];
-    NSLog(@"str = %@",str);
+
     if ([str isEqualToString:@"不限"]) {
         _housetype = @"0";
     }else if ([str isEqualToString:@"一室"]) {
@@ -322,12 +376,6 @@
     }
     [self loadData];
 }
-- (void)upDataId:(NSNotification *)userinfo{
-    NSString *str = [userinfo.userInfo objectForKey:@"id"];
-    NSLog(@"str = %@",str);
-    _money = str;
-    [self loadData];
-}
 
 #pragma mark - 租房列表
 - (void)CreateTableview{
@@ -338,20 +386,21 @@
     _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     [self.view addSubview:_tableView];
     
-    dataSourceArr = [[NSMutableArray alloc] init];
+    
     WS(ws);
+    dataSourceArr = [[NSMutableArray alloc] init];
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [ws.tableView.mj_footer endRefreshing];
         pageNum = 1;
         [ws loadData];
         
     }];
-     [self.tableView.mj_header beginRefreshing];
-    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+    _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [ws.tableView.mj_header endRefreshing];
          pageNum = pageNum+1;
         [ws loadData];
     }];
+    [_tableView.mj_header beginRefreshing];
    
 
 }
@@ -443,7 +492,7 @@
     priceLab.text = [NSString stringWithFormat:@"%@元/月",model.unit_price];
 //    priceLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
     priceLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
-    priceLab.font = [UIFont systemFontOfSize:18];
+    priceLab.font = [UIFont systemFontOfSize:15];
     priceLab.textAlignment = NSTextAlignmentLeft;
     [cell addSubview:priceLab];
     
@@ -467,6 +516,7 @@
 
     return cell;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -488,10 +538,11 @@
 
 // 键盘中，搜索按钮被按下，执行的方法
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    NSLog(@"---%@",searchBar.text);
+    NSLog(@"滚滚滚滚滚滚---%@",searchBar.text);
     [customSearchBar resignFirstResponder];// 放弃第一响应者
     _community_name = searchBar.text;
     [self loadData];
+     _community_name = @"";
     
 }
 

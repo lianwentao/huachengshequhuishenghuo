@@ -17,6 +17,7 @@
 #import "XLPhotoBrowser.h"
 #import "JKBannarView.h"
 #import "UIViewController+BackButtonHandler.h"
+#import "LoginViewController.h"
 #define kScreenHeight   ([UIScreen mainScreen].bounds.size.height)
 #define kScreenWidth    ([UIScreen mainScreen].bounds.size.width)
 #define NAV_HEIGHT 64
@@ -156,7 +157,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.section == 0) {
-        return 200;
+        return Main_width/(1.87);
     }else if (indexPath.section == 1){
         return 280;
     }else if (indexPath.section == 2){
@@ -503,7 +504,7 @@
         NSTimeInterval time = [model.release_time doubleValue];
         NSDate *detaildate = [NSDate dateWithTimeIntervalSince1970:time];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        [dateFormatter setDateFormat:@"yyyy.MM.dd"];
         NSString *currentDateStr = [dateFormatter stringFromDate: detaildate];
         fbsjLab1.text = currentDateStr;
         fbsjLab1.font = [UIFont systemFontOfSize:18];
@@ -528,10 +529,16 @@
         contentlabel.numberOfLines = 0;
         CGSize size;
         if (base64!=nil) {
+            
+            
+          
             NSData *data1 = [[NSData alloc] initWithBase64EncodedString:base64 options:0];
+//            NSAttributedString * attrStr = [[NSAttributedString alloc]initWithData:data1 options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }  documentAttributes:nil error:nil];
+//            [contentlabel  setAttributedText:attrStr];
             NSString *labeltext = [[NSString alloc] initWithData:data1 encoding:NSUTF8StringEncoding];
             contentlabel.font = [UIFont systemFontOfSize:16];
             contentlabel.text = labeltext;
+            NSLog(@"labeltext = %@",labeltext);
             size = [contentlabel sizeThatFits:CGSizeMake(contentlabel.frame.size.width, MAXFLOAT)];
             contentlabel.frame = CGRectMake(contentlabel.frame.origin.x, contentlabel.frame.origin.y, size.width,  size.height);
             [cell addSubview:contentlabel];
@@ -596,31 +603,52 @@
                biaoQianLab.textAlignment = NSTextAlignmentCenter;
                [cell addSubview:biaoQianLab];
            }
-
-            UILabel *priceLab = [[UILabel alloc]init];
-            priceLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+5, 100, 30);
-            priceLab.text = tjModel.unit_price;
-            //    priceLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
-            priceLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
-            priceLab.font = [UIFont systemFontOfSize:17];
-            priceLab.textAlignment = NSTextAlignmentLeft;
-            [cell addSubview:priceLab];
-
-            UILabel *jPriceLab = [[UILabel alloc]init];
-            jPriceLab.frame = CGRectMake(CGRectGetMaxX(priceLab.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+10, 100, 20);
-            jPriceLab.text = [NSString stringWithFormat:@"%@元/平米",tjModel.unit_price];
-            //    jPriceLab = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
-            jPriceLab.textColor = [UIColor colorWithRed:162/255.0 green:162/255.0 blue:162/255.0 alpha:1];
-            jPriceLab.font = [UIFont systemFontOfSize:14];
-            jPriceLab.textAlignment = NSTextAlignmentRight;
-            [cell addSubview:jPriceLab];
+           
+           UILabel *priceLab = [[UILabel alloc]init];
+           priceLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+5, 100, 30);
+           priceLab.text = [NSString stringWithFormat:@"%@元/月",tjModel.unit_price];
+           //    priceLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
+           priceLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
+           priceLab.font = [UIFont systemFontOfSize:15];
+           priceLab.textAlignment = NSTextAlignmentLeft;
+           [cell addSubview:priceLab];
+           
+           UILabel *jPriceLab = [[UILabel alloc]init];
+           jPriceLab.frame = CGRectMake(CGRectGetMaxX(priceLab.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+10, Main_width-20-100-100-10, 20);
+           NSString *str11 = [NSString stringWithFormat:@"|%@室",tjModel.room];
+           NSString *str22 = [NSString stringWithFormat:@"%@厅",tjModel.office];
+           NSString *str33 = [NSString stringWithFormat:@"%@厨",tjModel.kitchen];
+           NSString *str44 = [NSString stringWithFormat:@"%@卫",tjModel.guard];
+           NSString *str55 = [str11 stringByAppendingString:str22];
+           NSString *str66 = [str55 stringByAppendingString:str33];
+           NSString *str77 = [str66 stringByAppendingString:str44];
+           NSString *str99 = [NSString stringWithFormat:@"|%@平米",tjModel.area];
+           NSString *str1099 = [str77 stringByAppendingString:str99];
+           
+           jPriceLab.text = str1099;
+           jPriceLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
+           jPriceLab.font = [UIFont systemFontOfSize:13];
+           jPriceLab.textAlignment = NSTextAlignmentLeft;
+           [cell addSubview:jPriceLab];
+           
         }else{
 
         }
     }
     return cell;
 }
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if (indexPath.section == 4) {
+        
+        tjListModel *tjModel = tjArr[indexPath.row];
+        NSLog(@"tjModel.id == %@",tjModel.id);
+        
+        zuFangDetailViewController *sfDetailVC = [[zuFangDetailViewController alloc]init];
+        sfDetailVC.zfID = tjModel.id;
+        [self.navigationController pushViewController:sfDetailVC animated:YES];
+    }
+}
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section == 4) {
         NSArray *recommendArr = dataDic[@"recommend"];
@@ -651,7 +679,10 @@
 - (void)loadFunctionView {
     CGFloat contentY = kScreenHeight-50;
     UIView *functionView = [[UIView alloc]initWithFrame:CGRectMake(0, contentY, kScreenWidth, 50)];
-    functionView.backgroundColor = [UIColor colorWithRed:243/255.0 green:247/255.0 blue:248/255.0 alpha:1];
+    UIView *line = [[UIView alloc]init];
+    line.frame = CGRectMake(0, 0, functionView.frame.size.width, .5);
+    line.backgroundColor = [UIColor lightGrayColor];
+    [functionView addSubview:line];
     
     zfDetailModel *model = dataSourceArr[0];
     contentY += 30;
@@ -679,21 +710,32 @@
     jjlab1.textAlignment = NSTextAlignmentLeft;
     [functionView addSubview:jjlab1];
     
-    
-    
     UIButton *likeButton = [[UIButton alloc]initWithFrame:CGRectMake(kScreenWidth-10-130, 10, 130, 30)];
     likeButton.backgroundColor = [UIColor colorWithRed:252/255.0 green:88/255.0 blue:48/255.0 alpha:1];
     [likeButton setTitle:@"联系经纪人咨询" forState:UIControlStateNormal];
     [likeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    //    [likeButton setTitleColor:Blue_Selected forState:UIControlStateSelected];
     likeButton.titleLabel.font = [UIFont systemFontOfSize:17];
-//    [likeButton setImage:[UIImage imageNamed:@"icon_praise"] forState:UIControlStateNormal];
-//    [likeButton setImage:[UIImage imageNamed:@"icon_praise_tabbar"] forState:UIControlStateSelected];
-    [likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
-    likeButton.layer.cornerRadius = 3.0;
+    [likeButton addTarget:self action:@selector(callAction:) forControlEvents:UIControlEventTouchUpInside];
+    likeButton.tag = [model.phone integerValue];
+    likeButton.layer.cornerRadius = 5.0;
     [functionView addSubview:likeButton];
     [self.view addSubview:functionView];
     
+}
+-(void)callAction:(UIButton *)sender{
+    NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+    NSString *str = [userdefaults objectForKey:@"token"];
+    if (str==nil) {
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self presentViewController:login animated:YES completion:nil];
+    }else{
+    NSString *telStr = [NSString stringWithFormat:@"%ld",sender.tag];
+    NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",telStr];
+    UIWebView *callWebview = [[UIWebView alloc] init];
+    [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+        [self.view addSubview:callWebview];
+        
+    }
 }
 -(void)ckxqAction{
     
