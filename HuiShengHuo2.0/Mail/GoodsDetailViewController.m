@@ -255,6 +255,8 @@ static NSString * LINKEDME_SHORT_URL;
 }
 - (void)butclick:(UIButton *)sender
 {
+    NSString *exitshours = [NSString stringWithFormat:@"%@",[_DataDic objectForKey:@"exist_hours"]];
+    NSString *kucun = [NSString stringWithFormat:@"%@",[_DataDic objectForKey:@"inventory"]];
     NSString *tagid = [NSString stringWithFormat:@"%@",[_DataDic objectForKey:@"tagid"]];
     //NSString *kucun = [NSString stringWithFormat:@"%@",[_DataDic objectForKey:@"inventory"]];
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
@@ -262,8 +264,11 @@ static NSString * LINKEDME_SHORT_URL;
     if (str==nil) {
         LoginViewController *login = [[LoginViewController alloc] init];
         [self presentViewController:login animated:YES completion:nil];
+    }else if ([exitshours isEqualToString:@"2"]){
+        [MBProgressHUD showToastToView:self.view withText:@"当前时间不在配送时间范围内"];
+    }else if ([kucun isEqualToString:@"0"]){
+        [MBProgressHUD showToastToView:self.view withText:@"库存不足"];
     }else{
-        
         if (blocktagname==nil) {
             GuigeViewController *guige = [[GuigeViewController alloc] init];
             
