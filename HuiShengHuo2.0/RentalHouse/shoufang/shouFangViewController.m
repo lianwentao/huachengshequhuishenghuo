@@ -453,7 +453,7 @@
 
     UILabel *priceLab = [[UILabel alloc]init];
     priceLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+5, 100, 30);
-    priceLab.text = model.total_price;
+    priceLab.text = [NSString stringWithFormat:@"%@元",model.total_price];
     //    priceLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
     priceLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
     priceLab.font = [UIFont systemFontOfSize:17];
