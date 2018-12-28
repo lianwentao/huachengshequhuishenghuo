@@ -158,7 +158,7 @@
         
     }else if ([model.work_status isEqualToString:@"5"]){
         WBLog(@"************55555555555");
-        if ([_score isKindOfClass:[NSNull class]] || [model.work_type isEqualToString:@"2"]) {
+        if ([_score isKindOfClass:[NSNull class]] && [model.work_type integerValue] != 2) {
             WBLog(@"************55555555555----有评价按钮");
             UIButton *rightBtn3 = [UIButton buttonWithType:UIButtonTypeSystem];
             rightBtn3.frame = CGRectMake(0, 0, 58, 35);
@@ -170,7 +170,7 @@
             [rightBtn3 addTarget:self action:@selector(rightBtn3Clicked) forControlEvents:UIControlEventTouchUpInside];
             UIBarButtonItem *rightItem3 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn3];
             self.navigationItem.rightBarButtonItem = rightItem3;
-        }else{
+        }else {
             WBLog(@"************55555555555-没评价按钮");
             self.navigationItem.rightBarButtonItem = nil;
         }
