@@ -26,6 +26,7 @@
 #import "XLPhotoBrowser.h"
 #import "sfDetailModel.h"
 #import "tjListModel.h"
+#import "sfTJListModel.h"
 #import "LoginViewController.h"
 @interface shouFangDetailViewController ()<UITableViewDelegate,UITableViewDataSource,PTLMenuButtonDelegate, KMTagListViewDelegate>
 {
@@ -38,6 +39,7 @@
     UILabel *contentlabel;
     
     tjListModel *tjModel;
+    sfTJListModel *TJLModel;
     NSDictionary *dataDic;
   
     
@@ -87,8 +89,9 @@
         if ([model.recommend isKindOfClass:[NSArray class]]) {
             
             for (NSDictionary *tjDic in model.recommend) {
-                    tjModel = [[tjListModel alloc]initWithDictionary:tjDic error:NULL];
-                    [tjArr addObject:tjModel];
+//                    tjModel = [[tjListModel alloc]initWithDictionary:tjDic error:NULL];
+                TJLModel = [[sfTJListModel alloc]initWithDictionary:tjDic error:NULL];
+                    [tjArr addObject:TJLModel];
                 
             }
             
@@ -541,11 +544,11 @@
         
     }else{
         
-        tjModel = tjArr[indexPath.row];
+        TJLModel = tjArr[indexPath.row];
         
         UIImageView *imgView = [[UIImageView alloc]init];
         imgView.frame = CGRectMake(10, 10, 100, 100);
-        [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:tjModel.head_img]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
+        [imgView sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:TJLModel.head_img]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
         imgView.userInteractionEnabled = YES;
         imgView.clipsToBounds = YES;
         imgView.contentMode = UIViewContentModeScaleAspectFill;
@@ -553,16 +556,16 @@
         
         UILabel *titleLab = [[UILabel alloc]init];
         titleLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, 10, kScreenWidth-20-5-100, 40);
-        NSString *str = [NSString stringWithFormat:@"-%@室",tjModel.room];
-        NSString *str1 = [NSString stringWithFormat:@"%@厅",tjModel.office];
-        NSString *str2 = [NSString stringWithFormat:@"%@厨",tjModel.kitchen];
-        NSString *str3 = [NSString stringWithFormat:@"%@卫",tjModel.guard];
+        NSString *str = [NSString stringWithFormat:@"-%@室",TJLModel.room];
+        NSString *str1 = [NSString stringWithFormat:@"%@厅",TJLModel.office];
+        NSString *str2 = [NSString stringWithFormat:@"%@厨",TJLModel.kitchen];
+        NSString *str3 = [NSString stringWithFormat:@"%@卫",TJLModel.guard];
         NSString *str4 = [str stringByAppendingString:str1];
         NSString *str5 = [str4 stringByAppendingString:str2];
         NSString *str6 = [str5 stringByAppendingString:str3];
-        NSString *str7 = [tjModel.community_name stringByAppendingString:str6];
-        NSString *str8 = [NSString stringWithFormat:@"-面积%@平米",tjModel.area];
-        NSString *str9 = [NSString stringWithFormat:@"|%@/%@层",tjModel.floor,tjModel.house_floor];
+        NSString *str7 = [TJLModel.community_name stringByAppendingString:str6];
+        NSString *str8 = [NSString stringWithFormat:@"-面积%@平米",TJLModel.area];
+        NSString *str9 = [NSString stringWithFormat:@"|%@/%@层",TJLModel.floor,TJLModel.house_floor];
         NSString *str10 = [str7 stringByAppendingString:str8];
         NSString *titleStr = [str10 stringByAppendingString:str9];
         NSLog(@"titleStr = %@",titleStr);
@@ -603,7 +606,7 @@
         
         UILabel *priceLab = [[UILabel alloc]init];
         priceLab.frame = CGRectMake(CGRectGetMaxX(imgView.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+5, 100, 30);
-        priceLab.text = tjModel.unit_price;
+        priceLab.text = TJLModel.total_price;
         //    priceLab.backgroundColor = [UIColor colorWithRed:255/255.0 green:247/255.0 blue:247/255.0 alpha:1];
         priceLab.textColor = [UIColor colorWithRed:252/255.0 green:99/255.0 blue:60/255.0 alpha:1];
         priceLab.font = [UIFont systemFontOfSize:17];
@@ -612,16 +615,16 @@
         
         UILabel *jPriceLab = [[UILabel alloc]init];
         jPriceLab.frame = CGRectMake(CGRectGetMaxX(priceLab.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+10, Main_width-20-100-100, 20);
-        NSString *str11 = [NSString stringWithFormat:@"|%@室",tjModel.room];
-        NSString *str22 = [NSString stringWithFormat:@"%@厅",tjModel.office];
-        NSString *str33 = [NSString stringWithFormat:@"%@厨",tjModel.kitchen];
-        NSString *str44 = [NSString stringWithFormat:@"%@卫",tjModel.guard];
-        NSString *str55 = [str11 stringByAppendingString:str22];
-        NSString *str66 = [str55 stringByAppendingString:str33];
-        NSString *str77 = [str66 stringByAppendingString:str44];
-        NSString *str99 = [NSString stringWithFormat:@"|%@平米",tjModel.area];
-        NSString *str1099 = [str77 stringByAppendingString:str99];
-        jPriceLab.text = str1099;
+//        NSString *str11 = [NSString stringWithFormat:@"|%@室",tjModel.room];
+//        NSString *str22 = [NSString stringWithFormat:@"%@厅",tjModel.office];
+//        NSString *str33 = [NSString stringWithFormat:@"%@厨",tjModel.kitchen];
+//        NSString *str44 = [NSString stringWithFormat:@"%@卫",tjModel.guard];
+//        NSString *str55 = [str11 stringByAppendingString:str22];
+//        NSString *str66 = [str55 stringByAppendingString:str33];
+//        NSString *str77 = [str66 stringByAppendingString:str44];
+//        NSString *str99 = [NSString stringWithFormat:@"|%@平米",tjModel.area];
+//        NSString *str1099 = [str77 stringByAppendingString:str99];
+        jPriceLab.text = [NSString stringWithFormat:@"%@元/平米",TJLModel.unit_price];
         jPriceLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
         jPriceLab.font = [UIFont systemFontOfSize:13];
         jPriceLab.textAlignment = NSTextAlignmentLeft;

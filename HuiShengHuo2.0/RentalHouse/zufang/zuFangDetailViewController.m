@@ -155,11 +155,11 @@
     return 0.001;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+
     if (indexPath.section == 0) {
         return Main_width/(1.87);
     }else if (indexPath.section == 1){
-        return 280;
+        return 290;
     }else if (indexPath.section == 2){
         return 170;
     }else if (indexPath.section == 3){
@@ -212,6 +212,7 @@
             }];
             
             [cell.contentView addSubview:bannerView];
+            
         }else{
             UIImageView *topImg = [[UIImageView alloc]init];
             topImg.frame = CGRectMake(0, 0, Main_width, Main_width/(1.87));
@@ -223,7 +224,7 @@
             [cell.contentView addSubview:topImg];
         }
        
-        
+//        tableView.rowHeight = Main_width/(1.87);
     }else if (indexPath.section == 1){
         
         zfDetailModel *model = dataSourceArr[0];
@@ -276,9 +277,9 @@
         CGRect rect = tag.frame;
         rect.size.height = tag.contentSize.height;
         tag.frame = rect;
-        
+       
         UILabel *sjLab = [[UILabel alloc]init];
-        sjLab.frame = CGRectMake(10, CGRectGetMaxY(rengZhengLab.frame)+5, kScreenWidth/3+17, 35);
+        sjLab.frame = CGRectMake(10, CGRectGetMaxY(tag.frame)+5, kScreenWidth/3+17, 35);
         sjLab.text = @"房租(月付价)";
         sjLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
         sjLab.font = [UIFont systemFontOfSize:18];
@@ -302,13 +303,13 @@
 //        [cell addSubview:priceLab2];
         
         UIView *line1 = [[UIView alloc]init];
-        line1.frame = CGRectMake(CGRectGetMaxX(sjLab.frame), CGRectGetMaxY(rengZhengLab.frame)+5, .5, 75);
+        line1.frame = CGRectMake(CGRectGetMaxX(sjLab.frame), CGRectGetMaxY(tag.frame)+5, .5, 75);
         line1.backgroundColor = [UIColor lightGrayColor];
         [cell addSubview:line1];
         
         
         UILabel *hxLab = [[UILabel alloc]init];
-        hxLab.frame = CGRectMake(CGRectGetMaxX(line1.frame)+3, CGRectGetMaxY(rengZhengLab.frame)+5, kScreenWidth/3-3, 35);
+        hxLab.frame = CGRectMake(CGRectGetMaxX(line1.frame)+3, CGRectGetMaxY(tag.frame)+5, kScreenWidth/3-3, 35);
         hxLab.text = @"户型";
         hxLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
         hxLab.font = [UIFont systemFontOfSize:18];
@@ -331,12 +332,12 @@
         [cell addSubview:hxLab1];
         
         UIView *line2 = [[UIView alloc]init];
-        line2.frame = CGRectMake(CGRectGetMaxX(hxLab.frame), CGRectGetMaxY(rengZhengLab.frame)+5, .5, 75);
+        line2.frame = CGRectMake(CGRectGetMaxX(hxLab.frame), CGRectGetMaxY(tag.frame)+5, .5, 75);
         line2.backgroundColor = [UIColor lightGrayColor];
         [cell addSubview:line2];
         
         UILabel *mjLab = [[UILabel alloc]init];
-        mjLab.frame = CGRectMake(CGRectGetMaxX(line2.frame)+3, CGRectGetMaxY(rengZhengLab.frame)+5, kScreenWidth/3-3, 35);
+        mjLab.frame = CGRectMake(CGRectGetMaxX(line2.frame)+3, CGRectGetMaxY(tag.frame)+5, kScreenWidth/3-3, 35);
         mjLab.text = @"面积";
         mjLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
         mjLab.font = [UIFont systemFontOfSize:18];
@@ -383,6 +384,8 @@
         [imgView addSubview:ckxqBtn];
         
         
+        
+//        tableView.rowHeight = 50+tag.contentSize.height+5+35+5+35+10+76;
     }else if (indexPath.section == 2){
         zfDetailModel *model = dataSourceArr[0];
         UILabel *titleLab = [[UILabel alloc]init];
@@ -512,9 +515,10 @@
         fbsjLab1.textColor = [UIColor colorWithRed:85/255.0 green:85/255.0 blue:85/255.0 alpha:1];
         [cell addSubview:fbsjLab1];
         
+//         tableView.rowHeight = 160;
         
     }else if (indexPath.section == 3){
-        
+        zfDetailModel *model = dataSourceArr[0];
         UILabel *titleLab = [[UILabel alloc]init];
         titleLab.frame = CGRectMake(10, 10, 150, 50);
         titleLab.text = @"小区和周边";
@@ -523,26 +527,45 @@
         titleLab.textAlignment = NSTextAlignmentLeft;
         [cell addSubview:titleLab];
         
-        zfDetailModel *model = dataSourceArr[0];
-        NSString *base64 = model.content;
-        contentlabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(titleLab.frame)+10, Main_width-20, 0)];
-        contentlabel.numberOfLines = 0;
-        CGSize size;
-        if (base64!=nil) {
-            
-            
-          
-            NSData *data1 = [[NSData alloc] initWithBase64EncodedString:base64 options:0];
-//            NSAttributedString * attrStr = [[NSAttributedString alloc]initWithData:data1 options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType }  documentAttributes:nil error:nil];
-//            [contentlabel  setAttributedText:attrStr];
-            NSString *labeltext = [[NSString alloc] initWithData:data1 encoding:NSUTF8StringEncoding];
-            contentlabel.font = [UIFont systemFontOfSize:16];
-            contentlabel.text = labeltext;
-            NSLog(@"labeltext = %@",labeltext);
-            size = [contentlabel sizeThatFits:CGSizeMake(contentlabel.frame.size.width, MAXFLOAT)];
-            contentlabel.frame = CGRectMake(contentlabel.frame.origin.x, contentlabel.frame.origin.y, size.width,  size.height);
-            [cell addSubview:contentlabel];
-        }
+//        NSString *base64 = model.content;;
+//        if (base64!=nil) {
+//            NSData *data1 = [[NSData alloc] initWithBase64EncodedString:base64 options:0];
+//            NSString *labeltext = [[NSString alloc] initWithData:data1 encoding:NSUTF8StringEncoding];
+//            NSLog(@"labeltext = %@",labeltext);
+//            if (![model.adminid isEqualToString:@"0"]) {
+//                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[labeltext dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+//
+//                NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithAttributedString: attributedString];
+//                contentlabel.attributedText = string;
+//                contentlabel.font = [UIFont systemFontOfSize:16];// weight:10
+//                size = [contentlabel sizeThatFits:CGSizeMake(contentlabel.frame.size.width, MAXFLOAT)];
+//                contentlabel.frame = CGRectMake(contentlabel.frame.origin.x, contentlabel.frame.origin.y, size.width,  size.height);
+//                //                [string removeAttribute:NSParagraphStyleAttributeName range: NSMakeRange(0, string.length)];
+//                //                rect = [string boundingRectWithSize:CGSizeMake(Main_width-30, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+//
+//            }else{
+//                contentlabel.font = [UIFont systemFontOfSize:16];
+//                contentlabel.text = labeltext;
+//                size = [contentlabel sizeThatFits:CGSizeMake(contentlabel.frame.size.width, MAXFLOAT)];
+//                contentlabel.frame = CGRectMake(contentlabel.frame.origin.x, contentlabel.frame.origin.y, size.width,  size.height);
+//            }
+//        }
+        
+//        zfDetailModel *model = dataSourceArr[0];
+//        NSString *base64 = model.content;
+//        contentlabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(titleLab.frame)+10, Main_width-20, 0)];
+//        contentlabel.numberOfLines = 0;
+//        CGSize size;
+//        if (base64!=nil) {
+//            NSData *data1 = [[NSData alloc] initWithBase64EncodedString:base64 options:0];
+//            NSString *labeltext = [[NSString alloc] initWithData:data1 encoding:NSUTF8StringEncoding];
+//            contentlabel.font = [UIFont systemFontOfSize:16];
+//            contentlabel.text = labeltext;
+//            NSLog(@"labeltext = %@",labeltext);
+//            size = [contentlabel sizeThatFits:CGSizeMake(contentlabel.frame.size.width, MAXFLOAT)];
+//            contentlabel.frame = CGRectMake(contentlabel.frame.origin.x, contentlabel.frame.origin.y, size.width,  size.height);
+//            [cell addSubview:contentlabel];
+//        }
         
         
     }else{

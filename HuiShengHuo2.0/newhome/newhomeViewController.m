@@ -1334,7 +1334,7 @@
                         
                         [view addSubview:price];
                         
-                        tableView.rowHeight = ((Main_width-24-7)/2+32.5+5)*4/2+5;
+//                        tableView.rowHeight = ((Main_width-24-7)/2+32.5+5)*4/2+5;
                         
                     }else{
                         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+((Main_width-24-7)/2+7), 10+((Main_width-24-7)/2+32.5+5)*(i/2), (Main_width-24-7)/2, 200)];
@@ -1408,12 +1408,18 @@
                         
                         [view addSubview:price];
                         
-                         tableView.rowHeight = (((Main_width-24-7)/2+32.5+5)*4/2+5)/2;
+//                         tableView.rowHeight = (((Main_width-24-7)/2+32.5+5)*4/2+5)/2;
                     }
             
                 }
-           
                 
+                if (number == 2) {
+                     tableView.rowHeight = (((Main_width-24-7)/2+32.5+5)*4/2+5)/2;
+                }else{
+                     tableView.rowHeight = ((Main_width-24-7)/2+32.5+5)*4/2+5;
+                }
+           
+              
             }else{
                 tableView.rowHeight = 0;
             }
@@ -2381,6 +2387,7 @@
 - (void)setupNavItems
 {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Main_width, 44)];
+//    view.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1];
     [self.navigationItem setTitleView:view];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
