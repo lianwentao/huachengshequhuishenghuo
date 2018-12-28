@@ -12,4 +12,6 @@
 
 @property (nonatomic,copy)NSString *room_id;
 @property (nonatomic,copy)NSString *biaoshi;//是否删除上个界面
+
+@property (nonatomic,copy)NSString *is_ym;
 @end

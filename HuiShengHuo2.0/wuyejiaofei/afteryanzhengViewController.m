@@ -188,15 +188,17 @@
         [self.navigationController pushViewController:yanzheng animated:YES];
     }if (indexPath.section==2) {
         NSString *ym = [[_DataArr objectAtIndex:indexPath.row] objectForKey:@"is_ym"];
-        if ([ym isEqualToString:@"0"]) {
-            wuyeqianfeiViewController *qianfei = [[wuyeqianfeiViewController alloc] init];
-            qianfei.room_id = [[_DataArr objectAtIndex:indexPath.row] objectForKey:@"room_id"];
-            [self.navigationController pushViewController:qianfei animated:YES];
-        }else{
-            jiaofeixiangqingViewController *xiangqing = [[jiaofeixiangqingViewController alloc] init];
-            xiangqing.room_id = [[_DataArr objectAtIndex:indexPath.row] objectForKey:@"room_id"];
-            [self.navigationController pushViewController:xiangqing animated:YES];
-        }
+//        if ([ym isEqualToString:@"0"]) {
+//            wuyeqianfeiViewController *qianfei = [[wuyeqianfeiViewController alloc] init];
+//            qianfei.room_id = [[_DataArr objectAtIndex:indexPath.row] objectForKey:@"room_id"];
+//            [self.navigationController pushViewController:qianfei animated:YES];
+//        }else{
+//
+//        }
+        jiaofeixiangqingViewController *xiangqing = [[jiaofeixiangqingViewController alloc] init];
+        xiangqing.room_id = [[_DataArr objectAtIndex:indexPath.row] objectForKey:@"room_id"];
+        xiangqing.is_ym = ym;
+        [self.navigationController pushViewController:xiangqing animated:YES];
     }
 }
 - (void)jiatingchengyuan:(UIButton *)sender

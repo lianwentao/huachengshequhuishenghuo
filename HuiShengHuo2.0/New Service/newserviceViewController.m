@@ -73,6 +73,7 @@
 
 @implementation newserviceViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -204,7 +205,8 @@
 }
 - (void)createui
 {
-    CGRect frame = CGRectMake(0, 0, Main_width, Main_Height-49);
+    
+    CGRect frame = CGRectMake(0, 0, Main_width, Main_Height-49-LCL_HomeIndicator_Height);
     _tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;

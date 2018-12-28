@@ -130,7 +130,7 @@
         _moneyOne = @"";
     }
 
-    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":@"",@"community_name":_community_name,@"community_id":[userinfo objectForKey:@"community_id"]};
+    NSDictionary *dict = @{@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":@"",@"community_name":_community_name,@"community_id":[userinfo objectForKey:@"community_id"]};
 
     NSLog(@"dict = %@",dict);
 
@@ -361,7 +361,7 @@
 
 #pragma mark - 租房列表
 - (void)CreateTableview{
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44+44, self.view.frame.size.width, self.view.frame.size.height-RECTSTATUS.size.height+44-44)style:UITableViewStylePlain ];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44, self.view.frame.size.width, self.view.frame.size.height-RECTSTATUS.size.height+44-44)style:UITableViewStylePlain ];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;

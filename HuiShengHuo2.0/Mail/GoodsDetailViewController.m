@@ -401,7 +401,7 @@ static NSString * LINKEDME_SHORT_URL;
     _TableView.dataSource = self;
     [self.view addSubview:_TableView];
     backtopbut = [UIButton buttonWithType:UIButtonTypeCustom];
-    backtopbut.frame = CGRectMake(screen_Width-60, screen_Height-64-70, 50, 50);
+    backtopbut.frame = CGRectMake(screen_Width-60, screen_Height-44-RECTSTATUS.size.height-70, 50, 50);
     [backtopbut addTarget:self action:@selector(backtop) forControlEvents:UIControlEventTouchUpInside];
     [backtopbut setImage:[UIImage imageNamed:@"bt_top"] forState:UIControlStateNormal];
     [self.view addSubview:backtopbut];

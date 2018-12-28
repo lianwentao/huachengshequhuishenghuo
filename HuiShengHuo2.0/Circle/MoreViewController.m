@@ -136,7 +136,7 @@
     for (int i = 0; i < quanzizhongleiArr.count; i++) {
         vc = [[UIViewController alloc] init];
         if (i==0) {
-            _TableView0 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, screen_Height) style:UITableViewStylePlain];
+            _TableView0 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, Main_Height-44-49-LCL_HomeIndicator_Height-RECTSTATUS.size.height) style:UITableViewStylePlain];
             
             _TableView0.estimatedRowHeight = 0;
             _TableView0.tag = 0;
@@ -155,7 +155,7 @@
             _TableView0.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(post00)];
             [_TableView0.mj_header beginRefreshing];
         }if (i==4) {
-            _TableView4 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, screen_Height-49) style:UITableViewStylePlain];
+            _TableView4 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, Main_Height-44-49-LCL_HomeIndicator_Height-RECTSTATUS.size.height) style:UITableViewStylePlain];
             
             _TableView4.estimatedRowHeight = 0;
             _TableView4.tag = 4;
@@ -174,7 +174,7 @@
             _TableView4.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(post44)];
             [_TableView4.mj_header beginRefreshing];
         }if (i==3) {
-            _TableView3 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, screen_Height-64-49) style:UITableViewStylePlain];
+            _TableView3 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, Main_Height-44-49-LCL_HomeIndicator_Height-RECTSTATUS.size.height) style:UITableViewStylePlain];
             
             _TableView3.estimatedRowHeight = 0;
             _TableView3.tag = 3;
@@ -192,7 +192,7 @@
             _TableView3.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(post33)];
             [_TableView3.mj_header beginRefreshing];
         }if (i==1) {
-            _TableView1 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, screen_Height-64-49) style:UITableViewStylePlain];
+            _TableView1 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, Main_Height-44-49-LCL_HomeIndicator_Height-RECTSTATUS.size.height) style:UITableViewStylePlain];
             
             _TableView1.estimatedRowHeight = 0;
             _TableView1.tag = 1;
@@ -220,7 +220,7 @@
             nodatalabel.text = @"暂无数据^_^";
             [_TableView1 addSubview:nodatalabel];
         }if (i==2) {
-            _TableView2 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, screen_Height-64-49) style:UITableViewStylePlain];
+            _TableView2 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, Main_Height-44-49-LCL_HomeIndicator_Height-RECTSTATUS.size.height) style:UITableViewStylePlain];
             
             _TableView2.estimatedRowHeight = 0;
             _TableView2.tag = 2;
@@ -239,7 +239,7 @@
             [_TableView2.mj_header beginRefreshing];
         }
         if (i==5) {
-            _TableView5 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, screen_Height-64-49) style:UITableViewStylePlain];
+            _TableView5 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, Main_Height-44-49-LCL_HomeIndicator_Height-RECTSTATUS.size.height) style:UITableViewStylePlain];
             
             _TableView5.estimatedRowHeight = 0;
             _TableView5.tag = 5;
@@ -257,7 +257,7 @@
             _TableView5.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(post55)];
             [_TableView5.mj_header beginRefreshing];
         }if (i==6) {
-            _TableView6 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, screen_Height-64-49) style:UITableViewStylePlain];
+            _TableView6 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, Main_Height-44-49-LCL_HomeIndicator_Height-RECTSTATUS.size.height) style:UITableViewStylePlain];
             
             _TableView6.estimatedRowHeight = 0;
             _TableView6.tag = 6;
@@ -275,7 +275,7 @@
             _TableView6.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(post66)];
             [_TableView6.mj_header beginRefreshing];
         }if (i==7) {
-            _TableView7 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, screen_Height-64-49) style:UITableViewStylePlain];
+            _TableView7 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, Main_Height-44-49-LCL_HomeIndicator_Height-RECTSTATUS.size.height) style:UITableViewStylePlain];
             
             _TableView7.estimatedRowHeight = 0;
             _TableView7.tag = 7;
@@ -293,7 +293,7 @@
             _TableView7.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(post77)];
             [_TableView7.mj_header beginRefreshing];
         }if (i==8) {
-            _TableView8 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, screen_Height-64-49) style:UITableViewStylePlain];
+            _TableView8 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, Main_Height-44-49-LCL_HomeIndicator_Height-RECTSTATUS.size.height) style:UITableViewStylePlain];
             
             _TableView8.estimatedRowHeight = 0;
             _TableView8.tag = 8;

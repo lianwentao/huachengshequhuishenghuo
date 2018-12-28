@@ -283,7 +283,7 @@
 #pragma mark - 创建TableView
 - (void)CreateTableView
 {
-    _Hometableview = [[UITableView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height, self.view.frame.size.width, kScreen_Height-RECTSTATUS.size.height-49) style:UITableViewStylePlain];
+    _Hometableview = [[UITableView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height, self.view.frame.size.width, kScreen_Height-RECTSTATUS.size.height-49-LCL_HomeIndicator_Height) style:UITableViewStylePlain];
     _Hometableview.backgroundColor = BackColor;
     _Hometableview.estimatedRowHeight = 0;
     _Hometableview.estimatedSectionFooterHeight = 0;

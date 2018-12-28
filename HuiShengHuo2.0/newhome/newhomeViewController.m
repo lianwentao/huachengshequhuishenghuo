@@ -406,7 +406,7 @@
 }
 - (void)createui
 {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width, Main_Height-49)];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width, Main_Height-49-LCL_HomeIndicator_Height)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
