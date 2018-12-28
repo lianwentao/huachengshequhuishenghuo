@@ -492,6 +492,7 @@
     NSLog(@"customSearchBar.text = %@", customSearchBar.text);
     _community_name = customSearchBar.text;
     [self loadData];
+    [customSearchBar resignFirstResponder];
 }
 
 #pragma mark - UISearchBarDelegate 协议

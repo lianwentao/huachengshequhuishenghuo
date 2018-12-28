@@ -71,7 +71,7 @@
     NSDictionary *dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
     NSLog(@"dict = %@",dict);
    
-    NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/service/serviceReserve"];
+    NSString *strurl = [API stringByAppendingString:@"/site/default_address"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString *status = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"status"]];
         NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];

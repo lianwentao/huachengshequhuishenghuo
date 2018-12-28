@@ -312,7 +312,7 @@
         
         
         UILabel *sjLab = [[UILabel alloc]init];
-        sjLab.frame = CGRectMake(10, CGRectGetMaxY(rengZhengLab.frame)+5, kScreenWidth/3+17, 35);
+        sjLab.frame = CGRectMake(10, CGRectGetMaxY(tag.frame)+10, kScreenWidth/3+17, 35);
         sjLab.text = @"售价/单价";
         sjLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
         sjLab.font = [UIFont systemFontOfSize:18];
@@ -336,13 +336,13 @@
         [cell addSubview:priceLab2];
         
         UIView *line1 = [[UIView alloc]init];
-        line1.frame = CGRectMake(CGRectGetMaxX(sjLab.frame), CGRectGetMaxY(rengZhengLab.frame)+5, .5, 75);
+        line1.frame = CGRectMake(CGRectGetMaxX(sjLab.frame), CGRectGetMaxY(tag.frame)+10, .5, 75);
         line1.backgroundColor = [UIColor lightGrayColor];
         [cell addSubview:line1];
         
         
         UILabel *hxLab = [[UILabel alloc]init];
-        hxLab.frame = CGRectMake(CGRectGetMaxX(line1.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+5, kScreenWidth/3-3, 35);
+        hxLab.frame = CGRectMake(CGRectGetMaxX(line1.frame)+5, CGRectGetMaxY(tag.frame)+10, kScreenWidth/3-3, 35);
         hxLab.text = @"户型";
         hxLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
         hxLab.font = [UIFont systemFontOfSize:18];
@@ -365,12 +365,12 @@
         [cell addSubview:hxLab1];
         
         UIView *line2 = [[UIView alloc]init];
-        line2.frame = CGRectMake(CGRectGetMaxX(hxLab.frame), CGRectGetMaxY(rengZhengLab.frame)+5, .5, 75);
+        line2.frame = CGRectMake(CGRectGetMaxX(hxLab.frame), CGRectGetMaxY(tag.frame)+10, .5, 75);
         line2.backgroundColor = [UIColor lightGrayColor];
         [cell addSubview:line2];
         
         UILabel *mjLab = [[UILabel alloc]init];
-        mjLab.frame = CGRectMake(CGRectGetMaxX(line2.frame)+5, CGRectGetMaxY(rengZhengLab.frame)+5, kScreenWidth/3-3, 35);
+        mjLab.frame = CGRectMake(CGRectGetMaxX(line2.frame)+5, CGRectGetMaxY(tag.frame)+10, kScreenWidth/3-3, 35);
         mjLab.text = @"面积";
         mjLab.textColor = [UIColor colorWithRed:156/255.0 green:156/255.0 blue:156/255.0 alpha:1];
         mjLab.font = [UIFont systemFontOfSize:18];
@@ -415,7 +415,7 @@
         [ckxqBtn addTarget:self action:@selector(ckxqAction) forControlEvents:UIControlEventTouchUpInside];
         [imgView addSubview:ckxqBtn];
         
-        tableView.rowHeight = 50+tag.contentSize.height+5+35+5+35+10+76+20;
+        tableView.rowHeight = 50+tag.contentSize.height+10+35+5+35+10+76+30;
         
     }else if (indexPath.section == 2){
         sfDetailModel *model = dataSourceArr[0];
@@ -446,7 +446,7 @@
             fkLab1.text = @"年付";
         }else if (fk == 4){
             fkLab1.text = @"可贷款";
-        }else{
+        }else if (fk == 5){
             fkLab1.text = @"全款";
         }
         fkLab1.font = [UIFont systemFontOfSize:18];

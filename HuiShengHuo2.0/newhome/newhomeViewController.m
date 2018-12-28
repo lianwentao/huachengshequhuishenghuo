@@ -106,18 +106,6 @@
 
 @implementation newhomeViewController
    
-- (void)viewWillAppear:(BOOL)animated{
-    CGFloat phoneVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
-    if (phoneVersion >= 11.0) {
-        height = self.view.safeAreaInsets.bottom;
-        WBLog(@"heightfhfhfh = %lf",height);
-//        UIEdgeInsets insets = self.view.safeAreaInsets;
-       
-    }else{
-        height = 0;
-    }
-    
-}
 - (void)viewDidLoad {
     [super viewDidLoad];
    
@@ -2410,7 +2398,6 @@
 - (void)setupNavItems
 {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Main_width, 44)];
-
     [self.navigationItem setTitleView:view];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
