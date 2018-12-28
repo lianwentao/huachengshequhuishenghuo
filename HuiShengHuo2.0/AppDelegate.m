@@ -48,6 +48,7 @@
 #import "XYIntroductionPage.h"
 #import "jujiayanglaoViewController.h"
 #import <LinkedME_iOS/LinkedME.h>
+#import "mywuyegongdanViewController.h"
 // 微信开放平台申请得到的 appid, 需要同时添加在 URL schema
 NSString * const WXAppId = @"wx8765e31488491eb2";
 NSString *const WXAppSecret = @"d84daba151d38166a67e0c218d8224bf";
@@ -317,12 +318,20 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
             circledetails.jpushstring = @"jpush";
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:circledetails];
             [self.window.rootViewController presentViewController:nav animated:YES completion:nil];
-        }else {
+        }else if ([url_type isEqualToString:@"17"]){
             openDoorViewController *opendoor = [[openDoorViewController alloc] init];
             opendoor.dict = userInfo;
             opendoor.jpushstring = @"jpush";
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:opendoor];
             [self.window.rootViewController presentViewController:nav animated:YES completion:nil];
+        }else if ([url_type isEqualToString:@"27"]){
+            NSDictionary *dict = [userInfo objectForKey:@"extras"];
+            mywuyegongdanViewController *vc = [[mywuyegongdanViewController alloc] init];
+            vc.jpushstring = @"jpush";
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            [self.window.rootViewController presentViewController:nav animated:YES completion:nil];
+        }else{
+            
         }
     }
     

@@ -10,6 +10,9 @@
 
 @interface mywuyegongdanViewController : UIViewController
 
-@property (nonatomic,copy)NSString *rukoubiaoshi;//判断从个人中心进入 还是付款失败或者成功后进入
+@property (nonatomic,copy)NSString *rukoubiaoshi;//判断从个人中心进入 还是付款失败或者成功后进入,或者推送进入
 @property (nonatomic,copy)NSString *titleselect;
+@property (nonatomic,copy)NSDictionary *userDic;
+
+@property (nonatomic,copy)NSString *jpushstring;
 @end

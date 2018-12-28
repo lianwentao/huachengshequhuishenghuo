@@ -26,10 +26,17 @@
     self.title = @"订单中心";
     //[self getdata];
     [self setui];
+    if ([_jpushstring isEqualToString:@"jpush"]) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"返回" style:UIBarButtonItemStyleDone target:self action:@selector(back)];
+    }
+
     // Do any additional setup after loading the view.
     
 }
-
+- (void)back
+{
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
 -(BOOL)navigationShouldPopOnBackButton {
     [self backBtnClicked];
     

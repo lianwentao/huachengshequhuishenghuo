@@ -58,6 +58,7 @@
     TabbleView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     TabbleView.delegate = self;
     TabbleView.dataSource = self;
+    TabbleView.bounces = NO;
     [self.view addSubview:TabbleView];
 }
 #pragma mark - TableView的代理方法
