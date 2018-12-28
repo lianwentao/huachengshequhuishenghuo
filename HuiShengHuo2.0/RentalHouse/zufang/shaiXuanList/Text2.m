@@ -1,55 +1,43 @@
 //
-//  TableViewController5.m
+//  Text2.m
 //  HuiShengHuo2.0
 //
-//  Created by admin on 2018/12/24.
+//  Created by admin on 2018/12/28.
 //  Copyright © 2018年 晋中华晟. All rights reserved.
 //
 
-#import "TableViewController5.h"
-#import "TableViewCell1.h"
-extern NSString * const YZUpdateMenuTitleNote5;
-static NSString * const ID = @"cell";
-@interface TableViewController5 ()
-@property (nonatomic, copy) NSArray *titleArray;
-@property (nonatomic, assign) NSInteger selectedCol;
+#import "Text2.h"
+
+@interface Text2 ()<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic,strong)NSArray *titleArr;
 @property (nonatomic, strong) UITextField *field1;
 @property (nonatomic, strong) UITextField *field2;
 @end
 
-@implementation TableViewController5
+@implementation Text2
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    _selectedCol = 0;
-    
-    _titleArray = @[@"不限", @"30万元以下", @"30-50万元", @"50-70万元", @"70-90万元"];
-    
-    [self.tableView registerClass:[TableViewCell1 class] forCellReuseIdentifier:ID];
+    _titleArr = @[@"不限", @"50平米以下", @"50-70平米", @"70-90平米", @"90-110平米"];
+    UITableView *table = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width,(_titleArr.count+1)*50)];
+    table.delegate = self;
+    table.dataSource = self;
+    [self.view addSubview:table];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_selectedCol inSection:0];
-    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return _titleArr.count+1;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 50;
 }
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.titleArray.count+1;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    TableViewCell1 *cell = [tableView dequeueReusableCellWithIdentifier:ID];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if (indexPath.row == 0) {
-        [cell setSelected:YES animated:NO];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *ID = @"Text2Cell";
+    UITableViewCell *cell  = [tableView dequeueReusableCellWithIdentifier:ID];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
     }
+    
     if (indexPath.row == 5) {
         
         UILabel *lab = [[UILabel alloc]init];
@@ -61,7 +49,7 @@ static NSString * const ID = @"cell";
         _field1 = [[UITextField alloc]init];
         _field1.frame = CGRectMake(CGRectGetMaxX(lab.frame)+10, 10, 60, 30);
         _field1.backgroundColor = [UIColor colorWithHexString:@"#F9F9F9"];
-        _field1.placeholder = @"最低价";
+        _field1.placeholder = @"小面积";
         _field1.font = [UIFont systemFontOfSize:15];
         _field1.textAlignment = NSTextAlignmentCenter;
         [cell addSubview:_field1];
@@ -74,14 +62,14 @@ static NSString * const ID = @"cell";
         _field2 = [[UITextField alloc]init];
         _field2.frame = CGRectMake(CGRectGetMaxX(line.frame)+5, 10, 60, 30);
         _field2.backgroundColor = [UIColor  colorWithHexString:@"#F9F9F9"];
-        _field2.placeholder = @"最高价";
+        _field2.placeholder = @"大面积";
         _field2.font = [UIFont systemFontOfSize:15];
         _field2.textAlignment = NSTextAlignmentCenter;
         [cell addSubview:_field2];
         
         UILabel *lab1 = [[UILabel alloc]init];
         lab1.frame = CGRectMake(CGRectGetMaxX(_field2.frame)+5, 10, 50, 30);
-        lab1.text = @"万元";
+        lab1.text = @"平米";
         lab1.font = [UIFont systemFontOfSize:15];
         [cell addSubview:lab1];
         
@@ -95,29 +83,23 @@ static NSString * const ID = @"cell";
         [cell addSubview:sureBtn];
         
     }else{
-        cell.textLabel.text = _titleArray[indexPath.row];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.text = _titleArr[indexPath.row];
         cell.textLabel.font = [UIFont systemFontOfSize:15];
-        cell.textLabel.tag = indexPath.row;
     }
     
     return cell;
 }
 
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    _selectedCol = indexPath.row;
-    
-    // 选中当前
-    TableViewCell1 *cell = [tableView cellForRowAtIndexPath:indexPath];
-    
-    if (indexPath.row == 5) {
-        
-    }else{
-        // 更新菜单标题
-        [[NSNotificationCenter defaultCenter] postNotificationName:YZUpdateMenuTitleNote5 object:self userInfo:@{@"title":cell.textLabel.text}];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row != 5) {
+       
+        NSString *str = [NSString stringWithFormat:@"%@",_titleArr[indexPath.row]];
+        NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:str,@"text", nil];
+        NSNotification *notification = [NSNotification notificationWithName:NSStringFromClass([Text2 class]) object:nil userInfo:dict];
+        [[NSNotificationCenter defaultCenter] postNotification:notification];
     }
-    
+   
 }
 -(void)sureAction:(UIButton *)sender{
     
@@ -131,8 +113,13 @@ static NSString * const ID = @"cell";
             NSString *hxstr1 = [NSString stringWithFormat:@"-%@",_field2.text];
             NSString *newStr = [_field1.text stringByAppendingString:hxstr1];
             // 更新菜单标题
-            [[NSNotificationCenter defaultCenter] postNotificationName:YZUpdateMenuTitleNote5 object:self userInfo:@{@"title":newStr}];
+            NSString *str = [NSString stringWithFormat:@"%@",newStr];
+            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:str,@"text", nil];
+            NSNotification *notification = [NSNotification notificationWithName:NSStringFromClass([Text2 class]) object:nil userInfo:dict];
+            [[NSNotificationCenter defaultCenter] postNotification:notification];
         }
     }
 }
+
+
 @end

@@ -91,6 +91,7 @@
     NSInteger _col;
     
     NSDictionary *_dict;
+    CGFloat height;
     
     
 }
@@ -104,13 +105,11 @@
 @end
 
 @implementation newhomeViewController
-
+   
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+   
     [self checkv];
-    //[self loggggg];
-    
     [self setupNavItems];
 //    [self getData];
     [self createui];
@@ -410,7 +409,8 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView.backgroundColor = BackColor;
+//    _tableView.backgroundColor = BackColor;
+    _tableView.backgroundColor = [UIColor whiteColor];
     _tableView.showsVerticalScrollIndicator = NO;
     //_TabelView.enablePlaceHolderView = YES;
    
@@ -580,7 +580,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;    //点击的时候无效果
     }
-    cell.contentView.backgroundColor = BackColor;
+//    cell.contentView.backgroundColor = BackColor;
     if (indexPath.section==0) {
         
         if ([topArr isKindOfClass:[NSArray class]]) {
@@ -1088,7 +1088,11 @@
             UIView *backview = [[UIView alloc] init];
             backview.frame = CGRectMake(12, CGRectGetMaxY(titleLab.frame)+19, Main_width-24, 145);
             backview.backgroundColor = [UIColor whiteColor];
+            
             backview.layer.cornerRadius = 5;
+            backview.layer.masksToBounds = YES;
+            backview.layer.borderWidth = 1;
+            backview.layer.borderColor = [[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1] CGColor];
             
             UIImageView *_imageview = [[UIImageView alloc] initWithFrame:CGRectMake(Main_width-24-80-10, 15, 80, 80)];
             [backview addSubview:_imageview];
@@ -1332,7 +1336,13 @@
                         price.textColor = QIColor;
                         price.font = [UIFont systemFontOfSize:18];
                         
+                        view.layer.cornerRadius = 0;
+                        view.layer.masksToBounds = YES;
+                        view.layer.borderWidth = 1;
+                        view.layer.borderColor = [[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1] CGColor];
                         [view addSubview:price];
+                        
+//                        tableView.rowHeight = ((Main_width-24-7)/2+32.5+5)*4/2+5;
                         
                     }else{
                         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+((Main_width-24-7)/2+7), 10+((Main_width-24-7)/2+32.5+5)*(i/2), (Main_width-24-7)/2, 200)];
@@ -1403,13 +1413,24 @@
                         }
                         price.textColor = QIColor;
                         price.font = [UIFont systemFontOfSize:18];
-                        
+                        view.layer.cornerRadius = 0;
+                        view.layer.masksToBounds = YES;
+                        view.layer.borderWidth = 1;
+                        view.layer.borderColor = [[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1] CGColor];
                         [view addSubview:price];
+                        
+//                         tableView.rowHeight = (((Main_width-24-7)/2+32.5+5)*4/2+5)/2;
                     }
             
                 }
+                
+                if (number == 2) {
+                     tableView.rowHeight = (((Main_width-24-7)/2+32.5+5)*4/2+5)/2;
+                }else{
+                     tableView.rowHeight = ((Main_width-24-7)/2+32.5+5)*4/2+5;
+                }
            
-                tableView.rowHeight = ((Main_width-24-7)/2+32.5+5)*4/2+5;
+              
             }else{
                 tableView.rowHeight = 0;
             }
@@ -1438,7 +1459,7 @@
         
         
     }else{
-        
+        //cell.contentView.backgroundColor = BackColor;
         if (indexPath.row==0) {
            
             UILabel *titleLab = [[UILabel alloc]init];
@@ -2377,6 +2398,7 @@
 - (void)setupNavItems
 {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Main_width, 44)];
+
     [self.navigationItem setTitleView:view];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

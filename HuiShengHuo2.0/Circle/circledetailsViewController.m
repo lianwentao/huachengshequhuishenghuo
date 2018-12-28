@@ -332,6 +332,7 @@
         if (base64!=nil) {
             NSData *data1 = [[NSData alloc] initWithBase64EncodedString:base64 options:0];
             NSString *labeltext = [[NSString alloc] initWithData:data1 encoding:NSUTF8StringEncoding];
+            NSLog(@"labeltext = %@",labeltext);
             if (![admin isEqualToString:@"0"]) {
                 NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[labeltext dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
                 

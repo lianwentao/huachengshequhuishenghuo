@@ -1,57 +1,48 @@
 //
-//  TableViewController2.m
+//  Text1.m
 //  HuiShengHuo2.0
 //
-//  Created by admin on 2018/12/24.
+//  Created by admin on 2018/12/28.
 //  Copyright © 2018年 晋中华晟. All rights reserved.
 //
 
-#import "TableViewController2.h"
-#import "TableViewCell1.h"
-extern NSString * const YZUpdateMenuTitleNote2;
-static NSString * const ID = @"cell";
-@interface TableViewController2 ()
-@property (nonatomic, copy) NSArray *titleArray;
-@property (nonatomic, assign) NSInteger selectedCol;
+#import "Text1.h"
+
+@interface Text1 ()<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic,strong)NSArray *titleArr;
 @property (nonatomic, strong) UITextField *field1;
 @property (nonatomic, strong) UITextField *field2;
+@property (nonatomic, strong)NSMutableArray *dataArr;
+@property (nonatomic, strong) UILabel *textlab;
+@property (nonatomic, strong)UIButton *textBtn;
 @end
 
-@implementation TableViewController2
+@implementation Text1
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    _selectedCol = 0;
-    
-    _titleArray = @[@"不限", @"50平米以下", @"50-70平米", @"70-90平米", @"90-110平米"];
-    
-    [self.tableView registerClass:[TableViewCell1 class] forCellReuseIdentifier:ID];
+     _titleArr = @[@"不限", @"500以下", @"500-1000元", @"1000-1500元", @"1500-2000元"];
+    UITableView *table = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width,(_titleArr.count+1)*50)];
+    table.delegate = self;
+    table.dataSource = self;
+    [self.view addSubview:table];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:_selectedCol inSection:0];
-    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return _titleArr.count+1;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 50;
 }
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.titleArray.count+1;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    TableViewCell1 *cell = [tableView dequeueReusableCellWithIdentifier:ID];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    if (indexPath.row == 0) {
-        [cell setSelected:YES animated:NO];
-        
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *ID = @"Text1Cell";
+    UITableViewCell *cell  = [tableView dequeueReusableCellWithIdentifier:ID];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
     }
+    
     if (indexPath.row == 5) {
+        
         UILabel *lab = [[UILabel alloc]init];
         lab.frame = CGRectMake(15, 10, 50, 30);
         lab.text = @"自定义";
@@ -61,7 +52,7 @@ static NSString * const ID = @"cell";
         _field1 = [[UITextField alloc]init];
         _field1.frame = CGRectMake(CGRectGetMaxX(lab.frame)+10, 10, 60, 30);
         _field1.backgroundColor = [UIColor colorWithHexString:@"#F9F9F9"];
-        _field1.placeholder = @"小面积";
+        _field1.placeholder = @"最低价";
         _field1.font = [UIFont systemFontOfSize:15];
         _field1.textAlignment = NSTextAlignmentCenter;
         [cell addSubview:_field1];
@@ -74,14 +65,14 @@ static NSString * const ID = @"cell";
         _field2 = [[UITextField alloc]init];
         _field2.frame = CGRectMake(CGRectGetMaxX(line.frame)+5, 10, 60, 30);
         _field2.backgroundColor = [UIColor  colorWithHexString:@"#F9F9F9"];
-        _field2.placeholder = @"大面积";
+        _field2.placeholder = @"最高价";
         _field2.font = [UIFont systemFontOfSize:15];
         _field2.textAlignment = NSTextAlignmentCenter;
         [cell addSubview:_field2];
         
         UILabel *lab1 = [[UILabel alloc]init];
         lab1.frame = CGRectMake(CGRectGetMaxX(_field2.frame)+5, 10, 50, 30);
-        lab1.text = @"平米";
+        lab1.text = @"万元";
         lab1.font = [UIFont systemFontOfSize:15];
         [cell addSubview:lab1];
         
@@ -93,29 +84,24 @@ static NSString * const ID = @"cell";
         sureBtn.tag = indexPath.row+100;
         [sureBtn addTarget:self action:@selector(sureAction:) forControlEvents:UIControlEventTouchUpInside];
         [cell addSubview:sureBtn];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
     }else{
-        cell.textLabel.text = _titleArray[indexPath.row];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.text = _titleArr[indexPath.row];
         cell.textLabel.font = [UIFont systemFontOfSize:15];
     }
     
     return cell;
 }
 
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    _selectedCol = indexPath.row;
-    
-    // 选中当前
-    TableViewCell1 *cell = [tableView cellForRowAtIndexPath:indexPath];
-    
-    if (indexPath.row == 5) {
-        
-    }else{
-        // 更新菜单标题
-        [[NSNotificationCenter defaultCenter] postNotificationName:YZUpdateMenuTitleNote2 object:self userInfo:@{@"title":cell.textLabel.text}];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row != 5) {
+        NSString *str = [NSString stringWithFormat:@"%@",_titleArr[indexPath.row]];
+        NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:str,@"text", nil];
+        NSNotification *notification = [NSNotification notificationWithName:NSStringFromClass([Text1 class]) object:nil userInfo:dict];
+        [[NSNotificationCenter defaultCenter] postNotification:notification];
     }
-    
     
 }
 -(void)sureAction:(UIButton *)sender{
@@ -125,13 +111,17 @@ static NSString * const ID = @"cell";
         NSInteger str2 = [_field2.text integerValue];
         if (str1 >= str2) {
             
-            [MBProgressHUD showToastToView:self.view withText:@"小面积不能大于大面积"];
+            [MBProgressHUD showToastToView:self.view withText:@"最低价不能大于最高价"];
         }else{
             NSString *hxstr1 = [NSString stringWithFormat:@"-%@",_field2.text];
             NSString *newStr = [_field1.text stringByAppendingString:hxstr1];
             // 更新菜单标题
-            [[NSNotificationCenter defaultCenter] postNotificationName:YZUpdateMenuTitleNote2 object:self userInfo:@{@"title":newStr}];
+            NSString *str = [NSString stringWithFormat:@"%@",newStr];
+            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:str,@"text", nil];
+            NSNotification *notification = [NSNotification notificationWithName:NSStringFromClass([Text1 class]) object:nil userInfo:dict];
+            [[NSNotificationCenter defaultCenter] postNotification:notification];
         }
     }
 }
+
 @end

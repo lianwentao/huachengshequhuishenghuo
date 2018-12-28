@@ -16,16 +16,14 @@
 #import "PrefixHeader.pch"
 #import "UIImageView+WebCache.h"
 #import "MBProgressHUD+TVAssistant.h"
-#import "JSDropDownMenu.h"
 #import "sfListModel.h"
 #import "labelModel.h"
 
-#import "YZPullDownMenu.h"
-#import "YZMenuButton.h"
-#import "TableViewController5.h"
-#import "TableViewController2.h"
-#import "TableViewController3.h"
-#import "TableViewController4.h"
+#import "CQTopBarViewController.h"
+#import "Text5.h"
+#import "Text2.h"
+#import "Text3.h"
+#import "Text4.h"
 @interface shouFangViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>{
     
     NSMutableArray *zuJinArr;
@@ -57,8 +55,7 @@
 @property (nonatomic,copy)NSString         *moneyTwo;
 @property (nonatomic,copy)NSString         *acreageOne;
 @property (nonatomic,copy)NSString         *acreageTwo;
-
-
+@property (nonatomic, strong) CQTopBarViewController *topBar;
 
 @end
 
@@ -71,16 +68,133 @@
     //    self.navigationController.delegate = self;
 //    [self loadData];
 //    [self loadData1];
-    [self CreateTableview];
+//    [self CreateTableview];
     [self createdaohangolan];
     [self shaixuanList];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shaixuan5:) name:@"shaixuan5" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shaixuan2:) name:@"shaixuan2" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shaixuan3:) name:@"shaixuan3" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shaixuan4:) name:@"shaixuan4" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(InfoNotificationAction5:) name:NSStringFromClass([Text5 class]) object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(InfoNotificationAction2:) name:NSStringFromClass([Text2 class]) object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(InfoNotificationAction3:) name:NSStringFromClass([Text3 class]) object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(InfoNotificationAction4:) name:NSStringFromClass([Text4 class]) object:nil];
     
 }
+- (BOOL)navigationShouldPopOnBackButton{
+    UIViewController *viewc = self.navigationController.viewControllers[self.navigationController.viewControllers.count-1];
+    [self.navigationController popToViewController:viewc animated:YES];
+    return YES;
+}
+#pragma mark - 租房筛选框
+-(void)shaixuanList{
+    
+    self.topBar = [[CQTopBarViewController alloc] init];
+    self.topBar.sectionTitles = @[@"售价",@"面积",@"房型",@"排序"];
+    self.topBar.pageViewClasses = @[[Text5 class],[Text2 class],[Text3 class],[Text4 class]];
+    [self addChildViewController:self.topBar];
+    [self.view addSubview:self.topBar.view];
+    
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.topBar.footerView.bounds.size.height)style:UITableViewStylePlain ];
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    [self.topBar.footerView addSubview:_tableView];
+    
+    
+    WS(ws);
+    dataSourceArr = [[NSMutableArray alloc] init];
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [ws.tableView.mj_footer endRefreshing];
+        pageNum = 1;
+        [ws loadData];
+        
+    }];
+    _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        [ws.tableView.mj_header endRefreshing];
+        pageNum = pageNum+1;
+        [ws loadData];
+    }];
+    [_tableView.mj_header beginRefreshing];
+    
+}
+- (void)InfoNotificationAction5:(NSNotification *)notification{
+    [self.topBar topBarReplaceObjectsAtIndexes:0 withObjects:notification.userInfo[@"text"]];
+    self.topBar.titleTextColor = [UIColor colorWithHexString:@"#FF5722"];
+    NSString *str = notification.userInfo[@"text"];
+    NSLog(@"notification = %@",notification.userInfo[@"text"]);
+    if ([str isEqualToString:@"不限"]) {
+        _money = @"0";
+    }else if ([str isEqualToString:@"30万元以下"]) {
+        _money = @"1";
+    }else if ([str isEqualToString:@"30-50万元"]) {
+        _money = @"2";
+    }else if ([str isEqualToString:@"50-70万元"]) {
+        _money = @"3";
+    }else if ([str isEqualToString:@"70-90万元"]) {
+        _money = @"4";
+    }else{
+        NSArray *array = [str componentsSeparatedByString:@"-"];//从字符-中分隔成2个元素的数组
+        _moneyOne = [array objectAtIndex:0];
+        _moneyTwo = [array objectAtIndex:1];
+        
+    }
+    [self loadData];
+}
+- (void)InfoNotificationAction2:(NSNotification *)notification{
+    [self.topBar topBarReplaceObjectsAtIndexes:1 withObjects:notification.userInfo[@"text"]];
+    NSString *str = notification.userInfo[@"text"];
+    NSLog(@"str = %@",str);
+    if ([str isEqualToString:@"不限"]) {
+        _acreage = @"0";
+    }else if ([str isEqualToString:@"50平米以下"]) {
+        _acreage = @"1";
+    }else if ([str isEqualToString:@"50-70平米"]) {
+        _acreage = @"2";
+    }else if ([str isEqualToString:@"70-90平米"]) {
+        _acreage = @"3";
+    }else if ([str isEqualToString:@"90-110平米"]) {
+        _acreage = @"4";
+    }else{
+        NSArray *array = [str componentsSeparatedByString:@"-"];//从字符-中分隔成2个元素的数组
+        _acreageOne = [array objectAtIndex:0];
+        _acreageTwo = [array objectAtIndex:1];
+    }
+    [self loadData];
+}
+- (void)InfoNotificationAction3:(NSNotification *)notification{
+    [self.topBar topBarReplaceObjectsAtIndexes:2 withObjects:notification.userInfo[@"text"]];
+    NSString *str = notification.userInfo[@"text"];
+    if ([str isEqualToString:@"不限"]) {
+        _housetype = @"0";
+    }else if ([str isEqualToString:@"一室"]) {
+        _housetype = @"1";
+    }else if ([str isEqualToString:@"二室"]) {
+        _housetype = @"2";
+    }else if ([str isEqualToString:@"三室"]) {
+        _housetype = @"3";
+    }else if ([str isEqualToString:@"四室"]) {
+        _housetype = @"4";
+    }
+    [self loadData];
+    
+}
+- (void)InfoNotificationAction4:(NSNotification *)notification{
+    [self.topBar topBarReplaceObjectsAtIndexes:3 withObjects:notification.userInfo[@"text"]];
+    NSString *str = notification.userInfo[@"text"];
+    NSLog(@"str = %@",str);
+    if ([str isEqualToString:@"默认排序"]) {
+        _defaultType = @"0";
+    }else if ([str isEqualToString:@"最新发布"]) {
+        _defaultType = @"1";
+    }else if ([str isEqualToString:@"价格从低到高"]) {
+        _defaultType = @"2";
+    }else if ([str isEqualToString:@"价格从高到低"]) {
+        _defaultType = @"3";
+    }else if ([str isEqualToString:@"面积从大到小"]) {
+        _defaultType = @"4";
+    }
+    [self loadData];
+}
+
 -(void)loadData{
 //    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
 //    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
@@ -208,155 +322,7 @@
     self.navigationItem.rightBarButtonItem = rightItem;
     
 }
-#pragma mark - 租房筛选框
--(void)shaixuanList{
-    
-    // 创建下拉菜单
-    YZPullDownMenu *menu = [[YZPullDownMenu alloc] init];
-    menu.frame = CGRectMake(0, RECTSTATUS.size.height+44, Main_width, 44);
-    [self.view addSubview:menu];
-    // 设置下拉菜单代理
-    menu.dataSource = self;
-    // 初始化标题
-    _titles = @[@"售价",@"面积",@"房型",@"排序"];
-    // 添加子控制器
-    [self setupAllChildViewController];
-}
-#pragma mark - 添加子控制器
-- (void)setupAllChildViewController
-{
-    TableViewController5 *list5 = [[TableViewController5 alloc] init];
-    TableViewController2 *list2 = [[TableViewController2 alloc] init];
-    TableViewController3 *list3 = [[TableViewController3 alloc] init];
-    TableViewController4 *list4 = [[TableViewController4 alloc] init];
-    [self addChildViewController:list5];
-    [self addChildViewController:list2];
-    [self addChildViewController:list3];
-    [self addChildViewController:list4];
-}
-#pragma mark - 下拉菜单代理方法
-// 返回下拉菜单多少列
-- (NSInteger)numberOfColsInMenu:(YZPullDownMenu *)pullDownMenu
-{
-    return 4;
-}
 
-// 返回下拉菜单每列按钮
-- (UIButton *)pullDownMenu:(YZPullDownMenu *)pullDownMenu buttonForColAtIndex:(NSInteger)index
-{
-    YZMenuButton *button = [YZMenuButton buttonWithType:UIButtonTypeCustom];
-    [button setTitle:_titles[index] forState:UIControlStateNormal];
-    button.titleLabel.font = [UIFont systemFontOfSize:15];
-    [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor colorWithHexString:@"#FF5722"] forState:UIControlStateSelected];
-    [button setImage:[UIImage imageNamed:@"ic_arrow_down_grey"] forState:UIControlStateNormal];
-    [button setImage:[UIImage imageNamed:@"ic_arrow_up_grey"] forState:UIControlStateSelected];
-    return button;
-}
-
-// 返回下拉菜单每列对应的控制器
-- (UIViewController *)pullDownMenu:(YZPullDownMenu *)pullDownMenu viewControllerForColAtIndex:(NSInteger)index
-{
-    return self.childViewControllers[index];
-}
-
-// 返回下拉菜单每列对应的高度
-- (CGFloat)pullDownMenu:(YZPullDownMenu *)pullDownMenu heightForColAtIndex:(NSInteger)index
-{
-    // 第1列 高度
-    if (index == 0) {
-        return 50*6;
-    }
-    // 第2列 高度
-    if (index == 1) {
-        return 50*6;
-    }
-    // 第3列 高度
-    if (index == 2) {
-        return 50*5;
-    }
-    // 第4列 高度
-    if (index == 3) {
-        return 50*5;
-    }
-    
-    return 0;
-}
-
-- (void)shaixuan5:(NSNotification *)userinfo{
-    NSString *str = [userinfo.userInfo objectForKey:@"shaiXuanStr5"];
-    NSLog(@"str = %@",str);
-    if ([str isEqualToString:@"不限"]) {
-        _money = @"0";
-    }else if ([str isEqualToString:@"30万元以下"]) {
-        _money = @"1";
-    }else if ([str isEqualToString:@"30-50万元"]) {
-        _money = @"2";
-    }else if ([str isEqualToString:@"50-70万元"]) {
-        _money = @"3";
-    }else if ([str isEqualToString:@"70-90万元"]) {
-        _money = @"4";
-    }else{
-        NSArray *array = [str componentsSeparatedByString:@"-"];//从字符-中分隔成2个元素的数组
-        _moneyOne = [array objectAtIndex:0];
-        _moneyTwo = [array objectAtIndex:1];
-        
-    }
-    [self loadData];
-}
-- (void)shaixuan2:(NSNotification *)userinfo{
-    NSString *str = [userinfo.userInfo objectForKey:@"shaiXuanStr2"];
-    NSLog(@"str = %@",str);
-    if ([str isEqualToString:@"不限"]) {
-        _acreage = @"0";
-    }else if ([str isEqualToString:@"50平米以下"]) {
-        _acreage = @"1";
-    }else if ([str isEqualToString:@"50-70平米"]) {
-        _acreage = @"2";
-    }else if ([str isEqualToString:@"70-90平米"]) {
-        _acreage = @"3";
-    }else if ([str isEqualToString:@"90-110平米"]) {
-        _acreage = @"4";
-    }else{
-        NSArray *array = [str componentsSeparatedByString:@"-"];//从字符-中分隔成2个元素的数组
-        _acreageOne = [array objectAtIndex:0];
-        _acreageTwo = [array objectAtIndex:1];
-    }
-    [self loadData];
-}
-- (void)shaixuan3:(NSNotification *)userinfo{
-    NSString *str = [userinfo.userInfo objectForKey:@"shaiXuanStr3"];
-    NSLog(@"_housetypestr = %@",str);
-    if ([str isEqualToString:@"不限"]) {
-        _housetype = @"0";
-    }else if ([str isEqualToString:@"一室"]) {
-        _housetype = @"1";
-    }else if ([str isEqualToString:@"二室"]) {
-        _housetype = @"2";
-    }else if ([str isEqualToString:@"三室"]) {
-        _housetype = @"3";
-    }else if ([str isEqualToString:@"四室"]) {
-        _housetype = @"4";
-    }
-    [self loadData];
-}
-- (void)shaixuan4:(NSNotification *)userinfo{
-    
-    NSString *str = [userinfo.userInfo objectForKey:@"shaiXuanStr4"];
-    NSLog(@"str = %@",str);
-    if ([str isEqualToString:@"默认排序"]) {
-        _defaultType = @"0";
-    }else if ([str isEqualToString:@"最新发布"]) {
-        _defaultType = @"1";
-    }else if ([str isEqualToString:@"价格从低到高"]) {
-        _defaultType = @"2";
-    }else if ([str isEqualToString:@"价格从高到低"]) {
-        _defaultType = @"3";
-    }else if ([str isEqualToString:@"面积从大到小"]) {
-        _defaultType = @"4";
-    }
-    [self loadData];
-}
 
 
 #pragma mark - 租房列表
