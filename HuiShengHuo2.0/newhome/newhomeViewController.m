@@ -2405,7 +2405,6 @@
 - (void)setupNavItems
 {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Main_width, 44)];
-
     [self.navigationItem setTitleView:view];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
