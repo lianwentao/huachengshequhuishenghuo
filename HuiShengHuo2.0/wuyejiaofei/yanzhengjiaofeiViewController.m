@@ -339,6 +339,8 @@
 
         NSLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+            [userinfo setObject:@"2" forKey:@"is_bind_property"];
+            [userinfo synchronize];
             if ([_gonggongbaoxiu isEqualToString:@"1"]) {
                 [self.navigationController popToRootViewControllerAnimated:YES];
             }else{
