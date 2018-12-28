@@ -1330,7 +1330,7 @@
                         if (houseType == 1) {
                             price.text = [NSString stringWithFormat:@"%@元/月",[[housesList objectAtIndex:i] objectForKey:@"unit_price"]];
                         }else{
-                            price.text = [NSString stringWithFormat:@"%@",[[housesList objectAtIndex:i] objectForKey:@"total_price"]];
+                            price.text = [NSString stringWithFormat:@"%@元",[[housesList objectAtIndex:i] objectForKey:@"total_price"]];
                         }
                         
                         price.textColor = QIColor;
@@ -1409,7 +1409,7 @@
                         if (houseType == 1) {
                             price.text = [NSString stringWithFormat:@"%@元/月",[[housesList objectAtIndex:i] objectForKey:@"unit_price"]];
                         }else{
-                            price.text = [NSString stringWithFormat:@"%@",[[housesList objectAtIndex:i] objectForKey:@"total_price"]];
+                            price.text = [NSString stringWithFormat:@"%@元",[[housesList objectAtIndex:i] objectForKey:@"total_price"]];
                         }
                         price.textColor = QIColor;
                         price.font = [UIFont systemFontOfSize:18];
