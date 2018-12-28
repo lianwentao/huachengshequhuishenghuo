@@ -70,7 +70,7 @@
     if ([model.house_type isEqualToString:@"1"]) {
         _pricelabel.text = [NSString stringWithFormat:@"%@元/月",model.price];
     }else{
-        _pricelabel.text = [NSString stringWithFormat:@"%.2f万元",[model.price floatValue]];
+        _pricelabel.text = [NSString stringWithFormat:@"%.2f元",[model.price floatValue]];
     }
     
     
