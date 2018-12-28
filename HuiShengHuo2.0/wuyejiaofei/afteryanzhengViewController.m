@@ -64,7 +64,10 @@
 //            _DicData = [[NSDictionary alloc] init];
 //            _DicData = [responseObject objectForKey:@"data"];
         }else{
-            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+            //[MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+            NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+            [userdefaults setObject:@"1" forKey:@"is_bind_property"];
+            [userdefaults synchronize];
         }
         [_TableView reloadData];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -185,6 +188,7 @@
 {
     if (indexPath.section==1) {
         yanzhengjiaofeiViewController *yanzheng = [[yanzhengjiaofeiViewController alloc] init];
+        yanzheng.gonggongbaoxiu = _gonggongbaoxiu;
         [self.navigationController pushViewController:yanzheng animated:YES];
     }if (indexPath.section==2) {
         NSString *ym = [[_DataArr objectAtIndex:indexPath.row] objectForKey:@"is_ym"];

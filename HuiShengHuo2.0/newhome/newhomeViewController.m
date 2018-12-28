@@ -111,7 +111,7 @@
    
     [self checkv];
     [self setupNavItems];
-//    [self getData];
+    [self getData];
     [self createui];
     
     [self wr_setNavBarBarTintColor:[UIColor whiteColor]];
@@ -424,7 +424,7 @@
         
     }];
      _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(xiala)];
-    [self.tableView.mj_header beginRefreshing];
+    //[self.tableView.mj_header beginRefreshing];
 }
 - (void)xiala
 {
@@ -2086,7 +2086,7 @@
     
     NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
     NSString *str = [userdefaults objectForKey:@"token"];
-    
+    NSString *is_bind_property = [userdefaults objectForKey:@"is_bind_property"];
     NSString *url_type = [[muluarr objectAtIndex:index] objectForKey:@"url_type"];
     NSString *url_id = [[muluarr objectAtIndex:index] objectForKey:@"url_id"];
     NSString *urltypename = [[muluarr objectAtIndex:index] objectForKey:@"type_name"];
@@ -2095,8 +2095,14 @@
         if (str==nil) {
             LoginViewController *login = [[LoginViewController alloc] init];
             [self presentViewController:login animated:YES completion:nil];
+        }else if ([is_bind_property isEqualToString:@"1"]){
+            afteryanzhengViewController *afteryanzheng = [[afteryanzhengViewController alloc] init];
+            afteryanzheng.gonggongbaoxiu = @"1";
+            afteryanzheng.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:afteryanzheng animated:YES];
         }else{
             gonggongbaoxiuViewController *weixiu = [[gonggongbaoxiuViewController alloc] init];
+            
             weixiu.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:weixiu animated:YES];
         }
@@ -2177,6 +2183,7 @@
     }if ([url_type isEqualToString:@"14"]){
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url_id]];
     }if ([url_type isEqualToString:@"15"]){
+        
         if (str==nil) {
             LoginViewController *login = [[LoginViewController alloc] init];
             [self presentViewController:login animated:YES completion:nil];
@@ -2189,7 +2196,7 @@
         if (str==nil) {
             LoginViewController *login = [[LoginViewController alloc] init];
             [self presentViewController:login animated:YES completion:nil];
-        }else{
+        } else{
             afteryanzhengViewController *afteryanzheng = [[afteryanzhengViewController alloc] init];
             afteryanzheng.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:afteryanzheng animated:YES];
@@ -2458,17 +2465,20 @@
                 [self.navigationController pushViewController:ziyongliebiaoVC animated:YES];
             }else{
                 afteryanzhengViewController *afterVC = [[afteryanzhengViewController alloc]init];
+                afterVC.gonggongbaoxiu = @"1";
                 afterVC.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:afterVC animated:YES];
             }
         }else{
             if ([is_bind_property isEqualToString:@"2"]) {
                 gonggongbaoxiuViewController *gonggongbaoxiuVC = [[gonggongbaoxiuViewController alloc]init];
+                
                 gonggongbaoxiuVC.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:gonggongbaoxiuVC animated:YES];
             }else{
                 
                 afteryanzhengViewController *afterVC = [[afteryanzhengViewController alloc]init];
+                afterVC.gonggongbaoxiu = @"1";
                 afterVC.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:afterVC animated:YES];
             }

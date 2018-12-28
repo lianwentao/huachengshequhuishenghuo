@@ -339,7 +339,11 @@
 
         NSLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-            [self.navigationController popViewControllerAnimated:YES];
+            if ([_gonggongbaoxiu isEqualToString:@"1"]) {
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            }else{
+                [self.navigationController popViewControllerAnimated:YES];
+            }
             [[NSNotificationCenter defaultCenter] postNotificationName:@"shuaxinmyhome" object:nil userInfo:nil];
         }else{
             [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];

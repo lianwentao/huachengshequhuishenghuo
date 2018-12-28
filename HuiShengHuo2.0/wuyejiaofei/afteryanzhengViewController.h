@@ -10,4 +10,5 @@
 
 @interface afteryanzhengViewController : UIViewController
 
+@property (nonatomic,copy)NSString *gonggongbaoxiu;//要进入公共报修时传1，qita传0；
 @end
