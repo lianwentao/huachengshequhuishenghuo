@@ -542,6 +542,7 @@
     _mainTableView.delegate = self;
     _mainTableView.dataSource = self;
     _mainTableView.showsVerticalScrollIndicator = NO;
+    _mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //注意：这里不能使用动态高度_headimageHeight, 不然tableView会往下移，在iphone X下，头部不放大的时候，上方依然会有白色空白
     _mainTableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(shuaxin)];
     
