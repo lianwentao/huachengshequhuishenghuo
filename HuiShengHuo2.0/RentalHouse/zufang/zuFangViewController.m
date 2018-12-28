@@ -23,7 +23,6 @@
 #import "Text2.h"
 #import "Text3.h"
 #import "Text4.h"
-
 @interface zuFangViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>{
     
     NSMutableArray *zuJinArr;
@@ -76,6 +75,11 @@
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(InfoNotificationAction3:) name:NSStringFromClass([Text3 class]) object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(InfoNotificationAction4:) name:NSStringFromClass([Text4 class]) object:nil];
     
+}
+- (BOOL)navigationShouldPopOnBackButton{
+    UIViewController *viewc = self.navigationController.viewControllers[self.navigationController.viewControllers.count-1];
+    [self.navigationController popToViewController:viewc animated:YES];
+    return YES;
 }
 -(void)shaiXuan{
     
@@ -223,7 +227,7 @@
         _moneyOne = @"";
     }
     
-    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":[NSString stringWithFormat:@"%ld",pageNum],@"community_name":_community_name,@"community_id":[userinfo objectForKey:@"community_id"]};
+    NSDictionary *dict = @{@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":[NSString stringWithFormat:@"%ld",pageNum],@"community_name":_community_name,@"community_id":[userinfo objectForKey:@"community_id"]};
     
     NSLog(@"dict = %@",dict);
     

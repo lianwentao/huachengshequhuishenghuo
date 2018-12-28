@@ -136,7 +136,7 @@
     for (int i = 0; i < quanzizhongleiArr.count; i++) {
         vc = [[UIViewController alloc] init];
         if (i==0) {
-            _TableView0 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, screen_Height-64-49) style:UITableViewStylePlain];
+            _TableView0 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, screen_Height) style:UITableViewStylePlain];
             
             _TableView0.estimatedRowHeight = 0;
             _TableView0.tag = 0;
@@ -155,7 +155,7 @@
             _TableView0.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(post00)];
             [_TableView0.mj_header beginRefreshing];
         }if (i==4) {
-            _TableView4 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, screen_Height-64-49) style:UITableViewStylePlain];
+            _TableView4 = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screen_Width, screen_Height-49) style:UITableViewStylePlain];
             
             _TableView4.estimatedRowHeight = 0;
             _TableView4.tag = 4;
@@ -314,7 +314,7 @@
         [childVcArray addObject:vc];
         //[_TableView.mj_header beginRefreshing];
     }
-    LSPPageView *pageView = [[LSPPageView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height, self.view.bounds.size.width, self.view.bounds.size.height - 64) titles:testArray.mutableCopy style:nil childVcs:childVcArray.mutableCopy parentVc:self];
+    LSPPageView *pageView = [[LSPPageView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height, self.view.bounds.size.width, self.view.bounds.size.height-RECTSTATUS.size.height) titles:testArray.mutableCopy style:nil childVcs:childVcArray.mutableCopy parentVc:self];
     pageView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:pageView];
     

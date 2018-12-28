@@ -122,7 +122,7 @@
     
 //    [imageBtn setImageWithUrl:model.icon_small placeholder:[UIImage imageNamed:@"file_icon_hlt"] state:UIControlStateNormal];
     //[imageBtn setImage:[UIImage imageNamed:model.icon] forState:UIControlStateNormal];
-    if ([model.icon isEqualToString:@"快捷按钮全部"]) {
+    if ([model.icon isEqualToString:@"ic_servicex_cate"]) {
         [imageBtn setImage:[UIImage imageNamed:model.icon] forState:UIControlStateNormal];
     }else{
         [imageBtn sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.icon]] forState:UIControlStateNormal];

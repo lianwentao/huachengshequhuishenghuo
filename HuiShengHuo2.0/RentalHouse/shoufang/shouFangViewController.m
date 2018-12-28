@@ -78,6 +78,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(InfoNotificationAction4:) name:NSStringFromClass([Text4 class]) object:nil];
     
 }
+- (BOOL)navigationShouldPopOnBackButton{
+    UIViewController *viewc = self.navigationController.viewControllers[self.navigationController.viewControllers.count-1];
+    [self.navigationController popToViewController:viewc animated:YES];
+    return YES;
+}
 #pragma mark - 租房筛选框
 -(void)shaixuanList{
     
@@ -239,7 +244,7 @@
         _moneyOne = @"";
     }
 
-    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":@"",@"community_name":_community_name,@"community_id":[userinfo objectForKey:@"community_id"]};
+    NSDictionary *dict = @{@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":@"",@"community_name":_community_name,@"community_id":[userinfo objectForKey:@"community_id"]};
 
     NSLog(@"dict = %@",dict);
 

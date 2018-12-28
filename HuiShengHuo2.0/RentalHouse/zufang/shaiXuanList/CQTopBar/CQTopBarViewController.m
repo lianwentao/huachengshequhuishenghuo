@@ -35,7 +35,7 @@ const NSUInteger segmentH = 40;
     CGFloat segmentFrameW = self.segmentFrame.size.width == 0?CGRectGetWidth(self.view.bounds):self.segmentFrame.size.width;
     CGFloat segmentFrameH = self.segmentFrame.size.height == 0?segmentH:self.segmentFrame.size.height;
 
-    self.footerView = [[UIView alloc] initWithFrame:CGRectMake(segmentFrameX, segmentFrameY+segmentFrameH, segmentFrameW, self.view.bounds.size.height-segmentFrameY-segmentFrameH)];
+    self.footerView = [[UIView alloc] initWithFrame:CGRectMake(segmentFrameX, RECTSTATUS.size.height+44+segmentFrameH, segmentFrameW, self.view.bounds.size.height-segmentFrameY-segmentFrameH)];
     [self.view addSubview:self.footerView];
     
     CGRect segmentFrame = CGRectMake(segmentFrameX, RECTSTATUS.size.height+44, segmentFrameW, segmentFrameH);
