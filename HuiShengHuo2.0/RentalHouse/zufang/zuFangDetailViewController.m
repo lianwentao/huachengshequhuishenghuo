@@ -660,7 +660,7 @@
            jPriceLab.textAlignment = NSTextAlignmentLeft;
            [cell addSubview:jPriceLab];
            
-           tableView.rowHeight  = recommendArr.count*120;
+           tableView.rowHeight  = 120;
         }else{
            tableView.rowHeight  = 0;
         }
