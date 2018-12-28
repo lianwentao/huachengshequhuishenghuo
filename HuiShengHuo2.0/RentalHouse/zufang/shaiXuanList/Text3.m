@@ -18,7 +18,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _titleArr = @[@"不限", @"一室", @"二室", @"三室", @"四室"];
-    UITableView *table = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width,_titleArr.count*50)];
+    UITableView *table = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width,_titleArr.count*40)];
+    table.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     table.delegate = self;
     table.dataSource = self;
     [self.view addSubview:table];
@@ -28,13 +29,14 @@
     return _titleArr.count+1;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 50;
+    return 40;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *ID = @"Text3Cell";
     UITableViewCell *cell  = [tableView dequeueReusableCellWithIdentifier:ID];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;  
     }
     
     if (indexPath.row == 5) {

@@ -161,9 +161,8 @@
     _yishoulabel.textColor = CIrclecolor;
     
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     _dic = [[NSDictionary alloc] init];
-    _dic = @{@"p_id":model.id,@"tagid":model.tagid,@"p_title":model.title,@"price":model.nowprice,@"tagname":model.tagname,@"p_title_img":model.title_img,@"apk_token":uid_username,@"number":@"1"};//token tokenSecret
+    _dic = @{@"p_id":model.id,@"tagid":model.tagid,@"p_title":model.title,@"price":model.nowprice,@"tagname":model.tagname,@"p_title_img":model.title_img,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"number":@"1"};//token tokenSecret
 }
 - (void)gouwuche:(UIButton *)sender
 {
