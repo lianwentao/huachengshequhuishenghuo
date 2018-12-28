@@ -339,7 +339,8 @@
     NSString *house_floorStr = textfieldzonglouceng.text;
     NSString *areaStr = textfieldmianji.text;
     NSString *unit_priceStr = textfielddanjia.text;
-    NSString *total_priceStr = totaltextfield.text;
+    float total = [totaltextfield.text floatValue]*10000;
+    NSString *total_priceStr = [NSString stringWithFormat:@"%.2f",total];
     //初始化进度框，置于当前的View当中
     static MBProgressHUD *_HUD;
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
