@@ -10,11 +10,9 @@
 #define PrefixHeader_pch
 
 
-<<<<<<< HEAD
+
 ////正式
-=======
-//正式
->>>>>>> f06962d44aa2841ca077f0730b43efb1f3c69a8f
+
 #define API                @"http://m.hui-shenghuo.cn/apk41/"
 #define API_NOAPK          @"http://m.hui-shenghuo.cn"
 //测试

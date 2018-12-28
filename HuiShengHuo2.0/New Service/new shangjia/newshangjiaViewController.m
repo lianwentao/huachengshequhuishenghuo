@@ -453,9 +453,11 @@
     UIImage *image = [UIImage imageWithData:data];
     
     [mediamessage setThumbImage:image];
-    
+    NSLog(@"_shangjiaid = %@",_shangjiaid);
     WXWebpageObject *webobj = [WXWebpageObject object];
     webobj.webpageUrl = [NSString stringWithFormat:@"http://test.hui-shenghuo.cn/home/service/ins_details/id/%@?linkedme=https://lkme.cc/LQD/ONaD0BYuK&from=singlemessage",_shangjiaid];
+//    NSString *type = @"service_shop";
+//    webobj.webpageUrl = [NSString stringWithFormat:@"http://test.hui-shenghuo.cn/home/service/ins_details/id/%@?%@?linkedme=https://lkme.cc/LQD/ONaD0BYuK&from=singlemessage",_shangjiaid,type];
     mediamessage.mediaObject =  webobj;
     
     SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
