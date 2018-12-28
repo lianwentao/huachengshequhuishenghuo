@@ -694,6 +694,7 @@
                 [callBtn setEnlargeEdgeWithTop:20 right:0 bottom:10 left:30];
                 [callBtn setImage:[UIImage imageNamed:@"ydianhua"] forState:UIControlStateNormal];
                 [callBtn addTarget:self action:@selector(callAction:) forControlEvents:UIControlEventTouchUpInside];
+                callBtn.tag =
                 callBtn.layer.cornerRadius = 7.0;
                 [backscrollview addSubview:callBtn];
 
@@ -1475,5 +1476,15 @@
     
     return size.height;
     
+}
+-(void)callAction:(UIButton *)sender{
+    
+    NSLog(@"123");
+//    insinfoModel *iiModel = insinfoArr[0];
+//    NSString *telStr = iiModel.telphone;
+//    NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",telStr];
+//    UIWebView *callWebview = [[UIWebView alloc] init];
+//    [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+//    [self.view addSubview:callWebview];
 }
 @end
