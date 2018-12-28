@@ -73,20 +73,7 @@
 @end
 
 @implementation newserviceViewController
-- (void)viewDidLayoutSubviews{
-    CGFloat phoneVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
-//    if (@available(iOS 11.0, *)) {
-//        height = self.view.safeAreaInsets.bottom;
-//    } else {
-//        height = 0;
-//    }
-    if (phoneVersion >= 11.0) {
-        height = self.view.safeAreaInsets.bottom;
-    }else{
-        height = 0;
-    }
-    WBLog(@"heightfhfhfh = %lf",height);
-}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -218,7 +205,9 @@
 }
 - (void)createui
 {
-    CGRect frame = CGRectMake(0, 0, Main_width, Main_Height-49-34);
+    
+    CGRect frame = CGRectMake(0, 0, Main_width, Main_Height-49-LCL_HomeIndicator_Height);
+
     _tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;

@@ -47,7 +47,7 @@
 }
 - (UITableView *)tableView {
     if (!_tableView) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width, Main_Height - NAVHEIGHT - SegmentHeaderViewHeight-49)];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, Main_width, Main_Height - NAVHEIGHT - SegmentHeaderViewHeight-49-LCL_HomeIndicator_Height)];
         //        _tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
         _tableView.delegate = self;
         _tableView.dataSource = self;

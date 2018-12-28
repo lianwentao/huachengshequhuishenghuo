@@ -10,7 +10,11 @@
 #define PrefixHeader_pch
 
 
+<<<<<<< HEAD
 ////正式
+=======
+//正式
+>>>>>>> f06962d44aa2841ca077f0730b43efb1f3c69a8f
 #define API                @"http://m.hui-shenghuo.cn/apk41/"
 #define API_NOAPK          @"http://m.hui-shenghuo.cn"
 //测试
@@ -23,6 +27,9 @@
 #define Main_width [UIScreen mainScreen].bounds.size.width
 #define Main_Height [UIScreen mainScreen].bounds.size.height
 
+/** iPhoneX判断 */
+#define LCLIsIphoneX (CGSizeEqualToSize(CGSizeMake(375.f, 812.f), [UIScreen mainScreen].bounds.size) || CGSizeEqualToSize(CGSizeMake(812.f, 375.f), [UIScreen mainScreen].bounds.size))
+#define LCL_HomeIndicator_Height ((LCLIsIphoneX) ? 34 : 0)
 //普通字体
 #define nomalfont    [UIFont systemFontOfSize:16.5]
 #define font18    [UIFont systemFontOfSize:18]

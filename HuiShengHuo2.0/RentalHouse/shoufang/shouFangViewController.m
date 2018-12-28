@@ -327,7 +327,7 @@
 
 #pragma mark - 租房列表
 - (void)CreateTableview{
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44+44, self.view.frame.size.width, self.view.frame.size.height-RECTSTATUS.size.height+44-44)style:UITableViewStylePlain ];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44, self.view.frame.size.width, self.view.frame.size.height-RECTSTATUS.size.height+44-44)style:UITableViewStylePlain ];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.delegate = self;
     _tableView.dataSource = self;

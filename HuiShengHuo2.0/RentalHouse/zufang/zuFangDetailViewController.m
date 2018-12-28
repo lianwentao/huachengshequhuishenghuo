@@ -68,6 +68,7 @@
     return YES;
 }
 -(void)loadData{
+    
 
     NSDictionary *dict = @{@"house_id":_zfID};
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];

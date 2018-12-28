@@ -537,7 +537,7 @@
     //初始化变量
     self.canScroll = YES;
     
-    self.mainTableView = [[CenterTouchTableView alloc]initWithFrame:CGRectMake(0, -NAVHEIGHT, Main_width, Main_Height+NAVHEIGHT)];
+    self.mainTableView = [[CenterTouchTableView alloc]initWithFrame:CGRectMake(0, -NAVHEIGHT, Main_width, Main_Height+NAVHEIGHT-LCL_HomeIndicator_Height)];
     [self.view addSubview:self.mainTableView];
     _mainTableView.delegate = self;
     _mainTableView.dataSource = self;
@@ -565,7 +565,7 @@
         
     }
     //view.frame.size.height+view.frame.origin.y+H1+10+H2+10/////15+width+15+20+10+15+width+20+15
-    _tabHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(2.5)+10+2*(Main_width-24-30*5)/5+15+15+20+10+15+20+15+H1+10+H2)];
+    _tabHeadView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(2.5)+10+2*(Main_width-24-30*5)/5+15+15+20+10+15+20+15+H1+10+H2-LCL_HomeIndicator_Height)];
     
     
     
