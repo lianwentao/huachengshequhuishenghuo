@@ -139,30 +139,18 @@
         if (i==0) {
             
         }else{
+            WBLog(@"***333--&&&&%@",labelnum.text);
             //将自己的值传出去，完成传值
-//            weakself.returnValueBlock(_tmpBtn.titleLabel.text,labelnum.text,tagstrimg,_Limit-_LimitAll,_Labelyixuan.text);
+            //            weakself.returnValueBlock(_tmpBtn.titleLabel.text,labelnum.text,tagstrimg,_Limit-_LimitAll,_Labelyixuan.text);
             weakself.returnValueBlock(_tmpBtn.titleLabel.text,labelnum.text,tagstrimg,[labelkucun.text longLongValue],_Labelyixuan.text);
-            [self.navigationController popViewControllerAnimated:YES];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"jiarugouwuchedonghua" object:nil userInfo:nil];
-        }
-    }
-    
-    if (i==0) {
-//        if (_limtcart>0) {
-//
-//            GouwucheViewController *gouwuche = [[GouwucheViewController alloc] init];
-//            [self.navigationController pushViewController:gouwuche animated:YES];
-//        }if (_limtcart==0&&_limitord>0) {
-//            dingdanViewController *dingdan = [[dingdanViewController alloc] init];
-//            [self.navigationController pushViewController:dingdan animated:YES];
-//        }
-    }else{
-        WBLog(@"***--&&&&%@",labelnum.text);
-        if ([_tag isEqualToString:@"1"]) {
-            //[self.navigationController popViewControllerAnimated:YES];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"lijigoumai" object:nil userInfo:nil];
-        }else{
             
+            if ([_tag isEqualToString:@"1"]) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"lijigoumai" object:nil userInfo:nil];
+            }else{
+                WBLog(@"***444--&&&&%@",labelnum.text);
+                [self.navigationController popViewControllerAnimated:YES];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"jiarugouwuchedonghua" object:nil userInfo:nil];
+            }
         }
     }
 }
