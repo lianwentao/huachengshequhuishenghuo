@@ -126,61 +126,110 @@
    
 }
 -(void)setRightBtn{
-    orderDetailModel *model = _dataSourceArr[0];
-    if ([model.work_status isEqualToString:@"1"] || [model.work_status isEqualToString:@"2"]) {
-        WBLog(@"************111111111111-------22222222222222222");
-        //等待派单
-        UIButton *rightBtn1 = [UIButton buttonWithType:UIButtonTypeSystem];
-        rightBtn1.frame = CGRectMake(0, 0, 80, 30);
-        [rightBtn1 setTitle:@"取消订单" forState:UIControlStateNormal];
-        [rightBtn1 setTitleColor:[UIColor colorWithRed:162/255.0 green:162/255.0 blue:162/255.0 alpha:1] forState:UIControlStateNormal];
-        rightBtn1.layer.cornerRadius = 5.0;
-        rightBtn1.layer.borderColor = [UIColor colorWithRed:241/255.0 green:241/255.0 blue:241/255.0 alpha:1].CGColor;
-        rightBtn1.layer.borderWidth = 1.0f;
-        [rightBtn1 addTarget:self action:@selector(rightBtn1Clicked) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *rightItem1 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn1];
+     orderDetailModel *model = _dataSourceArr[0];
+    UIButton *rightBtn1 = [UIButton buttonWithType:UIButtonTypeSystem];
+    rightBtn1.frame = CGRectMake(0, 0, 80, 30);
+    [rightBtn1 setTitle:@"取消订单" forState:UIControlStateNormal];
+    [rightBtn1 setTitleColor:[UIColor colorWithRed:162/255.0 green:162/255.0 blue:162/255.0 alpha:1] forState:UIControlStateNormal];
+    rightBtn1.layer.cornerRadius = 5.0;
+    rightBtn1.layer.borderColor = [UIColor colorWithRed:241/255.0 green:241/255.0 blue:241/255.0 alpha:1].CGColor;
+    rightBtn1.layer.borderWidth = 1.0f;
+    [rightBtn1 addTarget:self action:@selector(rightBtn1Clicked) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightItem1 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn1];
+//    self.navigationItem.rightBarButtonItem = rightItem1;
+
+    UIButton *rightBtn2 = [UIButton buttonWithType:UIButtonTypeSystem];
+    rightBtn2.frame = CGRectMake(0, 0, 58, 35);
+    [rightBtn2 setTitle:@"付款" forState:UIControlStateNormal];
+    rightBtn2.titleLabel.font = [UIFont systemFontOfSize:18];
+    [rightBtn2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    rightBtn2.backgroundColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
+    rightBtn2.layer.cornerRadius = 5.0;
+    [rightBtn2 addTarget:self action:@selector(rightBtn2Clicked) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightItem2 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn2];
+//    self.navigationItem.rightBarButtonItem = rightItem2;
+
+    UIButton *rightBtn3 = [UIButton buttonWithType:UIButtonTypeSystem];
+    rightBtn3.frame = CGRectMake(0, 0, 58, 35);
+    [rightBtn3 setTitle:@"评价" forState:UIControlStateNormal];
+    rightBtn3.titleLabel.font = [UIFont systemFontOfSize:14];
+    [rightBtn3 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    rightBtn3.backgroundColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
+    rightBtn3.layer.cornerRadius = 5.0;
+    [rightBtn3 addTarget:self action:@selector(rightBtn3Clicked) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightItem3 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn3];
+//    self.navigationItem.rightBarButtonItem = rightItem3;
+    NSLog(@"odel.work_status = %@",model.work_status);
+    if ([model.work_status isEqualToString:@"1"] || [model.work_status isEqualToString:@"2"] || [model.work_status isEqualToString:@"0"]) {
         self.navigationItem.rightBarButtonItem = rightItem1;
     }else if ([model.work_status isEqualToString:@"3"]){
-        WBLog(@"************33333333333333");
-        //    待付款+已付款
-        UIButton *rightBtn2 = [UIButton buttonWithType:UIButtonTypeSystem];
-        rightBtn2.frame = CGRectMake(0, 0, 58, 35);
-        [rightBtn2 setTitle:@"付款" forState:UIControlStateNormal];
-        rightBtn2.titleLabel.font = [UIFont systemFontOfSize:18];
-        [rightBtn2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        rightBtn2.backgroundColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
-        rightBtn2.layer.cornerRadius = 5.0;
-        //    rightBtn2.layer.borderColor = [UIColor colorWithRed:241/255.0 green:241/255.0 blue:241/255.0 alpha:1].CGColor;
-        //    rightBtn2.layer.borderWidth = 1.0f;
-        [rightBtn2 addTarget:self action:@selector(rightBtn2Clicked) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *rightItem2 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn2];
         self.navigationItem.rightBarButtonItem = rightItem2;
-        
     }else if ([model.work_status isEqualToString:@"5"]){
-        WBLog(@"************55555555555");
-        if ([_score isKindOfClass:[NSNull class]] && [model.work_type integerValue] != 2) {
-            WBLog(@"************55555555555----有评价按钮");
-            UIButton *rightBtn3 = [UIButton buttonWithType:UIButtonTypeSystem];
-            rightBtn3.frame = CGRectMake(0, 0, 58, 35);
-            [rightBtn3 setTitle:@"评价" forState:UIControlStateNormal];
-            rightBtn3.titleLabel.font = [UIFont systemFontOfSize:14];
-            [rightBtn3 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            rightBtn3.backgroundColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
-            rightBtn3.layer.cornerRadius = 5.0;
-            [rightBtn3 addTarget:self action:@selector(rightBtn3Clicked) forControlEvents:UIControlEventTouchUpInside];
-            UIBarButtonItem *rightItem3 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn3];
+
+        if ([_score isKindOfClass:[NSNull class]] && [model.work_type integerValue] == 1) {
             self.navigationItem.rightBarButtonItem = rightItem3;
-        }else {
-            WBLog(@"************55555555555-没评价按钮");
-            self.navigationItem.rightBarButtonItem = nil;
+        }else if ([model.work_type integerValue] == 2){
+            self.navigationItem.rightBarButtonItem = nil;                         
         }
-        
-    }else{
-        self.navigationItem.rightBarButtonItem = nil;
-        WBLog(@"************666666666666");
     }
-  
 }
+//-(void)setRightBtn{
+//    orderDetailModel *model = _dataSourceArr[0];
+//
+//    if ([model.work_status isEqualToString:@"1"] || [model.work_status isEqualToString:@"2"] || [model.work_status isEqualToString:@"0"]) {
+//        WBLog(@"************111111111111-------22222222222222222");
+//        //等待派单
+//        UIButton *rightBtn1 = [UIButton buttonWithType:UIButtonTypeSystem];
+//        rightBtn1.frame = CGRectMake(0, 0, 80, 30);
+//        [rightBtn1 setTitle:@"取消订单" forState:UIControlStateNormal];
+//        [rightBtn1 setTitleColor:[UIColor colorWithRed:162/255.0 green:162/255.0 blue:162/255.0 alpha:1] forState:UIControlStateNormal];
+//        rightBtn1.layer.cornerRadius = 5.0;
+//        rightBtn1.layer.borderColor = [UIColor colorWithRed:241/255.0 green:241/255.0 blue:241/255.0 alpha:1].CGColor;
+//        rightBtn1.layer.borderWidth = 1.0f;
+//        [rightBtn1 addTarget:self action:@selector(rightBtn1Clicked) forControlEvents:UIControlEventTouchUpInside];
+//        UIBarButtonItem *rightItem1 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn1];
+//        self.navigationItem.rightBarButtonItem = rightItem1;
+//    }else if ([model.work_status isEqualToString:@"3"]){
+//        WBLog(@"************33333333333333");
+//        //    待付款+已付款
+//        UIButton *rightBtn2 = [UIButton buttonWithType:UIButtonTypeSystem];
+//        rightBtn2.frame = CGRectMake(0, 0, 58, 35);
+//        [rightBtn2 setTitle:@"付款" forState:UIControlStateNormal];
+//        rightBtn2.titleLabel.font = [UIFont systemFontOfSize:18];
+//        [rightBtn2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//        rightBtn2.backgroundColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
+//        rightBtn2.layer.cornerRadius = 5.0;
+//        //    rightBtn2.layer.borderColor = [UIColor colorWithRed:241/255.0 green:241/255.0 blue:241/255.0 alpha:1].CGColor;
+//        //    rightBtn2.layer.borderWidth = 1.0f;
+//        [rightBtn2 addTarget:self action:@selector(rightBtn2Clicked) forControlEvents:UIControlEventTouchUpInside];
+//        UIBarButtonItem *rightItem2 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn2];
+//        self.navigationItem.rightBarButtonItem = rightItem2;
+//
+//    }else if ([model.work_status isEqualToString:@"5"]){
+//        WBLog(@"************55555555555");
+//        if ([_score isKindOfClass:[NSNull class]] && [model.work_type integerValue] != 2) {
+//            WBLog(@"************55555555555----有评价按钮");
+//            UIButton *rightBtn3 = [UIButton buttonWithType:UIButtonTypeSystem];
+//            rightBtn3.frame = CGRectMake(0, 0, 58, 35);
+//            [rightBtn3 setTitle:@"评价" forState:UIControlStateNormal];
+//            rightBtn3.titleLabel.font = [UIFont systemFontOfSize:14];
+//            [rightBtn3 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//            rightBtn3.backgroundColor = [UIColor colorWithRed:255/255.0 green:87/255.0 blue:34/255.0 alpha:1];
+//            rightBtn3.layer.cornerRadius = 5.0;
+//            [rightBtn3 addTarget:self action:@selector(rightBtn3Clicked) forControlEvents:UIControlEventTouchUpInside];
+//            UIBarButtonItem *rightItem3 = [[UIBarButtonItem alloc]initWithCustomView:rightBtn3];
+//            self.navigationItem.rightBarButtonItem = rightItem3;
+//        }else {
+//            WBLog(@"************55555555555-没评价按钮");
+//            self.navigationItem.rightBarButtonItem = nil;
+//        }
+//
+//    }else{
+//        self.navigationItem.rightBarButtonItem = nil;
+//        WBLog(@"************666666666666");
+//    }
+//
+//}
 -(void)loadTableView{
     orderDetailModel *model = _dataSourceArr[0];
     CGFloat tableViewH;
