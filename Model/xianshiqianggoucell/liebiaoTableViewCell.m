@@ -162,7 +162,11 @@
     
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     _dic = [[NSDictionary alloc] init];
-    _dic = @{@"p_id":model.id,@"tagid":model.tagid,@"p_title":model.title,@"price":model.nowprice,@"tagname":model.tagname,@"p_title_img":model.title_img,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"number":@"1"};//token tokenSecret
+    if ([user objectForKey:@"token"]==nil) {
+        _dic = @{@"p_id":model.id,@"tagid":model.tagid,@"p_title":model.title,@"price":model.nowprice,@"tagname":model.tagname,@"p_title_img":model.title_img};
+    }else{
+        _dic = @{@"p_id":model.id,@"tagid":model.tagid,@"p_title":model.title,@"price":model.nowprice,@"tagname":model.tagname,@"p_title_img":model.title_img,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"number":@"1"};
+    }
 }
 - (void)gouwuche:(UIButton *)sender
 {
