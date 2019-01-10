@@ -95,17 +95,21 @@
         name.numberOfLines = 2;
         [view addSubview:name];
         
-        UIView *tagview = [[UIView alloc] initWithFrame:CGRectMake(12.5, name.frame.size.height+name.frame.origin.y+7, 50, 16)];
+        UIView *tagview = [[UIView alloc] initWithFrame:CGRectMake(12.5, name.frame.size.height+name.frame.origin.y+7, view.frame.size.width-25, 16)];
         [view addSubview:tagview];
         NSArray *tagarr = [[liebiaoArr objectAtIndex:indexPath.row*2] objectForKey:@"goods_tag"];
         if ([tagarr isKindOfClass:[NSArray class]]) {
             if (tagarr.count>2) {
                 for (int j=0; j<2; j++) {
-                    UILabel *taglabel = [[UILabel alloc] initWithFrame:CGRectMake(60*j, 0, 55, 18)];
+                    UILabel *taglabel = [[UILabel alloc] init];
+                    taglabel.textAlignment = NSTextAlignmentCenter;
+                    taglabel.numberOfLines = 0;
                     taglabel.text = [[tagarr objectAtIndex:j] objectForKey:@"c_name"];
                     taglabel.font = [UIFont systemFontOfSize:10];
+                    CGSize size = [taglabel sizeThatFits:CGSizeMake(taglabel.frame.size.width, MAXFLOAT)];
+                    taglabel.frame = CGRectMake(size.width*j+2*j, 0, size.width, 18);
                     taglabel.textColor = QIColor;
-                    taglabel.textAlignment = NSTextAlignmentCenter;
+                    
                     taglabel.layer.cornerRadius = 2;
                     [taglabel.layer setBorderWidth:0.5];
                     [taglabel.layer setBorderColor:QIColor.CGColor];
@@ -113,11 +117,15 @@
                 }
             }else{
                 for (int j=0; j<tagarr.count; j++) {
-                    UILabel *taglabel = [[UILabel alloc] initWithFrame:CGRectMake(60*j, 0, 55, 18)];
+                    UILabel *taglabel = [[UILabel alloc] init];
+                    taglabel.textAlignment = NSTextAlignmentCenter;
+                    taglabel.numberOfLines = 0;
                     taglabel.text = [[tagarr objectAtIndex:j] objectForKey:@"c_name"];
                     taglabel.font = [UIFont systemFontOfSize:10];
+                    CGSize size = [taglabel sizeThatFits:CGSizeMake(taglabel.frame.size.width, MAXFLOAT)];
+                    taglabel.frame = CGRectMake(size.width*j+2*j, 0, size.width, 18);
                     taglabel.textColor = QIColor;
-                    taglabel.textAlignment = NSTextAlignmentCenter;
+                    
                     taglabel.layer.cornerRadius = 2;
                     [taglabel.layer setBorderWidth:0.5];
                     [taglabel.layer setBorderColor:QIColor.CGColor];
@@ -185,15 +193,19 @@
         name1.numberOfLines = 2;
         [view1 addSubview:name1];
         
-        UIView *tagview1 = [[UIView alloc] initWithFrame:CGRectMake(12.5, name1.frame.size.height+name1.frame.origin.y+7, 50, 16)];
+        UIView *tagview1 = [[UIView alloc] initWithFrame:CGRectMake(12.5, name1.frame.size.height+name1.frame.origin.y+7, view1.frame.size.width-25, 16)];
         [view1 addSubview:tagview1];
         NSArray *tagarr1 = [[liebiaoArr objectAtIndex:indexPath.row*2+1] objectForKey:@"goods_tag"];
         if ([tagarr1 isKindOfClass:[NSArray class]]) {
             if (tagarr1.count>2) {
                 for (int j=0; j<2; j++) {
-                    UILabel *taglabel = [[UILabel alloc] initWithFrame:CGRectMake(60*j, 0, 55, 18)];
+                    UILabel *taglabel = [[UILabel alloc] init];
+                    
                     taglabel.text = [[tagarr1 objectAtIndex:j] objectForKey:@"c_name"];
                     taglabel.font = [UIFont systemFontOfSize:10];
+                    taglabel.numberOfLines = 0;
+                    CGSize size = [taglabel sizeThatFits:CGSizeMake(taglabel.frame.size.width, MAXFLOAT)];
+                    taglabel.frame = CGRectMake(size.width*j+2*j, 0, size.width, 18);
                     taglabel.textColor = QIColor;
                     taglabel.textAlignment = NSTextAlignmentCenter;
                     taglabel.layer.cornerRadius = 2;
@@ -203,9 +215,12 @@
                 }
             }else{
                 for (int j=0; j<tagarr1.count; j++) {
-                    UILabel *taglabel = [[UILabel alloc] initWithFrame:CGRectMake(60*j, 0, 55, 18)];
+                    UILabel *taglabel = [[UILabel alloc] init];
+                    taglabel.numberOfLines = 0;
                     taglabel.text = [[tagarr1 objectAtIndex:j] objectForKey:@"c_name"];
                     taglabel.font = [UIFont systemFontOfSize:10];
+                    CGSize size = [taglabel sizeThatFits:CGSizeMake(taglabel.frame.size.width, MAXFLOAT)];
+                    taglabel.frame = CGRectMake(size.width*j+2*j, 0, size.width, 18);
                     taglabel.textColor = QIColor;
                     taglabel.textAlignment = NSTextAlignmentCenter;
                     taglabel.layer.cornerRadius = 2;
