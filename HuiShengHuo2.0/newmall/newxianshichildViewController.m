@@ -98,13 +98,14 @@
             arr = [[responseObject objectForKey:@"data"] objectForKey:@"class_name"];
             
             UIScrollView *_scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, Main_width, 50)];
-            //   _scrollView.delegate = self;//设置代理
-            [_scrollView setContentSize:CGSizeMake(Main_width, 50)];
+//               _scrollView.delegate = self;//设置代理
+            NSInteger count = arr.count;
+            [_scrollView setContentSize:CGSizeMake((Main_width/4)*count, 50)];
             _scrollView.backgroundColor = [UIColor whiteColor];
-            _scrollView.showsVerticalScrollIndicator = NO;
+            _scrollView.showsVerticalScrollIndicator = YES;
             _scrollView.showsHorizontalScrollIndicator = NO;
             _scrollView.bounces = NO;
-            _scrollView.pagingEnabled = NO;
+            _scrollView.pagingEnabled = YES;
             [self.view addSubview:_scrollView];
             for (int i=0; i<arr.count; i++) {
                 
@@ -168,11 +169,6 @@
         
                 NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
                 arr = [[responseObject objectForKey:@"data"] objectForKey:@"list"];
-        
-        
-        
-        
-        
                 if ([[responseObject objectForKey:@"status"] integerValue]==1) {
                     for (int i=0; i<arr.count; i++) {
                         liebiaomodel *model = [[liebiaomodel alloc] init];
@@ -188,7 +184,7 @@
                         model.is_new = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"is_new"]];
                         model.is_hot = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"is_hot"]];
                         model.kucun = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"inventory"]];
-                        model.is_start = isstar;
+                        model.is_start = _start;
         
                         model.exihours = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"exist_hours"]];
                         model.id = [[arr objectAtIndex:i] objectForKey:@"id"];
@@ -197,6 +193,7 @@
                         model.title_img = [[arr objectAtIndex:i] objectForKey:@"title_img"];
                         [modelArr addObject:model];
                     }
+                    NSLog(@"modelArr = %@",modelArr);
                     [liebiaoArr addObjectsFromArray:arr];
                 }
         [_TableView.mj_header endRefreshing];
@@ -256,7 +253,7 @@
                     model.is_hot = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"is_hot"]];
                     model.kucun = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"inventory"]];
                     model.id = [[arr objectAtIndex:i] objectForKey:@"id"];
-                    model.is_start = isstar;
+                    model.is_start = _start;
                     model.is_time = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"discount"]];
                     model.exihours = [NSString stringWithFormat:@"%@",[[arr objectAtIndex:i] objectForKey:@"exist_hours"]];
                     model.tagname = [[arr objectAtIndex:i] objectForKey:@"tagname"];

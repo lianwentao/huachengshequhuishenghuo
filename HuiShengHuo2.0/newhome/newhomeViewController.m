@@ -1253,13 +1253,13 @@
 
             //新加租售房列表
             if ([housesList isKindOfClass:[NSArray class]] && housesList.count != 0) {
-             
+
                 long number;
                 if (housesList.count%2==0) {
-                    tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*housesList.count/2+5;
+                    tableView.rowHeight = ((Main_width-24-7)/2+32.5+5)*housesList.count/2+5;
                     number = housesList.count;
                 }else{
-                    tableView.rowHeight = ((Main_width-24-7)/2+112.5+5)*(housesList.count+1)/2+5;
+                    tableView.rowHeight = ((Main_width-24-7)/2+32.5+5)*(housesList.count+1)/2+5;
                     number = housesList.count;
                 }
                 for (int i=0; i<number; i++) {
@@ -1342,8 +1342,6 @@
                         view.layer.borderColor = [[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1] CGColor];
                         [view addSubview:price];
                         
-//                        tableView.rowHeight = ((Main_width-24-7)/2+32.5+5)*4/2+5;
-                        
                     }else{
                         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(12+((Main_width-24-7)/2+7), 10+((Main_width-24-7)/2+32.5+5)*(i/2), (Main_width-24-7)/2, 200)];
                         view.backgroundColor = [UIColor whiteColor];
@@ -1419,18 +1417,10 @@
                         view.layer.borderColor = [[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1] CGColor];
                         [view addSubview:price];
                         
-//                         tableView.rowHeight = (((Main_width-24-7)/2+32.5+5)*4/2+5)/2;
                     }
             
                 }
-                
-                if (number == 2) {
-                     tableView.rowHeight = (((Main_width-24-7)/2+32.5+5)*4/2+5)/2;
-                }else{
-                     tableView.rowHeight = ((Main_width-24-7)/2+32.5+5)*4/2+5;
-                }
-           
-              
+  
             }else{
                 tableView.rowHeight = 0;
             }

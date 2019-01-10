@@ -35,7 +35,7 @@
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor whiteColor];
-    [self getData];
+//    [self getData];
     [self createdUI];
 }
 - (void)getData
@@ -51,7 +51,7 @@
     }else{
         dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":_sID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
     }
-    
+    NSLog(@"dict = %@",dict);
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/service/serviceList"];
     [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         

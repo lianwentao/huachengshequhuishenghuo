@@ -75,7 +75,7 @@
     _addressid = [_Dic objectForKey:@"address_id"];
     NSLog(@"%@",_Dic);
     [self createtableview];
-    [self createbottomview];
+//    [self createbottomview];
     
     
     

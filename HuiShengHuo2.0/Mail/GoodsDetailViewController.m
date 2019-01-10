@@ -85,7 +85,17 @@ static NSString * LINKEDME_SHORT_URL;
     NSString * H5_LIVE_URL;
     CGFloat height;
 }
-
+//-(void)viewWillAppear:(BOOL)animated{
+////    [self viewDidLayoutSubviews];
+//    CGFloat phoneVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+//    if (phoneVersion >= 11.0) {
+//        height = self.view.safeAreaInsets.bottom;
+//    }else{
+//        height = 0;
+//    }
+//    WBLog(@"h = %lf",height);
+//    [self CreateView];
+//}
 - (void)viewDidLayoutSubviews{
     CGFloat phoneVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
     if (phoneVersion >= 11.0) {

@@ -139,9 +139,7 @@
 
 - (void)setui
 {
-    
-    
-    
+ 
     NSMutableArray *childVCs = [[NSMutableArray alloc]init];
     for (int i=0; i<2; i++) {
         newxianshichildViewController *vc = [[newxianshichildViewController alloc] init];
@@ -328,6 +326,7 @@
     NSString *p = [NSString stringWithFormat:@"%d",_pagenum];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"p":p,@"is_star":isstar};
+     NSLog(@"dict--%@",dict);
     //3.发送GET请求
     /*
      第一个参数:请求路径(NSString)+ 不需要加参数
