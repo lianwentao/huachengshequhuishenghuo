@@ -573,7 +573,7 @@
         
         NSString *string = @"";
         if (_tmpBtn.tag == 0) {
-            if ([is_property isEqualToString:@"0"]) {
+            if ([is_property isEqualToString:@"1"]) {
                 [MBProgressHUD showToastToView:self.view withText:is_property_cn];
             }else{
                 NSArray *arr = [wuyeDic objectForKey:@"list"];

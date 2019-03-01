@@ -59,7 +59,7 @@
     _namelabel.text = model.name;
     _addresslabel.text = model.address;
     _zhangdanhaolabel.text = model.zhangdanhao;
-    _sumvaluelabel.text = _model.sumvalue;
+    _sumvaluelabel.text = model.sumvalue;
 
     
     long j=model.listarr.count;

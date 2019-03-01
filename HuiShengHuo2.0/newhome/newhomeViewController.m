@@ -503,6 +503,8 @@
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     titlelabel.text = [defaults objectForKey:@"community_name"];
+    NSString *str = [defaults objectForKey:@"community_name"];
+    NSLog(@"kkkkkkkkkkk = %@",str);
     [_tableView.mj_header beginRefreshing];
 }
 - (void)selectxiaoqu
@@ -1426,7 +1428,14 @@
             }
         }
     }else if (indexPath.section==1){
-        _menuScrollView = [[MenuScrollView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 200)];
+        CGFloat hight = 0;
+        if (muluarr.count == 0) {
+            hight = 0;
+        }else{
+            hight = 200;
+        }
+            
+        _menuScrollView = [[MenuScrollView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, hight)];
         _menuScrollView.maxCol  =  4;
         _menuScrollView.maxRow = 2;
         _menuScrollView.delegate = self;
@@ -1441,12 +1450,13 @@
         }
         self.menuScrollView.dataArr = mulu;
         
-        if (muluarr.count <= 8) {
+        if (muluarr.count == 0) {
+            tableView.rowHeight = 0;
+        }else if (muluarr.count <= 8){
             tableView.rowHeight = 180;
         }else{
             tableView.rowHeight = 200;
         }
-        
         
     }else{
         //cell.contentView.backgroundColor = BackColor;

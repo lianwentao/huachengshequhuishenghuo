@@ -98,7 +98,7 @@
     
     
     WS(ws);
-    dataSourceArr = [[NSMutableArray alloc] init];
+//    dataSourceArr = [[NSMutableArray alloc] init];
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [ws.tableView.mj_footer endRefreshing];
         pageNum = 1;
@@ -192,9 +192,6 @@
     [self loadData];
 }
 
-//- (void)InfoNotificationAction3:(NSNotification *)notification{
-//    self.topBar.hiddenView = YES;
-//}
 -(void)loadData{
    
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
@@ -235,51 +232,90 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSString *strurl = [API stringByAppendingString:@"secondHouseType/getLeaseList"];
     NSLog(@"strurl = %@",strurl);
-    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        NSLog(@"gouwuche--%@",responseObject);
-        
+    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"responseObject = %@",responseObject);
         NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
         NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSLog(@"dataStr = %@",dataStr);
         
-        NSArray *dataArr = responseObject[@"data"][@"list"];
-         kkkArr = responseObject[@"data"][@"list"];
-//        [_tableView.mj_header endRefreshing];
-//        [_tableView.mj_footer endRefreshing];
-//        NSArray *dataArr = responseObject[@"data"][@"list"];
-//        dataSourceArr = [[NSMutableArray alloc]init];
-//        for (NSDictionary *dic in dataArr) {
-//            zfListModel *model =  [[zfListModel alloc]initWithDictionary:dic error:nil];
-//            [dataSourceArr addObject:model];
-//        }
-//        NSLog(@"dataSourceArr = %@",dataSourceArr);
-////            [_tableView reloadData];
-//        kkkArr = responseObject[@"data"][@"list"];
-//        [_tableView reloadData];
-        
-        [_tableView.mj_header endRefreshing];
-        [_tableView.mj_footer endRefreshing];
-        if (pageNum == 1) {
-            dataSourceArr = [[NSMutableArray alloc]init];
-        }
-        if (![dataArr isKindOfClass:[NSArray class]]) {
-            [_tableView reloadData];
+        NSString *stringnumber = responseObject[@"data"][@"CountPage"];
+        NSInteger i = [stringnumber integerValue];
+        NSLog(@"stringnumber = %@",stringnumber);
+        if (pageNum>i && i != 0) {
             [_tableView.mj_footer endRefreshingWithNoMoreData];
-            return ;
+        }else{
+            [_tableView.mj_header endRefreshing];
+            [_tableView.mj_footer endRefreshing];
+            NSArray *dataArr = responseObject[@"data"][@"list"];
+            kkkArr = responseObject[@"data"][@"list"];
+            
+            if (pageNum == 1) {
+                dataSourceArr = [[NSMutableArray alloc]init];
+            }
+            
+            if (![dataArr isKindOfClass:[NSArray class]]) {
+                [_tableView reloadData];
+                [_tableView.mj_footer endRefreshingWithNoMoreData];
+                return ;
+            }
+            if ([dataArr count] < 10) {
+                [_tableView.mj_footer endRefreshingWithNoMoreData];
+            }
+            for (NSDictionary *dic in dataArr) {
+                zfListModel *model =  [[zfListModel alloc]initWithDictionary:dic error:nil];
+                [dataSourceArr addObject:model];
+            }
+            [self.tableView reloadData];
         }
-        if ([dataArr count] < 10) {
-            [_tableView.mj_footer endRefreshingWithNoMoreData];
-        }
-        dataSourceArr = [NSMutableArray array];
-        for (NSDictionary *dic in dataArr) {
-           zfListModel *model =  [[zfListModel alloc]initWithDictionary:dic error:nil];
-            [dataSourceArr addObject:model];
-        }
-        [self.tableView reloadData];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
     }];
+//    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+////        NSLog(@"gouwuche--%@",responseObject);
+//
+//        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+//        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+//        NSLog(@"dataStr = %@",dataStr);
+//
+//        NSArray *dataArr = responseObject[@"data"][@"list"];
+//         kkkArr = responseObject[@"data"][@"list"];
+////        [_tableView.mj_header endRefreshing];
+////        [_tableView.mj_footer endRefreshing];
+////        NSArray *dataArr = responseObject[@"data"][@"list"];
+////        dataSourceArr = [[NSMutableArray alloc]init];
+////        for (NSDictionary *dic in dataArr) {
+////            zfListModel *model =  [[zfListModel alloc]initWithDictionary:dic error:nil];
+////            [dataSourceArr addObject:model];
+////        }
+////        NSLog(@"dataSourceArr = %@",dataSourceArr);
+//////            [_tableView reloadData];
+////        kkkArr = responseObject[@"data"][@"list"];
+////        [_tableView reloadData];
+//
+//        [_tableView.mj_header endRefreshing];
+//        [_tableView.mj_footer endRefreshing];
+//        if (pageNum == 1) {
+//            dataSourceArr = [[NSMutableArray alloc]init];
+//        }
+//        if (![dataArr isKindOfClass:[NSArray class]]) {
+//            [_tableView reloadData];
+//            [_tableView.mj_footer endRefreshingWithNoMoreData];
+//            return ;
+//        }
+//        if ([dataArr count] < 10) {
+//            [_tableView.mj_footer endRefreshingWithNoMoreData];
+//        }
+//        dataSourceArr = [NSMutableArray array];
+//        for (NSDictionary *dic in dataArr) {
+//           zfListModel *model =  [[zfListModel alloc]initWithDictionary:dic error:nil];
+//            [dataSourceArr addObject:model];
+//        }
+//        [self.tableView reloadData];
+//
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        NSLog(@"failure--%@",error);
+//    }];
     
 }
 #pragma mark - 自定义导航栏

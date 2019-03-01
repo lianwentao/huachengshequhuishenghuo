@@ -52,7 +52,7 @@
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor whiteColor];
-    [self getData];
+//    [self getData];
     [self createdUI];
 }
 - (void)getData{
@@ -70,35 +70,74 @@
     }
     
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/institution/merchantList"];
-    [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
+    
+    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
         NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSLog(@"dataStr = %@",dataStr);
         
         NSArray *dataArr = responseObject[@"data"];
-        [_tableView.mj_header endRefreshing];
-        [_tableView.mj_footer endRefreshing];
-        _dataSourceArr = [NSMutableArray array];
-        for (NSDictionary *dic in dataArr) {
+        NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+        arr = [responseObject objectForKey:@"data"];
+        NSString *stringnumber = [[arr objectAtIndex:0] objectForKey:@"total_Pages"];
+        NSInteger i = [stringnumber integerValue];
+        if (pageNum>i) {
+            [_tableView.mj_footer endRefreshingWithNoMoreData];
+        }else{
+            [_tableView.mj_header endRefreshing];
+            [_tableView.mj_footer endRefreshing];
             
-            model = [[businessVCModel alloc]initWithDictionary:dic error:NULL];
-            [_dataSourceArr addObject:model];
+            if (pageNum == 1) {
+                _dataSourceArr = [[NSMutableArray alloc]init];
+            }
+            if (![dataArr isKindOfClass:[NSArray class]]) {
+                [_tableView reloadData];
+                [_tableView.mj_footer endRefreshingWithNoMoreData];
+                return ;
+            }
+            if ([dataArr count] < 5) {
+                [_tableView.mj_footer endRefreshingWithNoMoreData];
+            }
+            for (NSDictionary *dic in dataArr) {
+                
+                model = [[businessVCModel alloc]initWithDictionary:dic error:NULL];
+                [_dataSourceArr addObject:model];
+            }
+            [self.tableView reloadData];
         }
-        serviceArr = [NSMutableArray array];
-        for (NSDictionary *serviceDic in model.service) {
-            serviceModel *sModel = [[serviceModel alloc]initWithDictionary:serviceDic error:NULL];
-            [serviceArr addObject:sModel];
-        }
-        
-        [_tableView reloadData];
-        
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
+        NSLog(@"failure--%@",error);
     }];
+//    [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+//
+//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//
+//        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+//        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+//        NSLog(@"dataStr = %@",dataStr);
+//
+//        NSArray *dataArr = responseObject[@"data"];
+//        [_tableView.mj_header endRefreshing];
+//        [_tableView.mj_footer endRefreshing];
+//        _dataSourceArr = [NSMutableArray array];
+//        for (NSDictionary *dic in dataArr) {
+//
+//            model = [[businessVCModel alloc]initWithDictionary:dic error:NULL];
+//            [_dataSourceArr addObject:model];
+//        }
+//        serviceArr = [NSMutableArray array];
+//        for (NSDictionary *serviceDic in model.service) {
+//            serviceModel *sModel = [[serviceModel alloc]initWithDictionary:serviceDic error:NULL];
+//            [serviceArr addObject:sModel];
+//        }
+//
+//        [_tableView reloadData];
+//
+//
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//
+//    }];
     
 }
 -(void)createdUI{
@@ -135,7 +174,7 @@
     [self.view addSubview:_tableView];
     
     WS(ws);
-    _dataSourceArr = [[NSMutableArray alloc] init];
+//    _dataSourceArr = [[NSMutableArray alloc] init];
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [ws.tableView.mj_footer endRefreshing];
         pageNum = 1;

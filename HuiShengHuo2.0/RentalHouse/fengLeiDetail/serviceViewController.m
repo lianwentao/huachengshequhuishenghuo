@@ -49,34 +49,118 @@
     if ([_sqfStr isEqualToString:@"0"]) {
         dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"i_id":_sID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
     }else{
-        dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":_sID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+        dict = @{@"p":[NSString stringWithFormat:@"%ld",pageNum],@"c_id":[userinfo objectForKey:@"community_id"],@"category":_sID};
     }
     NSLog(@"dict = %@",dict);
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/service/serviceList"];
-    [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
+    
+    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
         NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSLog(@"dataStr = %@",dataStr);
         
         NSArray *dataArr = responseObject[@"data"];
-        [_tableView.mj_header endRefreshing];
-        [_tableView.mj_footer endRefreshing];
-        _dataSourceArr = [NSMutableArray array];
-        for (NSDictionary *dic in dataArr) {
+        NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+        arr = [responseObject objectForKey:@"data"];
+        NSString *stringnumber = [[arr objectAtIndex:0] objectForKey:@"total_Pages"];
+        NSInteger i = [stringnumber integerValue];
+        if (pageNum>i) {
+            [_tableView.mj_footer endRefreshingWithNoMoreData];
+        }else{
+            [_tableView.mj_header endRefreshing];
+            [_tableView.mj_footer endRefreshing];
             
-            fwListModel *model = [[fwListModel alloc]initWithDictionary:dic error:NULL];
-            [_dataSourceArr addObject:model];
+            if (pageNum == 1) {
+                _dataSourceArr = [[NSMutableArray alloc]init];
+            }
+            if (![dataArr isKindOfClass:[NSArray class]]) {
+                [_tableView reloadData];
+                [_tableView.mj_footer endRefreshingWithNoMoreData];
+                return ;
+            }
+            if ([dataArr count] < 10) {
+                [_tableView.mj_footer endRefreshingWithNoMoreData];
+            }
+            for (NSDictionary *dic in dataArr) {
+                
+                fwListModel *model = [[fwListModel alloc]initWithDictionary:dic error:NULL];
+                [_dataSourceArr addObject:model];
+            }
+            [self.tableView reloadData];
         }
         
-        [_tableView reloadData];
-        
-        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
+        NSLog(@"failure--%@",error);
     }];
+//    [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+//
+//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//
+//        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+//        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+//        NSLog(@"dataStr = %@",dataStr);
+//
+//        NSArray *dataArr = responseObject[@"data"];
+//        NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+//        arr = [responseObject objectForKey:@"data"];
+//        NSString *stringnumber = [[arr objectAtIndex:0] objectForKey:@"total_Pages"];
+//        NSInteger i = [stringnumber integerValue];
+//        if (pageNum>i) {
+//           [_tableView.mj_footer endRefreshingWithNoMoreData];
+//        }else{
+//            [_tableView.mj_header endRefreshing];
+//            [_tableView.mj_footer endRefreshing];
+//
+//            if (pageNum == 1) {
+//                _dataSourceArr = [[NSMutableArray alloc]init];
+//            }
+//            if (![dataArr isKindOfClass:[NSArray class]]) {
+//                [_tableView reloadData];
+//                [_tableView.mj_footer endRefreshingWithNoMoreData];
+//                return ;
+//            }
+//            if ([dataArr count] < 10) {
+//                [_tableView.mj_footer endRefreshingWithNoMoreData];
+//            }
+//            for (NSDictionary *dic in dataArr) {
+//
+//                fwListModel *model = [[fwListModel alloc]initWithDictionary:dic error:NULL];
+//                [_dataSourceArr addObject:model];
+//            }
+//            [self.tableView reloadData];
+//        }
+////        [_tableView.mj_header endRefreshing];
+////        [_tableView.mj_footer endRefreshing];
+//////        _dataSourceArr = [NSMutableArray array];
+//////        for (NSDictionary *dic in dataArr) {
+//////
+//////            fwListModel *model = [[fwListModel alloc]initWithDictionary:dic error:NULL];
+//////            [_dataSourceArr addObject:model];
+//////        }
+//////
+//////        [_tableView reloadData];
+////
+////        if (pageNum == 1) {
+////            _dataSourceArr = [[NSMutableArray alloc]init];
+////        }
+////        if (![dataArr isKindOfClass:[NSArray class]]) {
+////            [_tableView reloadData];
+////            [_tableView.mj_footer endRefreshingWithNoMoreData];
+////            return ;
+////        }
+////        if ([dataArr count] < 10) {
+////            [_tableView.mj_footer endRefreshingWithNoMoreData];
+////        }
+////        for (NSDictionary *dic in dataArr) {
+////
+////            fwListModel *model = [[fwListModel alloc]initWithDictionary:dic error:NULL];
+////            [_dataSourceArr addObject:model];
+////        }
+////        [self.tableView reloadData];
+//
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//
+//    }];
 }
 -(void)createdUI{
     UIView *topView = [[UIView alloc]init];
@@ -111,19 +195,64 @@
     [self.view addSubview:_tableView];
     
     WS(ws);
-    _dataSourceArr = [[NSMutableArray alloc] init];
+//    _dataSourceArr = [[NSMutableArray alloc] init];
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [ws.tableView.mj_footer endRefreshing];
         pageNum = 1;
         [ws getData];
         
     }];
-    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+//     _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(postup)];
+    _tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [ws.tableView.mj_header endRefreshing];
         pageNum = pageNum+1;
         [ws getData];
     }];
     [self.tableView.mj_header beginRefreshing];
+}
+- (void)postup{
+     pageNum = pageNum+1;
+    //1.创建会话管理者
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    //2.封装参数
+    NSDictionary *dict = nil;
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    if ([_sqfStr isEqualToString:@"0"]) {
+        dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"i_id":_sID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+    }else{
+        dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":_sID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+    }
+    NSLog(@"dict = %@",dict);
+    NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/service/serviceList"];
+    [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSLog(@"dataStr = %@",dataStr);
+        NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
+        arr = [responseObject objectForKey:@"data"];
+        NSString *stringnumber = [[arr objectAtIndex:0] objectForKey:@"total_Pages"];
+        NSInteger i = [stringnumber integerValue];
+        if (pageNum>i) {
+            _tableView.mj_footer.state = MJRefreshStateNoMoreData;
+            [_tableView.mj_footer resetNoMoreData];
+        }else{
+            for (NSDictionary *dic in arr) {
+                
+                fwListModel *model = [[fwListModel alloc]initWithDictionary:dic error:NULL];
+                [_dataSourceArr addObject:model];
+            }
+        }
+        
+        [_tableView.mj_footer endRefreshing];
+        [_tableView reloadData];
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
 }
 -(void)itemAction{
     fwflViewController *fVC = [[fwflViewController alloc]init];
