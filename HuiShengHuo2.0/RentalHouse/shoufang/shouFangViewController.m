@@ -101,7 +101,7 @@
     
     
     WS(ws);
-    dataSourceArr = [[NSMutableArray alloc] init];
+//    dataSourceArr = [[NSMutableArray alloc] init];
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [ws.tableView.mj_footer endRefreshing];
         pageNum = 1;
@@ -196,23 +196,6 @@
 }
 
 -(void)loadData{
-//    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-//    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-//    NSLog(@"dict = %@",dict);
-//    NSString *strurl = [API stringByAppendingString:@"secondHouseType/gethousetype"];
-//    NSLog(@"strurl = %@",strurl);
-//    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        //        NSLog(@"gouwuche--%@",responseObject);
-//
-//        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
-//        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-//        NSLog(@"dataStr = %@",dataStr);
-//
-//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//        NSLog(@"failure--%@",error);
-//    }];
 
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSLog(@"community_name = %@",_community_name);
@@ -244,7 +227,7 @@
         _moneyOne = @"";
     }
 
-    NSDictionary *dict = @{@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":@"",@"community_name":_community_name,@"community_id":[userinfo objectForKey:@"community_id"]};
+    NSDictionary *dict = @{@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":@"",@"community_name":_community_name,@"community_id":[userinfo objectForKey:@"community_id"],@"page":[NSString stringWithFormat:@"%ld",pageNum]};
 
     NSLog(@"dict = %@",dict);
 
@@ -252,50 +235,89 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSString *strurl = [API stringByAppendingString:@"secondHouseType/getSellList"];
     NSLog(@"strurl = %@",strurl);
-    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"responseObject = %@",responseObject);
         NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
         NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSLog(@"dataStr = %@",dataStr);
-        NSArray *dataArr = responseObject[@"data"][@"list"];
-        kkkArr = responseObject[@"data"][@"list"];
-//        [_tableView.mj_header endRefreshing];
-//        [_tableView.mj_footer endRefreshing];
-//        dataSourceArr = [NSMutableArray array];
-//
-//        kkkArr = responseObject[@"data"][@"list"];
-//        for (NSDictionary *dic in dataArr) {
-//            model =  [[sfListModel alloc]initWithDictionary:dic error:nil];
-//            [dataSourceArr addObject:model];
-//        }
-//
-//        [_tableView reloadData];
         
-        [_tableView.mj_header endRefreshing];
-        [_tableView.mj_footer endRefreshing];
-        if (pageNum == 1) {
-            dataSourceArr = [[NSMutableArray alloc]init];
-        }
-        if (![dataArr isKindOfClass:[NSArray class]]) {
-            [_tableView reloadData];
+        NSString *stringnumber = responseObject[@"data"][@"CountPage"];
+        NSInteger i = [stringnumber integerValue];
+        NSLog(@"stringnumber = %@",stringnumber);
+        if (pageNum>i && i != 0) {
             [_tableView.mj_footer endRefreshingWithNoMoreData];
-            return ;
+        }else{
+            [_tableView.mj_header endRefreshing];
+            [_tableView.mj_footer endRefreshing];
+            NSArray *dataArr = responseObject[@"data"][@"list"];
+            kkkArr = responseObject[@"data"][@"list"];
+
+            if (pageNum == 1) {
+                dataSourceArr = [[NSMutableArray alloc]init];
+            }
+    
+            if (![dataArr isKindOfClass:[NSArray class]]) {
+                [_tableView reloadData];
+                [_tableView.mj_footer endRefreshingWithNoMoreData];
+                return ;
+            }
+            if ([dataArr count] < 10) {
+                [_tableView.mj_footer endRefreshingWithNoMoreData];
+            }
+            for (NSDictionary *dic in dataArr) {
+                sfListModel *model =  [[sfListModel alloc]initWithDictionary:dic error:nil];
+                [dataSourceArr addObject:model];
+            }
+            [self.tableView reloadData];
         }
-        if ([dataArr count] < 10) {
-            [_tableView.mj_footer endRefreshingWithNoMoreData];
-        }
-        dataSourceArr = [NSMutableArray array];
-        for (NSDictionary *dic in dataArr) {
-            
-            sfListModel *model =  [[sfListModel alloc]initWithDictionary:dic error:nil];
-            
-            [dataSourceArr addObject:model];
-            
-        }
-        [self.tableView reloadData];
 
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"failure--%@",error);
     }];
+//    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+//        NSString *dataStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+//        NSLog(@"dataStr = %@",dataStr);
+//        NSArray *dataArr = responseObject[@"data"][@"list"];
+//        kkkArr = responseObject[@"data"][@"list"];
+////        [_tableView.mj_header endRefreshing];
+////        [_tableView.mj_footer endRefreshing];
+////        dataSourceArr = [NSMutableArray array];
+////
+////        kkkArr = responseObject[@"data"][@"list"];
+////        for (NSDictionary *dic in dataArr) {
+////            model =  [[sfListModel alloc]initWithDictionary:dic error:nil];
+////            [dataSourceArr addObject:model];
+////        }
+////
+////        [_tableView reloadData];
+//
+//        [_tableView.mj_header endRefreshing];
+//        [_tableView.mj_footer endRefreshing];
+//        if (pageNum == 1) {
+//            dataSourceArr = [[NSMutableArray alloc]init];
+//        }
+//        if (![dataArr isKindOfClass:[NSArray class]]) {
+//            [_tableView reloadData];
+//            [_tableView.mj_footer endRefreshingWithNoMoreData];
+//            return ;
+//        }
+//        if ([dataArr count] < 10) {
+//            [_tableView.mj_footer endRefreshingWithNoMoreData];
+//        }
+//        dataSourceArr = [NSMutableArray array];
+//        for (NSDictionary *dic in dataArr) {
+//
+//            sfListModel *model =  [[sfListModel alloc]initWithDictionary:dic error:nil];
+//
+//            [dataSourceArr addObject:model];
+//
+//        }
+//        [self.tableView reloadData];
+//
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        NSLog(@"failure--%@",error);
+//    }];
     
 }
 
@@ -335,7 +357,7 @@
     [self.view addSubview:_tableView];
 
     WS(ws);
-    dataSourceArr = [[NSMutableArray alloc] init];
+//    dataSourceArr = [[NSMutableArray alloc] init];
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [ws.tableView.mj_footer endRefreshing];
         pageNum = 1;

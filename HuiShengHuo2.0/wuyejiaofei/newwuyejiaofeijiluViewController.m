@@ -83,7 +83,7 @@
     _TabelView.dataSource = self;
     _TabelView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _TabelView.backgroundColor = BackColor;
-    _TabelView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(postup)];
+    //_TabelView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(postup)];
     [self.view addSubview:_TabelView];
 }
 #pragma mark - TableView的代理方法
@@ -123,7 +123,55 @@
 }
 - (void)postup
 {
+    //1.创建会话管理者
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    _pagenum = _pagenum+1;
+    NSString *string = [NSString stringWithFormat:@"%d",_pagenum];
+    NSDictionary *dict = nil;
     
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
+    dict = @{@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"p":string};
+    NSString *strurl = [API stringByAppendingString:@"property/getUserBill"];
+    [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+            NSArray *arr = [[NSArray alloc] init];
+            arr = [responseObject objectForKey:@"data"];
+            [_DataArr addObjectsFromArray:arr];
+            NSString *stringnumber = [[arr objectAtIndex:0] objectForKey:@"total_Pages"];
+            NSInteger i = [stringnumber integerValue];
+            if (_pagenum>i) {
+                _TabelView.mj_footer.state = MJRefreshStateNoMoreData;
+                [_TabelView.mj_footer resetNoMoreData];
+            }else{
+                for (int i=0; i<arr.count; i++) {
+                    newjiaofeimodel *model = [[newjiaofeimodel alloc] init];
+                    NSTimeInterval interval    =[[[[_DataArr objectAtIndex:i] objectForKey:@"info"] objectForKey:@"pay_time"] doubleValue];
+                    NSDate *date               = [NSDate dateWithTimeIntervalSince1970:interval];
+                    
+                    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+                    NSString *dateString       = [formatter stringFromDate: date];
+                    model.time = dateString;
+                    WBLog(@"dateString====%@",dateString);
+                    //                model.price = [NSString stringWithFormat:@"%@:%@元",[[_DataArr objectAtIndex:i] objectForKey:@"c_name"],[[_DataArr objectAtIndex:i] objectForKey:@"money"]];
+                    //                model.biahao = [[_DataArr objectAtIndex:i] objectForKey:@"order_number"];
+                    model.name = [NSString stringWithFormat:@"%@",[[[_DataArr objectAtIndex:i] objectForKey:@"info"] objectForKey:@"name"]];
+                    model.address = [[[_DataArr objectAtIndex:i] objectForKey:@"info"] objectForKey:@"address"];
+                    model.zhangdanhao = [NSString stringWithFormat:@"账单号:%@",[[[_DataArr objectAtIndex:i] objectForKey:@"info"] objectForKey:@"order_num"]];
+                    model.listarr = [[_DataArr objectAtIndex:i] objectForKey:@"list"];
+                    
+                    [modelArr addObject:model];
+                }
+            }
+            
+        }
+        [_TabelView.mj_footer endRefreshing];
+        [_TabelView reloadData];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"failure--%@",error);
+    }];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

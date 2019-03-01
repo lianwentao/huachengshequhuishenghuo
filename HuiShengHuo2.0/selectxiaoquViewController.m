@@ -47,7 +47,7 @@
     self.title = @"选择小区";
     
     
-    [self createtableview];
+   
     [self createdaohangolan];
     [self startLocation];
     
@@ -230,18 +230,106 @@
 }
 - (void)createtableview
 {
-    _Tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height+40+48, Main_width, Main_Height-48-RECTSTATUS.size.height-40) ];
-    _Tableview.estimatedRowHeight = 0;
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.001)];
-    _Tableview.tableHeaderView = view;
-    UIView *view1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.001)];
-    _Tableview.tableFooterView = view1;
-    _Tableview.delegate = self;
-    _Tableview.dataSource = self;
-    [self.view addSubview:_Tableview];
+    if (self.letterResultArr.count != 0) {
+        _Tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, RECTSTATUS.size.height+40+48, Main_width, Main_Height-48-RECTSTATUS.size.height-40) ];
+        _Tableview.estimatedRowHeight = 0;
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.001)];
+        _Tableview.tableHeaderView = view;
+        UIView *view1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.001)];
+        _Tableview.tableFooterView = view1;
+        _Tableview.delegate = self;
+        _Tableview.dataSource = self;
+        [self.view addSubview:_Tableview];
+    }else{
+        
+        UIView *view = [[UIView alloc]init];
+        view.frame = CGRectMake(0, RECTSTATUS.size.height+40+48, Main_width, Main_Height-48-RECTSTATUS.size.height-40);
+        view.backgroundColor = [UIColor colorWithRed:243/255.0 green:249/255.0 blue:255/255.0 alpha:1];
+        
+        UIImageView *imgView = [[UIImageView alloc]init];
+        imgView.frame = CGRectMake(Main_width/2-75, 65, 150, 150);
+        imgView.image = [UIImage imageNamed:@"pinglunweikong"];
+        [view addSubview:imgView];
+        
+        UILabel *textLab = [[UILabel alloc]init];
+        textLab.text = @"该地区暂无服务小区如需合作请与我们联系";
+        NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
+        CGSize labelSize = [textLab.text boundingRectWithSize:CGSizeMake(160, 5000) options: NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+        textLab.numberOfLines = 0;//表示label可以多行显示
+        textLab.textColor =[UIColor colorWithHexString:@"#555555"];
+        textLab.font = [UIFont systemFontOfSize:15];
+        textLab.frame = CGRectMake(Main_width/2-80, CGRectGetMaxY(imgView.frame)+20, 160, labelSize.height);
+        [view addSubview:textLab];
+        
+        UIButton *zhBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        zhBtn.frame = CGRectMake(55, CGRectGetMaxY(textLab.frame)+50, 104, 40);
+        zhBtn.backgroundColor = [UIColor colorWithHexString:@"#FF5722"];
+        zhBtn.layer.cornerRadius = 5.0;
+        zhBtn.titleLabel.textColor = [UIColor whiteColor];
+        [zhBtn setTitle:@"智慧小区" forState:UIControlStateNormal];
+        [zhBtn addTarget:self action:@selector(zhiHui:) forControlEvents:UIControlEventTouchUpInside];
+        [view addSubview:zhBtn];
+        
+        UIButton *callBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        callBtn.frame = CGRectMake(Main_width-55-104, CGRectGetMaxY(textLab.frame)+50, 104, 40);
+        callBtn.backgroundColor = [UIColor colorWithHexString:@"#FFB638"];
+        callBtn.layer.cornerRadius = 5.0;
+        callBtn.titleLabel.textColor = [UIColor whiteColor];
+        [callBtn setTitle:@"联系我们" forState:UIControlStateNormal];
+        [callBtn addTarget:self action:@selector(call:) forControlEvents:UIControlEventTouchUpInside];
+        [view addSubview:callBtn];
+   
+       
+        [self.view addSubview:view];
+        
+    }
+    
     
     [self.view addSubview:self.pickerView];
 }
+- (void)zhiHui:(UIButton *)btn{
+    
+    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    Person *p;
+    NSString *str = @"智慧小区";
+    // 存储数据
+    [userinfo setObject:str forKey:@"community_name"];
+    [userinfo setObject:@"70" forKey:@"community_id"];
+    [userinfo setObject:p.is_new forKey:@"is_new"];
+    // 立刻同步
+    [userinfo synchronize];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"changetitle" object:nil userInfo:nil];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    
+}
+- (void)call:(UIButton *)btn{
+    
+    NSString *telStr = @"0354-535355";
+    UIAlertController*alert = [UIAlertController
+                               alertControllerWithTitle: @"客服电话"
+                               message: telStr
+                               preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addAction:[UIAlertAction
+                      actionWithTitle:@"取消"
+                      style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                      {
+                          
+                      }]];
+    [alert addAction:[UIAlertAction
+                      actionWithTitle:@"拨打"
+                      style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+                      {
+                          NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"tel:%@",telStr];
+                          UIWebView *callWebview = [[UIWebView alloc] init];
+                          [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+                          [self.view addSubview:callWebview];
+                      }]];
+    //弹出提示框
+    [self presentViewController:alert
+                       animated:YES completion:nil];
+}
+
 #pragma mark - UITableView -
 //section的titleHeader
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -277,6 +365,7 @@
     if (cell == nil){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CELL"];
     }
+    
     Person *p = [[self.letterResultArr objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     cell.textLabel.text = p.name;
     
@@ -378,6 +467,7 @@
                 self.letterResultArr = [BMChineseSort sortObjectArray:_Dataarr Key:@"name"];
                 [_Tableview reloadData];
         NSLog(@"location--%@--%@",[responseObject class],responseObject);
+         [self createtableview];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
         NSLog(@"failure--%@",error);
