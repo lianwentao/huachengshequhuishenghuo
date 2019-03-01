@@ -11,6 +11,7 @@
 #import "newjiaofeimodel.h"
 #import "newjiaofeiTableViewCell.h"
 #import "MJRefresh.h"
+#import "afteryanzhengViewController.h"
 @interface newwuyejiaofeijiluViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     NSMutableArray *modelArr;
@@ -32,6 +33,20 @@
     
     self.title = @"缴费记录";
     // Do any additional setup after loading the view.
+}
+-(BOOL)navigationShouldPopOnBackButton {
+    WBLog(@"222");
+    [self backBtnClicked];
+    
+    return NO;
+}
+- (void)backBtnClicked{
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isKindOfClass:[afteryanzhengViewController class]]) {
+            afteryanzhengViewController *af =(afteryanzhengViewController *)controller;
+            [self.navigationController popToViewController:af animated:YES];
+        }
+    }
 }
 - (void)getData
 {
@@ -95,11 +110,11 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray *arr = [[_DataArr objectAtIndex:indexPath.row] objectForKey:@"list"];
-    long j=arr.count+1;
-//    for (int i = 0; i<arr.count; i++) {
-//        NSArray *arrlist = [arr objectAtIndex:indexPath.row];
-//        j = arrlist.count+j;
-//    }
+    long j=arr.count;
+    for (int i = 0; i<arr.count; i++) {
+        NSArray *arrlist = [arr objectAtIndex:i];
+        j = arrlist.count+j;
+    }
     return 180+35*j;
 }
 // 分组的数量

@@ -294,7 +294,8 @@
     NSString *str = @"智慧小区";
     // 存储数据
     [userinfo setObject:str forKey:@"community_name"];
-    [userinfo setObject:@"70" forKey:@"community_id"];
+//    [userinfo setObject:@"70" forKey:@"community_id"];//测试
+    [userinfo setObject:@"66" forKey:@"community_id"];//线上
     [userinfo setObject:p.is_new forKey:@"is_new"];
     // 立刻同步
     [userinfo synchronize];
