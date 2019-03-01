@@ -60,6 +60,7 @@
                 [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
                 NSString *dateString       = [formatter stringFromDate: date];
                 model.time = dateString;
+                WBLog(@"dateString====%@",dateString);
 //                model.price = [NSString stringWithFormat:@"%@:%@元",[[_DataArr objectAtIndex:i] objectForKey:@"c_name"],[[_DataArr objectAtIndex:i] objectForKey:@"money"]];
 //                model.biahao = [[_DataArr objectAtIndex:i] objectForKey:@"order_number"];
                 model.name = [NSString stringWithFormat:@"%@",[[[_DataArr objectAtIndex:i] objectForKey:@"info"] objectForKey:@"name"]];
@@ -94,13 +95,12 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray *arr = [[_DataArr objectAtIndex:indexPath.row] objectForKey:@"list"];
-    long j=arr.count;
-    for (int i = 0; i<arr.count; i++) {
-        NSArray *arrlist = [arr objectAtIndex:indexPath.row];
-        j = arrlist.count+j;
-    }
+    long j=arr.count+1;
+//    for (int i = 0; i<arr.count; i++) {
+//        NSArray *arrlist = [arr objectAtIndex:indexPath.row];
+//        j = arrlist.count+j;
+//    }
     return 180+35*j;
-    
 }
 // 分组的数量
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

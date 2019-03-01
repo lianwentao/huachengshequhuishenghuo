@@ -446,7 +446,7 @@
         
         UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width/2, 35)];
         NSLog(@"%@",[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] class]);
-        if ([[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] isKindOfClass:[NSNull class]]||[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] isEqualToString:@""]) {
+        if ([[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] isKindOfClass:[NSNull class]]||[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] isEqualToString:@"0"]) {
             NSTimeInterval interval    =[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"bill_time"] doubleValue];
             NSDate *date               = [NSDate dateWithTimeIntervalSince1970:interval];
             
@@ -573,7 +573,7 @@
         
         NSString *string = @"";
         if (_tmpBtn.tag == 0) {
-            if ([is_property isEqualToString:@"0"]) {
+            if ([is_property isEqualToString:@"1"]) {
                 [MBProgressHUD showToastToView:self.view withText:is_property_cn];
             }else{
                 NSArray *arr = [wuyeDic objectForKey:@"list"];
