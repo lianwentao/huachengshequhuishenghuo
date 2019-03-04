@@ -271,14 +271,14 @@
                     //获取第2个输入框；
                     passwordTextField = alertController.textFields.lastObject;
                     
-                    NSString *phoneNumber =passwordTextField.text;
-                    
+//                    NSString *phoneNumber =passwordTextField.text;
+//                    else if (![self isValidateMobile:phoneNumber]){
+//                        [MBProgressHUD showToastToView:self.view withText:@"手机号格式错误"];
+//                    }
                     if(userNameTextField.text.length==0)
                     {
                         [MBProgressHUD showToastToView:self.view withText:@"请输入姓名"];
-                    }else if (![self isValidateMobile:phoneNumber]){
-                        [MBProgressHUD showToastToView:self.view withText:@"手机号格式错误"];
-                    } else{
+                    }else{
                       [self post1];
                     }
                     

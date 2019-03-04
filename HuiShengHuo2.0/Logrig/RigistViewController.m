@@ -183,30 +183,31 @@
 {
     NSString *phoneNumber =phonbe.text;
     
-    if(![self isValidateMobile:phoneNumber])
-    {
-        [MBProgressHUD showToastToView:self.view withText:@"手机号格式错误"];
-    }else
-    {
-        NSString *gudingzifuchuan = @"hui-shenghuo.api_sms";
-        NSString *gudingjiami = [MD5 MD5:gudingzifuchuan];
-        //NSString *TEACHERLower      = [TEACHER lowercaseString];
-        NSString *str2 = [[gudingjiami lowercaseString] substringWithRange:NSMakeRange(8,16)];
-        NSString *timestring = [NSString stringWithFormat:@"%ld",time(NULL)];
-        NSString *str3 = [NSString stringWithFormat:@"%@%@%@",timestring,str2,timestring];
-        NSString *str4 = [MD5 MD5:[str3 lowercaseString]];
-        NSString *str5 = [[str4 lowercaseString] substringWithRange:NSMakeRange(0,16)];
-        
-        NSString *ApiSmstoken = str5;//,@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring
-        _dict2 = [[NSDictionary alloc] init];
-        _strurl2 = [API stringByAppendingString:@"site/reg_send_sms"];
-        _dict2 = @{@"username":phonbe.text,@"sms_type":@"login",@"phone_type":@"2",@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring};
-        [self CreatePost2];
-        timeDown = 59;
-        [self handleTimer];
-        timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
-        NSLog(@"%@---%@---%@---%@---%@---%@",gudingzifuchuan,gudingjiami,str2,str3,str4,str5);
-    }
+//    if(![self isValidateMobile:phoneNumber])
+//    {
+//        [MBProgressHUD showToastToView:self.view withText:@"手机号格式错误"];
+//    }else
+//    {
+//
+//    }
+    NSString *gudingzifuchuan = @"hui-shenghuo.api_sms";
+    NSString *gudingjiami = [MD5 MD5:gudingzifuchuan];
+    //NSString *TEACHERLower      = [TEACHER lowercaseString];
+    NSString *str2 = [[gudingjiami lowercaseString] substringWithRange:NSMakeRange(8,16)];
+    NSString *timestring = [NSString stringWithFormat:@"%ld",time(NULL)];
+    NSString *str3 = [NSString stringWithFormat:@"%@%@%@",timestring,str2,timestring];
+    NSString *str4 = [MD5 MD5:[str3 lowercaseString]];
+    NSString *str5 = [[str4 lowercaseString] substringWithRange:NSMakeRange(0,16)];
+    
+    NSString *ApiSmstoken = str5;//,@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring
+    _dict2 = [[NSDictionary alloc] init];
+    _strurl2 = [API stringByAppendingString:@"site/reg_send_sms"];
+    _dict2 = @{@"username":phonbe.text,@"sms_type":@"login",@"phone_type":@"2",@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring};
+    [self CreatePost2];
+    timeDown = 59;
+    [self handleTimer];
+    timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
+    NSLog(@"%@---%@---%@---%@---%@---%@",gudingzifuchuan,gudingjiami,str2,str3,str4,str5);
 }
 -(void)handleTimer
 {
@@ -241,7 +242,7 @@
             //            [LoadingView stopAnimating];
             //            LoadingView.hidden = YES;
         }else{
-            [MBProgressHUD showToastToView:self.view withText:@"验证码发送失败"];
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         

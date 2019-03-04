@@ -608,6 +608,7 @@
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"]};
+    WBLog(@"8888888--%@",[user objectForKey:@"community_id"]);
     //3.发送GET请求
     /*
      */

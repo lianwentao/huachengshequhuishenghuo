@@ -151,18 +151,19 @@
 #pragma mark - 发送验证码
 - (void)daojishi
 {
-    NSString *phoneNumber =phonbe.text;
+//    NSString *phoneNumber =phonbe.text;
     
-    if(![self isValidateMobile:phoneNumber])
-    {
-        [MBProgressHUD showToastToView:self.view withText:@"手机号格式错误"];
-    }else
-    {
-        [self sendsms];
-        timeDown = 59;
-        
-        timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
-    }
+//    if(![self isValidateMobile:phoneNumber])
+//    {
+//        [MBProgressHUD showToastToView:self.view withText:@"手机号格式错误"];
+//    }else
+//    {
+//
+//    }
+    [self sendsms];
+    timeDown = 59;
+    
+    timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
 }
 -(void)handleTimer
 {

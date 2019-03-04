@@ -157,6 +157,7 @@
 }
 - (void)change
 {
+    //[self getdata];
     [_mainTableView.mj_header beginRefreshing];
 }
 - (void)setupNavItems
@@ -1749,7 +1750,9 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
+    
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    WBLog(@"8888888--%@",[user objectForKey:@"community_id"]);
     NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
