@@ -30,7 +30,6 @@
 #import "PrefixHeader.pch"
 #import "MD5.h"
 #import "jiaofeiViewController.h"
-#import "AppKeFuLib.h"
 #import "MJRefresh.h"
 #import "myserviceViewController.h"
 #import "bangdingqianViewController.h"
@@ -828,129 +827,129 @@
         }
     }
 }
-//接收是否登录成功通知
-- (void)isConnected:(NSNotification*)notification
-{
-    NSNumber *isConnected = [notification object];
-    if ([isConnected boolValue])
-    {
-        //登录成功
-        //self.title = @"微客服4(登录成功)";
-        
-        //
-        //查询工作组在线状态，需要将wgdemo替换为开发者自己的 “工作组名称”，请在官方管理后台申请，地址：http://appkefu.com/AppKeFu/admin
-        [[AppKeFuLib sharedInstance] queryWorkgroupOnlineStatus:@"hckf001"];
-    }
-    else
-    {
-        //登录失败
-        //self.title = @"微客服4(登录失败)";
-        
-    }
-}
-
-#pragma mark OnlineStatus
-
-//监听工作组在线状态
--(void)notifyOnlineStatus:(NSNotification *)notification
-{
-    NSDictionary *dict = [notification userInfo];
-    
-    //客服工作组名称
-    NSString *workgroupName = [dict objectForKey:@"hckf001"];
-    
-    //客服工作组在线状态
-    NSString *status   = [dict objectForKey:@"status"];
-    
-    NSLog(@"%s workgroupName:%@, status:%@", __PRETTY_FUNCTION__, workgroupName, status);
-    
-    //
-    if ([workgroupName isEqualToString:@"hckf001"]) {
-        
-        //客服工作组在线
-        if ([status isEqualToString:@"online"])
-        {
-            self.onlineStatus = NSLocalizedString(@"1.在线咨询演示1(在线)", nil);
-        }
-        //客服工作组离线
-        else
-        {
-            self.onlineStatus = NSLocalizedString(@"1.在线咨询演示2(离线)", nil);
-        }
-        
-    }
-    //
-    else if ([workgroupName isEqualToString:@"hckf001"]) {
-        
-        //客服工作组在线
-        if ([status isEqualToString:@"online"])
-        {
-            self.onlineStatus2 = NSLocalizedString(@"2.在线咨询演示2(在线)", nil);
-        }
-        //客服工作组离线
-        else
-        {
-            self.onlineStatus2 = NSLocalizedString(@"2.在线咨询演示2(离线)", nil);
-        }
-    }
-    
-    
-    //[self.tableView reloadData];
-}
-
-#pragma mark Message
-
-//接收到新消息
-- (void)notifyMessage:(NSNotification *)nofication
-{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    KFMessageItem *msgItem = [nofication object];
-    
-    //接收到来自客服的消息
-    if (!msgItem.isSendFromMe) {
-        //
-        NSLog(@"消息时间:%@, 工作组名称:%@, 发送消息用户名:%@",
-              msgItem.timestamp,
-              msgItem.workgroupName,
-              msgItem.username);
-        
-        //文本消息
-        if (KFMessageTypeText == msgItem.messageType) {
-            
-            NSLog(@"文本消息内容：%@", msgItem.messageContent);
-        }
-        //图片消息
-        else if (KFMessageTypeImageHTTPURL == msgItem.messageType)
-        {
-            NSLog(@"图片消息内容：%@", msgItem.messageContent);
-        }
-        //语音消息
-        else if (KFMessageTypeSoundHTTPURL == msgItem.messageType)
-        {
-            NSLog(@"语音消息内容：%@", msgItem.messageContent);
-        }
-    }
-    //[self.tableView reloadData];
-}
-
--(void)notifyXmppStreamDisconnectWithError:(NSNotification *)notification
-{
-    //登录失败
-    //self.title = @"微客服4(网络连接失败)";
-}
-
-
-#pragma mark UIAlerviewDelegate
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSLog(@"%s, %ld", __PRETTY_FUNCTION__, (unsigned long)buttonIndex);
-    if (buttonIndex == 1) {
-        
-        //清空与客服工作组 "wgdemo" 的所有聊天记录
-        [[AppKeFuLib sharedInstance] deleteMessagesWith:@"hckf001"];
-    }
-}
+////接收是否登录成功通知
+//- (void)isConnected:(NSNotification*)notification
+//{
+//    NSNumber *isConnected = [notification object];
+//    if ([isConnected boolValue])
+//    {
+//        //登录成功
+//        //self.title = @"微客服4(登录成功)";
+//
+//        //
+//        //查询工作组在线状态，需要将wgdemo替换为开发者自己的 “工作组名称”，请在官方管理后台申请，地址：http://appkefu.com/AppKeFu/admin
+//        [[AppKeFuLib sharedInstance] queryWorkgroupOnlineStatus:@"hckf001"];
+//    }
+//    else
+//    {
+//        //登录失败
+//        //self.title = @"微客服4(登录失败)";
+//
+//    }
+//}
+//
+//#pragma mark OnlineStatus
+//
+////监听工作组在线状态
+//-(void)notifyOnlineStatus:(NSNotification *)notification
+//{
+//    NSDictionary *dict = [notification userInfo];
+//
+//    //客服工作组名称
+//    NSString *workgroupName = [dict objectForKey:@"hckf001"];
+//
+//    //客服工作组在线状态
+//    NSString *status   = [dict objectForKey:@"status"];
+//
+//    NSLog(@"%s workgroupName:%@, status:%@", __PRETTY_FUNCTION__, workgroupName, status);
+//
+//    //
+//    if ([workgroupName isEqualToString:@"hckf001"]) {
+//
+//        //客服工作组在线
+//        if ([status isEqualToString:@"online"])
+//        {
+//            self.onlineStatus = NSLocalizedString(@"1.在线咨询演示1(在线)", nil);
+//        }
+//        //客服工作组离线
+//        else
+//        {
+//            self.onlineStatus = NSLocalizedString(@"1.在线咨询演示2(离线)", nil);
+//        }
+//
+//    }
+//    //
+//    else if ([workgroupName isEqualToString:@"hckf001"]) {
+//
+//        //客服工作组在线
+//        if ([status isEqualToString:@"online"])
+//        {
+//            self.onlineStatus2 = NSLocalizedString(@"2.在线咨询演示2(在线)", nil);
+//        }
+//        //客服工作组离线
+//        else
+//        {
+//            self.onlineStatus2 = NSLocalizedString(@"2.在线咨询演示2(离线)", nil);
+//        }
+//    }
+//
+//
+//    //[self.tableView reloadData];
+//}
+//
+//#pragma mark Message
+//
+////接收到新消息
+//- (void)notifyMessage:(NSNotification *)nofication
+//{
+//    NSLog(@"%s", __PRETTY_FUNCTION__);
+//
+//    KFMessageItem *msgItem = [nofication object];
+//
+//    //接收到来自客服的消息
+//    if (!msgItem.isSendFromMe) {
+//        //
+//        NSLog(@"消息时间:%@, 工作组名称:%@, 发送消息用户名:%@",
+//              msgItem.timestamp,
+//              msgItem.workgroupName,
+//              msgItem.username);
+//
+//        //文本消息
+//        if (KFMessageTypeText == msgItem.messageType) {
+//
+//            NSLog(@"文本消息内容：%@", msgItem.messageContent);
+//        }
+//        //图片消息
+//        else if (KFMessageTypeImageHTTPURL == msgItem.messageType)
+//        {
+//            NSLog(@"图片消息内容：%@", msgItem.messageContent);
+//        }
+//        //语音消息
+//        else if (KFMessageTypeSoundHTTPURL == msgItem.messageType)
+//        {
+//            NSLog(@"语音消息内容：%@", msgItem.messageContent);
+//        }
+//    }
+//    //[self.tableView reloadData];
+//}
+//
+//-(void)notifyXmppStreamDisconnectWithError:(NSNotification *)notification
+//{
+//    //登录失败
+//    //self.title = @"微客服4(网络连接失败)";
+//}
+//
+//
+//#pragma mark UIAlerviewDelegate
+//-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+//{
+//    NSLog(@"%s, %ld", __PRETTY_FUNCTION__, (unsigned long)buttonIndex);
+//    if (buttonIndex == 1) {
+//
+//        //清空与客服工作组 "wgdemo" 的所有聊天记录
+//        [[AppKeFuLib sharedInstance] deleteMessagesWith:@"hckf001"];
+//    }
+//}
 
 #pragma mark BarButtonItem
 -(void)leftBarButtonItemTouchUpInside:(UIButton *)sender
