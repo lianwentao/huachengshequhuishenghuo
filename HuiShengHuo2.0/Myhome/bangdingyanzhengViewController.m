@@ -161,9 +161,7 @@
 //
 //    }
     [self sendsms];
-    timeDown = 59;
     
-    timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
 }
 -(void)handleTimer
 {
@@ -208,6 +206,9 @@
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
             NSLog(@"发送验证码成功");
             [self handleTimer];
+            timeDown = 59;
+            
+            timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
             [MBProgressHUD showToastToView:self.view withText:@"验证码发送成功"];
         }else{
             [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];

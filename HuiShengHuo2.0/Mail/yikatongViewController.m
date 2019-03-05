@@ -127,9 +127,7 @@
         [MBProgressHUD showToastToView:self.view withText:@"请输入卡号"];
     }else{
         [self CreatePost];
-        timeDown = 59;
-        [self handleTimer];
-        timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
+        
     }
 }
 -(void)handleTimer
@@ -162,6 +160,9 @@
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
             NSLog(@"%@",responseObject);
             _key = [[responseObject objectForKey:@"data"] objectForKey:@"key"];
+            timeDown = 59;
+            [self handleTimer];
+            timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
             [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
             //            [LoadingView stopAnimating];
             //            LoadingView.hidden = YES;

@@ -596,9 +596,7 @@
     _strurl2 = [API stringByAppendingString:@"site/reg_send_sms"];
     _dict2 = @{@"username":phonbe.text,@"sms_type":@"login",@"phone_type":@"2",@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring};
     [self CreatePost2];
-    timeDown = 59;
-    [self handleTimer];
-    timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
+    
     NSLog(@"%@---%@---%@---%@---%@---%@",gudingzifuchuan,gudingjiami,str2,str3,str4,str5);
 }
 -(void)handleTimer
@@ -630,11 +628,14 @@
     [manager POST:_strurl2 parameters:_dict2 progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
             NSLog(@"发送验证码成功");
+            timeDown = 59;
+            [self handleTimer];
+            timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
             [MBProgressHUD showToastToView:self.view withText:@"验证码发送成功"];
             //            [LoadingView stopAnimating];
             //            LoadingView.hidden = YES;
         }else{
-            [MBProgressHUD showToastToView:self.view withText:@"验证码发送失败"];
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         

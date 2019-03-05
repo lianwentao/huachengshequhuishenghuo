@@ -176,9 +176,7 @@
 //        timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
 //    }
     [self CreatePost];
-    timeDown = 59;
-    [self handleTimer];
-    timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
+    
 }
 -(void)handleTimer
 {
@@ -223,6 +221,9 @@
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
             NSLog(@"发送验证码成功");
+            timeDown = 59;
+            [self handleTimer];
+            timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
             [MBProgressHUD showToastToView:self.view withText:@"验证码发送成功"];
         }else{
             [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
