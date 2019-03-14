@@ -11,9 +11,14 @@
 
 //正式
 
+
 #define API                [[NSUserDefaults standardUserDefaults] objectForKey:@"API"]
 #define API_NOAPK          [[NSUserDefaults standardUserDefaults] objectForKey:@"API_NOAPK"]
 //测试
+
+//#define API                @"http://m.hui-shenghuo.cn/apk41/"
+//#define API_NOAPK          @"http://m.hui-shenghuo.cn"
+
 //#define API                @"http://test.hui-shenghuo.cn/apk41/"
 //#define API_NOAPK          @"http://test.hui-shenghuo.cn"
 

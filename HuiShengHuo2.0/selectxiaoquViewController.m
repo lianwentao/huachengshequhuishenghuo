@@ -395,8 +395,11 @@
                           actionWithTitle:@"确定"
                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
                           {
+<<<<<<< HEAD
                               
                               //1.创建会话管理者
+=======
+>>>>>>> 330e126ca069a2d2f92e93653558478e0a18a2cc
                               AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
                               manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
                               NSString *url = @"http://test.hui-shenghuo.cn/apk41/config/config";
@@ -409,11 +412,19 @@
                               NSLog(@"dict--%@",dict);
                               [manager POST:url parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                                   
+<<<<<<< HEAD
                                 int status = [responseObject[@"status"] intValue];
                                   if (status == 1) {
                                       
                                       NSLog(@"域名 == %@",responseObject);
                                       NSString *url1 = @"";
+=======
+                                  int status = [responseObject[@"status"] intValue];
+                                  if (status == 1) {
+                                      
+                                      NSLog(@"域名 == %@",responseObject);
+                                      NSString *url1 = @"http://";
+>>>>>>> 330e126ca069a2d2f92e93653558478e0a18a2cc
                                       NSString *url2 = @"/apk41/";
                                       NSString *url3 = responseObject[@"data"][@"hui_domain_name"];
                                       NSString *url4 = [url1 stringByAppendingString:url3];
@@ -434,11 +445,16 @@
                                       [self.navigationController popToRootViewControllerAnimated:YES];
                                       
                                   }
+<<<<<<< HEAD
                             
+=======
+                                  
+>>>>>>> 330e126ca069a2d2f92e93653558478e0a18a2cc
                               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                                   
                                   NSLog(@"failure--%@",error);
                               }];
+<<<<<<< HEAD
 //                              // 存储数据
 //                              [userinfo setObject:str forKey:@"community_name"];
 //                              [userinfo setObject:p.id forKey:@"community_id"];
@@ -447,6 +463,8 @@
 //                              [userinfo synchronize];
 //                              [[NSNotificationCenter defaultCenter] postNotificationName:@"change" object:nil userInfo:nil];
 //                              [self.navigationController popToRootViewControllerAnimated:YES];
+=======
+>>>>>>> 330e126ca069a2d2f92e93653558478e0a18a2cc
                           }]];
         //弹出提示框
         [self presentViewController:alert
