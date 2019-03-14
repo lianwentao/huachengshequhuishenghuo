@@ -112,7 +112,7 @@
                                 }];
     }else{
         WBLog(@"222---%@",str);
-        [cell.imageView sd_setImageWithURL:[NSURL URLWithString:_items[indexPath.row]] placeholderImage:[UIImage imageNamed:@"背景图2.5"]];
+        [cell.imageView sd_setImageWithURL:[NSURL URLWithString:_items[indexPath.row]] placeholderImage:[UIImage imageNamed:@"展位图长2.5"]];
         cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
     }
     return cell;

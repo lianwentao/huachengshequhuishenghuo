@@ -203,15 +203,14 @@
     if (indexPath.section == 0) {
         zfDetailModel *model = dataSourceArr[0];
         NSMutableArray *imagearr = [NSMutableArray array];
-        bannerView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"背景图2.5"]];
-        if ([model.house_img isKindOfClass:[NSArray class]] && model.house_img.count != 0) {
+        if ([model.house_img isKindOfClass:[NSArray class]] && model.house_img.count > 0) {
             bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)) viewSize:CGSizeMake(Main_width,Main_width/(1.87))];
             
             for (int i=0; i<model.house_img.count; i++) {
                 NSString *strurl = [API_img stringByAppendingString:[[model.house_img objectAtIndex:i]objectForKey:@"path"]];
                 NSString *strurl1 = [strurl stringByAppendingString:Image1080];
                 NSString *strurl2 = [strurl1 stringByAppendingString:[[model.house_img objectAtIndex:i]objectForKey:@"house_imgs_name"]];
-                NSLog(@"strurl = %@",strurl2);
+                NSLog(@"strurl = %@--%@--%@",strurl2,strurl1,strurl);
                 [imagearr addObject:strurl2];
                 bannerView.items = imagearr;
             }
@@ -231,7 +230,7 @@
             topImg.userInteractionEnabled = YES;
             topImg.clipsToBounds = YES;
             topImg.contentMode = UIViewContentModeScaleAspectFill;
-            [topImg sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"背景图2.5"]];
+            [topImg sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"展位图长2.5"]];
             [cell.contentView addSubview:topImg];
         }
        

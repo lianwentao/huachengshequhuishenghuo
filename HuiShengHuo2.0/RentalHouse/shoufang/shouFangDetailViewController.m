@@ -247,7 +247,7 @@
             topImg.userInteractionEnabled = YES;
             topImg.clipsToBounds = YES;
             topImg.contentMode = UIViewContentModeScaleAspectFill;
-            [topImg sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"背景图2.5"]];
+            [topImg sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"展位图长2.5"]];
             [cell.contentView addSubview:topImg];
         }
         
