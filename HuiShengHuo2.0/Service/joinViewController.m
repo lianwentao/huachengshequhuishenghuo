@@ -34,6 +34,8 @@
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *urlstr = [API stringByAppendingString:@"userCenter/my_service_menu"];
     [manager POST:urlstr parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);

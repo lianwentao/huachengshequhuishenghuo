@@ -230,6 +230,8 @@
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"secondHouseType/getLeaseList"];
     NSLog(@"strurl = %@",strurl);
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -361,6 +363,8 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSLog(@"dict = %@",dict);
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"secondHouseType/gethousetype"];
     NSLog(@"strurl = %@",strurl);
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

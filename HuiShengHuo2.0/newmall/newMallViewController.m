@@ -127,6 +127,8 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"]};
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"shop/cart_num"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"gouwuche--%@",responseObject);
@@ -193,7 +195,8 @@
         
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"cate_id":result};
-        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API = [defaults objectForKey:@"API"];
         NSString *strurl = [API stringByAppendingString:@"shop/pro_list_cate"];
         [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
@@ -276,6 +279,7 @@
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
         NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+        NSString *API = [defaults objectForKey:@"API"];
         NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -333,6 +337,7 @@
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
         NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+        NSString *API = [defaults objectForKey:@"API"];
         NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -438,7 +443,8 @@
         bannerView.layer.cornerRadius = 4;
         bannerView.layer.masksToBounds = YES;
     }
-    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     //在这里下载网络图片
     NSString *urlstr = [API stringByAppendingString:[[guanggaoArr objectAtIndex:index] objectForKey:@"img"]];
     [bannerView.mainImageView sd_setImageWithURL:[NSURL URLWithString:urlstr]];
@@ -570,6 +576,8 @@
      task.response: 响应头信息
      第五个参数:failure 失败之后的回调
      */
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"site/get_Advertising/c_name/hc_shopindex"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -611,6 +619,8 @@
     //3.发送GET请求
     /*
      */
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"shop/shop_index_new"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         //[_DataArr addObjectsFromArray:[responseObject objectForKey:@"data"]];
@@ -659,6 +669,8 @@
      task.response: 响应头信息
      第五个参数:failure 失败之后的回调
      */
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"site/get_Advertising/c_name/hc_shop_center"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -765,7 +777,8 @@
                     
                     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
                     NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"cate_id":result};
-                    
+                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    NSString *API = [defaults objectForKey:@"API"];
                     NSString *strurl = [API stringByAppendingString:@"shop/pro_list_cate"];
                     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                         
@@ -850,6 +863,7 @@
                     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
                     NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+                    NSString *API = [defaults objectForKey:@"API"];
                     NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
                     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                         NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -907,6 +921,7 @@
                     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
                     NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+                    NSString *API = [defaults objectForKey:@"API"];
                     NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
                     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                         NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -925,6 +940,8 @@
                                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                                 NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
                                 NSDictionary *dict = @{@"apk_token":uid_username,@"room_id":[[arrrrr objectAtIndex:0] objectForKey:@"room_id"],@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+                                
+                                NSString *API = [defaults objectForKey:@"API"];
                                 NSString *strurl = [API stringByAppendingString:@"property/checkIsAjb"];
                                 [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                                     NSLog(@"%@-11111-%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -1671,6 +1688,8 @@
         NSUserDefaults *user1 = [NSUserDefaults standardUserDefaults];
         NSDictionary *dict1 = @{@"c_id":[user1 objectForKey:@"community_id"],@"p_id":pid,@"tagid":tagid,@"num":@"1",@"token":[user1 objectForKey:@"token"],@"tokenSecret":[user1 objectForKey:@"tokenSecret"]};
         //3.发送GET请求
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API = [defaults objectForKey:@"API"];
         NSString *strurl1 = [API stringByAppendingString:@"shop/check_shop_limit"];
         [manager1 GET:strurl1 parameters:dict1 progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
@@ -1838,6 +1857,8 @@
     //3.发送GET请求
     /*
      */
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"shop/goods_search_keys"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);

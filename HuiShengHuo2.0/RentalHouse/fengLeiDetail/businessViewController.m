@@ -68,7 +68,8 @@
     }else{
         dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":_bID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
     }
-    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/institution/merchantList"];
     
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

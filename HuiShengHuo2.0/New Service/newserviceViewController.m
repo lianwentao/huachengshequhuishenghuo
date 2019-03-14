@@ -66,6 +66,7 @@
     JKBannarView *bannerView;
     NSString *titleStr;
     CGFloat height;
+    AppDelegate *myDelegate;
 }
 
 @property (nonatomic,strong) MenuScrollView * menuScrollView;
@@ -76,7 +77,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    myDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     self.view.backgroundColor = [UIColor whiteColor];
     
     category = [[NSArray alloc] init];
@@ -322,7 +323,8 @@
                     
                     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
                     NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"cate_id":result};
-                    
+                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    NSString *API = [defaults objectForKey:@"API"];
                     NSString *strurl = [API stringByAppendingString:@"shop/pro_list_cate"];
                     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                         
@@ -407,6 +409,7 @@
                     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
                     NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+                    NSString *API = [defaults objectForKey:@"API"];
                     NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
                     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                         NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -464,6 +467,7 @@
                     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
                     NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+                    NSString *API = [defaults objectForKey:@"API"];
                     NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
                     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                         NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -636,7 +640,6 @@
                 view.backgroundColor = [UIColor whiteColor];
                 view.layer.cornerRadius = 3;
                 [scrollview addSubview:view];
-                
                 UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 242, 97)];
                 [img sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[imgarr objectAtIndex:i] objectForKey:@"title_img"]]] placeholderImage:[UIImage imageNamed:@"展位图长1.5"]];
                 img.clipsToBounds = YES;
@@ -928,6 +931,8 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"]};
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/index/serviceindex"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         WBLog(@"fuwujiekou--%@",responseObject);
@@ -951,6 +956,8 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = @{@"community_id":[user objectForKey:@"community_id"]};
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"site/get_Advertising/c_name/service_indextop"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         WBLog(@"fuwujiekoutop--%@",responseObject);

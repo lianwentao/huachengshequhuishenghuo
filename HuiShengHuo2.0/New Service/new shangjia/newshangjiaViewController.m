@@ -76,6 +76,8 @@
         //2.封装参数
         NSDictionary *dict = nil;
         dict = @{@"id":_shangjiaid};
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
         NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/institution/merchantDetails"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             WBLog(@"responseObject---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);

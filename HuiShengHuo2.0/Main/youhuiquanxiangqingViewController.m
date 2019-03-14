@@ -246,6 +246,8 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict = @{@"id":_id,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *urlstr = [API stringByAppendingString:@"userCenter/coupon_details_40"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         _Dic = [[NSMutableDictionary alloc] init];
@@ -270,6 +272,8 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict = @{@"m_c_id":[_Dic objectForKey:@"m_c_id"],@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *urlstr = [API stringByAppendingString:@"userCenter/use_coupon"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         

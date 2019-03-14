@@ -82,6 +82,8 @@
      task.response: 响应头信息
      第五个参数:failure 失败之后的回调
      */
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"site/get_city/1408"];
     [manager POST:strurl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         _Dataarr = [[NSMutableArray alloc] initWithCapacity:0];

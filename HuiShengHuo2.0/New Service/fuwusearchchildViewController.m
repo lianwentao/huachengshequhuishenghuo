@@ -17,6 +17,7 @@
 @interface fuwusearchchildViewController ()<UITableViewDelegate,UITableViewDataSource>{
     UITableView *_TableView;
     NSArray *dataarr;
+    AppDelegate *myDelegate;
 }
 /** 搜索历史 */
 @property (nonatomic, strong) NSMutableArray *searchHistories1;
@@ -36,7 +37,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.searchHistoriesCount = 20;
-    
+    myDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [self getdata];
     // Do any additional setup after loading the view.
 }
@@ -146,6 +147,8 @@
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"]};
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/index/serviceKeys"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         dataarr = [NSArray array];

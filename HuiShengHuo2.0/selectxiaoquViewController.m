@@ -394,14 +394,58 @@
                           actionWithTitle:@"确定"
                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
                           {
-                              // 存储数据
-                              [userinfo setObject:str forKey:@"community_name"];
-                              [userinfo setObject:p.id forKey:@"community_id"];
-                              [userinfo setObject:p.is_new forKey:@"is_new"];
-                              // 立刻同步
-                              [userinfo synchronize];
-                              [[NSNotificationCenter defaultCenter] postNotificationName:@"change" object:nil userInfo:nil];
-                              [self.navigationController popToRootViewControllerAnimated:YES];
+                              
+                              //1.创建会话管理者
+                              AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                              manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+                              NSString *url = @"http://test.hui-shenghuo.cn/apk41/config/config";
+                              
+                              NSDictionary *dict = [[NSDictionary alloc] init];
+                              int c_id = [p.id intValue];
+                              NSLog(@"c_id = %d",c_id);
+                              dict = @{@"community_id":p.id};
+                              
+                              NSLog(@"dict--%@",dict);
+                              [manager POST:url parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                                  
+                                int status = [responseObject[@"status"] intValue];
+                                  if (status == 1) {
+                                      
+                                      NSLog(@"域名 == %@",responseObject);
+                                      NSString *url1 = @"http://";
+                                      NSString *url2 = @"/apk41/";
+                                      NSString *url3 = responseObject[@"data"][@"hui_domain_name"];
+                                      NSString *url4 = [url1 stringByAppendingString:url3];
+                                      NSString *huiDomainName = [url4 stringByAppendingString:url2];
+                                      NSLog(@"AppDelegate慧生活 == %@",huiDomainName);
+                                      NSString *huiDomainName1 = [url1 stringByAppendingString:url3];
+                                      NSLog(@"AppDelegatehuiDomainName1 == %@",huiDomainName1);
+                                      // 存储数据
+                                      [userinfo setObject:huiDomainName forKey:@"API"];
+                                      [userinfo setObject:huiDomainName1 forKey:@"API_NOAPK"];
+                                      [userinfo setObject:str forKey:@"community_name"];
+                                      [userinfo setObject:p.id forKey:@"community_id"];
+                                      [userinfo setObject:p.is_new forKey:@"is_new"];
+                                      // 立刻同步
+                                      [userinfo synchronize];
+                                      
+                                      [[NSNotificationCenter defaultCenter] postNotificationName:@"change" object:nil userInfo:nil];
+                                      [self.navigationController popToRootViewControllerAnimated:YES];
+                                      
+                                  }
+                            
+                              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                                  
+                                  NSLog(@"failure--%@",error);
+                              }];
+//                              // 存储数据
+//                              [userinfo setObject:str forKey:@"community_name"];
+//                              [userinfo setObject:p.id forKey:@"community_id"];
+//                              [userinfo setObject:p.is_new forKey:@"is_new"];
+//                              // 立刻同步
+//                              [userinfo synchronize];
+//                              [[NSNotificationCenter defaultCenter] postNotificationName:@"change" object:nil userInfo:nil];
+//                              [self.navigationController popToRootViewControllerAnimated:YES];
                           }]];
         //弹出提示框
         [self presentViewController:alert
@@ -422,15 +466,59 @@
                           actionWithTitle:@"确定"
                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
                           {
-                              // 存储数据
-                              [userinfo setObject:str forKey:@"community_name"];
-                              [userinfo setObject:p.id forKey:@"community_id"];
-                              [userinfo setObject:p.is_new forKey:@"is_new"];
-                              // 立刻同步
-                              [userinfo synchronize];
-                              NSLog(@"%@",[userinfo objectForKey:@"community_name"]);
-                              [[NSNotificationCenter defaultCenter] postNotificationName:@"changetitle" object:nil userInfo:nil];
-                              [self.navigationController popToRootViewControllerAnimated:YES];
+                              
+                              //1.创建会话管理者
+                              AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                              manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+                              NSString *url = @"http://test.hui-shenghuo.cn/apk41/config/config";
+                              
+                              NSDictionary *dict = [[NSDictionary alloc] init];
+                              int c_id = [p.id intValue];
+                              NSLog(@"c_id = %d",c_id);
+                              dict = @{@"community_id":p.id};
+                              
+                              NSLog(@"dict--%@",dict);
+                              [manager POST:url parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                                  
+                                  int status = [responseObject[@"status"] intValue];
+                                  if (status == 1) {
+                                      
+                                      NSLog(@"域名 == %@",responseObject);
+                                      NSString *url1 = @"http://";
+                                      NSString *url2 = @"/apk41/";
+                                      NSString *url3 = responseObject[@"data"][@"hui_domain_name"];
+                                      NSString *url4 = [url1 stringByAppendingString:url3];
+                                      NSString *huiDomainName = [url4 stringByAppendingString:url2];
+                                      NSLog(@"AppDelegate慧生活 == %@",huiDomainName);
+                                      NSString *huiDomainName1 = [url1 stringByAppendingString:url3];
+                                      NSLog(@"AppDelegatehuiDomainName1 == %@",huiDomainName1);
+                                      // 存储数据
+                                      [userinfo setObject:huiDomainName forKey:@"API"];
+                                      [userinfo setObject:huiDomainName1 forKey:@"API_NOAPK"];
+                                      [userinfo setObject:str forKey:@"community_name"];
+                                      [userinfo setObject:p.id forKey:@"community_id"];
+                                      [userinfo setObject:p.is_new forKey:@"is_new"];
+                                      // 立刻同步
+                                      [userinfo synchronize];
+                                      
+                                      [[NSNotificationCenter defaultCenter] postNotificationName:@"change" object:nil userInfo:nil];
+                                      [self.navigationController popToRootViewControllerAnimated:YES];
+                                      
+                                  }
+                                  
+                              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                                      
+                                      NSLog(@"failure--%@",error);
+                                  }];
+//                              // 存储数据
+//                              [userinfo setObject:str forKey:@"community_name"];
+//                              [userinfo setObject:p.id forKey:@"community_id"];
+//                              [userinfo setObject:p.is_new forKey:@"is_new"];
+//                              // 立刻同步
+//                              [userinfo synchronize];
+//                              NSLog(@"%@",[userinfo objectForKey:@"community_name"]);
+//                              [[NSNotificationCenter defaultCenter] postNotificationName:@"changetitle" object:nil userInfo:nil];
+//                              [self.navigationController popToRootViewControllerAnimated:YES];
                           }]];
         //弹出提示框
         [self presentViewController:alert
@@ -443,7 +531,8 @@
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSString *url = [API stringByAppendingString:@"site/getCommunityByCity"];
+    NSString *dw = @"http://m.hui-shenghuo.cn/apk41/";
+    NSString *url = [dw stringByAppendingString:@"site/getCommunityByCity"];
     NSDictionary *dict = [[NSDictionary alloc] init];
     dict = @{@"region_name":location_region_name};
     

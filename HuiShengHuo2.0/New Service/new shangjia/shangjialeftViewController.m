@@ -192,7 +192,8 @@
     {
         dict = @{@"id":[datadic objectForKey:@"id"],@"category":[[catecoryarr objectAtIndex:titleselect] objectForKey:@"category"]};
     }
-    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/institution/merchantService"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
@@ -245,7 +246,8 @@
     {
         dict = @{@"id":[datadic objectForKey:@"id"],@"category":[[catecoryarr objectAtIndex:endIndex-1] objectForKey:@"category"]};
     }
-    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/institution/merchantService"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         WBLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);

@@ -71,7 +71,8 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSDictionary *dict = @{@"id":_shopID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
     NSLog(@"评论 == %@",dict);
-    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/institution/merchantComments"];
    
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

@@ -70,7 +70,8 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
     NSLog(@"dict = %@",dict);
-   
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"/site/default_address"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString *status = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"status"]];
@@ -405,7 +406,8 @@
             NSLog(@"dict===%@",dict);
         }
    
-
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
     NSString *urlstr = [API_NOAPK stringByAppendingString:@"/service/service/serviceReserve"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSData  *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];

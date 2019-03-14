@@ -27,6 +27,8 @@
     webview.frame = self.view.frame;
     [self.view addSubview:webview];
     NSString *string = [NSString stringWithFormat:@"property/notice_details/id/%@",_id];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",API,string]];
     NSURLRequest *request =[NSURLRequest requestWithURL:url];
     [webview loadRequest:request];

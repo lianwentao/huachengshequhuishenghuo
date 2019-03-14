@@ -103,7 +103,8 @@
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         dict = @{@"room_id":_room_id,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
         WBLog(@"*******%@",dict);
-//        NSString *strurl = [API stringByAppendingString:@"property/get_room_bill"];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API = [defaults objectForKey:@"API"];
         NSString *strurl = [NSString stringWithFormat:@"%@%@",API,@"property/get_room_bill"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
@@ -576,38 +577,46 @@
             if ([is_property isEqualToString:@"1"]) {
                 [MBProgressHUD showToastToView:self.view withText:is_property_cn];
             }else{
-                NSArray *arr = [wuyeDic objectForKey:@"list"];
-                
-                for (int i = 0; i<arr.count; i++) {
-                    NSArray *arr1 = [arr objectAtIndex:i];
-                    for (int j = 0; j<arr1.count; j++) {
-                        string = [NSString stringWithFormat:@"%@%@",string,[NSString stringWithFormat:@",%@",[[arr1 objectAtIndex:j] objectForKey:@"bill_id"]]];
+                if ([wuyeDic isKindOfClass:[NSDictionary class]]) {
+                    NSArray *arr = [wuyeDic objectForKey:@"list"];
+                    
+                    for (int i = 0; i<arr.count; i++) {
+                        NSArray *arr1 = [arr objectAtIndex:i];
+                        for (int j = 0; j<arr1.count; j++) {
+                            string = [NSString stringWithFormat:@"%@%@",string,[NSString stringWithFormat:@",%@",[[arr1 objectAtIndex:j] objectForKey:@"bill_id"]]];
+                        }
                     }
+                    NSLog(@"string--%@",[string substringFromIndex:1]);
+                    //property/make_property_order
+                    //1.创建会话管理者
+                    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+                    //2.封装参数
+                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
+                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"bill_id":[string substringFromIndex:1],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    NSString *API = [defaults objectForKey:@"API"];
+                    NSString *strurl = [API stringByAppendingString:@"property/make_property_order"];
+                    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                        NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
+                        //_Dic = [[NSMutableDictionary alloc] init];
+                        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                            newsuerViewController *newsuer = [[newsuerViewController alloc] init];
+                            newsuer.DataDic = [responseObject objectForKey:@"data"];
+                            newsuer.biaoshi = @"1";
+                            [self.navigationController pushViewController:newsuer animated:YES];
+                        }else{
+                            
+                        }
+                    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                        NSLog(@"failure--%@",error);
+                    }];
+                    
+                }else{
+                    NSLog(@"123456789");
                 }
-                NSLog(@"string--%@",[string substringFromIndex:1]);
-                //property/make_property_order
-                //1.创建会话管理者
-                AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-                manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-                //2.封装参数
-                NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
-                NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"bill_id":[string substringFromIndex:1],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-                NSString *strurl = [API stringByAppendingString:@"property/make_property_order"];
-                [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                    NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
-                    //_Dic = [[NSMutableDictionary alloc] init];
-                    if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-                        newsuerViewController *newsuer = [[newsuerViewController alloc] init];
-                        newsuer.DataDic = [responseObject objectForKey:@"data"];
-                        newsuer.biaoshi = @"1";
-                        [self.navigationController pushViewController:newsuer animated:YES];
-                    }else{
-                        
-                    }
-                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                    NSLog(@"failure--%@",error);
-                }];
+                
             }
         }else{
             NSString *jieyu;
@@ -638,6 +647,8 @@
                     //2.封装参数
                     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                     NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"category_id":type,@"category_name":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    NSString *API = [defaults objectForKey:@"API"];
                     NSString *strurl = [API stringByAppendingString:@"property/create_order"];
                     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                         NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -679,6 +690,8 @@
                     //2.封装参数
                     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                     NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"category_id":type,@"category_name":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    NSString *API = [defaults objectForKey:@"API"];
                     NSString *strurl = [API stringByAppendingString:@"property/create_order"];
                     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                         NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);

@@ -24,6 +24,8 @@
     
     int _pagenum;
     
+    AppDelegate *myDelegate;
+    
     
 }
 @property (nonatomic, strong) UITableView *tableView;
@@ -36,7 +38,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    myDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [self postliebiao];
     
     
@@ -295,6 +297,8 @@
          task.response: 响应头信息
          第五个参数:failure 失败之后的回调
          */
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API = [defaults objectForKey:@"API"];
         NSString *strurl = [API stringByAppendingString:@"shop/hotCateProlist"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
@@ -350,6 +354,8 @@
      task.response: 响应头信息
      第五个参数:failure 失败之后的回调
      */
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"shop/hotCateProlist"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
@@ -410,6 +416,8 @@
         NSUserDefaults *user1 = [NSUserDefaults standardUserDefaults];
         NSDictionary *dict1 = @{@"c_id":[user1 objectForKey:@"community_id"],@"p_id":pid,@"tagid":tagid,@"num":@"1",@"token":[user1 objectForKey:@"token"],@"tokenSecret":[user1 objectForKey:@"tokenSecret"]};
         //3.发送GET请求
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API = [defaults objectForKey:@"API"];
         NSString *strurl1 = [API stringByAppendingString:@"shop/check_shop_limit"];
         [manager1 GET:strurl1 parameters:dict1 progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
@@ -428,6 +436,8 @@
                 
                 
                 dict = @{@"number":@"1",@"tagname":tagname,@"p_id":pid,@"p_title":title,@"p_title_img":title_img,@"tagid":tagid,@"price":price,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                NSString *API = [defaults objectForKey:@"API"];
                 NSString *strurl = [API stringByAppendingString:@"shop/add_shopping_cart"];
                 [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                     [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];

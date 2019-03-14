@@ -53,6 +53,8 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     dict = @{@"room_id":_room_id,@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"property/get_room_bill"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -408,6 +410,8 @@
         NSString *startdate = [[wuyeArr objectAtIndex:0] objectForKey:@"startdate"];
         NSString *enddate = [[wuyeArr objectAtIndex:0] objectForKey:@"enddate"];
         NSDictionary *dict = @{@"bill_id":bill_id,@"room_id":room_id,@"community_id":community_id,@"community_name":community_name,@"unit":unit,@"code":code,@"charge_type":charge_type,@"sumvalue":sumvalue,@"bill_time":time,@"startdate":startdate,@"enddate":enddate};
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API = [defaults objectForKey:@"API"];
         NSString *strurl = [API stringByAppendingString:@"property/make_property_order"];
         [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);

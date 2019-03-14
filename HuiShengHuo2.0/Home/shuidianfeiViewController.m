@@ -215,6 +215,8 @@
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
         NSDictionary *dict = @{@"apk_token":uid_username,@"room_id":room_id,@"type":type,@"amount":TextField.text,@"community_id":community_id,@"community_name":community_name,@"building_name":building_name,@"unit":unit,@"code":code,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API = [defaults objectForKey:@"API"];
         NSString *strurl = [API stringByAppendingString:@"property/create_order"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);

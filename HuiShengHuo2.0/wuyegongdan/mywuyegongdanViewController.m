@@ -11,6 +11,7 @@
 #import "UIViewController+BackButtonHandler.h"
 @interface mywuyegongdanViewController ()<FSPageContentViewDelegate,FSSegmentTitleViewDelegate,BackButtonHandlerProtocol>{
     NSArray *dataarr;
+    AppDelegate *myDelegate;
 }
 
 @property (nonatomic, strong) FSPageContentView *pageContentView;
@@ -24,6 +25,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"订单中心";
+    myDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     //[self getdata];
     [self setui];
     if ([_jpushstring isEqualToString:@"jpush"]) {
@@ -70,6 +72,8 @@
         NSDictionary *dict = nil;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         dict = @{@"state":@"1",@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API = [defaults objectForKey:@"API"];
         NSString *strurl = [API stringByAppendingString:@"propertyWork/getWorkList"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             WBLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);

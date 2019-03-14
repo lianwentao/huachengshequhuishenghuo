@@ -49,6 +49,8 @@
     NSDictionary *dict = [[NSDictionary alloc] init];
     dict = @{@"room_id":_room_id};
     NSLog(@"%@",_room_id);
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"property/get_property_order"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);

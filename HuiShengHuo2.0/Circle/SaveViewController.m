@@ -169,6 +169,8 @@
         NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
         NSDictionary *dic = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":@"85",@"content":base64Encoded,@"img_num":imfnumstr,@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
         NSLog(@"%@",dic);
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API = [defaults objectForKey:@"API"];
         NSString *url = [API stringByAppendingString:@"social/SocialSave"];
         [manager POST:url parameters:dic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
             for (int i=0; i<_photosArr.count; i++)

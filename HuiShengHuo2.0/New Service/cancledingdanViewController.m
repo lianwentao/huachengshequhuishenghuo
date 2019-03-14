@@ -16,6 +16,7 @@
     CMInputView *TextView;
     UILabel *lbRemainCount;
     UIView *_View;
+    AppDelegate *myDelegate;
 }
 
 @end
@@ -25,7 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    
+    myDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     self.title = @"取消订单";
     dataarr = [[NSArray alloc] init];
     
@@ -61,6 +62,8 @@
         NSDictionary *dict = nil;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         dict = @{@"c_alias":@"HC_cancel",@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
         NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/order/abortList"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             WBLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
@@ -149,6 +152,8 @@
                 
             }
             dict = @{@"id":_dingdanid,@"cancel_type":c_name,@"cancel_other":cancel_other,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
             NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/order/abortSave"];
             [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 WBLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);

@@ -15,6 +15,7 @@
     UITableView *_TableView;
     MBProgressHUD *_HUD;
     NSDictionary *datadic;
+    AppDelegate *myDelegate;
 }
 
 @end
@@ -25,6 +26,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"我的订单";
+    myDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     datadic = [[NSDictionary alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getdata) name:@"newpingjiadingdan" object:nil];
@@ -56,6 +58,8 @@
         NSDictionary *dict = nil;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         dict = @{@"id":_dingdanid,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
         NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/order/OrderDetail"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             WBLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);

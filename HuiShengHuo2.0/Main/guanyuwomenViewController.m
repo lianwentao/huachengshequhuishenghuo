@@ -22,6 +22,8 @@
     webview.frame = self.view.frame;
     [self.view addSubview:webview];
     NSString *string = @"userCenter/about_us";
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",API,string]];
     NSURLRequest *request =[NSURLRequest requestWithURL:url];
     [webview loadRequest:request];

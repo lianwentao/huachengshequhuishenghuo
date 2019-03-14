@@ -11,6 +11,7 @@
 #import "mywuyegongdanViewController.h"
 @interface ziyongliebiaoViewController ()<FSPageContentViewDelegate,FSSegmentTitleViewDelegate>{
     NSArray *dataarr;
+    AppDelegate *myDelegate;
 }
 
 @property (nonatomic, strong) FSPageContentView *pageContentView;
@@ -21,7 +22,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    myDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     self.title = @"家用报修";
     self.view.backgroundColor = [UIColor whiteColor];
     UIBarButtonItem *rightBarItem = [[UIBarButtonItem alloc] initWithTitle:@"订单中心" style:UIBarButtonItemStylePlain target:self action:@selector(dingdanzhongxin)];
@@ -57,6 +58,8 @@
         NSDictionary *dict = nil;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API = [defaults objectForKey:@"API"];
         NSString *strurl = [API stringByAppendingString:@"propertyWork/getPrivateCategory"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             WBLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);

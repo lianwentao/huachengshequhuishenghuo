@@ -23,6 +23,7 @@
 {
     NSInteger pageNum;
     UILabel *titlelabel;
+    AppDelegate *myDelegate;
 }
 @property (nonatomic,strong)UITableView         *tableView;
 @property (nonatomic,strong)NSMutableArray         *dataSourceArr;
@@ -34,6 +35,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
      self.title = @"搜索结果";
+    myDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [self getdata];
     [self createdUI];
 }
@@ -45,6 +47,8 @@
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],_canshu:_key};
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
     NSString *strurl = [API_NOAPK stringByAppendingString:_url];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         WBLog(@"responseObject = %@",responseObject);

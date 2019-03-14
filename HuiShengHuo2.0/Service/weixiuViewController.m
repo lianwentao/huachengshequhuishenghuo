@@ -199,7 +199,8 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict = @{@"community_id":[user objectForKey:@"community_id"],@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
     
-    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"property/repair_type"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
@@ -636,6 +637,8 @@
     long firstStamp = [lastDate timeIntervalSince1970];
     NSDictionary *dic = @{@"type":[NSString stringWithFormat:@"%@",_weixiuleimuid],@"c_id":[user objectForKey:@"community_id"],@"is_replace":is_replace,@"description":_textView.text,@"pic_num":imfnumstr,@"starttime":shangmentimelabel.text,@"address":labelcontent.text,@"address_id":_addressid,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
     NSLog(@"*********8%@",dic);
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *url = [API stringByAppendingString:@"property/submit_repair"];
     [manager POST:url parameters:dic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         for (int i=0; i<_photosArr.count; i++)

@@ -15,6 +15,7 @@
     NSMutableArray *modelArr;
     NSMutableArray *_dataArr;
     int _pagenum;
+    AppDelegate *myDelegate;
 }
 
 @end
@@ -24,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
+    myDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [self createtableview];
     // Do any additional setup after loading the view.
 }
@@ -40,6 +41,8 @@
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     dict = @{@"state":_state,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"propertyWork/getWorkList"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         WBLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
@@ -96,6 +99,8 @@
      task.response: 响应头信息
      第五个参数:failure 失败之后的回调
      */
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"propertyWork/getWorkList"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         

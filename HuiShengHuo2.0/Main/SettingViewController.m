@@ -209,6 +209,8 @@
     
     AFHTTPSessionManager *mgr = [AFHTTPSessionManager manager];
     [mgr.responseSerializer setAcceptableContentTypes: [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil]];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *url = [API stringByAppendingString:@"site/logout"];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSLog(@"token--%@",[user objectForKey:@"token"]);
@@ -240,6 +242,8 @@
     //获取网络该应用的版本号
     AFHTTPSessionManager *mgr = [AFHTTPSessionManager manager];
     [mgr.responseSerializer setAcceptableContentTypes: [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil]];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *url = [API stringByAppendingString:@"site/version_update"];
     NSDictionary *dict = @{@"type":@"2",@"version":ver};
     //POST必须上传的字段

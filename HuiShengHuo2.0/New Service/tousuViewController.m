@@ -16,6 +16,7 @@
     CMInputView *TextView;
     UILabel *lbRemainCount;
     UIView *_View;
+    AppDelegate *myDelegate;
 }
 
 @end
@@ -25,6 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    myDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     self.title = @"投诉订单";
     dataarr = [[NSArray alloc] init];
     
@@ -59,6 +61,8 @@
         NSDictionary *dict = nil;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         dict = @{@"c_alias":@"HC_report",@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
         NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/order/abortList"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             WBLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
@@ -145,6 +149,8 @@
                 c_name = [[dataarr objectAtIndex:i] objectForKey:@"id"];
             }
             dict = @{@"id":_dingdanid,@"cate_id_arr":c_name,@"report_other":report_other,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
             NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/order/reportSave"];
             [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 WBLog(@"---%@--%@--%@",responseObject,[responseObject objectForKey:@"msg"],dict);

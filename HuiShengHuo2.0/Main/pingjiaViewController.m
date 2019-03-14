@@ -179,6 +179,8 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict = @{@"oid":_oid,@"order_info_id":_order_info_id,@"p_id":_p_id,@"score":_score,@"description":_textview.text,@"pic_num":[NSString stringWithFormat:@"%ld",_photosArr.count],@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
     NSLog(@"%@",_score);
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *urlstr = [API stringByAppendingString:@"userCenter/shopping_order_score"];
     [manager POST:urlstr parameters:dict constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         for (int i=0; i<_photosArr.count; i++)

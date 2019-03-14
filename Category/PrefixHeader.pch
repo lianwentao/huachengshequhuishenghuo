@@ -9,15 +9,12 @@
 //#ifndef PrefixHeader_pch
 #define PrefixHeader_pch
 
-
-
 //正式
 //#define API                @"http://m.hui-shenghuo.cn/apk41/"
 //#define API_NOAPK          @"http://m.hui-shenghuo.cn"
-////测试
-#define API                @"http://test.hui-shenghuo.cn/apk41/"
-#define API_NOAPK          @"http://test.hui-shenghuo.cn"
-
+//测试
+//#define API                @"http://test.hui-shenghuo.cn/apk41/"
+//#define API_NOAPK          @"http://test.hui-shenghuo.cn"
 //
 //
 #define API_img                @"http://img.hui-shenghuo.cn/"
@@ -71,7 +68,7 @@ typedef NS_ENUM(NSInteger, OffsetType) {
 #import "UIImage+GIF.h"
 #import "SpecialAlertView.h"
 #import "UIView+Extension.h"
-
+#import "AppDelegate.h"
 #define Image1080                @"thumb_1080_1920_"
 #define Image800               @"thumb_800_1280_"
 #define Image480                @"thumb_480_800_"

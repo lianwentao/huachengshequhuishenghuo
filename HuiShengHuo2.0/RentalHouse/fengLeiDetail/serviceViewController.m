@@ -52,6 +52,8 @@
         dict = @{@"p":[NSString stringWithFormat:@"%ld",pageNum],@"c_id":[userinfo objectForKey:@"community_id"],@"category":_sID};
     }
     NSLog(@"dict = %@",dict);
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/service/serviceList"];
     
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -224,6 +226,8 @@
         dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":_sID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
     }
     NSLog(@"dict = %@",dict);
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/service/serviceList"];
     [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         

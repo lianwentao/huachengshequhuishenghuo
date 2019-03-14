@@ -19,6 +19,7 @@
     UIButton *starbut;
     NSMutableArray *butarr;
     NSString *_score;
+    AppDelegate *myDelegate;
 }
 @property (nonatomic ,assign) BOOL selected;
 @end
@@ -27,13 +28,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    myDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"发表评价";
     self.view.backgroundColor = [UIColor whiteColor];
-    
-   
-    
-    
+  
     [self createtableview];
     [self createUI];
     //设置两个通知
@@ -274,6 +273,8 @@
             NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     
             dict = @{@"id":_dingdanid,@"score":_score,@"anonymous":anonymous,@"evaluate":evaluate,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
             NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/order/critial"];
             [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 WBLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);

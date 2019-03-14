@@ -87,7 +87,8 @@
     NSString * result = [_url substringFromIndex:range.location]; //截取字符串
     NSString *iddd = result;
     NSDictionary *dict = @{@"type":_url_type};
-    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:[NSString stringWithFormat:@"site/share_return/%@",iddd]];
     NSLog(@"%@",strurl);
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

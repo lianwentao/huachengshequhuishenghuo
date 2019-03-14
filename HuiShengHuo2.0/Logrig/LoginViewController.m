@@ -254,6 +254,8 @@
                 AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
                 manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
                 NSDictionary *dict = @{@"accessToken":[resultDic objectForKey:@"accessToken"],@"openId":[resultDic objectForKey:@"openId"],@"clientIp":clientIp,@"clientId":@"8015489963"};
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                NSString *API = [defaults objectForKey:@"API"];
                 NSString *mianmiurl = [API stringByAppendingString:@"site/get_userInfo"];
                 [manager POST:mianmiurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                     //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
@@ -348,6 +350,8 @@
     }
     
     NSLog(@"---%@",dictlog);
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
     NSString *mianmiurllog = [API stringByAppendingString:@"site/free_login"];
     [managerlog POST:mianmiurllog parameters:dictlog progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
@@ -394,8 +398,9 @@
 {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
-    NSString *strurl = [NSString stringWithFormat:@"%@%@",API,@"site/select_community"];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *API = [defaults objectForKey:@"API"];
+    NSString *strurl = [NSString stringWithFormat:@"%@%@",API,@"site/select_community"];
     NSDictionary *dict = nil;
     dict = @{@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"],@"community_id":[defaults objectForKey:@"community_id"]};
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -574,6 +579,8 @@
         
         NSString *ApiSmstoken = str5;//,@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring
         _dict2 = [[NSDictionary alloc] init];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API = [defaults objectForKey:@"API"];
         _strurl2 = [API stringByAppendingString:@"site/reg_send_sms"];
         _dict2 = @{@"username":phonbe.text,@"sms_type":@"login",@"phone_type":@"2",@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring};
         [self CreatePost2];
@@ -670,6 +677,8 @@
     }else{
         //[LoadingView startAnimating];
         _dict = [[NSDictionary alloc] init];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSString *API = [defaults objectForKey:@"API"];
         _strurl = [API stringByAppendingString:@"site/login_verify"];
         NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
         if ([userdefaults objectForKey:@"registrationID"]==nil){

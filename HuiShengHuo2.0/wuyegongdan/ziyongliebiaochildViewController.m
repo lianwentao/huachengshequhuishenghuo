@@ -11,6 +11,7 @@
 #import "yuefunextViewController.h"
 @interface ziyongliebiaochildViewController ()<UITableViewDelegate,UITableViewDataSource>{
     UITableView *_TableView;
+    AppDelegate *myDelegate;
 }
 
 @end
@@ -19,6 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    myDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [self createtableview];
     // Do any additional setup after loading the view.
 }
