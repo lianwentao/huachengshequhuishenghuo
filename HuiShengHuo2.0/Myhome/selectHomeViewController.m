@@ -170,7 +170,7 @@
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
         NSDictionary *dict = @{@"apk_token":uid_username,@"room_id":[[_homeArr objectAtIndex:subIndex] objectForKey:@"room_id"],@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
-        NSString *API = [defaults objectForKey:@"API"];
+        
         NSString *strurl = [API stringByAppendingString:@"property/checkIsAjb"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSLog(@"%@-11111-%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -215,7 +215,7 @@
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
         NSDictionary *dict = @{@"apk_token":uid_username,@"room_id":[[_homeArr objectAtIndex:subIndex] objectForKey:@"room_id"],@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
-        NSString *API = [defaults objectForKey:@"API"];
+       
         NSString *strurl = [API stringByAppendingString:@"property/checkIsAjb"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSLog(@"%@-11111-%@",[responseObject objectForKey:@"msg"],responseObject);

@@ -86,8 +86,7 @@
         //2.封装参数
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"id":_workOrderID};
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *API = [defaults objectForKey:@"API"];
+        
         NSString *strurl = [API stringByAppendingString:@"propertyWork/getWorkDetails"];
         [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
             
@@ -1410,8 +1409,7 @@
                           //2.封装参数
                           NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                           NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"id":model.id};
-                          NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                          NSString *API = [defaults objectForKey:@"API"];
+                          
                           NSString *strurl = [API stringByAppendingString:@"propertyWork/WorkCancel"];
                           [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
                               
@@ -1449,8 +1447,6 @@
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
     NSString *url = [API stringByAppendingString:@"Jpush/userToWorkerSubmit"];
     NSDictionary *dict = [[NSDictionary alloc] init];
     dict = @{@"id":gongdanid,@"type":@"2"};

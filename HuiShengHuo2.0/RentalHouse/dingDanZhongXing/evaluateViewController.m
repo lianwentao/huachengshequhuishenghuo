@@ -188,8 +188,7 @@
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         NSDictionary *dict = @{@"id":_orderID,@"level":_score,@"evaluate_content":_textview.text,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
         NSLog(@"dict = %@",dict);
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *API = [defaults objectForKey:@"API"];
+        
         NSString *urlstr = [API stringByAppendingString:@"propertyWork/WorkScore"];
         [manager POST:urlstr parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
             

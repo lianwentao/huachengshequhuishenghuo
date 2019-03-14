@@ -67,8 +67,7 @@
      */
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = @{@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     _strurl = [API stringByAppendingString:@"property/merchant_list"];
     [manager POST:_strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         

@@ -74,8 +74,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSLog(@"dict = %@",dict);
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *strurl = [API stringByAppendingString:@"secondHouseType/getLeaseDetails"];
     NSLog(@"strurl = %@",strurl);
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -204,6 +203,7 @@
     if (indexPath.section == 0) {
         zfDetailModel *model = dataSourceArr[0];
         NSMutableArray *imagearr = [NSMutableArray array];
+        bannerView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"背景图2.5"]];
         if ([model.house_img isKindOfClass:[NSArray class]] && model.house_img.count != 0) {
             bannerView = [[JKBannarView alloc]initWithFrame:CGRectMake(0, 0, Main_width, Main_width/(1.87)) viewSize:CGSizeMake(Main_width,Main_width/(1.87))];
             

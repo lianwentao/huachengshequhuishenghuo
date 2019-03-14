@@ -38,8 +38,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSLog(@"dict = %@",dict);
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *strurl = [API stringByAppendingString:@"secondHouseType/getCareful"];
     NSLog(@"strurl = %@",strurl);
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

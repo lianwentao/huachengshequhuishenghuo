@@ -82,8 +82,7 @@
                           NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userdefalts objectForKey:@"uid"],[userdefalts objectForKey:@"username"]]];
                           //NSString *c_id = [[quanzizhongleiArr objectAtIndex:[NSString stringWithFormat:@"%d",tag]] objectForKey:@"id"];
                           dict = @{@"social_id":socail_id,@"apk_token":uid_username,@"token":[userdefalts objectForKey:@"token"],@"tokenSecret":[userdefalts objectForKey:@"tokenSecret"]};
-                          NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                          NSString *API = [defaults objectForKey:@"API"];
+                          
                           NSString *strurl = [API stringByAppendingString:@"social/SocialDel"];
                           [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                               NSLog(@"%@--%@",responseObject,[responseObject class]);
@@ -150,8 +149,7 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     //NSString *c_id = [[quanzizhongleiArr objectAtIndex:[NSString stringWithFormat:@"%d",tag]] objectForKey:@"id"];
     dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"type":@"1",@"p":@"1",@"is_pro":@"0",@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *strurl = [API stringByAppendingString:@"social/get_user_social_list"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"---%@",responseObject);
@@ -220,8 +218,7 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"is_pro":@"0",@"type":@"1",@"p":string,@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *strurl = [API stringByAppendingString:@"social/get_user_social_list"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {

@@ -704,8 +704,7 @@
     }else{
         dict = @{@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
     }
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *urlstr = [API stringByAppendingString:@"userCenter/my_coupon_40"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -755,8 +754,7 @@
     }else{
         dict = @{@"apk_token":uid_username,@"coupon_type":@"1",@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
     }
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *urlstr = [API stringByAppendingString:@"userCenter/my_coupon_40"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -782,8 +780,7 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict = [[NSDictionary alloc] init];
     dict = @{@"coupon_id":coupon_id,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *urlstr = [API stringByAppendingString:@"userCenter/coupon_add"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);

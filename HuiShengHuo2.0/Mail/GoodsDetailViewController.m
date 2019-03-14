@@ -312,8 +312,7 @@ static NSString * LINKEDME_SHORT_URL;
                 NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
                 NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"p_id":_IDstring,@"tagid":tagid,@"num":@"1",@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
                 //3.发送GET请求
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                NSString *API = [defaults objectForKey:@"API"];
+                
                 NSString *strurl = [API stringByAppendingString:@"shop/check_shop_limit"];
                 [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                     
@@ -365,8 +364,7 @@ static NSString * LINKEDME_SHORT_URL;
     NSString *price = [jiarugouwuchedict objectForKey:@"price"];
     NSDictionary *dict = @{@"m_id":[userinfo objectForKey:@"community_id"],@"para_amount":price,@"products":jsonString,@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
     NSLog(@"dict = %@",dict);
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *strurl = [API stringByAppendingString:@"shop/submit_order_before"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString *status = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"status"]];
@@ -960,8 +958,7 @@ static NSString * LINKEDME_SHORT_URL;
      task.response: 响应头信息
      第五个参数:failure 失败之后的回调
      */
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *strurl = [API stringByAppendingString:@"shop/goods_details"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         _DataDic = [[NSMutableDictionary alloc] init];
@@ -1063,8 +1060,7 @@ static NSString * LINKEDME_SHORT_URL;
      task.response: 响应头信息
      第五个参数:failure 失败之后的回调
      */
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *strurl = [API stringByAppendingString:@"shop/add_shopping_cart"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
@@ -1083,8 +1079,7 @@ static NSString * LINKEDME_SHORT_URL;
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict = @{@"apk_token":uid_username,@"c_id":[user objectForKey:@"community_id"]};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+  
     NSString *strurl = [API stringByAppendingString:@"shop/cart_num"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"gouwuche--%@",responseObject);

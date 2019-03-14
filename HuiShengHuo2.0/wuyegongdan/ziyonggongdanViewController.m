@@ -368,8 +368,7 @@
                 NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                 NSDictionary *dic = @{@"work_type":@"1",@"type_id":_type_id,@"type_name":_type,@"community_id":[blockdic objectForKey:@"community_id"],@"room_id":[blockdic objectForKey:@"room_id"],@"company_id":[blockdic objectForKey:@"company_id"],@"contact":name,@"userphone":phone,@"address":string2,@"type_pid":_type_pid,@"img_num":imfnumstr,@"content":content,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
                 NSLog(@"%@",dic);
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                NSString *API = [defaults objectForKey:@"API"];
+               
                 NSString *url = [API stringByAppendingString:@"propertyWork/workSave"];
                 [manager POST:url parameters:dic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
                     for (int i=0; i<_Imagearr.count; i++)
@@ -428,8 +427,7 @@
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *url = [API stringByAppendingString:@"Jpush/userToWorkerSubmit"];
     NSDictionary *dict = [[NSDictionary alloc] init];
     dict = @{@"id":gongdanid,@"type":@"1"};

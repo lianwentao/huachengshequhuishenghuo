@@ -41,8 +41,7 @@
     NSDictionary *dict = [[NSDictionary alloc] init];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     dict = @{@"c_id":[user objectForKey:@"community_id"]};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *strurl = [API stringByAppendingString:@"site/pro_work_team"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);

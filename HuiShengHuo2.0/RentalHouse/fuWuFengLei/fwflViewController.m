@@ -53,8 +53,7 @@
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     dict = @{@"community_id":[userinfo objectForKey:@"community_id"]};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
+    
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/index/serviceClassif"];
     [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         

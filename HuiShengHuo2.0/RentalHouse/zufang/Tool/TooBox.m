@@ -243,8 +243,7 @@
     return mutableStr;
 }
 + (NSString *)apiPathStringWithApi:(NSString *)api {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     return [NSString stringWithFormat:@"%@%@",API,api];
 }
 

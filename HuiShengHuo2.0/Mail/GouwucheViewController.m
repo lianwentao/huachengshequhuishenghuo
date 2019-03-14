@@ -96,8 +96,6 @@
      task.response: 响应头信息
      第五个参数:failure 失败之后的回调
      */
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"shop/shopping_cart"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
@@ -542,8 +540,6 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
     NSLog(@"%@",goodsdict);
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [API stringByAppendingString:@"shop/del_shopping_cart"];
     [manager POST:strurl parameters:goodsdict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -627,8 +623,6 @@
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
         NSDictionary *dict = @{@"m_id":[userinfo objectForKey:@"community_id"],@"para_amount":string,@"products":jsonString,@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *API = [defaults objectForKey:@"API"];
         NSString *strurl = [API stringByAppendingString:@"shop/submit_order_before"];
         [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             //

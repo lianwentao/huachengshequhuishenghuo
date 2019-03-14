@@ -58,8 +58,7 @@
         NSDictionary *dict = nil;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *API = [defaults objectForKey:@"API"];
+        
         NSString *strurl = [API stringByAppendingString:@"propertyWork/getPrivateCategory"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             WBLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);

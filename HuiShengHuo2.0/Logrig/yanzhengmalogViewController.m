@@ -163,18 +163,20 @@
 #pragma mark - 发送验证码
 - (void)daojishi
 {
-    NSString *phoneNumber =phonbe.text;
+//    NSString *phoneNumber =phonbe.text;
+//    
+//    if(![self isValidateMobile:phoneNumber])
+//    {
+//        [MBProgressHUD showToastToView:self.view withText:@"手机号格式错误"];
+//    }else
+//    {
+//        [self CreatePost];
+//        timeDown = 59;
+//        [self handleTimer];
+//        timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
+//    }
+    [self CreatePost];
     
-    if(![self isValidateMobile:phoneNumber])
-    {
-        [MBProgressHUD showToastToView:self.view withText:@"手机号格式错误"];
-    }else
-    {
-        [self CreatePost];
-        timeDown = 59;
-        [self handleTimer];
-        timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
-    }
 }
 -(void)handleTimer
 {
@@ -215,12 +217,14 @@
     NSString *ApiSmstoken = str5;//,@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring
     NSLog(@"%@---%@---%@---%@---%@---%@",gudingzifuchuan,gudingjiami,str2,str3,str4,str5);
     NSDictionary *dict = @{@"sms_type":@"login",@"username":phonbe.text,@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *strurl = [API stringByAppendingString:@"site/reg_send_sms"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
             NSLog(@"发送验证码成功");
+            timeDown = 59;
+            [self handleTimer];
+            timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
             [MBProgressHUD showToastToView:self.view withText:@"验证码发送成功"];
         }else{
             [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
@@ -244,8 +248,7 @@
     }
     
     NSLog(@"dict--%@",dict);
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *strurl = [API stringByAppendingString:@"site/login_verify"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"%@---%@",[responseObject objectForKey:@"msg"],responseObject);

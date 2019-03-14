@@ -54,8 +54,7 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict = @{@"m_id":[user objectForKey:@"community_id"],@"key":_searchs};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *strurl = [API stringByAppendingString:@"shop/goods_search"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
@@ -107,8 +106,7 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *mid = [user objectForKey:@"community_id"];
     NSDictionary *dict = @{@"m_id":mid,@"key":_searchs,@"p":[NSString stringWithFormat:@"%d",_pagenum]};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *strurl = [API stringByAppendingString:@"shop/goods_search"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);

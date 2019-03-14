@@ -51,8 +51,7 @@
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     dict = @{@"type":_type,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
+    
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/order/myorder"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -107,8 +106,6 @@
      task.response: 响应头信息
      第五个参数:failure 失败之后的回调
      */
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/order/myorder"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         

@@ -85,8 +85,7 @@
      第五个参数:failure 失败之后的回调
      */
     NSLog(@"---%@",dict);
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *strurl = [API stringByAppendingString:@"shop/pro_discount_list"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -160,8 +159,7 @@
      第五个参数:failure 失败之后的回调
      */
     NSLog(@"---%@",dict);
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *strurl = [API stringByAppendingString:@"shop/pro_discount_list"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -228,8 +226,7 @@
      task.response: 响应头信息
      第五个参数:failure 失败之后的回调
      */
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+
     NSString *strurl = [API stringByAppendingString:@"shop/pro_discount_list"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         

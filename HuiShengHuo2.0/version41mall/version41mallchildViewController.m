@@ -101,15 +101,22 @@
         [view addSubview:tagview];
         NSArray *tagarr = [[liebiaoArr objectAtIndex:indexPath.row*2] objectForKey:@"goods_tag"];
         if ([tagarr isKindOfClass:[NSArray class]]) {
-            if (tagarr.count>2) {
+            if (tagarr.count>=2) {
+                float sizewidth = 0;
                 for (int j=0; j<2; j++) {
                     UILabel *taglabel = [[UILabel alloc] init];
                     taglabel.textAlignment = NSTextAlignmentCenter;
                     taglabel.numberOfLines = 0;
                     taglabel.text = [[tagarr objectAtIndex:j] objectForKey:@"c_name"];
                     taglabel.font = [UIFont systemFontOfSize:10];
-                    CGSize size = [taglabel sizeThatFits:CGSizeMake(taglabel.frame.size.width, MAXFLOAT)];
-                    taglabel.frame = CGRectMake(size.width*j+2*j, 0, size.width, 18);
+                    CGSize size = [taglabel sizeThatFits:CGSizeMake(MAXFLOAT, MAXFLOAT)];
+                    
+                    sizewidth = sizewidth+size.width;
+                    if (j==0) {
+                        taglabel.frame = CGRectMake(sizewidth-size.width, 0, size.width+10, 18);
+                    }else{
+                        taglabel.frame = CGRectMake(sizewidth-size.width+15, 0, size.width+10, 18);
+                    }
                     taglabel.textColor = QIColor;
                     
                     taglabel.layer.cornerRadius = 2;
@@ -118,21 +125,23 @@
                     [tagview addSubview:taglabel];
                 }
             }else{
-                for (int j=0; j<tagarr.count; j++) {
-                    UILabel *taglabel = [[UILabel alloc] init];
-                    taglabel.textAlignment = NSTextAlignmentCenter;
-                    taglabel.numberOfLines = 0;
-                    taglabel.text = [[tagarr objectAtIndex:j] objectForKey:@"c_name"];
-                    taglabel.font = [UIFont systemFontOfSize:10];
-                    CGSize size = [taglabel sizeThatFits:CGSizeMake(taglabel.frame.size.width, MAXFLOAT)];
-                    taglabel.frame = CGRectMake(size.width*j+2*j, 0, size.width, 18);
-                    taglabel.textColor = QIColor;
-                    
-                    taglabel.layer.cornerRadius = 2;
-                    [taglabel.layer setBorderWidth:0.5];
-                    [taglabel.layer setBorderColor:QIColor.CGColor];
-                    [tagview addSubview:taglabel];
-                }
+                float sizewidth = 0;
+                UILabel *taglabel = [[UILabel alloc] init];
+                taglabel.textAlignment = NSTextAlignmentCenter;
+                taglabel.numberOfLines = 0;
+                taglabel.text = [[tagarr objectAtIndex:0] objectForKey:@"c_name"];
+                taglabel.font = [UIFont systemFontOfSize:10];
+                CGSize size = [taglabel sizeThatFits:CGSizeMake(MAXFLOAT, MAXFLOAT)];
+                
+                sizewidth = sizewidth+size.width;
+                taglabel.frame = CGRectMake(sizewidth-size.width, 0, size.width+10, 18);
+        
+                taglabel.textColor = QIColor;
+                
+                taglabel.layer.cornerRadius = 2;
+                [taglabel.layer setBorderWidth:0.5];
+                [taglabel.layer setBorderColor:QIColor.CGColor];
+                [tagview addSubview:taglabel];
             }
         }
         
@@ -199,37 +208,47 @@
         [view1 addSubview:tagview1];
         NSArray *tagarr1 = [[liebiaoArr objectAtIndex:indexPath.row*2+1] objectForKey:@"goods_tag"];
         if ([tagarr1 isKindOfClass:[NSArray class]]) {
-            if (tagarr1.count>2) {
+            if (tagarr1.count>=2) {
+                float sizewidth = 0;
                 for (int j=0; j<2; j++) {
                     UILabel *taglabel = [[UILabel alloc] init];
-                    
+                    taglabel.textAlignment = NSTextAlignmentCenter;
+                    taglabel.numberOfLines = 0;
                     taglabel.text = [[tagarr1 objectAtIndex:j] objectForKey:@"c_name"];
                     taglabel.font = [UIFont systemFontOfSize:10];
-                    taglabel.numberOfLines = 0;
-                    CGSize size = [taglabel sizeThatFits:CGSizeMake(taglabel.frame.size.width, MAXFLOAT)];
-                    taglabel.frame = CGRectMake(size.width*j+2*j, 0, size.width, 18);
+                    CGSize size = [taglabel sizeThatFits:CGSizeMake(MAXFLOAT, MAXFLOAT)];
+                    
+                    sizewidth = sizewidth+size.width;
+                    if (j==0) {
+                        taglabel.frame = CGRectMake(sizewidth-size.width, 0, size.width+10, 18);
+                    }else{
+                        taglabel.frame = CGRectMake(sizewidth-size.width+15, 0, size.width+10, 18);
+                    }
                     taglabel.textColor = QIColor;
-                    taglabel.textAlignment = NSTextAlignmentCenter;
+                    
                     taglabel.layer.cornerRadius = 2;
                     [taglabel.layer setBorderWidth:0.5];
                     [taglabel.layer setBorderColor:QIColor.CGColor];
                     [tagview1 addSubview:taglabel];
                 }
             }else{
-                for (int j=0; j<tagarr1.count; j++) {
-                    UILabel *taglabel = [[UILabel alloc] init];
-                    taglabel.numberOfLines = 0;
-                    taglabel.text = [[tagarr1 objectAtIndex:j] objectForKey:@"c_name"];
-                    taglabel.font = [UIFont systemFontOfSize:10];
-                    CGSize size = [taglabel sizeThatFits:CGSizeMake(taglabel.frame.size.width, MAXFLOAT)];
-                    taglabel.frame = CGRectMake(size.width*j+2*j, 0, size.width, 18);
-                    taglabel.textColor = QIColor;
-                    taglabel.textAlignment = NSTextAlignmentCenter;
-                    taglabel.layer.cornerRadius = 2;
-                    [taglabel.layer setBorderWidth:0.5];
-                    [taglabel.layer setBorderColor:QIColor.CGColor];
-                    [tagview1 addSubview:taglabel];
-                }
+                float sizewidth = 0;
+                UILabel *taglabel = [[UILabel alloc] init];
+                taglabel.textAlignment = NSTextAlignmentCenter;
+                taglabel.numberOfLines = 0;
+                taglabel.text = [[tagarr1 objectAtIndex:0] objectForKey:@"c_name"];
+                taglabel.font = [UIFont systemFontOfSize:10];
+                CGSize size = [taglabel sizeThatFits:CGSizeMake(MAXFLOAT, MAXFLOAT)];
+                
+                sizewidth = sizewidth+size.width;
+                taglabel.frame = CGRectMake(sizewidth-size.width, 0, size.width+10, 18);
+                
+                taglabel.textColor = QIColor;
+                
+                taglabel.layer.cornerRadius = 2;
+                [taglabel.layer setBorderWidth:0.5];
+                [taglabel.layer setBorderColor:QIColor.CGColor];
+                [tagview1 addSubview:taglabel];
             }
         }
         
@@ -297,8 +316,7 @@
          task.response: 响应头信息
          第五个参数:failure 失败之后的回调
          */
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *API = [defaults objectForKey:@"API"];
+       
         NSString *strurl = [API stringByAppendingString:@"shop/hotCateProlist"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
@@ -354,8 +372,7 @@
      task.response: 响应头信息
      第五个参数:failure 失败之后的回调
      */
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *strurl = [API stringByAppendingString:@"shop/hotCateProlist"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
@@ -416,8 +433,7 @@
         NSUserDefaults *user1 = [NSUserDefaults standardUserDefaults];
         NSDictionary *dict1 = @{@"c_id":[user1 objectForKey:@"community_id"],@"p_id":pid,@"tagid":tagid,@"num":@"1",@"token":[user1 objectForKey:@"token"],@"tokenSecret":[user1 objectForKey:@"tokenSecret"]};
         //3.发送GET请求
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *API = [defaults objectForKey:@"API"];
+       
         NSString *strurl1 = [API stringByAppendingString:@"shop/check_shop_limit"];
         [manager1 GET:strurl1 parameters:dict1 progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
@@ -436,8 +452,7 @@
                 
                 
                 dict = @{@"number":@"1",@"tagname":tagname,@"p_id":pid,@"p_title":title,@"p_title_img":title_img,@"tagid":tagid,@"price":price,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                NSString *API = [defaults objectForKey:@"API"];
+                
                 NSString *strurl = [API stringByAppendingString:@"shop/add_shopping_cart"];
                 [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                     [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];

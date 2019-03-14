@@ -41,7 +41,6 @@
 // 如果需要使用idfa功能所需要引入的头文件（可选）
 #import <AdSupport/AdSupport.h>
 #import <Bugly/Bugly.h>
-#import "AppKeFuLib.h"
 #import "HXPhotoTools.h"
 #import "openDoorViewController.h"
 #import "XYLaunchVC.h"
@@ -153,7 +152,6 @@ void uncaughtExceptionHandler(NSException *exception) {
     [Bugly startWithAppId:APPID];
     
     //步骤一：初始化操作
-    [[AppKeFuLib sharedInstance] loginWithAppkey:KEFUAPPKEY];
     //步骤二：注册离线消息推送
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];
     
@@ -227,7 +225,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     /// Required - 注册 DeviceToken
     [JPUSHService registerDeviceToken:deviceToken];
     //步骤三：同步deviceToken便于离线消息推送, 同时必须在管理后台上传 .pem文件才能生效
-    [[AppKeFuLib sharedInstance] uploadDeviceToken:deviceToken];
+    
 }
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     //Optional
@@ -616,7 +614,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [NSString stringWithFormat:@"%@%@",API,@"site/wx_login"];
     NSDictionary *dict = nil;
     if ([defaults objectForKey:@"registrationID"]==nil){
@@ -684,7 +681,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *strurl = [NSString stringWithFormat:@"%@%@",API,@"site/select_community"];
     NSDictionary *dict = nil;
     dict = @{@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"],@"community_id":[defaults objectForKey:@"community_id"]};
@@ -708,7 +705,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     //离线消息通过服务器推送可接收到
     //在程序切换到前台时，执行重新登录，见applicationWillEnterForeground函数中
     //步骤四：
-    [[AppKeFuLib sharedInstance] logout];
+    
 }
 
 
@@ -716,7 +713,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     
     //步骤五：切换到前台重新登录
-    [[AppKeFuLib sharedInstance] loginWithAppkey:KEFUAPPKEY];
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {

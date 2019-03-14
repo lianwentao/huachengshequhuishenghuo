@@ -103,8 +103,7 @@
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         dict = @{@"room_id":_room_id,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
         WBLog(@"*******%@",dict);
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *API = [defaults objectForKey:@"API"];
+
         NSString *strurl = [NSString stringWithFormat:@"%@%@",API,@"property/get_room_bill"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
@@ -447,7 +446,7 @@
         
         UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width/2, 35)];
         NSLog(@"%@",[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] class]);
-        if ([[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] isKindOfClass:[NSNull class]]||[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] isEqualToString:@""]) {
+        if ([[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] isKindOfClass:[NSNull class]]||[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] isEqualToString:@"0"]) {
             NSTimeInterval interval    =[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"bill_time"] doubleValue];
             NSDate *date               = [NSDate dateWithTimeIntervalSince1970:interval];
             
@@ -595,8 +594,7 @@
                     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
                     NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"bill_id":[string substringFromIndex:1],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                    NSString *API = [defaults objectForKey:@"API"];
+                    
                     NSString *strurl = [API stringByAppendingString:@"property/make_property_order"];
                     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                         NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -647,8 +645,7 @@
                     //2.封装参数
                     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                     NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"category_id":type,@"category_name":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                    NSString *API = [defaults objectForKey:@"API"];
+                    
                     NSString *strurl = [API stringByAppendingString:@"property/create_order"];
                     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                         NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -690,8 +687,7 @@
                     //2.封装参数
                     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                     NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"category_id":type,@"category_name":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-                    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                    NSString *API = [defaults objectForKey:@"API"];
+                    
                     NSString *strurl = [API stringByAppendingString:@"property/create_order"];
                     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                         NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);

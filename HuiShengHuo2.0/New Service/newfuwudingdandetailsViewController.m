@@ -59,7 +59,6 @@
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         dict = @{@"id":_dingdanid,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
         NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/order/OrderDetail"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             WBLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);

@@ -55,8 +55,7 @@
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+  
     NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         _DataArr = [[NSArray alloc] init];
@@ -233,8 +232,7 @@
                           NSDictionary *dict = nil;
                           NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                           dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"id":[[_DataArr objectAtIndex:sender.tag] objectForKey:@"id"]};
-                          NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                          NSString *API = [defaults objectForKey:@"API"];
+                          
                           NSString *strurl = [API stringByAppendingString:@"property/unsetBinding"];
                           [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                               _DataArr = [[NSArray alloc] init];

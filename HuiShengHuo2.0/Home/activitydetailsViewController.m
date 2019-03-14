@@ -78,8 +78,7 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict = @{@"m_id":[user objectForKey:@"community_id"]};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *strurl = [API stringByAppendingString:_url];
     NSLog(@"----------------------------%@",strurl);
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -145,8 +144,7 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict = @{@"community_id":[user objectForKey:@"community_id"],@"a_id":[_Dic objectForKey:@"id"],@"name":userNameTextField.text,@"phone":passwordTextField.text,@"cost":[_Dic objectForKey:@"cost"],@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *strurl = [API stringByAppendingString:@"activity/activity_enroll"];
     NSLog(@"----------------------------%@",strurl);
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -275,14 +273,14 @@
                     //获取第2个输入框；
                     passwordTextField = alertController.textFields.lastObject;
                     
-                    NSString *phoneNumber =passwordTextField.text;
-                    
+//                    NSString *phoneNumber =passwordTextField.text;
+//                    else if (![self isValidateMobile:phoneNumber]){
+//                        [MBProgressHUD showToastToView:self.view withText:@"手机号格式错误"];
+//                    }
                     if(userNameTextField.text.length==0)
                     {
                         [MBProgressHUD showToastToView:self.view withText:@"请输入姓名"];
-                    }else if (![self isValidateMobile:phoneNumber]){
-                        [MBProgressHUD showToastToView:self.view withText:@"手机号格式错误"];
-                    } else{
+                    }else{
                       [self post1];
                     }
                     

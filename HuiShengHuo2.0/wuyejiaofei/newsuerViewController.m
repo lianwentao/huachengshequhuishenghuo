@@ -47,8 +47,7 @@
     //,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]
     NSDictionary *dict = @{@"id":[_DataDic objectForKey:@"oid"],@"type":type,@"prepay":@"0",@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
     NSLog(@"---dict%@",dict);
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *urlstr = [API stringByAppendingString:@"userCenter/confirm_order_payment"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"--%@--%@--%@",[responseObject objectForKey:@"msg"],responseObject,dict);

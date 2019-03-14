@@ -119,8 +119,7 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict = @{@"room_id":room_id,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *urlstr = [API stringByAppendingString:@"property/get_room_personal_info"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -224,8 +223,7 @@
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *strurl = [API stringByAppendingString:@"property/face_pay_cate"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
@@ -531,8 +529,7 @@
     }else{
         dict = @{@"c_id":c_id,@"c_name":c_name,@"community_id":community_id,@"community_name":community_name,@"building_id":building_id,@"building_name":building_name,@"room_id":room_id,@"company_id":company_id,@"company_name":company_name,@"department_id":department_id,@"department_name":department_name,@"floor":floor,@"unit":units,@"code":code,@"mobile":phone,@"fullname":name,@"money":pricetextfield.text,@"note":TextView.text,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
     }
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *urlstr = [API stringByAppendingString:@"property/add_face_pay_order"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);

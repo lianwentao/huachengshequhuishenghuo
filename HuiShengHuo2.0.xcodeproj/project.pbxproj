@@ -15,13 +15,7 @@
 		2810CA5221C4F67300587324 /* gonggongbaoxiuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2810CA5121C4F67300587324 /* gonggongbaoxiuViewController.m */; };
 		2810CA5521C4F68300587324 /* ziyongliebiaoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2810CA5421C4F68300587324 /* ziyongliebiaoViewController.m */; };
 		2810CA5821C4F6FB00587324 /* mywuyegongdanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2810CA5721C4F6FB00587324 /* mywuyegongdanViewController.m */; };
-		281D000420591D3C00C732D0 /* TagsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281DFFFE20591D3A00C732D0 /* TagsTableViewController.m */; };
-		281D000520591D3C00C732D0 /* TagsChangeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281D000020591D3B00C732D0 /* TagsChangeTableViewController.m */; };
-		281D000620591D3C00C732D0 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281D000220591D3C00C732D0 /* SettingsViewController.m */; };
-		281D000720591D3C00C732D0 /* KFRightButtonItemCallBackTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281D000320591D3C00C732D0 /* KFRightButtonItemCallBackTableViewController.m */; };
 		281D494B20078D180020D2DB /* XPFPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 281D494A20078D180020D2DB /* XPFPickerView.m */; };
-		281DFFF7205912B000C732D0 /* AppKeFuResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 281DFFF5205912AE00C732D0 /* AppKeFuResources.bundle */; };
-		281DFFF8205912B000C732D0 /* libAppKeFuLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 281DFFF6205912B000C732D0 /* libAppKeFuLib.a */; };
 		282416581FBD8FC600D670C1 /* ChangeinfomationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 282416571FBD8FC600D670C1 /* ChangeinfomationViewController.m */; };
 		282805A0219AD72500B0DD7D /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 28280559219AD72400B0DD7D /* FLAnimatedImage.m */; };
 		282805A1219AD72500B0DD7D /* FLAnimatedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2828055B219AD72400B0DD7D /* FLAnimatedImageView.m */; };
@@ -633,19 +627,8 @@
 		2810CA5421C4F68300587324 /* ziyongliebiaoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ziyongliebiaoViewController.m; sourceTree = "<group>"; };
 		2810CA5621C4F6FB00587324 /* mywuyegongdanViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mywuyegongdanViewController.h; sourceTree = "<group>"; };
 		2810CA5721C4F6FB00587324 /* mywuyegongdanViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = mywuyegongdanViewController.m; sourceTree = "<group>"; };
-		281D000020591D3B00C732D0 /* TagsChangeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagsChangeTableViewController.m; sourceTree = "<group>"; };
-		281D000120591D3B00C732D0 /* TagsChangeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagsChangeTableViewController.h; sourceTree = "<group>"; };
-		281D000220591D3C00C732D0 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
-		281D000320591D3C00C732D0 /* KFRightButtonItemCallBackTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KFRightButtonItemCallBackTableViewController.m; sourceTree = "<group>"; };
 		281D494920078D180020D2DB /* XPFPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPFPickerView.h; sourceTree = "<group>"; };
 		281D494A20078D180020D2DB /* XPFPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPFPickerView.m; sourceTree = "<group>"; };
-		281DFFF4205912AD00C732D0 /* AppKeFuLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppKeFuLib.h; sourceTree = "<group>"; };
-		281DFFF5205912AE00C732D0 /* AppKeFuResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AppKeFuResources.bundle; sourceTree = "<group>"; };
-		281DFFF6205912B000C732D0 /* libAppKeFuLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAppKeFuLib.a; sourceTree = "<group>"; };
-		281DFFFC20591D3800C732D0 /* TagsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagsTableViewController.h; sourceTree = "<group>"; };
-		281DFFFD20591D3900C732D0 /* KFRightButtonItemCallBackTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KFRightButtonItemCallBackTableViewController.h; sourceTree = "<group>"; };
-		281DFFFE20591D3A00C732D0 /* TagsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagsTableViewController.m; sourceTree = "<group>"; };
-		281DFFFF20591D3A00C732D0 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		282416561FBD8FC600D670C1 /* ChangeinfomationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChangeinfomationViewController.h; sourceTree = "<group>"; };
 		282416571FBD8FC600D670C1 /* ChangeinfomationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChangeinfomationViewController.m; sourceTree = "<group>"; };
 		28280558219AD72400B0DD7D /* FLAnimatedImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLAnimatedImage.h; sourceTree = "<group>"; };
@@ -1809,7 +1792,6 @@
 				28E1FFD61FF404C700E4AE5C /* CoreGraphics.framework in Frameworks */,
 				286147382010A18B00E2C7AA /* libstdc++.6.0.9.tbd in Frameworks */,
 				28E1FFDC1FF4050900E4AE5C /* CFNetwork.framework in Frameworks */,
-				281DFFF8205912B000C732D0 /* libAppKeFuLib.a in Frameworks */,
 				28BCB7992009E21F00ADA953 /* CoreFoundation.framework in Frameworks */,
 				28B74A3A1FCC1BB800EBFE82 /* CoreTelephony.framework in Frameworks */,
 				28B77CF6204AA40800C1026C /* Bugly.framework in Frameworks */,
@@ -2355,7 +2337,6 @@
 				2880DA4B2060E2920096E86D /* YBPopupMenu */,
 				28A83CC0205F95E8009ED444 /* PageView */,
 				28A83C49205F4634009ED444 /* HXWeiboPhotoPicker */,
-				289E392D2058FE8000A248A0 /* WeiKefu */,
 				28E254842050C41A00CD93F8 /* MenuButton.h */,
 				28E254852050C41A00CD93F8 /* MenuButton.m */,
 				283AD2081FF954250022C846 /* PrefixHeader.pch */,
@@ -3094,24 +3075,6 @@
 				28357ADB20B8311700AB1864 /* yonghuxieyiwebViewController.m */,
 			);
 			path = Logrig;
-			sourceTree = "<group>";
-		};
-		289E392D2058FE8000A248A0 /* WeiKefu */ = {
-			isa = PBXGroup;
-			children = (
-				281DFFFD20591D3900C732D0 /* KFRightButtonItemCallBackTableViewController.h */,
-				281D000320591D3C00C732D0 /* KFRightButtonItemCallBackTableViewController.m */,
-				281DFFFF20591D3A00C732D0 /* SettingsViewController.h */,
-				281D000220591D3C00C732D0 /* SettingsViewController.m */,
-				281D000120591D3B00C732D0 /* TagsChangeTableViewController.h */,
-				281D000020591D3B00C732D0 /* TagsChangeTableViewController.m */,
-				281DFFFC20591D3800C732D0 /* TagsTableViewController.h */,
-				281DFFFE20591D3A00C732D0 /* TagsTableViewController.m */,
-				281DFFF4205912AD00C732D0 /* AppKeFuLib.h */,
-				281DFFF5205912AE00C732D0 /* AppKeFuResources.bundle */,
-				281DFFF6205912B000C732D0 /* libAppKeFuLib.a */,
-			);
-			path = WeiKefu;
 			sourceTree = "<group>";
 		};
 		28A716BF2061F1FD0050D446 /* NewPagedFlowView */ = {
@@ -4471,7 +4434,6 @@
 				28D75DC11FBD0B82000BD4A1 /* LaunchScreen.storyboard in Resources */,
 				287E5727206A3FFF00252463 /* dingdong.caf in Resources */,
 				28F5B223209461BB0058AAC2 /* Guide_pages_BGtwo@3x.png in Resources */,
-				281DFFF7205912B000C732D0 /* AppKeFuResources.bundle in Resources */,
 				28F5B221209461BB0058AAC2 /* Guide_pages_BGthree@3x.png in Resources */,
 				28F5B234209461BB0058AAC2 /* XYVideo.mp4 in Resources */,
 				287E5730206A3FFF00252463 /* icon_talk_speakoff.png in Resources */,
@@ -4676,7 +4638,6 @@
 				28A83CA2205F4634009ED444 /* HXDatePhotoPreviewBottomView.m in Sources */,
 				842049D521A8E93F0084EC18 /* fuWuFengLeiViewController.m in Sources */,
 				28A124C41FC50A4600F80A35 /* ShangpinfenleiViewController.m in Sources */,
-				281D000420591D3C00C732D0 /* TagsTableViewController.m in Sources */,
 				84CCB68121D5C17700E51987 /* CQTopBarSegment.m in Sources */,
 				28821ABD1FE3529700C31E68 /* shangpinerjiViewController.m in Sources */,
 				285DED6E1FD2537800B0812F /* MJRefreshAutoNormalFooter.m in Sources */,
@@ -4792,7 +4753,6 @@
 				285DED6A1FD2537800B0812F /* MJRefreshComponent.m in Sources */,
 				28BD21E01FF0AB540028CD2A /* danyuanViewController.m in Sources */,
 				2880DA5720612DC60096E86D /* yijianfankuiViewController.m in Sources */,
-				281D000720591D3C00C732D0 /* KFRightButtonItemCallBackTableViewController.m in Sources */,
 				284E41211FDBEE120083ADD7 /* circledetailsViewController.m in Sources */,
 				844605C721B0C9A700FCB09E /* fwListModel.m in Sources */,
 				282805A0219AD72500B0DD7D /* FLAnimatedImage.m in Sources */,
@@ -4881,7 +4841,6 @@
 				282805AC219AD72500B0DD7D /* SDWebImageCodersManager.m in Sources */,
 				285A6A2520C00A7E00FE13FF /* moreteziViewController.m in Sources */,
 				28A83CA7205F4634009ED444 /* HXDatePhotoViewPresentTransition.m in Sources */,
-				281D000520591D3C00C732D0 /* TagsChangeTableViewController.m in Sources */,
 				282805A5219AD72500B0DD7D /* NSData+ImageContentType.m in Sources */,
 				28A716F8206268B70050D446 /* IBAlertView.m in Sources */,
 				846037B021CDD4E500D83490 /* XLsn0wTextCarousel.m in Sources */,
@@ -5013,7 +4972,6 @@
 				2828065C219ADFA500B0DD7D /* MBProgressHUD.m in Sources */,
 				28E254862050C41A00CD93F8 /* MenuButton.m in Sources */,
 				840596F421B112BE0052B99D /* insinfoModel.m in Sources */,
-				281D000620591D3C00C732D0 /* SettingsViewController.m in Sources */,
 				28457E1C20B94B1200EB2C04 /* xianshiqianggouViewController.m in Sources */,
 				284F86D0206526AD0068CB0B /* LMJDropdownMenu.m in Sources */,
 				284D852E212EAE5400BF8ED2 /* afteryanzhengViewController.m in Sources */,

@@ -78,8 +78,7 @@
         dict = @{@"community_id":_c_id,@"buildsing_id":_buildid,@"units":_danyuanid,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
         
     }
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *url = [API stringByAppendingString:@"property/get_pro_room"];
     NSLog(@"dict--%@",dict);
     [manager POST:url parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

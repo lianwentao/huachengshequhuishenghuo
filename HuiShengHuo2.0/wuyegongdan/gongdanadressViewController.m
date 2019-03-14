@@ -48,7 +48,7 @@
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = @{@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *urlstr = [API stringByAppendingString:@"propertyWork/getWorkAddress"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         _DataArr = [[NSMutableArray alloc] init];

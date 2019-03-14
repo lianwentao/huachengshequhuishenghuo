@@ -71,8 +71,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *url = [API stringByAppendingString:@"property/get_pro_building"];
     NSDictionary *dict = [[NSDictionary alloc] init];
     dict = @{@"community_id":_c_id,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};

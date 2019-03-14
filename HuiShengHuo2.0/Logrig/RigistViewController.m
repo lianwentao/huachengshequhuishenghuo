@@ -199,8 +199,7 @@
         
         NSString *ApiSmstoken = str5;//,@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring
         _dict2 = [[NSDictionary alloc] init];
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *API = [defaults objectForKey:@"API"];
+        
         _strurl2 = [API stringByAppendingString:@"site/reg_send_sms"];
         _dict2 = @{@"username":phonbe.text,@"sms_type":@"login",@"phone_type":@"2",@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring};
         [self CreatePost2];
@@ -209,6 +208,32 @@
         timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
         NSLog(@"%@---%@---%@---%@---%@---%@",gudingzifuchuan,gudingjiami,str2,str3,str4,str5);
     }
+
+//    if(![self isValidateMobile:phoneNumber])
+//    {
+//        [MBProgressHUD showToastToView:self.view withText:@"手机号格式错误"];
+//    }else
+//    {
+//
+//    }
+    NSString *gudingzifuchuan = @"hui-shenghuo.api_sms";
+    NSString *gudingjiami = [MD5 MD5:gudingzifuchuan];
+    //NSString *TEACHERLower      = [TEACHER lowercaseString];
+    NSString *str2 = [[gudingjiami lowercaseString] substringWithRange:NSMakeRange(8,16)];
+    NSString *timestring = [NSString stringWithFormat:@"%ld",time(NULL)];
+    NSString *str3 = [NSString stringWithFormat:@"%@%@%@",timestring,str2,timestring];
+    NSString *str4 = [MD5 MD5:[str3 lowercaseString]];
+    NSString *str5 = [[str4 lowercaseString] substringWithRange:NSMakeRange(0,16)];
+    
+    NSString *ApiSmstoken = str5;//,@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring
+    _dict2 = [[NSDictionary alloc] init];
+   
+        _strurl2 = [API stringByAppendingString:@"site/reg_send_sms"];
+    _dict2 = @{@"username":phonbe.text,@"sms_type":@"login",@"phone_type":@"2",@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring};
+    [self CreatePost2];
+ 
+    NSLog(@"%@---%@---%@---%@---%@---%@",gudingzifuchuan,gudingjiami,str2,str3,str4,str5);
+
 }
 -(void)handleTimer
 {
@@ -238,12 +263,15 @@
     
     [manager POST:_strurl2 parameters:_dict2 progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+            timeDown = 59;
+            [self handleTimer];
+            timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
             NSLog(@"发送验证码成功");
             [MBProgressHUD showToastToView:self.view withText:@"验证码发送成功"];
             //            [LoadingView stopAnimating];
             //            LoadingView.hidden = YES;
         }else{
-            [MBProgressHUD showToastToView:self.view withText:@"验证码发送失败"];
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -297,8 +325,7 @@
     }else{
         //[LoadingView startAnimating];
         _dict = [[NSDictionary alloc] init];
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *API = [defaults objectForKey:@"API"];
+        
         _strurl = [API stringByAppendingString:@"site/wx_bind"];
         NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
         NSData *data=[NSJSONSerialization
@@ -398,7 +425,6 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
     NSString *strurl = [NSString stringWithFormat:@"%@%@",API,@"site/select_community"];
     NSDictionary *dict = nil;
     dict = @{@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"],@"community_id":[defaults objectForKey:@"community_id"]};

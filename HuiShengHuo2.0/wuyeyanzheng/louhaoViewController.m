@@ -106,7 +106,7 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
     NSDictionary *dict = @{@"community_id":_id,@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *urlstr = [API stringByAppendingString:@"property/get_pro_building"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         

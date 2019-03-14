@@ -414,8 +414,7 @@
         }
     }
     NSLog(@"dict===%@",dict);
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+  
     NSString *urlstr = [API stringByAppendingString:@"shop/submit_order"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"suredingdan--success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);

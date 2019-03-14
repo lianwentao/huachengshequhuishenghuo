@@ -46,8 +46,7 @@
 }
 - (void)readDocfile{
     //NSString * ducumentLocation = [[NSBundle mainBundle]pathForResource:@"协议" ofType:@"docx"];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSURL *url = [NSURL URLWithString:[API stringByAppendingString:@"userCenter/user_agreement"]];
     
     UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, RECTSTATUS.size.height+44, Main_width, Main_Height-44-RECTSTATUS.size.height)];

@@ -73,8 +73,7 @@
      task.response: 响应头信息
      第五个参数:failure 失败之后的回调
      */
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *strurl = [API stringByAppendingString:@"userCenter/edit_center"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 //        _DataArr = [[NSMutableArray alloc] init];
@@ -335,7 +334,7 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = @{@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
     //formData: 专门用于拼接需要上传的数据,在此位置生成一个要上传的数据体
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *url = [API stringByAppendingString:@"userCenter/edit_center"];
     [manager POST:url parameters:dict constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         

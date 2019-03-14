@@ -109,8 +109,7 @@
     NSString *mobile = [_dic objectForKey:@"mp1"];
     
     NSDictionary *dict = @{@"community_id":community_id,@"community_name":community_name,@"company_id":company_id,@"company_name":company_name,@"department_id":department_id,@"department_name":department_name,@"building_id":building_id,@"building_name":building_name,@"unit":unit,@"floor":floor,@"code":code,@"room_id":room_id,@"fullname":fullname,@"mobile":mobile};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+  
     NSString *urlstr = [API stringByAppendingString:@"property/pro_bind_user"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);

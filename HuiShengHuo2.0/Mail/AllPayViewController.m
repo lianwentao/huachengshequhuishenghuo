@@ -90,8 +90,7 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict = @{@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *strurl = [API stringByAppendingString:@"site/payment_list"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
@@ -343,8 +342,7 @@
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *url = [API stringByAppendingString:@"Jpush/userToWorkerSubmit"];
     NSDictionary *dict = [[NSDictionary alloc] init];
     dict = @{@"id":gongdanid,@"type":@"1"};
@@ -409,8 +407,7 @@
     //,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]
     NSDictionary *dict = @{@"id":_order_id,@"type":type,@"prepay":@"0",@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
     NSLog(@"---dict%@",dict);
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *urlstr = [API stringByAppendingString:@"userCenter/confirm_order_payment"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"zhifushifouchenggong--%@--%@--%@",[responseObject objectForKey:@"msg"],responseObject,dict);
@@ -499,8 +496,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSDictionary *dict = @{@"id":_order_id};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *urlstr = [API stringByAppendingString:@"Jpush/service_order_toAmountWorker_push"];
     WBLog(@"%@-****-%@",dict,urlstr);
     [manager GET:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -516,8 +512,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSDictionary *dict = @{@"id":_order_id};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *urlstr = [API stringByAppendingString:@"site/merchant_push"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"zhifu--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -531,8 +526,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSDictionary *dict = @{@"oid":_order_id};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *urlstr = [API stringByAppendingString:@"Jpush/distribution_push"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"zhifu1--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -655,9 +649,6 @@
         dict = @{@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
     }
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
-    NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
     NSString *urlstr;
     if ([_type isEqualToString:@"aciti"]) {
         urlstr = [API stringByAppendingString:@"activity/pay_activity_order/typename/wxpay"];
@@ -716,9 +707,7 @@
     }
 //     = @{@"id":_order_id,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
     NSString *urlstr;
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
-    NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
+    
     if ([_type isEqualToString:@"aciti"]) {
         urlstr = [API stringByAppendingString:@"activity/pay_activity_order/typename/alipay"];
     }else if  ([_type isEqualToString:@"2"]){
@@ -767,9 +756,7 @@
     }else{
         dict = @{@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
     }
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
-    NSString *API_NOAPK = [defaults objectForKey:@"API_NOAPK"];
+    
     NSString *urlstr;
     if ([_type isEqualToString:@"aciti"]) {
         urlstr = [API stringByAppendingString:@"activity/pay_activity_order/typename/bestpay"];

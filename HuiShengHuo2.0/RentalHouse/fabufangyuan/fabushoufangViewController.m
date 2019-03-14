@@ -363,8 +363,7 @@
         NSDictionary *dict = nil;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"user_name":nameStr,@"user_phone":phoneStr,@"community_name":[userinfo objectForKey:@"community_name"],@"room":roomStr,@"office":officeStr,@"kitchen":kitchenStr,@"guard":guardStr,@"floor":floorStr,@"house_floor":house_floorStr,@"area":areaStr,@"unit_price":unit_priceStr,@"total_price":total_priceStr};
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *API = [defaults objectForKey:@"API"];
+        
         NSString *strurl = [API stringByAppendingString:@"personalHouse/housesAddDo"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             

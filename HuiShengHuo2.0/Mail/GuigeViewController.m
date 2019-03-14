@@ -166,8 +166,6 @@
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         NSDictionary *dict = @{@"p_id":_IDstring,@"tagid":[NSString stringWithFormat:@"%@",_tagidstring],@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"num":[NSString stringWithFormat:@"%d",i+1]};
         NSLog(@"%@",dict);
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *API = [defaults objectForKey:@"API"];
         NSString *strurl = [API stringByAppendingString:@"shop/check_shop_limit"];
         [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSLog(@"111---success--%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
@@ -255,8 +253,7 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = @{@"p_id":_IDstring,@"tagid":[NSString stringWithFormat:@"%@",_tagidstring],@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"num":@"1"};
     NSLog(@"%@",dict);
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+
     NSString *strurl = [API stringByAppendingString:@"shop/check_shop_limit"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"111---success--%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
@@ -314,8 +311,7 @@
      task.response: 响应头信息
      第五个参数:failure 失败之后的回调
      */
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+  
     NSString *strurl = [API stringByAppendingString:@"shop/goods_tags"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
@@ -399,8 +395,7 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = @{@"p_id":_IDstring,@"tagid":[NSString stringWithFormat:@"%@",_tagidstring],@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"num":@"1"};
     NSLog(@"%@",dict);
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *strurl = [API stringByAppendingString:@"shop/check_shop_limit"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"111---success--%@--%@",responseObject,[responseObject objectForKey:@"msg"]);

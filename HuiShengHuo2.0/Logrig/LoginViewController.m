@@ -254,8 +254,7 @@
                 AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
                 manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
                 NSDictionary *dict = @{@"accessToken":[resultDic objectForKey:@"accessToken"],@"openId":[resultDic objectForKey:@"openId"],@"clientIp":clientIp,@"clientId":@"8015489963"};
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                NSString *API = [defaults objectForKey:@"API"];
+                
                 NSString *mianmiurl = [API stringByAppendingString:@"site/get_userInfo"];
                 [manager POST:mianmiurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                     //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
@@ -350,8 +349,7 @@
     }
     
     NSLog(@"---%@",dictlog);
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+    
     NSString *mianmiurllog = [API stringByAppendingString:@"site/free_login"];
     [managerlog POST:mianmiurllog parameters:dictlog progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         //NSLog(@"success==%@==%lu",[responseObject objectForKey:@"msg"],_DataArr.count);
@@ -399,7 +397,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *strurl = [NSString stringWithFormat:@"%@%@",API,@"site/select_community"];
     NSDictionary *dict = nil;
     dict = @{@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"],@"community_id":[defaults objectForKey:@"community_id"]};
@@ -561,34 +559,53 @@
 #pragma mark - 发送验证码
 - (void)daojishi
 {
-    NSString *phoneNumber =phonbe.text;
+//    NSString *phoneNumber =phonbe.text;
+//    
+//    if(![self isValidateMobile:phoneNumber])
+//    {
+//        [MBProgressHUD showToastToView:self.view withText:@"手机号格式错误"];
+//    }else
+//    {
+//        NSString *gudingzifuchuan = @"hui-shenghuo.api_sms";
+//        NSString *gudingjiami = [MD5 MD5:gudingzifuchuan];
+//        //NSString *TEACHERLower      = [TEACHER lowercaseString];
+//        NSString *str2 = [[gudingjiami lowercaseString] substringWithRange:NSMakeRange(8,16)];
+//        NSString *timestring = [NSString stringWithFormat:@"%ld",time(NULL)];
+//        NSString *str3 = [NSString stringWithFormat:@"%@%@%@",timestring,str2,timestring];
+//        NSString *str4 = [MD5 MD5:[str3 lowercaseString]];
+//        NSString *str5 = [[str4 lowercaseString] substringWithRange:NSMakeRange(0,16)];
+//        
+//        NSString *ApiSmstoken = str5;//,@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring
+//        _dict2 = [[NSDictionary alloc] init];
+//        _strurl2 = [API stringByAppendingString:@"site/reg_send_sms"];
+//        _dict2 = @{@"username":phonbe.text,@"sms_type":@"login",@"phone_type":@"2",@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring};
+//        [self CreatePost2];
+//        timeDown = 59;
+//        [self handleTimer];
+//        timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
+//        NSLog(@"%@---%@---%@---%@---%@---%@",gudingzifuchuan,gudingjiami,str2,str3,str4,str5);
+//    }
+    NSString *gudingzifuchuan = @"hui-shenghuo.api_sms";
+    NSString *gudingjiami = [MD5 MD5:gudingzifuchuan];
+    //NSString *TEACHERLower      = [TEACHER lowercaseString];
+    NSString *str2 = [[gudingjiami lowercaseString] substringWithRange:NSMakeRange(8,16)];
+    NSString *timestring = [NSString stringWithFormat:@"%ld",time(NULL)];
+    NSString *str3 = [NSString stringWithFormat:@"%@%@%@",timestring,str2,timestring];
+    NSString *str4 = [MD5 MD5:[str3 lowercaseString]];
+    NSString *str5 = [[str4 lowercaseString] substringWithRange:NSMakeRange(0,16)];
     
-    if(![self isValidateMobile:phoneNumber])
-    {
-        [MBProgressHUD showToastToView:self.view withText:@"手机号格式错误"];
-    }else
-    {
-        NSString *gudingzifuchuan = @"hui-shenghuo.api_sms";
-        NSString *gudingjiami = [MD5 MD5:gudingzifuchuan];
-        //NSString *TEACHERLower      = [TEACHER lowercaseString];
-        NSString *str2 = [[gudingjiami lowercaseString] substringWithRange:NSMakeRange(8,16)];
-        NSString *timestring = [NSString stringWithFormat:@"%ld",time(NULL)];
-        NSString *str3 = [NSString stringWithFormat:@"%@%@%@",timestring,str2,timestring];
-        NSString *str4 = [MD5 MD5:[str3 lowercaseString]];
-        NSString *str5 = [[str4 lowercaseString] substringWithRange:NSMakeRange(0,16)];
-        
-        NSString *ApiSmstoken = str5;//,@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring
-        _dict2 = [[NSDictionary alloc] init];
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *API = [defaults objectForKey:@"API"];
-        _strurl2 = [API stringByAppendingString:@"site/reg_send_sms"];
-        _dict2 = @{@"username":phonbe.text,@"sms_type":@"login",@"phone_type":@"2",@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring};
-        [self CreatePost2];
-        timeDown = 59;
-        [self handleTimer];
-        timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
-        NSLog(@"%@---%@---%@---%@---%@---%@",gudingzifuchuan,gudingjiami,str2,str3,str4,str5);
-    }
+
+   
+
+    NSString *ApiSmstoken = str5;//,@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring
+    _dict2 = [[NSDictionary alloc] init];
+   
+    _strurl2 = [API stringByAppendingString:@"site/reg_send_sms"];
+    _dict2 = @{@"username":phonbe.text,@"sms_type":@"login",@"phone_type":@"2",@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring};
+    [self CreatePost2];
+    
+    NSLog(@"%@---%@---%@---%@---%@---%@",gudingzifuchuan,gudingjiami,str2,str3,str4,str5);
+
 }
 -(void)handleTimer
 {
@@ -619,11 +636,14 @@
     [manager POST:_strurl2 parameters:_dict2 progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([[responseObject objectForKey:@"status"] integerValue]==1) {
             NSLog(@"发送验证码成功");
+            timeDown = 59;
+            [self handleTimer];
+            timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
             [MBProgressHUD showToastToView:self.view withText:@"验证码发送成功"];
             //            [LoadingView stopAnimating];
             //            LoadingView.hidden = YES;
         }else{
-            [MBProgressHUD showToastToView:self.view withText:@"验证码发送失败"];
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
@@ -677,8 +697,7 @@
     }else{
         //[LoadingView startAnimating];
         _dict = [[NSDictionary alloc] init];
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *API = [defaults objectForKey:@"API"];
+        
         _strurl = [API stringByAppendingString:@"site/login_verify"];
         NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
         if ([userdefaults objectForKey:@"registrationID"]==nil){

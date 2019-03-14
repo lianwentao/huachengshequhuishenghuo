@@ -42,8 +42,7 @@
     //2.封装参数
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = @{@"community_id":[userinfo objectForKey:@"community_id"]};
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *API = [defaults objectForKey:@"API"];
+   
     NSString *strurl = [API stringByAppendingString:@"social/SocialIndex"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success--%@--%@",[responseObject class],responseObject);
@@ -127,8 +126,7 @@
                 UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15, 5, 75, 75)];
                 imageview.layer.masksToBounds = YES;
                 imageview.layer.cornerRadius = 37.5;
-                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                NSString *API = [defaults objectForKey:@"API"];
+                
                 NSString *strurl = [API stringByAppendingString:[[arr objectAtIndex:indexPath.row-1]objectForKey:@"avatars"]];
                 [imageview sd_setImageWithURL:[NSURL URLWithString: strurl]];
                 [cell.contentView addSubview:imageview];
