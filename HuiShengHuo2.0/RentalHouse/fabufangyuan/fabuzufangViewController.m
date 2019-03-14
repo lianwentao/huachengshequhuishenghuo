@@ -325,6 +325,7 @@
     NSString *house_floorStr = textfieldzonglouceng.text;
     NSString *areaStr = textfieldmianji.text;
     NSString *unit_priceStr = textfieldzujin.text;
+    NSString *xiaoqu = textfieldxaoqu.text;
    
     //初始化进度框，置于当前的View当中
     static MBProgressHUD *_HUD;
@@ -348,7 +349,7 @@
         NSDictionary *dict = nil;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
 
-        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"user_name":user_name,@"user_phone":phoneStr,@"community_name":[userinfo objectForKey:@"community_name"],@"room":roomStr,@"office":officeStr,@"kitchen":kitchenStr,@"guard":guardStr,@"floor":floorStr,@"house_floor":house_floorStr,@"area":areaStr,@"unit_price":unit_priceStr};
+        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"user_name":user_name,@"user_phone":phoneStr,@"community_name":xiaoqu,@"room":roomStr,@"office":officeStr,@"kitchen":kitchenStr,@"guard":guardStr,@"floor":floorStr,@"house_floor":house_floorStr,@"area":areaStr,@"unit_price":unit_priceStr};
         WBLog(@"$$$$$$$$----%@",dict);
         
         NSString *strurl = [API stringByAppendingString:@"personalHouse/housesLeaseAddDo"];

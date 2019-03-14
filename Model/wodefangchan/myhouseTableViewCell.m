@@ -58,14 +58,14 @@
 {
     if (![model.status isEqualToString:@"1"]) {
         _namelabel.text = [NSString stringWithFormat:@"经纪人:%@",model.name];
-        [_jingjirenimg sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.jingjirenimg]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+        [_jingjirenimg sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.jingjirenimg]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
         [self.contentView addSubview:_namelabel];
         [self.contentView addSubview:_jingjirenimg];
         [self.contentView addSubview:_callbut];
         _callbut.tag = [[NSString stringWithFormat:@"%@",model.phone] integerValue];
         [_callbut addTarget:self action:@selector(calljingjiren:) forControlEvents:UIControlEventTouchUpInside];
     }
-    [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.imgstring]] placeholderImage:[UIImage imageNamed:@"201995-120HG1030762"]];
+    [_imageview sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:model.imgstring]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
     _detailslabel.text = model.details;
     if ([model.house_type isEqualToString:@"1"]) {
         _pricelabel.text = [NSString stringWithFormat:@"%@元/月",model.price];
