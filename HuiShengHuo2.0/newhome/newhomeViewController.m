@@ -410,7 +410,7 @@
     _tableView.dataSource = self;
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 //    _tableView.backgroundColor = BackColor;
-    _tableView.backgroundColor = [UIColor whiteColor];
+    _tableView.backgroundColor = BackColor;
     _tableView.showsVerticalScrollIndicator = NO;
     //_TabelView.enablePlaceHolderView = YES;
    
@@ -438,6 +438,7 @@
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"]};
+    
     //3.发送GET请求
     /*
      */
@@ -1529,8 +1530,8 @@
             tableView.rowHeight = 54+(Main_width-24)/2/1.5;
             
         }else{
-            
-            tableView.rowHeight = 110+22.5;
+            cell.contentView.backgroundColor = BackColor;
+            tableView.rowHeight = 110+12.5;
             UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(12, 10, Main_width-24, 110)];
             backview.backgroundColor = [UIColor whiteColor];
             [cell.contentView addSubview:backview];
