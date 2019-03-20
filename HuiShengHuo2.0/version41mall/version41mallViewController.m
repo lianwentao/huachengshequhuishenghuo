@@ -158,8 +158,7 @@
 }
 - (void)change
 {
-    //[self getdata];
-    [_mainTableView.mj_header beginRefreshing];
+    [self getdata];
 }
 - (void)setupNavItems
 {
