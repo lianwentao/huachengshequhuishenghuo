@@ -176,7 +176,7 @@
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"apk_token":uid_username,@"id":[user objectForKey:@"community_id"]};
+    NSDictionary *dict = @{@"apk_token":uid_username,@"id":[user objectForKey:@"community_id"],@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      */
@@ -217,7 +217,7 @@
     //2.封装参数
     
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"cate_id":_id};
+    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"cate_id":_id,@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      第一个参数:请求路径(NSString)+ 不需要加参数
@@ -319,7 +319,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"id":liebiaoid,@"is_star":isstar};
+    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"id":liebiaoid,@"is_star":isstar,@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      第一个参数:请求路径(NSString)+ 不需要加参数
@@ -385,7 +385,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"id":liebiaoid,@"p":[NSString stringWithFormat:@"%d",_pagenum],@"is_star":isstar};
+    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"id":liebiaoid,@"p":[NSString stringWithFormat:@"%d",_pagenum],@"is_star":isstar,@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      第一个参数:请求路径(NSString)+ 不需要加参数

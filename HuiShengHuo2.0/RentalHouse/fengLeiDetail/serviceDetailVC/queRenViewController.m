@@ -68,7 +68,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    NSDictionary *dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     NSLog(@"dict = %@",dict);
     
     NSString *strurl = [API stringByAppendingString:@"/site/default_address"];
@@ -395,13 +395,14 @@
     NSDictionary *dict = [[NSDictionary alloc] init];
 
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
         NSInteger stMe = [statusMe integerValue];
         if (![_addressDic isKindOfClass:[NSDictionary class]] || stMe == 1 ) {
             
-            dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"s_id":_serviceID,@"s_tag_id":_serviceTagID,@"s_tag_cn":_serviceStr,@"price":_priceStr,@"address":labelcontent.text,@"contacts":_name,@"mobile":_phone,@"address_id":_addressid,@"description":_textView.text};
+            dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"s_id":_serviceID,@"s_tag_id":_serviceTagID,@"s_tag_cn":_serviceStr,@"price":_priceStr,@"address":labelcontent.text,@"contacts":_name,@"mobile":_phone,@"address_id":_addressid,@"description":_textView.text,@"hui_community_id":[user objectForKey:@"community_id"]};
             NSLog(@"dict===%@",dict);
         }else{
-            dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"s_id":_serviceID,@"s_tag_id":_serviceTagID,@"s_tag_cn":_serviceStr,@"price":_priceStr,@"address":_addressDic[@"address"],@"contacts":_addressDic[@"contact"],@"mobile":_addressDic[@"mobile"],@"address_id":_addressDic[@"address_id"],@"description":_textView.text};
+            dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"s_id":_serviceID,@"s_tag_id":_serviceTagID,@"s_tag_cn":_serviceStr,@"price":_priceStr,@"address":_addressDic[@"address"],@"contacts":_addressDic[@"contact"],@"mobile":_addressDic[@"mobile"],@"address_id":_addressDic[@"address_id"],@"description":_textView.text,@"hui_community_id":[user objectForKey:@"community_id"]};
             NSLog(@"dict===%@",dict);
         }
    

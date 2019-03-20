@@ -96,7 +96,8 @@
     //2.封装参数
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
    
     NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -123,7 +124,8 @@
     //2.封装参数
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"community_id":community_id,@"community_name":community_name,@"company_id":company_id,@"company_name":company_name,@"department_id":department_id,@"department_name":department_name,@"building_id":building_id,@"building_name":building_name,@"unit":units,@"floor":floor,@"code":code,@"room_id":room_id,@"fullname":fullname,@"mobile":mobeil,@"is_ym":is_ym};
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"community_id":community_id,@"community_name":community_name,@"company_id":company_id,@"company_name":company_name,@"department_id":department_id,@"department_name":department_name,@"building_id":building_id,@"building_name":building_name,@"unit":units,@"floor":floor,@"code":code,@"room_id":room_id,@"fullname":fullname,@"mobile":mobeil,@"is_ym":is_ym,@"hui_community_id":[user objectForKey:@"community_id"]};
     
     NSString *strurl = [API stringByAppendingString:@"property/pro_bind_user"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -300,7 +302,8 @@
         //2.封装参数
         NSDictionary *dict = nil;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"room_id":code,@"key_str":nameorphone};
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"room_id":code,@"key_str":nameorphone,@"hui_community_id":[user objectForKey:@"community_id"]};
         
         NSString *strurl = [API stringByAppendingString:@"property/getPersonalInfo"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -330,10 +333,11 @@
     //2.封装参数
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     if ([_house_type isEqualToString:@"2"]||[_house_type isEqualToString:@"4"]) {
-        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"community_id":[Dictionary objectForKey:@"community_id"],@"community_name":[Dictionary objectForKey:@"community_name"],@"company_id":[Dictionary objectForKey:@"company_id"],@"company_name":[Dictionary objectForKey:@"company_name"],@"department_id":[Dictionary objectForKey:@"department_id"],@"department_name":[Dictionary objectForKey:@"department_name"],@"building_id":[Dictionary objectForKey:@"building_id"],@"building_name":[Dictionary objectForKey:@"building_name"],@"code":[Dictionary objectForKey:@"code"],@"room_id":[Dictionary objectForKey:@"room_id"],@"fullname":[Dictionary objectForKey:@"fullname"],@"mobile":[Dictionary objectForKey:@"mobile"],@"is_ym":[Dictionary objectForKey:@"is_ym"],@"house_type":[Dictionary objectForKey:@"houses_type"]};
+        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"community_id":[Dictionary objectForKey:@"community_id"],@"community_name":[Dictionary objectForKey:@"community_name"],@"company_id":[Dictionary objectForKey:@"company_id"],@"company_name":[Dictionary objectForKey:@"company_name"],@"department_id":[Dictionary objectForKey:@"department_id"],@"department_name":[Dictionary objectForKey:@"department_name"],@"building_id":[Dictionary objectForKey:@"building_id"],@"building_name":[Dictionary objectForKey:@"building_name"],@"code":[Dictionary objectForKey:@"code"],@"room_id":[Dictionary objectForKey:@"room_id"],@"fullname":[Dictionary objectForKey:@"fullname"],@"mobile":[Dictionary objectForKey:@"mobile"],@"is_ym":[Dictionary objectForKey:@"is_ym"],@"house_type":[Dictionary objectForKey:@"houses_type"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }else{
-        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"community_id":[Dictionary objectForKey:@"community_id"],@"community_name":[Dictionary objectForKey:@"community_name"],@"company_id":[Dictionary objectForKey:@"company_id"],@"company_name":[Dictionary objectForKey:@"company_name"],@"department_id":[Dictionary objectForKey:@"department_id"],@"department_name":[Dictionary objectForKey:@"department_name"],@"building_id":[Dictionary objectForKey:@"building_id"],@"building_name":[Dictionary objectForKey:@"building_name"],@"unit":[Dictionary objectForKey:@"unit"],@"floor":[Dictionary objectForKey:@"floor"],@"code":[Dictionary objectForKey:@"code"],@"room_id":[Dictionary objectForKey:@"room_id"],@"fullname":[Dictionary objectForKey:@"fullname"],@"mobile":[Dictionary objectForKey:@"mobile"],@"is_ym":[Dictionary objectForKey:@"is_ym"],@"house_type":[Dictionary objectForKey:@"houses_type"]};
+        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"community_id":[Dictionary objectForKey:@"community_id"],@"community_name":[Dictionary objectForKey:@"community_name"],@"company_id":[Dictionary objectForKey:@"company_id"],@"company_name":[Dictionary objectForKey:@"company_name"],@"department_id":[Dictionary objectForKey:@"department_id"],@"department_name":[Dictionary objectForKey:@"department_name"],@"building_id":[Dictionary objectForKey:@"building_id"],@"building_name":[Dictionary objectForKey:@"building_name"],@"unit":[Dictionary objectForKey:@"unit"],@"floor":[Dictionary objectForKey:@"floor"],@"code":[Dictionary objectForKey:@"code"],@"room_id":[Dictionary objectForKey:@"room_id"],@"fullname":[Dictionary objectForKey:@"fullname"],@"mobile":[Dictionary objectForKey:@"mobile"],@"is_ym":[Dictionary objectForKey:@"is_ym"],@"house_type":[Dictionary objectForKey:@"houses_type"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }
     
     WBLog(@"%@--%@",Dictionary,dict);

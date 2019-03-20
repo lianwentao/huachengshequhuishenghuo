@@ -108,10 +108,10 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *url = [API stringByAppendingString:@"property/get_pro_com"];
     NSDictionary *dict = [[NSDictionary alloc] init];
-    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     
     NSLog(@"dict--%@",dict);
     [manager POST:url parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

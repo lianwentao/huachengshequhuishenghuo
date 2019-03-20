@@ -31,7 +31,7 @@
 -(void)loadData{
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     
-    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"house_type":@"2"};
+    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"house_type":@"2",@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     
     NSLog(@"dict = %@",dict);
     

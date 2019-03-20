@@ -63,7 +63,8 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
-    NSDictionary *dict = @{@"region_code":_region_code};
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict = @{@"region_code":_region_code,@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      第一个参数:请求路径(NSString)+ 不需要加参数

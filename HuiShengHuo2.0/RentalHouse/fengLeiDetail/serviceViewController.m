@@ -47,9 +47,9 @@
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     if ([_sqfStr isEqualToString:@"0"]) {
-        dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"i_id":_sID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+        dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"i_id":_sID,@"p":[NSString stringWithFormat:@"%ld",pageNum],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     }else{
-        dict = @{@"p":[NSString stringWithFormat:@"%ld",pageNum],@"c_id":[userinfo objectForKey:@"community_id"],@"category":_sID};
+        dict = @{@"p":[NSString stringWithFormat:@"%ld",pageNum],@"c_id":[userinfo objectForKey:@"community_id"],@"category":_sID,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     }
     NSLog(@"dict = %@",dict);
     
@@ -220,9 +220,9 @@
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     if ([_sqfStr isEqualToString:@"0"]) {
-        dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"i_id":_sID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+        dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"i_id":_sID,@"p":[NSString stringWithFormat:@"%ld",pageNum],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     }else{
-        dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":_sID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+        dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":_sID,@"p":[NSString stringWithFormat:@"%ld",pageNum],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     }
     NSLog(@"dict = %@",dict);
    

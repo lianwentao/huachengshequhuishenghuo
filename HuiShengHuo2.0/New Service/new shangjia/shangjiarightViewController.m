@@ -69,7 +69,8 @@
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSDictionary *dict = @{@"id":_shopID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict = @{@"id":_shopID,@"p":[NSString stringWithFormat:@"%ld",pageNum],@"hui_community_id":[user objectForKey:@"community_id"]};
     NSLog(@"评论 == %@",dict);
     
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/institution/merchantComments"];

@@ -227,7 +227,7 @@
         _moneyOne = @"";
     }
 
-    NSDictionary *dict = @{@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":@"",@"community_name":_community_name,@"community_id":[userinfo objectForKey:@"community_id"],@"page":[NSString stringWithFormat:@"%ld",pageNum]};
+    NSDictionary *dict = @{@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":@"",@"community_name":_community_name,@"community_id":[userinfo objectForKey:@"community_id"],@"page":[NSString stringWithFormat:@"%ld",pageNum],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
 
     NSLog(@"dict = %@",dict);
 

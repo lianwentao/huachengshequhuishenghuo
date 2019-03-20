@@ -82,7 +82,7 @@
     NSLog(@"_sfID = %@",_sfID);
     
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"house_id":_sfID};
+    NSDictionary *dict = @{@"house_id":_sfID,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
@@ -247,7 +247,7 @@
             topImg.userInteractionEnabled = YES;
             topImg.clipsToBounds = YES;
             topImg.contentMode = UIViewContentModeScaleAspectFill;
-            [topImg sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"背景图2.5"]];
+            [topImg sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"展位图长2.5"]];
             [cell.contentView addSubview:topImg];
         }
         

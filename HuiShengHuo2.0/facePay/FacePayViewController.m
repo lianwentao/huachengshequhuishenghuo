@@ -118,7 +118,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"room_id":room_id,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    NSDictionary *dict = @{@"room_id":room_id,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
    
     NSString *urlstr = [API stringByAppendingString:@"property/get_room_personal_info"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -222,7 +222,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
    
     NSString *strurl = [API stringByAppendingString:@"property/face_pay_cate"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -521,13 +521,13 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict = nil;
     if ([sign isEqualToString:@"0"]) {
-        dict = @{@"c_id":c_id,@"c_name":c_name,@"money":pricetextfield.text,@"note":TextView1.text,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        dict = @{@"c_id":c_id,@"c_name":c_name,@"money":pricetextfield.text,@"note":TextView1.text,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
         NSLog(@"dict===%@",dict);
     }else if ([sign isEqualToString:@"2"]) {
-        dict = @{@"c_id":c_id,@"c_name":c_name,@"m_name":shangpu_name,@"m_id":shangpu_id,@"m_uid":shangpu_uid,@"money":pricetextfield.text,@"note":TextView2.text,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        dict = @{@"c_id":c_id,@"c_name":c_name,@"m_name":shangpu_name,@"m_id":shangpu_id,@"m_uid":shangpu_uid,@"money":pricetextfield.text,@"note":TextView2.text,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
         NSLog(@"dict===%@",dict);
     }else{
-        dict = @{@"c_id":c_id,@"c_name":c_name,@"community_id":community_id,@"community_name":community_name,@"building_id":building_id,@"building_name":building_name,@"room_id":room_id,@"company_id":company_id,@"company_name":company_name,@"department_id":department_id,@"department_name":department_name,@"floor":floor,@"unit":units,@"code":code,@"mobile":phone,@"fullname":name,@"money":pricetextfield.text,@"note":TextView.text,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        dict = @{@"c_id":c_id,@"c_name":c_name,@"community_id":community_id,@"community_name":community_name,@"building_id":building_id,@"building_name":building_name,@"room_id":room_id,@"company_id":company_id,@"company_name":company_name,@"department_id":department_id,@"department_name":department_name,@"floor":floor,@"unit":units,@"code":code,@"mobile":phone,@"fullname":name,@"money":pricetextfield.text,@"note":TextView.text,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }
     
     NSString *urlstr = [API stringByAppendingString:@"property/add_face_pay_order"];

@@ -348,8 +348,9 @@
         //2.封装参数
         NSDictionary *dict = nil;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
 
-        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"user_name":user_name,@"user_phone":phoneStr,@"community_name":xiaoqu,@"room":roomStr,@"office":officeStr,@"kitchen":kitchenStr,@"guard":guardStr,@"floor":floorStr,@"house_floor":house_floorStr,@"area":areaStr,@"unit_price":unit_priceStr};
+        dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"user_name":user_name,@"user_phone":phoneStr,@"community_name":xiaoqu,@"room":roomStr,@"office":officeStr,@"kitchen":kitchenStr,@"guard":guardStr,@"floor":floorStr,@"house_floor":house_floorStr,@"area":areaStr,@"unit_price":unit_priceStr,@"hui_community_id":[user objectForKey:@"community_id"]};
         WBLog(@"$$$$$$$$----%@",dict);
         
         NSString *strurl = [API stringByAppendingString:@"personalHouse/housesLeaseAddDo"];

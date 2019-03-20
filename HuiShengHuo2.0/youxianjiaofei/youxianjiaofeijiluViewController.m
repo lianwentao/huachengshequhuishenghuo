@@ -150,8 +150,9 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     _pagenum = _pagenum+1;
     NSString *string = [NSString stringWithFormat:@"%d",_pagenum];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = nil;
-    dict = @{@"p":string};
+    dict = @{@"p":string,@"hui_community_id":[user objectForKey:@"community_id"]};
     
     NSString *strurl = [API stringByAppendingString:@"property/wired_order_list"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

@@ -77,7 +77,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    myDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     self.view.backgroundColor = [UIColor whiteColor];
     
     category = [[NSArray alloc] init];
@@ -322,7 +321,7 @@
                     //2.封装参数
                     
                     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-                    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"cate_id":result};
+                    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"cate_id":result,@"hui_community_id":[user objectForKey:@"community_id"]};
                     NSString *strurl = [API stringByAppendingString:@"shop/pro_list_cate"];
                     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                         
@@ -405,8 +404,9 @@
                     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
                     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
                     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
                     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-                    NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+                    NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
                     NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
                     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                         NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -462,8 +462,9 @@
                     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
                     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
                     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
                     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-                    NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+                    NSDictionary *dict = @{@"apk_token":uid_username,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
                     NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
                     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                         NSLog(@"%@-000000-%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -480,8 +481,9 @@
                                 AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
                                 manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
                                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                                NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
                                 NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-                                NSDictionary *dict = @{@"apk_token":uid_username,@"room_id":[[arrrrr objectAtIndex:0] objectForKey:@"room_id"],@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+                                NSDictionary *dict = @{@"apk_token":uid_username,@"room_id":[[arrrrr objectAtIndex:0] objectForKey:@"room_id"],@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
                                 NSString *strurl = [API stringByAppendingString:@"property/checkIsAjb"];
                                 [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                                     NSLog(@"%@-11111-%@",[responseObject objectForKey:@"msg"],responseObject);
@@ -926,7 +928,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"]};
+    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"hui_community_id":[user objectForKey:@"community_id"]};
    
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/index/serviceindex"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -950,7 +952,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"community_id":[user objectForKey:@"community_id"]};  
+    NSDictionary *dict = @{@"community_id":[user objectForKey:@"community_id"],@"hui_community_id":[user objectForKey:@"community_id"]};  
     NSString *strurl = [API stringByAppendingString:@"site/get_Advertising/c_name/service_indextop"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         WBLog(@"fuwujiekoutop--%@",responseObject);

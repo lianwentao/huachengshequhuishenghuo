@@ -61,7 +61,8 @@
         //2.封装参数
         NSDictionary *dict = nil;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-        dict = @{@"c_alias":@"HC_cancel",@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        dict = @{@"c_alias":@"HC_cancel",@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
         
         NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/order/abortList"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -140,6 +141,7 @@
             //2.封装参数
             NSDictionary *dict = nil;
             NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             NSString *c_name;
             NSString *c_text;
             
@@ -150,7 +152,7 @@
                 c_name = [[dataarr objectAtIndex:i] objectForKey:@"id"];
                 
             }
-            dict = @{@"id":_dingdanid,@"cancel_type":c_name,@"cancel_other":cancel_other,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+            dict = @{@"id":_dingdanid,@"cancel_type":c_name,@"cancel_other":cancel_other,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
             
             NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/order/abortSave"];
             [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

@@ -71,11 +71,12 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = [[NSDictionary alloc] init];
     if ([_housetype isEqualToString:@"2"]||[_housetype isEqualToString:@"4"]) {
-        dict = @{@"community_id":_c_id,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+        dict = @{@"community_id":_c_id,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }else{
-        dict = @{@"community_id":_c_id,@"buildsing_id":_buildid,@"units":_danyuanid,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+        dict = @{@"community_id":_c_id,@"buildsing_id":_buildid,@"units":_danyuanid,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
         
     }
     

@@ -52,7 +52,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"id":_id};
+    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"id":_id,@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      第一个参数:请求路径(NSString)+ 不需要加参数
@@ -117,7 +117,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"id":_id,@"p":[NSString stringWithFormat:@"%d",_pagenum]};
+    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"id":_id,@"p":[NSString stringWithFormat:@"%d",_pagenum],@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      第一个参数:请求路径(NSString)+ 不需要加参数

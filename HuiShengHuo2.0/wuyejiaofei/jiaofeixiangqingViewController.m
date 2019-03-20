@@ -101,7 +101,7 @@
         //2.封装参数
         NSDictionary *dict = nil;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-        dict = @{@"room_id":_room_id,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+        dict = @{@"room_id":_room_id,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
         WBLog(@"*******%@",dict);
 
         NSString *strurl = [NSString stringWithFormat:@"%@%@",API,@"property/get_room_bill"];
@@ -593,7 +593,7 @@
                     //2.封装参数
                     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
                     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
-                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"bill_id":[string substringFromIndex:1],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"bill_id":[string substringFromIndex:1],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
                     
                     NSString *strurl = [API stringByAppendingString:@"property/make_property_order"];
                     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -644,7 +644,7 @@
                     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
                     //2.封装参数
                     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"category_id":type,@"category_name":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"category_id":type,@"category_name":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
                     
                     NSString *strurl = [API stringByAppendingString:@"property/create_order"];
                     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -686,7 +686,7 @@
                     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
                     //2.封装参数
                     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"category_id":type,@"category_name":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"category_id":type,@"category_name":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
                     
                     NSString *strurl = [API stringByAppendingString:@"property/create_order"];
                     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

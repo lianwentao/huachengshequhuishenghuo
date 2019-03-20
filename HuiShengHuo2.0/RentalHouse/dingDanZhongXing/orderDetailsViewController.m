@@ -85,7 +85,8 @@
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
         //2.封装参数
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-        NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"id":_workOrderID};
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"id":_workOrderID,@"hui_community_id":[user objectForKey:@"community_id"]};
         
         NSString *strurl = [API stringByAppendingString:@"propertyWork/getWorkDetails"];
         [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -1408,7 +1409,8 @@
                           manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
                           //2.封装参数
                           NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                          NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"id":model.id};
+                          NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+                          NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"id":model.id,@"hui_community_id":[user objectForKey:@"community_id"]};
                           
                           NSString *strurl = [API stringByAppendingString:@"propertyWork/WorkCancel"];
                           [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -1448,8 +1450,9 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSString *url = [API stringByAppendingString:@"Jpush/userToWorkerSubmit"];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = [[NSDictionary alloc] init];
-    dict = @{@"id":gongdanid,@"type":@"2"};
+    dict = @{@"id":gongdanid,@"type":@"2",@"hui_community_id":[user objectForKey:@"community_id"]};
     
     NSLog(@"dict--%@",dict);
     [manager POST:url parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
