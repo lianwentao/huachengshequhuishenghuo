@@ -149,9 +149,9 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSLog(@"%@",_id);
     if (_id==nil) {
-        dict = @{@"community_cn":textfieldxiaoqu.text,@"consignee_name":textfieldname.text,@"consignee_mobile":textfieldphone.text,@"doorplate":textfieldaddress.text,@"community_id":str1,@"region_cn":@"山西省.晋中市.榆次区",@"region_id":region_idstr,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        dict = @{@"community_cn":textfieldxiaoqu.text,@"consignee_name":textfieldname.text,@"consignee_mobile":textfieldphone.text,@"doorplate":textfieldaddress.text,@"community_id":str1,@"region_cn":@"山西省.晋中市.榆次区",@"region_id":region_idstr,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }else{
-        dict = @{@"community_cn":textfieldxiaoqu.text,@"consignee_name":textfieldname.text,@"consignee_mobile":textfieldphone.text,@"doorplate":textfieldaddress.text,@"community_id":_community_id,@"region_cn":@"山西省.晋中市.榆次区",@"region_id":_region_id,@"id":_id,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        dict = @{@"community_cn":textfieldxiaoqu.text,@"consignee_name":textfieldname.text,@"consignee_mobile":textfieldphone.text,@"doorplate":textfieldaddress.text,@"community_id":_community_id,@"region_cn":@"山西省.晋中市.榆次区",@"region_id":_region_id,@"id":_id,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }
     
     NSLog(@"%@",dict);

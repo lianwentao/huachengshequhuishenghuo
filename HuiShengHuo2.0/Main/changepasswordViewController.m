@@ -127,7 +127,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"password_one":_textField1.text,@"password_two":_textField2.text,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    NSDictionary *dict = @{@"password_one":_textField1.text,@"password_two":_textField2.text,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     
     NSString *urlstr = [API stringByAppendingString:@"userCenter/account"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

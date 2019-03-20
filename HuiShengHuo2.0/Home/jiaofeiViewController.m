@@ -114,7 +114,7 @@
     
 //    [super viewWillAppear:animated];
 //
-//    [UIView animateWithDuration:0.6 animations:^{
+//    [UIView animateWithDuration:0.6 animations:^{ 
 //
 //        _closeImgView.transform = CGAffineTransformRotate(_closeImgView.transform, M_PI);
 //    }];

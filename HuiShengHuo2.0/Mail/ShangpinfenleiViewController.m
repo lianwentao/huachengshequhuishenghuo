@@ -87,7 +87,7 @@
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"id":[user objectForKey:@"community_id"]};
+    NSDictionary *dict = @{@"id":[user objectForKey:@"community_id"],@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      */
@@ -128,7 +128,7 @@
     
     NSString *strurl = [API stringByAppendingString:@"shop/area_topclass"];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"]};
+    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"hui_community_id":[user objectForKey:@"community_id"]};
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success--%@--%@",[responseObject class],responseObject);
         NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
@@ -150,7 +150,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSDictionary *dict = [[NSDictionary alloc] init];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    dict = @{@"id":_biaoji,@"c_id":[user objectForKey:@"community_id"]};
+    dict = @{@"id":_biaoji,@"c_id":[user objectForKey:@"community_id"],@"hui_community_id":[user objectForKey:@"community_id"]};
    
     NSString *strurl = [API stringByAppendingString:@"shop/area_category"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

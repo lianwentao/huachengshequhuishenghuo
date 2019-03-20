@@ -251,9 +251,10 @@
                 timeStamp = [resultDic objectForKey:@"timeStamp"];
                 NSLog(@"********resultDic:%@",resultDic);//保存在本地
                 //1.创建会话管理者
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                 AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
                 manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-                NSDictionary *dict = @{@"accessToken":[resultDic objectForKey:@"accessToken"],@"openId":[resultDic objectForKey:@"openId"],@"clientIp":clientIp,@"clientId":@"8015489963"};
+                NSDictionary *dict = @{@"accessToken":[resultDic objectForKey:@"accessToken"],@"openId":[resultDic objectForKey:@"openId"],@"clientIp":clientIp,@"clientId":@"8015489963",@"hui_community_id":[defaults objectForKey:@"community_id"]};
                 
                 NSString *mianmiurl = [API stringByAppendingString:@"site/get_userInfo"];
                 [manager POST:mianmiurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -343,9 +344,9 @@
     
     
     if ([userdefaults objectForKey:@"registrationID"]==nil){
-        dictlog = @{@"username":username,@"openId":openid,@"token":token,@"timeStamp":timeStamp,@"phone_type":@"2",@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring};
+        dictlog = @{@"username":username,@"openId":openid,@"token":token,@"timeStamp":timeStamp,@"phone_type":@"2",@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring,@"hui_community_id":[userdefaults objectForKey:@"community_id"]};
     }else{
-        dictlog = @{@"username":username,@"openId":openid,@"token":token,@"timeStamp":timeStamp,@"phone_name":[userdefaults objectForKey:@"registrationID"],@"phone_type":@"2",@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring};
+        dictlog = @{@"username":username,@"openId":openid,@"token":token,@"timeStamp":timeStamp,@"phone_name":[userdefaults objectForKey:@"registrationID"],@"phone_type":@"2",@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring,@"hui_community_id":[userdefaults objectForKey:@"community_id"]};
     }
     
     NSLog(@"---%@",dictlog);
@@ -400,7 +401,7 @@
    
     NSString *strurl = [NSString stringWithFormat:@"%@%@",API,@"site/select_community"];
     NSDictionary *dict = nil;
-    dict = @{@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"],@"community_id":[defaults objectForKey:@"community_id"]};
+    dict = @{@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"],@"community_id":[defaults objectForKey:@"community_id"],@"hui_community_id":[defaults objectForKey:@"community_id"]};
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"---%@",responseObject);
         
@@ -559,32 +560,7 @@
 #pragma mark - 发送验证码
 - (void)daojishi
 {
-//    NSString *phoneNumber =phonbe.text;
-//    
-//    if(![self isValidateMobile:phoneNumber])
-//    {
-//        [MBProgressHUD showToastToView:self.view withText:@"手机号格式错误"];
-//    }else
-//    {
-//        NSString *gudingzifuchuan = @"hui-shenghuo.api_sms";
-//        NSString *gudingjiami = [MD5 MD5:gudingzifuchuan];
-//        //NSString *TEACHERLower      = [TEACHER lowercaseString];
-//        NSString *str2 = [[gudingjiami lowercaseString] substringWithRange:NSMakeRange(8,16)];
-//        NSString *timestring = [NSString stringWithFormat:@"%ld",time(NULL)];
-//        NSString *str3 = [NSString stringWithFormat:@"%@%@%@",timestring,str2,timestring];
-//        NSString *str4 = [MD5 MD5:[str3 lowercaseString]];
-//        NSString *str5 = [[str4 lowercaseString] substringWithRange:NSMakeRange(0,16)];
-//        
-//        NSString *ApiSmstoken = str5;//,@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring
-//        _dict2 = [[NSDictionary alloc] init];
-//        _strurl2 = [API stringByAppendingString:@"site/reg_send_sms"];
-//        _dict2 = @{@"username":phonbe.text,@"sms_type":@"login",@"phone_type":@"2",@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring};
-//        [self CreatePost2];
-//        timeDown = 59;
-//        [self handleTimer];
-//        timer = [NSTimer scheduledTimerWithTimeInterval:(1.0) target:self selector:@selector(handleTimer) userInfo:nil repeats:YES];
-//        NSLog(@"%@---%@---%@---%@---%@---%@",gudingzifuchuan,gudingjiami,str2,str3,str4,str5);
-//    }
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *gudingzifuchuan = @"hui-shenghuo.api_sms";
     NSString *gudingjiami = [MD5 MD5:gudingzifuchuan];
     //NSString *TEACHERLower      = [TEACHER lowercaseString];
@@ -601,7 +577,7 @@
     _dict2 = [[NSDictionary alloc] init];
    
     _strurl2 = [API stringByAppendingString:@"site/reg_send_sms"];
-    _dict2 = @{@"username":phonbe.text,@"sms_type":@"login",@"phone_type":@"2",@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring};
+    _dict2 = @{@"username":phonbe.text,@"sms_type":@"login",@"phone_type":@"2",@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring,@"hui_community_id":[defaults objectForKey:@"community_id"]};
     [self CreatePost2];
     
     NSLog(@"%@---%@---%@---%@---%@---%@",gudingzifuchuan,gudingjiami,str2,str3,str4,str5);

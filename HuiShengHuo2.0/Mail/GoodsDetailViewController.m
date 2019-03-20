@@ -310,7 +310,7 @@ static NSString * LINKEDME_SHORT_URL;
                 manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
                 //2.封装参数
                 NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-                NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"p_id":_IDstring,@"tagid":tagid,@"num":@"1",@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+                NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"p_id":_IDstring,@"tagid":tagid,@"num":@"1",@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
                 //3.发送GET请求
                 
                 NSString *strurl = [API stringByAppendingString:@"shop/check_shop_limit"];
@@ -362,7 +362,7 @@ static NSString * LINKEDME_SHORT_URL;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     NSString *price = [jiarugouwuchedict objectForKey:@"price"];
-    NSDictionary *dict = @{@"m_id":[userinfo objectForKey:@"community_id"],@"para_amount":price,@"products":jsonString,@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    NSDictionary *dict = @{@"m_id":[userinfo objectForKey:@"community_id"],@"para_amount":price,@"products":jsonString,@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     NSLog(@"dict = %@",dict);
    
     NSString *strurl = [API stringByAppendingString:@"shop/submit_order_before"];
@@ -946,7 +946,7 @@ static NSString * LINKEDME_SHORT_URL;
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"apk_token":uid_username,@"id":_IDstring};
+    NSDictionary *dict = @{@"apk_token":uid_username,@"id":_IDstring,@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      第一个参数:请求路径(NSString)+ 不需要加参数
@@ -1078,7 +1078,7 @@ static NSString * LINKEDME_SHORT_URL;
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"apk_token":uid_username,@"c_id":[user objectForKey:@"community_id"]};
+    NSDictionary *dict = @{@"apk_token":uid_username,@"c_id":[user objectForKey:@"community_id"],@"hui_community_id":[user objectForKey:@"community_id"]};
   
     NSString *strurl = [API stringByAppendingString:@"shop/cart_num"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

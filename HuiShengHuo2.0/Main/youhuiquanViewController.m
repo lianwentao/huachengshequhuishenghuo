@@ -700,9 +700,9 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict = [[NSDictionary alloc] init];
     if ([_shiyong isEqualToString:@"1"]) {
-        dict = @{@"apk_token":uid_username,@"category_id":@"54",@"shop_id_str":_shop_id_str,@"amount":_amount,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        dict = @{@"apk_token":uid_username,@"category_id":@"54",@"shop_id_str":_shop_id_str,@"amount":_amount,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }else{
-        dict = @{@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        dict = @{@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }
    
     NSString *urlstr = [API stringByAppendingString:@"userCenter/my_coupon_40"];
@@ -779,7 +779,7 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict = [[NSDictionary alloc] init];
-    dict = @{@"coupon_id":coupon_id,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    dict = @{@"coupon_id":coupon_id,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     
     NSString *urlstr = [API stringByAppendingString:@"userCenter/coupon_add"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

@@ -167,7 +167,8 @@ static const CGFloat kPhotoViewMargin = 230;
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
-    NSDictionary *dict = @{@"sign":@"1"};
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict = @{@"sign":@"1",@"hui_community_id":[user objectForKey:@"community_id"]};
     NSString *strurl = [API stringByAppendingString:@"social/getSocialCategory"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"success--%@--%@",[responseObject class],responseObject);

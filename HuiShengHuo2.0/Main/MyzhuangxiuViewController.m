@@ -194,7 +194,7 @@
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[defaults objectForKey:@"uid"],[defaults objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"apk_token":uid_username,@"community_id":[defaults objectForKey:@"community_id"],@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+    NSDictionary *dict = @{@"apk_token":uid_username,@"community_id":[defaults objectForKey:@"community_id"],@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"],@"hui_community_id":[defaults objectForKey:@"community_id"]};
    
     NSString *strurl = [API stringByAppendingString:@"site/get_Advertising/c_name/hc_my_decoration"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

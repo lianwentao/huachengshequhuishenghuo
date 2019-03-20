@@ -113,9 +113,10 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
-    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dic = @{@"hui_community_id":[defaults objectForKey:@"community_id"]};
     NSString *strurl = [API stringByAppendingString:@"social/getSocialCategory"];
-    [manager GET:strurl parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:strurl parameters:dic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSLog(@"list--success--%@--%@",[responseObject class],responseObject);
         quanzizhongleiArr = [[NSMutableArray alloc] init];
         quanzizhongleiArr = [responseObject objectForKey:@"data"];
@@ -456,7 +457,7 @@
      NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     //NSString *c_id = [[quanzizhongleiArr objectAtIndex:[NSString stringWithFormat:@"%d",tag]] objectForKey:@"id"];
-    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:0] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:0] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username};
+    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:0] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:0] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
 
     NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
     
@@ -523,7 +524,7 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     //NSString *c_id = [[quanzizhongleiArr objectAtIndex:[NSString stringWithFormat:@"%d",tag]] objectForKey:@"id"];
-    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:1] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:1] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username};
+    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:1] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:1] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     
     NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -585,7 +586,7 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     //NSString *c_id = [[quanzizhongleiArr objectAtIndex:[NSString stringWithFormat:@"%d",tag]] objectForKey:@"id"];
-    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:2] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:2] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username};
+    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:2] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:2] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
    
     
     NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
@@ -644,7 +645,7 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     //NSString *c_id = [[quanzizhongleiArr objectAtIndex:[NSString stringWithFormat:@"%d",tag]] objectForKey:@"id"];
-    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:3] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:3] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username};
+    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:3] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:3] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     
     NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -701,7 +702,7 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     //NSString *c_id = [[quanzizhongleiArr objectAtIndex:[NSString stringWithFormat:@"%d",tag]] objectForKey:@"id"];
-    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:4] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:4] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username};
+    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:4] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:4] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     
     NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -758,7 +759,7 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     //NSString *c_id = [[quanzizhongleiArr objectAtIndex:[NSString stringWithFormat:@"%d",tag]] objectForKey:@"id"];
-    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:5] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:5] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username};
+    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:5] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:5] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     
     NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -816,7 +817,7 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
    
         //NSString *c_id = [[quanzizhongleiArr objectAtIndex:[NSString stringWithFormat:@"%d",tag]] objectForKey:@"id"];
-        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:6] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:6] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username};
+        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:6] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:6] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
    
         NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -876,7 +877,7 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     
         //NSString *c_id = [[quanzizhongleiArr objectAtIndex:[NSString stringWithFormat:@"%d",tag]] objectForKey:@"id"];
-        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:7] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:7] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username};
+        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:7] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:7] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     
         NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -936,7 +937,7 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     
         //NSString *c_id = [[quanzizhongleiArr objectAtIndex:[NSString stringWithFormat:@"%d",tag]] objectForKey:@"id"];
-        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:8] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:8] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username};
+        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:8] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:8] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     
         NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -997,7 +998,7 @@
     int j = 9;
     if (quanzizhongleiArr.count>=j) {
         //NSString *c_id = [[quanzizhongleiArr objectAtIndex:[NSString stringWithFormat:@"%d",tag]] objectForKey:@"id"];
-        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:9] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:9] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username};
+        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:9] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:9] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
        
         NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -1058,7 +1059,7 @@
     int j = 10;
     if (quanzizhongleiArr.count>=j) {
         //NSString *c_id = [[quanzizhongleiArr objectAtIndex:[NSString stringWithFormat:@"%d",tag]] objectForKey:@"id"];
-        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username};
+        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"is_pro"] integerValue]],@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
         
         NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -1117,7 +1118,7 @@
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
-    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:0] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:0] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username};
+    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:0] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:0] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     
 
     NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
@@ -1181,7 +1182,7 @@
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
-    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:1] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:1] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username};
+    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:1] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:1] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
    
     NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -1244,7 +1245,7 @@
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
-    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:2] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:2] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username};
+    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:2] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:2] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     
     NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -1307,7 +1308,7 @@
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
-    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:3] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:3] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username};
+    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:3] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:3] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
    
     NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -1369,7 +1370,7 @@
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
-    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:4] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:4] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username};
+    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:4] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:4] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     
     NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -1433,7 +1434,7 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     int j = 5;
     if (quanzizhongleiArr.count>=j) {
-        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username};
+        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
         
         NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -1498,7 +1499,7 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     int j = 6;
     if (quanzizhongleiArr.count>=j) {
-        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username};
+        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
        
         NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -1562,7 +1563,7 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     int j = 7;
     if (quanzizhongleiArr.count>=j) {
-        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username};
+        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
         
         NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -1627,7 +1628,7 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     int j = 8;
     if (quanzizhongleiArr.count>=j) {
-        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username};
+        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
         
         NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -1692,7 +1693,7 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     int j = 9;
     if (quanzizhongleiArr.count>=j) {
-        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username};
+        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
         
         NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -1757,7 +1758,7 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     int j = 10;
     if (quanzizhongleiArr.count>=j) {
-        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username};
+        dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":[NSString stringWithFormat:@"%ld",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"id"] integerValue]],@"is_pro":[NSString stringWithFormat:@"%d",[[[quanzizhongleiArr objectAtIndex:j] objectForKey:@"is_pro"] integerValue]],@"p":string,@"apk_token":uid_username,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
         
         NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -1832,7 +1833,7 @@
         NSString *strurl = [API stringByAppendingString:@"social/social_num"];
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
-        NSDictionary *dic = @{@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+        NSDictionary *dic = @{@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
         [manager GET:strurl parameters:dic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSLog(@"---%@--%@",responseObject,[responseObject objectForKey:@"msg"]);
             

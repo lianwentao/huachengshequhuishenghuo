@@ -177,7 +177,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"oid":_oid,@"order_info_id":_order_info_id,@"p_id":_p_id,@"score":_score,@"description":_textview.text,@"pic_num":[NSString stringWithFormat:@"%ld",_photosArr.count],@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    NSDictionary *dict = @{@"oid":_oid,@"order_info_id":_order_info_id,@"p_id":_p_id,@"score":_score,@"description":_textview.text,@"pic_num":[NSString stringWithFormat:@"%ld",_photosArr.count],@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     NSLog(@"%@",_score);
    
     NSString *urlstr = [API stringByAppendingString:@"userCenter/shopping_order_score"];

@@ -167,7 +167,7 @@
         NSString *base64Encoded = [nsdata base64EncodedStringWithOptions:0];
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
-        NSDictionary *dic = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":@"85",@"content":base64Encoded,@"img_num":imfnumstr,@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+        NSDictionary *dic = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":@"85",@"content":base64Encoded,@"img_num":imfnumstr,@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
         NSLog(@"%@",dic);
         
         NSString *url = [API stringByAppendingString:@"social/SocialSave"];
