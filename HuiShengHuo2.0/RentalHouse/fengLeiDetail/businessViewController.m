@@ -63,10 +63,11 @@
     //2.封装参数
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+   
     if ([_bqfStr isEqualToString:@"0"]) {
-       dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"i_id":_bID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+       dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"i_id":_bID,@"p":[NSString stringWithFormat:@"%ld",pageNum],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     }else{
-        dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":_bID,@"p":[NSString stringWithFormat:@"%ld",pageNum]};
+        dict = @{@"c_id":[userinfo objectForKey:@"community_id"],@"category":_bID,@"p":[NSString stringWithFormat:@"%ld",pageNum],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     }
    
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/institution/merchantList"];

@@ -160,7 +160,7 @@
     NSString *bianhao = pricetextfield.text;
     NSString *xingming = leimuLabel.text;
     NSString *jine = houselabel.text;
-    dict = @{@"fullname":xingming,@"amount":jine,@"wired_num":bianhao,@"c_id":[user objectForKey:@"community_id"],@"c_name":[user objectForKey:@"community_name"],@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    dict = @{@"fullname":xingming,@"amount":jine,@"wired_num":bianhao,@"c_id":[user objectForKey:@"community_id"],@"c_name":[user objectForKey:@"community_name"],@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
    
     NSString *urlstr = [API stringByAppendingString:@"property/add_wired_order"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

@@ -200,7 +200,7 @@
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"id":[user objectForKey:@"community_id"]};
+    NSDictionary *dict = @{@"id":[user objectForKey:@"community_id"],@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      */
@@ -261,7 +261,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"is_star":isstar};
+    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"is_star":isstar,@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      第一个参数:请求路径(NSString)+ 不需要加参数
@@ -328,7 +328,7 @@
     //2.封装参数
     NSString *p = [NSString stringWithFormat:@"%d",_pagenum];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"p":p,@"is_star":isstar};
+    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"p":p,@"is_star":isstar,@"hui_community_id":[user objectForKey:@"community_id"],@"hui_community_id":[user objectForKey:@"community_id"]};
      NSLog(@"dict--%@",dict);
     //3.发送GET请求
     /*

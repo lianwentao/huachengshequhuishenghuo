@@ -154,7 +154,8 @@
     //2.封装参数
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
    
     NSString *strurl = [API stringByAppendingString:@"propertyWork/getCommonCategory"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -508,7 +509,8 @@
                 NSString *imfnumstr = [NSString stringWithFormat:@"%ld",_Imagearr.count];
                 NSString *string2 = [NSString stringWithFormat:@"%@%@%@%@",[blockdic objectForKey:@"community_name"],[blockdic objectForKey:@"building_name"],[blockdic objectForKey:@"unit"],[blockdic objectForKey:@"code"]];
                 NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                NSDictionary *dic = @{@"work_type":@"2",@"type_id":_type_id,@"type_name":_type,@"community_id":[blockdic objectForKey:@"community_id"],@"room_id":[blockdic objectForKey:@"room_id"],@"company_id":[blockdic objectForKey:@"company_id"],@"contact":name,@"userphone":phone,@"address":string2,@"img_num":imfnumstr,@"content":content,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+                NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+                NSDictionary *dic = @{@"work_type":@"2",@"type_id":_type_id,@"type_name":_type,@"community_id":[blockdic objectForKey:@"community_id"],@"room_id":[blockdic objectForKey:@"room_id"],@"company_id":[blockdic objectForKey:@"company_id"],@"contact":name,@"userphone":phone,@"address":string2,@"img_num":imfnumstr,@"content":content,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
                 NSLog(@"%@",dic);
                 
                 NSString *url = [API stringByAppendingString:@"propertyWork/workSave"];
@@ -569,10 +571,10 @@
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *url = [API stringByAppendingString:@"Jpush/userToWorkerSubmit"];
     NSDictionary *dict = [[NSDictionary alloc] init];
-    dict = @{@"id":gongdanid,@"type":@"1"};
+    dict = @{@"id":gongdanid,@"type":@"1",@"hui_community_id":[user objectForKey:@"community_id"]};
     
     NSLog(@"dict--%@",dict);
     [manager POST:url parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

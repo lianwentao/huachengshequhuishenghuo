@@ -42,7 +42,8 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
     NSDictionary *dict = nil;
-    dict = @{@"id":_plID};
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    dict = @{@"id":_plID,@"hui_community_id":[user objectForKey:@"community_id"]};
     
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/service/service/scoreList"];
     [manager POST:strurl parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {

@@ -57,7 +57,8 @@
         //2.封装参数
         NSDictionary *dict = nil;
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-        dict = @{@"id":_dingdanid,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        dict = @{@"id":_dingdanid,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/order/OrderDetail"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

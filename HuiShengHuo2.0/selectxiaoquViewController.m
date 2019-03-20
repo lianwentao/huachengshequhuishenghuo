@@ -460,7 +460,7 @@
                               
                               AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
                               manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-                              NSString *url = @"http://test.hui-shenghuo.cn/apk41/config/config";
+                              NSString *url = @"http://com.hui-shenghuo.cn/Api/Config/config";
                               
                               NSDictionary *dict = [[NSDictionary alloc] init];
                               int c_id = [p.id intValue];

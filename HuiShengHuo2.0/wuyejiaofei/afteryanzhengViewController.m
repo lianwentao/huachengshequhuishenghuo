@@ -54,7 +54,8 @@
     //2.封装参数
     NSDictionary *dict = nil;
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
   
     NSString *strurl = [API stringByAppendingString:@"property/binding_community"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -231,7 +232,8 @@
                           //2.封装参数
                           NSDictionary *dict = nil;
                           NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                          dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"id":[[_DataArr objectAtIndex:sender.tag] objectForKey:@"id"]};
+                          NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+                          dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"id":[[_DataArr objectAtIndex:sender.tag] objectForKey:@"id"],@"hui_community_id":[user objectForKey:@"community_id"]};
                           
                           NSString *strurl = [API stringByAppendingString:@"property/unsetBinding"];
                           [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

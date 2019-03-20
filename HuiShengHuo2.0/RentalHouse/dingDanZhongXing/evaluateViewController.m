@@ -186,7 +186,7 @@
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-        NSDictionary *dict = @{@"id":_orderID,@"level":_score,@"evaluate_content":_textview.text,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        NSDictionary *dict = @{@"id":_orderID,@"level":_score,@"evaluate_content":_textview.text,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
         NSLog(@"dict = %@",dict);
         
         NSString *urlstr = [API stringByAppendingString:@"propertyWork/WorkScore"];

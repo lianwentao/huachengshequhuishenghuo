@@ -75,7 +75,8 @@
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
         //2.封装参数
         NSDictionary *dict = nil;
-        dict = @{@"id":_shangjiaid};
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        dict = @{@"id":_shangjiaid,@"hui_community_id":[user objectForKey:@"community_id"]};
         
         NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/institution/merchantDetails"];
         [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

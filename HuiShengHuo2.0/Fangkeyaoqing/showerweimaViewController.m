@@ -9,6 +9,7 @@
 #import "showerweimaViewController.h"
 #import <CoreImage/CoreImage.h>
 #import "CustomActivity.h"
+#import <Social/Social.h>
 @interface showerweimaViewController ()
 {
     UIImageView *Erwemaimageview;
@@ -152,8 +153,8 @@
     fenxiang.frame = CGRectMake(0, Main_Height-49, Main_width, 49);
     [fenxiang addTarget:self action:@selector(fenxiang) forControlEvents:UIControlEventTouchUpInside];
 }
+ 
 - (void)fenxiang {
-    
     
     UIImage *image = [self snapshot:view];
     UIImageView *snapImg = [[UIImageView alloc] initWithFrame:CGRectMake(0, 200, view.frame.size.width, view.frame.size.height)];

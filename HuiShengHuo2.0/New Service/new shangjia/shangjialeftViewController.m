@@ -185,12 +185,13 @@
     _pagenum = _pagenum+1;
     //2.封装参数
     NSString *string = [NSString stringWithFormat:@"%d",_pagenum];
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = nil;
     if (titleselect == 0) {
-        dict = @{@"id":[datadic objectForKey:@"id"],@"p":string};
+        dict = @{@"id":[datadic objectForKey:@"id"],@"p":string,@"hui_community_id":[user objectForKey:@"community_id"]};
     }else
     {
-        dict = @{@"id":[datadic objectForKey:@"id"],@"category":[[catecoryarr objectAtIndex:titleselect] objectForKey:@"category"]};
+        dict = @{@"id":[datadic objectForKey:@"id"],@"category":[[catecoryarr objectAtIndex:titleselect] objectForKey:@"category"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }
     
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/institution/merchantService"];
@@ -238,12 +239,13 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = nil;
     if (endIndex == 0) {
-        dict = @{@"id":[datadic objectForKey:@"id"]};
+        dict = @{@"id":[datadic objectForKey:@"id"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }else
     {
-        dict = @{@"id":[datadic objectForKey:@"id"],@"category":[[catecoryarr objectAtIndex:endIndex-1] objectForKey:@"category"]};
+        dict = @{@"id":[datadic objectForKey:@"id"],@"category":[[catecoryarr objectAtIndex:endIndex-1] objectForKey:@"category"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }
     
     NSString *strurl = [API_NOAPK stringByAppendingString:@"/Service/institution/merchantService"];

@@ -46,7 +46,7 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     
     //NSString *c_id = [[quanzizhongleiArr objectAtIndex:[NSString stringWithFormat:@"%d",tag]] objectForKey:@"id"];
-    dict = @{@"community_id":_community_id,@"c_id":_c_id};
+    dict = @{@"community_id":_community_id,@"c_id":_c_id,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
    
     NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -196,7 +196,7 @@
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
     
-    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":_c_id,@"p":string};
+    dict = @{@"community_id":[userinfo objectForKey:@"community_id"],@"c_id":_c_id,@"p":string,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     
     NSString *strurl = [API stringByAppendingString:@"social/get_social_list"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

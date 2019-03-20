@@ -72,7 +72,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"is_star":_start};
+    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"is_star":_start,@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      第一个参数:请求路径(NSString)+ 不需要加参数
@@ -146,7 +146,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"is_star":_start,@"class_id":[[class_namearr objectAtIndex:_tmpBtn.tag] objectForKey:@"id"]};
+    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"is_star":_start,@"class_id":[[class_namearr objectAtIndex:_tmpBtn.tag] objectForKey:@"id"],@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      第一个参数:请求路径(NSString)+ 不需要加参数
@@ -214,7 +214,7 @@
     //2.封装参数
     NSString *p = [NSString stringWithFormat:@"%d",_pagenum];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"p":p,@"is_star":isstar,@"class_id":[[class_namearr objectAtIndex:[isstar integerValue]] objectForKey:@"id"]};
+    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"p":p,@"is_star":isstar,@"class_id":[[class_namearr objectAtIndex:[isstar integerValue]] objectForKey:@"id"],@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      第一个参数:请求路径(NSString)+ 不需要加参数

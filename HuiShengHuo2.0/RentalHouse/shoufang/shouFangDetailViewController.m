@@ -82,7 +82,7 @@
     NSLog(@"_sfID = %@",_sfID);
     
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"house_id":_sfID};
+    NSDictionary *dict = @{@"house_id":_sfID,@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];

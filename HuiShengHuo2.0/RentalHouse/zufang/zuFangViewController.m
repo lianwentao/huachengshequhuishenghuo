@@ -224,7 +224,7 @@
         _moneyOne = @"";
     }
     
-    NSDictionary *dict = @{@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":[NSString stringWithFormat:@"%ld",pageNum],@"community_name":_community_name,@"community_id":[userinfo objectForKey:@"community_id"]};
+    NSDictionary *dict = @{@"money":_money,@"moneyOne":_moneyOne,@"moneyTwo ":_moneyTwo,@"acreage":_acreage,@"areaOne":_acreageOne,@"areaTwo":_acreageTwo,@"housetype ":_housetype,@"default":_defaultType,@"page":[NSString stringWithFormat:@"%ld",pageNum],@"community_name":_community_name,@"community_id":[userinfo objectForKey:@"community_id"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     
     NSLog(@"dict = %@",dict);
     
@@ -355,7 +355,7 @@
     
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     
-    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    NSDictionary *dict = @{@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     
     NSLog(@"dict = %@",dict);
     
