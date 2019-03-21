@@ -246,7 +246,11 @@
     }else if (section==3) {
         return 2;
     }else if (section==4){
-        return item.count+1;
+        if ([item isKindOfClass:[NSArray class]]) {
+            return item.count+1;
+        }else{
+            return 1;
+        }
     } else{
         return 1;
     }
@@ -668,137 +672,152 @@
         }
     }else if (indexPath.section==3){
         if (indexPath.row==0) {
-            UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15, 20, 105, 45)];
-            imageview.image = [UIImage imageNamed:@"优质商家"];
-            [cell.contentView addSubview:imageview];
-            
-            UIButton *titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-            titleBtn.frame = CGRectMake(Main_width-60, 20, 50, 30);
-            titleBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-            [titleBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-            NSString *titleStr = @"更多>";
-            [titleBtn setTitle: titleStr forState:UIControlStateNormal];
-            titleBtn.alpha = 0.54;
-            [titleBtn addTarget:self action:@selector(gengDuoAction1:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.contentView addSubview:titleBtn];
-            
-            tableView.rowHeight = 65;
-        }else{
-            UIScrollView *scrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(15, 20, Main_width-30, 227)];
-            scrollview.showsHorizontalScrollIndicator = NO;
-            scrollview.showsVerticalScrollIndicator = NO;
-            scrollview.contentSize = CGSizeMake(168*info.count, 227);
-            [cell.contentView addSubview:scrollview];
-            
-            for (int i = 0; i<info.count; i++) {
+            if ([info isKindOfClass:[NSArray class]]) {
+                UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15, 20, 105, 45)];
+                imageview.image = [UIImage imageNamed:@"优质商家"];
+                [cell.contentView addSubview:imageview];
                 
-                UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(168*i, 0, 158, 227)];
-                backview.clipsToBounds = YES;
-                backview.layer.cornerRadius = 10;
-                backview.layer.borderColor = BackColor.CGColor;//颜色
-                backview.layer.borderWidth = 1.0f;//设置边框粗细
-                [scrollview addSubview:backview];
+                UIButton *titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+                titleBtn.frame = CGRectMake(Main_width-60, 20, 50, 30);
+                titleBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+                [titleBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+                NSString *titleStr = @"更多>";
+                [titleBtn setTitle: titleStr forState:UIControlStateNormal];
+                titleBtn.alpha = 0.54;
+                [titleBtn addTarget:self action:@selector(gengDuoAction1:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.contentView addSubview:titleBtn];
                 
-                UIImageView *imgview1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 158, 80)];
-                [imgview1 sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[info objectAtIndex:i] objectForKey:@"index_img"]]] placeholderImage:[UIImage imageNamed:@"展位图长1.5"]];
-                imgview1.contentMode = UIViewContentModeScaleAspectFill;
-                [backview addSubview:imgview1];
-                
-                UIView *view = [[UIView alloc] initWithFrame:CGRectMake(55, 50, 48, 48)];
-                view.backgroundColor = [UIColor whiteColor];
-                view.clipsToBounds = YES;
-                view.layer.cornerRadius = 24;
-                [backview addSubview:view];
-                
-                UIImageView *imgview2 = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, 40, 40)];
-                [imgview2 sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[info objectAtIndex:i] objectForKey:@"logo"]]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
-                imgview2.clipsToBounds = YES;
-                imgview2.layer.cornerRadius = 20;
-                [view addSubview:imgview2];
-                
-                UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(0, view.frame.size.height+view.frame.origin.y+10, 158, 15)];
-                label1.text = [[info objectAtIndex:i] objectForKey:@"name"];
-                label1.font = [UIFont systemFontOfSize:14];
-                label1.textAlignment = NSTextAlignmentCenter;
-                [backview addSubview:label1];
-                
-                NSArray *tarr = [NSArray array];
-                tarr = [[info objectAtIndex:i] objectForKey:@"category"];
-                WBLog(@"%@",tarr);
-                float butX = 10;
-                float butY = CGRectGetMaxY(label1.frame)+10;
-                long arrcount;
-                if (tarr.count>4) {
-                    arrcount = 4;
-                }else{
-                    arrcount = tarr.count;
-                }
-                for(int i = 0; i < arrcount; i++){
-                    
-                    //宽度自适应
-                    NSDictionary *fontDict = @{NSFontAttributeName:[UIFont systemFontOfSize:10]};
-                    CGRect frame_W = [[tarr[i] objectForKey:@"category_cn"] boundingRectWithSize:CGSizeMake(MAXFLOAT, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:fontDict context:nil];
-                    
-                    if (butX+frame_W.size.width+20>158) {
-                        
-                        butX = 10;
-                        
-                        butY += 30;
-                    }
-                    
-                    UIButton *but = [[UIButton alloc]initWithFrame:CGRectMake(butX, butY, frame_W.size.width+20, 15)];
-                    [but setTitle:[tarr[i] objectForKey:@"category_cn"] forState:UIControlStateNormal];
-                    [but setTitleColor:[UIColor darkTextColor] forState:UIControlStateNormal];
-                    but.titleLabel.font = [UIFont systemFontOfSize:10];
-                    but.alpha = 0.54;
-                    but.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.1];
-                    [backview addSubview:but];
-                    
-                    butX = CGRectGetMaxX(but.frame)+10;
-                }
-                
-                UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(45, label1.frame.size.height+label1.frame.origin.y+64, 68, 27)];
-                label2.layer.borderColor = [UIColor blackColor].CGColor;//颜色
-                label2.layer.borderWidth = 1.0f;//设置边框粗细
-                label2.layer.masksToBounds = YES;
-                label2.layer.cornerRadius = 10;
-                label2.font = [UIFont systemFontOfSize:11];
-                label2.text = @"进店逛逛";
-                label2.textAlignment = NSTextAlignmentCenter;
-                [backview addSubview:label2];
-                
-                UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
-                but.frame = CGRectMake(0, 0, 158, 227);
-                but.tag = i;
-                [but addTarget:self action:@selector(pushshangjia:) forControlEvents:UIControlEventTouchUpInside];
-                [backview addSubview:but];
+                tableView.rowHeight = 65;
+            }else{
+                tableView.rowHeight = 0;
             }
             
-            UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(15, scrollview.frame.size.height+scrollview.frame.origin.y+19.5, Main_width-30, 0.5)];
-            lineview.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.05];
-            [cell.contentView addSubview:lineview];
+        }else{
+            if ([info isKindOfClass:[NSArray class]]) {
+                UIScrollView *scrollview = [[UIScrollView alloc] initWithFrame:CGRectMake(15, 20, Main_width-30, 227)];
+                scrollview.showsHorizontalScrollIndicator = NO;
+                scrollview.showsVerticalScrollIndicator = NO;
+                scrollview.contentSize = CGSizeMake(168*info.count, 227);
+                [cell.contentView addSubview:scrollview];
+                
+                for (int i = 0; i<info.count; i++) {
+                    
+                    UIView *backview = [[UIView alloc] initWithFrame:CGRectMake(168*i, 0, 158, 227)];
+                    backview.clipsToBounds = YES;
+                    backview.layer.cornerRadius = 10;
+                    backview.layer.borderColor = BackColor.CGColor;//颜色
+                    backview.layer.borderWidth = 1.0f;//设置边框粗细
+                    [scrollview addSubview:backview];
+                    
+                    UIImageView *imgview1 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 158, 80)];
+                    [imgview1 sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[info objectAtIndex:i] objectForKey:@"index_img"]]] placeholderImage:[UIImage imageNamed:@"展位图长1.5"]];
+                    imgview1.contentMode = UIViewContentModeScaleAspectFill;
+                    [backview addSubview:imgview1];
+                    
+                    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(55, 50, 48, 48)];
+                    view.backgroundColor = [UIColor whiteColor];
+                    view.clipsToBounds = YES;
+                    view.layer.cornerRadius = 24;
+                    [backview addSubview:view];
+                    
+                    UIImageView *imgview2 = [[UIImageView alloc] initWithFrame:CGRectMake(4, 4, 40, 40)];
+                    [imgview2 sd_setImageWithURL:[NSURL URLWithString:[API_img stringByAppendingString:[[info objectAtIndex:i] objectForKey:@"logo"]]] placeholderImage:[UIImage imageNamed:@"展位图正"]];
+                    imgview2.clipsToBounds = YES;
+                    imgview2.layer.cornerRadius = 20;
+                    [view addSubview:imgview2];
+                    
+                    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(0, view.frame.size.height+view.frame.origin.y+10, 158, 15)];
+                    label1.text = [[info objectAtIndex:i] objectForKey:@"name"];
+                    label1.font = [UIFont systemFontOfSize:14];
+                    label1.textAlignment = NSTextAlignmentCenter;
+                    [backview addSubview:label1];
+                    
+                    NSArray *tarr = [NSArray array];
+                    tarr = [[info objectAtIndex:i] objectForKey:@"category"];
+                    WBLog(@"%@",tarr);
+                    float butX = 10;
+                    float butY = CGRectGetMaxY(label1.frame)+10;
+                    long arrcount;
+                    if (tarr.count>4) {
+                        arrcount = 4;
+                    }else{
+                        arrcount = tarr.count;
+                    }
+                    for(int i = 0; i < arrcount; i++){
+                        
+                        //宽度自适应
+                        NSDictionary *fontDict = @{NSFontAttributeName:[UIFont systemFontOfSize:10]};
+                        CGRect frame_W = [[tarr[i] objectForKey:@"category_cn"] boundingRectWithSize:CGSizeMake(MAXFLOAT, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:fontDict context:nil];
+                        
+                        if (butX+frame_W.size.width+20>158) {
+                            
+                            butX = 10;
+                            
+                            butY += 30;
+                        }
+                        
+                        UIButton *but = [[UIButton alloc]initWithFrame:CGRectMake(butX, butY, frame_W.size.width+20, 15)];
+                        [but setTitle:[tarr[i] objectForKey:@"category_cn"] forState:UIControlStateNormal];
+                        [but setTitleColor:[UIColor darkTextColor] forState:UIControlStateNormal];
+                        but.titleLabel.font = [UIFont systemFontOfSize:10];
+                        but.alpha = 0.54;
+                        but.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.1];
+                        [backview addSubview:but];
+                        
+                        butX = CGRectGetMaxX(but.frame)+10;
+                    }
+                    
+                    UILabel *label2 = [[UILabel alloc] initWithFrame:CGRectMake(45, label1.frame.size.height+label1.frame.origin.y+64, 68, 27)];
+                    label2.layer.borderColor = [UIColor blackColor].CGColor;//颜色
+                    label2.layer.borderWidth = 1.0f;//设置边框粗细
+                    label2.layer.masksToBounds = YES;
+                    label2.layer.cornerRadius = 10;
+                    label2.font = [UIFont systemFontOfSize:11];
+                    label2.text = @"进店逛逛";
+                    label2.textAlignment = NSTextAlignmentCenter;
+                    [backview addSubview:label2];
+                    
+                    UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+                    but.frame = CGRectMake(0, 0, 158, 227);
+                    but.tag = i;
+                    [but addTarget:self action:@selector(pushshangjia:) forControlEvents:UIControlEventTouchUpInside];
+                    [backview addSubview:but];
+                }
+                
+                UIView *lineview = [[UIView alloc] initWithFrame:CGRectMake(15, scrollview.frame.size.height+scrollview.frame.origin.y+19.5, Main_width-30, 0.5)];
+                lineview.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.05];
+                [cell.contentView addSubview:lineview];
+                
+                tableView.rowHeight = 227+40;
+            }else{
+                tableView.rowHeight = 0;
+            }
             
-            tableView.rowHeight = 227+40;
         }
     }else if (indexPath.section==4){
         if (indexPath.row==0) {
-            UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15, 20, 105, 45)];
-            imageview.image = [UIImage imageNamed:@"精选服务"];
-            [cell.contentView addSubview:imageview];
+            if ([item isKindOfClass:[NSArray class]]) {
+                UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake(15, 20, 105, 45)];
+                imageview.image = [UIImage imageNamed:@"精选服务"];
+                [cell.contentView addSubview:imageview];
+                
+                UIButton *titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+                titleBtn.frame = CGRectMake(Main_width-60, 20, 50, 30);
+                titleBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+                [titleBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+                NSString *titleStr = @"更多>";
+                [titleBtn setTitle: titleStr forState:UIControlStateNormal];
+                titleBtn.alpha = 0.54;
+                [titleBtn addTarget:self action:@selector(gengDuoAction2:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.contentView addSubview:titleBtn];
+                
+                tableView.rowHeight = 65;
+            }else{
+                tableView.rowHeight = 0;
+            }
             
-            UIButton *titleBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-            titleBtn.frame = CGRectMake(Main_width-60, 20, 50, 30);
-            titleBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-            [titleBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            titleBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-            NSString *titleStr = @"更多>";
-            [titleBtn setTitle: titleStr forState:UIControlStateNormal];
-            titleBtn.alpha = 0.54;
-            [titleBtn addTarget:self action:@selector(gengDuoAction2:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.contentView addSubview:titleBtn];
-            
-            tableView.rowHeight = 65;
         }else{
             
             

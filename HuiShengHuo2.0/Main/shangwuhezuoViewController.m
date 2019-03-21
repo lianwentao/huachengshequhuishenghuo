@@ -124,7 +124,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"content":_inputView.text,@"type":@"2",@"name":name.text,@"mobile":phone.text,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+    NSDictionary *dict = @{@"content":_inputView.text,@"type":@"2",@"name":name.text,@"mobile":phone.text,@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"],@"hui_community_id":[defaults objectForKey:@"community_id"]};
    
     NSString *strurl = [API stringByAppendingString:@"userCenter/my_opinion"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

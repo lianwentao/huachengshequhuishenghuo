@@ -164,7 +164,7 @@
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
         //2.封装参数
         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-        NSDictionary *dict = @{@"p_id":_IDstring,@"tagid":[NSString stringWithFormat:@"%@",_tagidstring],@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"num":[NSString stringWithFormat:@"%d",i+1]};
+        NSDictionary *dict = @{@"p_id":_IDstring,@"tagid":[NSString stringWithFormat:@"%@",_tagidstring],@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"num":[NSString stringWithFormat:@"%d",i+1],@"hui_community_id":[user objectForKey:@"community_id"]};
         NSLog(@"%@",dict);
         NSString *strurl = [API stringByAppendingString:@"shop/check_shop_limit"];
         [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -251,7 +251,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"p_id":_IDstring,@"tagid":[NSString stringWithFormat:@"%@",_tagidstring],@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"num":@"1"};
+    NSDictionary *dict = @{@"p_id":_IDstring,@"tagid":[NSString stringWithFormat:@"%@",_tagidstring],@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"num":@"1",@"hui_community_id":[user objectForKey:@"community_id"]};
     NSLog(@"%@",dict);
 
     NSString *strurl = [API stringByAppendingString:@"shop/check_shop_limit"];
@@ -299,7 +299,7 @@
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"id":_IDstring,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    NSDictionary *dict = @{@"id":_IDstring,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      第一个参数:请求路径(NSString)+ 不需要加参数
@@ -393,7 +393,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"p_id":_IDstring,@"tagid":[NSString stringWithFormat:@"%@",_tagidstring],@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"num":@"1"};
+    NSDictionary *dict = @{@"p_id":_IDstring,@"tagid":[NSString stringWithFormat:@"%@",_tagidstring],@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"num":@"1",@"hui_community_id":[user objectForKey:@"community_id"]};
     NSLog(@"%@",dict);
    
     NSString *strurl = [API stringByAppendingString:@"shop/check_shop_limit"];

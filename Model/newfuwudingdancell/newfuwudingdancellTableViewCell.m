@@ -129,16 +129,17 @@
 
 - (void)cancle:(UIButton *)sender
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = [[NSDictionary alloc] init];
-    dict = @{@"id":[NSString stringWithFormat:@"%ld",sender.tag]};
+    dict = @{@"id":[NSString stringWithFormat:@"%ld",sender.tag],@"hui_community_id":[defaults objectForKey:@"community_id"]};
     WBLog(@"cancle--%@",dict);
     [[NSNotificationCenter defaultCenter] postNotificationName:@"newfuwudingdancancle" object:nil userInfo:dict];
 }
 - (void)pingjia:(UIButton *)sender
 {
-    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = [[NSDictionary alloc] init];
-    dict = @{@"id":[NSString stringWithFormat:@"%ld",sender.tag]};
+    dict = @{@"id":[NSString stringWithFormat:@"%ld",sender.tag],@"hui_community_id":[defaults objectForKey:@"community_id"]};
     WBLog(@"pingjia--%@",dict);
     [[NSNotificationCenter defaultCenter] postNotificationName:@"newfuwudingdanpingjia" object:nil userInfo:dict];
 }

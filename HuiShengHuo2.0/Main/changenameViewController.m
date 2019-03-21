@@ -58,9 +58,9 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     dict = [[NSDictionary alloc] init];
     if ([self.title isEqualToString:@"修改姓名"]) {
-        dict = @{@"fullname":textfiled.text,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        dict = @{@"fullname":textfiled.text,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }if ([self.title isEqualToString:@"修改昵称"]){
-        dict = @{@"nickname":textfiled.text,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        dict = @{@"nickname":textfiled.text,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }
     [self post];
 }

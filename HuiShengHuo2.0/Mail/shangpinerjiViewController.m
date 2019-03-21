@@ -134,7 +134,7 @@
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"apk_token":uid_username,@"id":[user objectForKey:@"community_id"]};
+    NSDictionary *dict = @{@"apk_token":uid_username,@"id":[user objectForKey:@"community_id"],@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      */
@@ -177,9 +177,9 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *mid = [user objectForKey:@"community_id"];
     if ([_rokou isEqualToString:@"2"]) {
-        dict = @{@"c_id":mid};
+        dict = @{@"c_id":mid,@"hui_community_id":[user objectForKey:@"community_id"]};
     }else{
-        dict = @{@"id":_id,@"c_id":mid};
+        dict = @{@"id":_id,@"c_id":mid,@"hui_community_id":[user objectForKey:@"community_id"]};
     }
    
     NSString *strurl = [API stringByAppendingString:@"shop/pro_list"];
@@ -235,9 +235,9 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *mid = [user objectForKey:@"community_id"];
     if ([_rokou isEqualToString:@"2"]) {
-        dict = @{@"c_id":mid,@"p":[NSString stringWithFormat:@"%d",_pagenum]};
+        dict = @{@"c_id":mid,@"p":[NSString stringWithFormat:@"%d",_pagenum],@"hui_community_id":[user objectForKey:@"community_id"]};
     }else{
-        dict = @{@"id":_id,@"c_id":mid,@"p":[NSString stringWithFormat:@"%d",_pagenum]};
+        dict = @{@"id":_id,@"c_id":mid,@"p":[NSString stringWithFormat:@"%d",_pagenum],@"hui_community_id":[user objectForKey:@"community_id"]};
     }
     NSLog(@"%@",dict);
    

@@ -228,13 +228,13 @@
                                        message: nil
                                        preferredStyle:UIAlertControllerStyleActionSheet];
             [alert addAction:[UIAlertAction actionWithTitle:@"男" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                dict = @{@"sex":@"1",@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+                dict = @{@"sex":@"1",@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"],@"hui_community_id":[defaults objectForKey:@"community_id"]};
                 
                 _sexlabel.text = @"男";
                 [self post];
             }]];
             [alert addAction:[UIAlertAction actionWithTitle:@"女" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                dict = @{@"sex":@"2",@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+                dict = @{@"sex":@"2",@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"],@"hui_community_id":[defaults objectForKey:@"community_id"]};
                 _sexlabel.text = @"女";
                 [self post];
             }]];
@@ -332,7 +332,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary *dict = @{@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"]};
+    NSDictionary *dict = @{@"token":[defaults objectForKey:@"token"],@"tokenSecret":[defaults objectForKey:@"tokenSecret"],@"hui_community_id":[defaults objectForKey:@"community_id"]};
     //formData: 专门用于拼接需要上传的数据,在此位置生成一个要上传的数据体
     
     NSString *url = [API stringByAppendingString:@"userCenter/edit_center"];

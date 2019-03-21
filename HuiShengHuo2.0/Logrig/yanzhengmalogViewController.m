@@ -203,7 +203,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     
-    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
     //2.封装参数
     NSString *gudingzifuchuan = @"hui-shenghuo.api_sms";
@@ -216,7 +216,7 @@
     NSString *str5 = [[str4 lowercaseString] substringWithRange:NSMakeRange(0,16)];
     NSString *ApiSmstoken = str5;//,@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring
     NSLog(@"%@---%@---%@---%@---%@---%@",gudingzifuchuan,gudingjiami,str2,str3,str4,str5);
-    NSDictionary *dict = @{@"sms_type":@"login",@"username":phonbe.text,@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring};
+    NSDictionary *dict = @{@"sms_type":@"login",@"username":phonbe.text,@"ApiSmstoken":ApiSmstoken,@"ApiSmstokentime":timestring,@"hui_community_id":[defaults objectForKey:@"community_id"]};
     
     NSString *strurl = [API stringByAppendingString:@"site/reg_send_sms"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -242,9 +242,9 @@
     NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = [[NSDictionary alloc] init];
     if ([userdefaults objectForKey:@"registrationID"]==nil){
-        dict = @{@"mobile_vcode":yanzhengmatext.text,@"username":phonbe.text,@"phone_type":@"2"};
+        dict = @{@"mobile_vcode":yanzhengmatext.text,@"username":phonbe.text,@"phone_type":@"2",@"hui_community_id":[userdefaults objectForKey:@"community_id"]};
     }else{
-        dict = @{@"mobile_vcode":yanzhengmatext.text,@"username":phonbe.text,@"phone_type":@"2",@"phone_name":[userdefaults objectForKey:@"registrationID"]};
+        dict = @{@"mobile_vcode":yanzhengmatext.text,@"username":phonbe.text,@"phone_type":@"2",@"phone_name":[userdefaults objectForKey:@"registrationID"],@"hui_community_id":[userdefaults objectForKey:@"community_id"]};
     }
     
     NSLog(@"dict--%@",dict);

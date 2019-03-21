@@ -84,7 +84,7 @@
     //2.封装参数
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    NSDictionary *dict = @{@"c_id":[user objectForKey:@"community_id"],@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     //3.发送GET请求
     /*
      第一个参数:请求路径(NSString)+ 不需要加参数
@@ -489,7 +489,7 @@
             NSLog(@"%@",model.goodsID);
             
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-            goodsdict = @{@"id":[[_DataArr objectAtIndex:indexPath.section] objectForKey:@"id"],@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+            goodsdict = @{@"id":[[_DataArr objectAtIndex:indexPath.section] objectForKey:@"id"],@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
             [self deletegoods];
             [shop.goodsArray removeObjectAtIndex:indexPath.row];
             //    删除
@@ -622,7 +622,7 @@
         
         NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
         NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
-        NSDictionary *dict = @{@"m_id":[userinfo objectForKey:@"community_id"],@"para_amount":string,@"products":jsonString,@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+        NSDictionary *dict = @{@"m_id":[userinfo objectForKey:@"community_id"],@"para_amount":string,@"products":jsonString,@"apk_token":uid_username,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
         NSString *strurl = [API stringByAppendingString:@"shop/submit_order_before"];
         [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             //

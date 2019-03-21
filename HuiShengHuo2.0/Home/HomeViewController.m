@@ -135,7 +135,7 @@
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSDictionary *dict = @{@"community_id":[user objectForKey:@"community_id"],@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    NSDictionary *dict = @{@"community_id":[user objectForKey:@"community_id"],@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     
     NSString *strurl = [API stringByAppendingString:@"site/index_40"];
     [manager GET:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -228,10 +228,10 @@
         }else{
             if ([userdefaults objectForKey:@"registrationID"]==nil) {
 //                _dict = @{@"uid":[defaults objectForKey:@"uid"],@"phone_type":[defaults objectForKey:@"phone_type"]};
-                _dict = @{@"username":[defaults objectForKey:@"username"],@"password":[defaults objectForKey:@"pwd"],@"phone_type":[defaults objectForKey:@"phone_type"]};
+                _dict = @{@"username":[defaults objectForKey:@"username"],@"password":[defaults objectForKey:@"pwd"],@"phone_type":[defaults objectForKey:@"phone_type"],@"hui_community_id":[defaults objectForKey:@"community_id"]};
                 NSLog(@"2222---no");
             }else{
-                _dict = @{@"username":[defaults objectForKey:@"username"],@"password":[defaults objectForKey:@"pwd"],@"phone_name":[userdefaults objectForKey:@"registrationID"],@"phone_type":[defaults objectForKey:@"phone_type"]};
+                _dict = @{@"username":[defaults objectForKey:@"username"],@"password":[defaults objectForKey:@"pwd"],@"phone_name":[userdefaults objectForKey:@"registrationID"],@"phone_type":[defaults objectForKey:@"phone_type"],@"hui_community_id":[defaults objectForKey:@"community_id"]};
                 NSLog(@"22222---yes");
             }
             [self CreatePost];

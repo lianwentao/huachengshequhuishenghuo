@@ -158,8 +158,7 @@
 }
 - (void)change
 {
-    //[self getdata];
-    [_mainTableView.mj_header beginRefreshing];
+    [self getdata];
 }
 - (void)setupNavItems
 {
@@ -1722,7 +1721,9 @@
                 fenleiArr = [[responseObject objectForKey:@"data"] objectForKey:@"hot_cate_list"];
                 centerArr = [[responseObject objectForKey:@"data"] objectForKey:@"cate_list"];
                 shangpinArr = [[responseObject objectForKey:@"data"] objectForKey:@"ad_hc_shop_center"];
-                pro_discount_listArr = [[[responseObject objectForKey:@"data"] objectForKey:@"pro_discount_list"] objectForKey:@"list"];
+                if ([[[responseObject objectForKey:@"data"] objectForKey:@"pro_discount_list"] isKindOfClass:[NSArray class]]) {
+                    pro_discount_listArr = [[[responseObject objectForKey:@"data"] objectForKey:@"pro_discount_list"] objectForKey:@"list"];
+                }
                 
                 NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
                 NSMutableArray *titlearr = [NSMutableArray arrayWithCapacity:0];
@@ -1799,7 +1800,9 @@
             fenleiArr = [[responseObject objectForKey:@"data"] objectForKey:@"hot_cate_list"];
             centerArr = [[responseObject objectForKey:@"data"] objectForKey:@"cate_list"];
             shangpinArr = [[responseObject objectForKey:@"data"] objectForKey:@"ad_hc_shop_center"];
-            pro_discount_listArr = [[[responseObject objectForKey:@"data"] objectForKey:@"pro_discount_list"] objectForKey:@"list"];
+            if ([[[responseObject objectForKey:@"data"] objectForKey:@"pro_discount_list"] isKindOfClass:[NSArray class]]) {
+                pro_discount_listArr = [[[responseObject objectForKey:@"data"] objectForKey:@"pro_discount_list"] objectForKey:@"list"];
+            }
             
             NSMutableArray *arr = [NSMutableArray arrayWithCapacity:0];
             NSMutableArray *titlearr = [NSMutableArray arrayWithCapacity:0];
@@ -1824,27 +1827,29 @@
     }];
 }
 -(void) countDownAction{
-    int i = [[countDownTimer.userInfo objectForKey:@"tag"] intValue];
-    if ([[[pro_discount_listArr objectAtIndex:i] objectForKey:@"shop_cate_stime"] integerValue]-time(NULL)>0) {
-        secondsCountDown = [[[pro_discount_listArr objectAtIndex:i] objectForKey:@"shop_cate_stime"] integerValue]-time(NULL);//倒计时秒数
-    }else if ([[[pro_discount_listArr objectAtIndex:i] objectForKey:@"shop_cate_etime"] integerValue]-time(NULL)<0){
-        secondsCountDown = time(NULL)-[[[pro_discount_listArr objectAtIndex:i] objectForKey:@"shop_cate_etime"] integerValue];//已结束
-    }else{
-        secondsCountDown = [[[pro_discount_listArr objectAtIndex:i] objectForKey:@"shop_cate_etime"] integerValue]-time(NULL);
-        
-    }
-    NSString *str_day = [NSString stringWithFormat:@"%ld",secondsCountDown/3600/24];
-    NSString *str_hour = [NSString stringWithFormat:@"%ld",secondsCountDown/3600%24];//时
-    NSString *str_minute = [NSString stringWithFormat:@"%ld",(secondsCountDown%3600)/60];//分
-    NSString *str_second = [NSString stringWithFormat:@"%ld",secondsCountDown%60];//秒
-    //修改倒计时标签现实内容
-    daylabel.text = str_day;
-    hourslabel.text = str_hour;
-    mlabel.text = str_minute;
-    slabel.text = str_second;
-    //当倒计时到0时，做需要的操作，比如验证码过期不能提交
-    if(secondsCountDown==0){
-        [countDownTimer invalidate];
+    if ([pro_discount_listArr isKindOfClass:[NSArray class]]&&pro_discount_listArr.count>0) {
+        int i = [[countDownTimer.userInfo objectForKey:@"tag"] intValue];
+        if ([[[pro_discount_listArr objectAtIndex:i] objectForKey:@"shop_cate_stime"] integerValue]-time(NULL)>0) {
+            secondsCountDown = [[[pro_discount_listArr objectAtIndex:i] objectForKey:@"shop_cate_stime"] integerValue]-time(NULL);//倒计时秒数
+        }else if ([[[pro_discount_listArr objectAtIndex:i] objectForKey:@"shop_cate_etime"] integerValue]-time(NULL)<0){
+            secondsCountDown = time(NULL)-[[[pro_discount_listArr objectAtIndex:i] objectForKey:@"shop_cate_etime"] integerValue];//已结束
+        }else{
+            secondsCountDown = [[[pro_discount_listArr objectAtIndex:i] objectForKey:@"shop_cate_etime"] integerValue]-time(NULL);
+            
+        }
+        NSString *str_day = [NSString stringWithFormat:@"%ld",secondsCountDown/3600/24];
+        NSString *str_hour = [NSString stringWithFormat:@"%ld",secondsCountDown/3600%24];//时
+        NSString *str_minute = [NSString stringWithFormat:@"%ld",(secondsCountDown%3600)/60];//分
+        NSString *str_second = [NSString stringWithFormat:@"%ld",secondsCountDown%60];//秒
+        //修改倒计时标签现实内容
+        daylabel.text = str_day;
+        hourslabel.text = str_hour;
+        mlabel.text = str_minute;
+        slabel.text = str_second;
+        //当倒计时到0时，做需要的操作，比如验证码过期不能提交
+        if(secondsCountDown==0){
+            [countDownTimer invalidate];
+        }
     }
 }
 - (void)pusherji:(UIButton *)sender

@@ -231,7 +231,7 @@
     NSData *nsdata = [huifuneirong
                       dataUsingEncoding:NSUTF8StringEncoding];
     NSString *base64Encoded = [nsdata base64EncodedStringWithOptions:0];
-    dict = @{@"social_id":[_Dict objectForKey:@"id"],@"content":base64Encoded,@"is_pro":_is_pro,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+    dict = @{@"social_id":[_Dict objectForKey:@"id"],@"content":base64Encoded,@"is_pro":_is_pro,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
    
     NSString *strurl = [API stringByAppendingString:@"social/social_reply"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -261,7 +261,7 @@
     NSDictionary *dict = nil;
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    dict = @{@"id":_id,@"is_pro":_is_pro,@"apk_token":uid_username};
+    dict = @{@"id":_id,@"is_pro":_is_pro,@"apk_token":uid_username,@"hui_community_id":[user objectForKey:@"community_id"]};
     
     NSString *strurl = [API stringByAppendingString:@"social/get_social"];
     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
