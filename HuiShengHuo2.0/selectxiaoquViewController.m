@@ -512,7 +512,7 @@
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSString *dw = @"http://m.hui-shenghuo.cn/apk41/";
+    NSString *dw = @"http://test.hui-shenghuo.cn/apk41/";
     NSString *url = [dw stringByAppendingString:@"site/getCommunityByCity"];
     NSDictionary *dict = [[NSDictionary alloc] init];
     dict = @{@"region_name":location_region_name};
