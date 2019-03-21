@@ -25,6 +25,7 @@
     NSString *is_property_cn;
     
     UIButton *_tmpBtn;
+    UIButton *_tmpBtn1;//选中按钮
     UIView *shuiview;
     UIView *dianview;
     UIView *wuyeview;
@@ -37,6 +38,10 @@
     UIView *nodataview;
     
     NSString *jieyustring;
+    
+    NSMutableArray *dataArr;
+    
+    NSString *bill_string;//初始化bull_id
 }
 
 @end
@@ -45,6 +50,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    bill_string = @"";
+    dataArr = [NSMutableArray arrayWithCapacity:0];
     
     if ([_biaoshi isEqualToString:@"1"]) {
         //得到当前视图控制器中的所有控制器
@@ -141,7 +148,7 @@
     if (![wuyeDic isKindOfClass:[NSDictionary class]]) {
         amountlabel.text = [NSString stringWithFormat:@"总额:%@元",@"0"];
     }else{
-        amountlabel.text = [NSString stringWithFormat:@"总额:%@元",[wuyeDic objectForKey:@"tot_sumvalue"]];
+        amountlabel.text = [NSString stringWithFormat:@"总额:%@元",@"0"];
     }
     amountlabel.font = font15;
     amountlabel.textColor = QIColor;
@@ -443,8 +450,19 @@
     }else{
         
         
+        kuodabuttondianjifanwei *but = [[kuodabuttondianjifanwei alloc] init];
+        but.frame = CGRectMake(15, 12, 16, 16);
+        [but setEnlargeEdgeWithTop:12 right:Main_width-30-15-16 bottom:12 left:15];
+        [but setImage:[UIImage imageNamed:@"选择未"] forState:UIControlStateNormal];
+        [but setImage:[UIImage imageNamed:@"选择"] forState:UIControlStateSelected];
+        [but addTarget:self action:@selector(xuanze:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.contentView addSubview:but];
         
-        UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, Main_width/2, 35)];
+        but.tag = [[[arr objectAtIndex:indexPath.row-1] objectForKey:@"bill_id"] longValue];
+        but.titleLabel.text = [[arr objectAtIndex:indexPath.row-1] objectForKey:@"sumvalue"];
+        [dataArr addObject:but];
+        
+        UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(50, 0, Main_width/2, 35)];
         NSLog(@"%@",[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] class]);
         if ([[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] isKindOfClass:[NSNull class]]||[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] isEqualToString:@"0"]) {
             NSTimeInterval interval    =[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"bill_time"] doubleValue];
@@ -454,7 +472,11 @@
             [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
             NSString *dateString       = [formatter stringFromDate: date];
             label1.text = dateString;
+            
+            
         }else{
+            
+            
             NSTimeInterval interval    =[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"startdate"] doubleValue];
             NSDate *date               = [NSDate dateWithTimeIntervalSince1970:interval];
             
@@ -469,6 +491,7 @@
             [formatter1 setDateFormat:@"yyyy-MM-dd"];
             NSString *dateString1       = [formatter stringFromDate: date1];
             label1.text = [NSString stringWithFormat:@"%@/%@",dateString,dateString1];
+            
         }
         
         label1.font = font15;
@@ -481,6 +504,25 @@
         [cell.contentView addSubview:label2];
     }
     return cell;
+}
+
+- (void)xuanze:(UIButton *)sender
+{
+    
+    float j=0;
+    sender.selected = !sender.isSelected;
+    for (int i=0; i<dataArr.count; i++) {
+        UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
+        but = dataArr[i];
+        if (but.isSelected) {
+            float k = [but.titleLabel.text floatValue];
+            j = j+k;
+            bill_string = [NSString stringWithFormat:@"%@%@",bill_string,[NSString stringWithFormat:@",%@",[NSString stringWithFormat:@"%ld",but.tag]]];
+        }
+    }
+    WBLog(@"j====%f--%ld--%@",j,_tmpBtn1.tag,dataArr);
+    
+    amountlabel.text = [NSString stringWithFormat:@"%.1f元",j];
 }
 - (void)textFieldChanged:(UITextField*)textField{
     amountlabel.text = [NSString stringWithFormat:@"总额:%@元",shuitextfield.text];
@@ -565,35 +607,22 @@
 }
 - (void)suer
 {
-    if ([is_available isEqualToString:@"1"]) {
-        [MBProgressHUD showToastToView:self.view withText:is_available_cn];
-    }else if (_tmpBtn.tag!=0&&[wuyeDic isKindOfClass:[NSDictionary class]]) {
-        [MBProgressHUD showToastToView:self.view withText:@"请先缴清物业费"];
+    if ([is_property isEqualToString:@"1"]) {
+        [MBProgressHUD showToastToView:self.view withText:is_property_cn];
     }else{
         
-        NSString *string = @"";
+        
         if (_tmpBtn.tag == 0) {
-            if ([is_property isEqualToString:@"1"]) {
-                [MBProgressHUD showToastToView:self.view withText:is_property_cn];
-            }else{
-                if ([wuyeDic isKindOfClass:[NSDictionary class]]) {
-                    NSArray *arr = [wuyeDic objectForKey:@"list"];
-                    
-                    for (int i = 0; i<arr.count; i++) {
-                        NSArray *arr1 = [arr objectAtIndex:i];
-                        for (int j = 0; j<arr1.count; j++) {
-                            string = [NSString stringWithFormat:@"%@%@",string,[NSString stringWithFormat:@",%@",[[arr1 objectAtIndex:j] objectForKey:@"bill_id"]]];
-                        }
-                    }
-                    NSLog(@"string--%@",[string substringFromIndex:1]);
+            if ([wuyeDic isKindOfClass:[NSDictionary class]]) {
+                if (![bill_string isEqualToString:@""]) {
                     //property/make_property_order
                     //1.创建会话管理者
                     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
                     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
                     //2.封装参数
                     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[userinfo objectForKey:@"uid"],[userinfo objectForKey:@"username"]]];
-                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"bill_id":[string substringFromIndex:1],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
+                    WBLog(@"bill_string----%@",bill_string);
+                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"bill_id":[bill_string substringFromIndex:1],@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
                     
                     NSString *strurl = [API stringByAppendingString:@"property/make_property_order"];
                     [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -610,100 +639,104 @@
                     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                         NSLog(@"failure--%@",error);
                     }];
-                    
                 }else{
-                    NSLog(@"123456789");
+                    [MBProgressHUD showToastToView:self.view withText:@"请先选择缴费项"];
                 }
-                
+            }else{
+                [MBProgressHUD showToastToView:self.view withText:@"物业费已结清"];
             }
         }else{
             NSString *jieyu;
             NSString *type;
             NSString *amount;
             NSString *type_cn;
-            
-            if (_tmpBtn.tag == 1) {
-                jieyu = [NSString stringWithFormat:@"%@",[[shuifeiDic objectForKey:@"info"] objectForKey:@"SMay_acc"]];
-                type = [shuifeiDic objectForKey:@"type"];
-                amount = shuitextfield.text;
-                type_cn = [shuifeiDic objectForKey:@"type_cn"];
-                float upper_limit = [[[shuifeiDic objectForKey:@"upper_limit"] objectForKey:@"info"] floatValue];
-                float j = [shuitextfield.text floatValue];
-                float i = [jieyu floatValue] + j;
-                float shengyu = upper_limit - [jieyu floatValue];
-                
-                if (shuitextfield.text.length == 0) {
-                    [MBProgressHUD showToastToView:self.view withText:@"请输入缴费金额"];
-                }else if (j<=0) {
-                    [MBProgressHUD showToastToView:self.view withText:@"金额必须大于0"];
-                }else if (i>upper_limit){
-                    [MBProgressHUD showToastToView:self.view withText:[NSString stringWithFormat:@"您剩余缴费金额上限为:%.2f元",shengyu]];
-                } else{
-                    //1.创建会话管理者
-                    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-                    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-                    //2.封装参数
-                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"category_id":type,@"category_name":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
-                    
-                    NSString *strurl = [API stringByAppendingString:@"property/create_order"];
-                    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                        NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
-                        //_Dic = [[NSMutableDictionary alloc] init];
-                        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-                            newsuerViewController *newsuer = [[newsuerViewController alloc] init];
-                            newsuer.DataDic = [responseObject objectForKey:@"data"];
-                            newsuer.biaoshi = @"2";
-                            [self.navigationController pushViewController:newsuer animated:YES];
-                        }else{
-                            
-                        }
-                    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                        NSLog(@"failure--%@",error);
-                    }];
-                }
+            if ([is_available isEqualToString:@"1"]) {
+                [MBProgressHUD showToastToView:self.view withText:is_available_cn];
             }else{
-                jieyu = [NSString stringWithFormat:@"%@",[[dianfeiDic objectForKey:@"info"] objectForKey:@"DMay_acc"]];
-                type = [dianfeiDic objectForKey:@"type"];
-                amount = diantextfield.text;
-                amount = diantextfield.text;
-                type_cn = [dianfeiDic objectForKey:@"type_cn"];
-                
-                float upper_limit = [[[dianfeiDic objectForKey:@"upper_limit"] objectForKey:@"info"] floatValue];
-                float j = [diantextfield.text floatValue];
-                float i = [jieyu floatValue] + j;
-                float shengyu = upper_limit - [jieyu floatValue];
-                
-                if (diantextfield.text.length == 0) {
-                    [MBProgressHUD showToastToView:self.view withText:@"请输入缴费金额"];
-                }else if (j<=0) {
-                    [MBProgressHUD showToastToView:self.view withText:@"金额必须大于0"];
-                }else if (i>upper_limit){
-                    [MBProgressHUD showToastToView:self.view withText:[NSString stringWithFormat:@"您剩余缴费金额上限为:%.2f元",shengyu]];
-                } else{
-                    //1.创建会话管理者
-                    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-                    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-                    //2.封装参数
-                    NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
-                    NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"category_id":type,@"category_name":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
+                if (_tmpBtn.tag == 1) {
+                    jieyu = [NSString stringWithFormat:@"%@",[[shuifeiDic objectForKey:@"info"] objectForKey:@"SMay_acc"]];
+                    type = [shuifeiDic objectForKey:@"type"];
+                    amount = shuitextfield.text;
+                    type_cn = [shuifeiDic objectForKey:@"type_cn"];
+                    float upper_limit = [[[shuifeiDic objectForKey:@"upper_limit"] objectForKey:@"info"] floatValue];
+                    float j = [shuitextfield.text floatValue];
+                    float i = [jieyu floatValue] + j;
+                    float shengyu = upper_limit - [jieyu floatValue];
                     
-                    NSString *strurl = [API stringByAppendingString:@"property/create_order"];
-                    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                        NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
-                        //_Dic = [[NSMutableDictionary alloc] init];
-                        if ([[responseObject objectForKey:@"status"] integerValue]==1) {
-                            newsuerViewController *newsuer = [[newsuerViewController alloc] init];
-                            newsuer.DataDic = [responseObject objectForKey:@"data"];
-                            newsuer.biaoshi = @"2";
-                            [self.navigationController pushViewController:newsuer animated:YES];
-                        }else{
-                            
-                        }
-                    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                        NSLog(@"failure--%@",error);
-                    }];
+                    if (shuitextfield.text.length == 0) {
+                        [MBProgressHUD showToastToView:self.view withText:@"请输入缴费金额"];
+                    }else if (j<=0) {
+                        [MBProgressHUD showToastToView:self.view withText:@"金额必须大于0"];
+                    }else if (i>upper_limit){
+                        [MBProgressHUD showToastToView:self.view withText:[NSString stringWithFormat:@"您剩余缴费金额上限为:%.2f元",shengyu]];
+                    } else{
+                        //1.创建会话管理者
+                        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+                        //2.封装参数
+                        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                        NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"category_id":type,@"category_name":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
+                        
+                        NSString *strurl = [API stringByAppendingString:@"property/create_order"];
+                        [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                            NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
+                            //_Dic = [[NSMutableDictionary alloc] init];
+                            if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                                newsuerViewController *newsuer = [[newsuerViewController alloc] init];
+                                newsuer.DataDic = [responseObject objectForKey:@"data"];
+                                newsuer.biaoshi = @"2";
+                                [self.navigationController pushViewController:newsuer animated:YES];
+                            }else{
+                                
+                            }
+                        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                            NSLog(@"failure--%@",error);
+                        }];
+                    }
+                }else{
+                    jieyu = [NSString stringWithFormat:@"%@",[[dianfeiDic objectForKey:@"info"] objectForKey:@"DMay_acc"]];
+                    type = [dianfeiDic objectForKey:@"type"];
+                    amount = diantextfield.text;
+                    amount = diantextfield.text;
+                    type_cn = [dianfeiDic objectForKey:@"type_cn"];
+                    
+                    float upper_limit = [[[dianfeiDic objectForKey:@"upper_limit"] objectForKey:@"info"] floatValue];
+                    float j = [diantextfield.text floatValue];
+                    float i = [jieyu floatValue] + j;
+                    float shengyu = upper_limit - [jieyu floatValue];
+                    
+                    if (diantextfield.text.length == 0) {
+                        [MBProgressHUD showToastToView:self.view withText:@"请输入缴费金额"];
+                    }else if (j<=0) {
+                        [MBProgressHUD showToastToView:self.view withText:@"金额必须大于0"];
+                    }else if (i>upper_limit){
+                        [MBProgressHUD showToastToView:self.view withText:[NSString stringWithFormat:@"您剩余缴费金额上限为:%.2f元",shengyu]];
+                    } else{
+                        //1.创建会话管理者
+                        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+                        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+                        //2.封装参数
+                        NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
+                        NSDictionary *dict = @{@"room_id":[roominfodic objectForKey:@"room_id"],@"category_id":type,@"category_name":type_cn,@"amount":amount,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
+                        
+                        NSString *strurl = [API stringByAppendingString:@"property/create_order"];
+                        [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                            NSLog(@"success==%@==%@",[responseObject objectForKey:@"msg"],responseObject);
+                            //_Dic = [[NSMutableDictionary alloc] init];
+                            if ([[responseObject objectForKey:@"status"] integerValue]==1) {
+                                newsuerViewController *newsuer = [[newsuerViewController alloc] init];
+                                newsuer.DataDic = [responseObject objectForKey:@"data"];
+                                newsuer.biaoshi = @"2";
+                                [self.navigationController pushViewController:newsuer animated:YES];
+                            }else{
+                                
+                            }
+                        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                            NSLog(@"failure--%@",error);
+                        }];
+                    }
                 }
+                
             }
         }
     }
