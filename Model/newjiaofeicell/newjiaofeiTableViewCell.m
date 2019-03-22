@@ -140,7 +140,7 @@
             NSDate *date               = [NSDate dateWithTimeIntervalSince1970:interval];
             
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-            [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            [formatter setDateFormat:@"yyyy-MM-dd"];
             NSString *dateString       = [formatter stringFromDate: date];
             label1.text = dateString;
         }else{
@@ -148,14 +148,14 @@
             NSDate *date               = [NSDate dateWithTimeIntervalSince1970:interval];
             
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-            [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            [formatter setDateFormat:@"yyyy-MM-dd"];
             NSString *dateString       = [formatter stringFromDate: date];
             
             NSTimeInterval interval1    =[[[arr objectAtIndex:indexPath.row-1] objectForKey:@"enddate"] doubleValue];
             NSDate *date1               = [NSDate dateWithTimeIntervalSince1970:interval1];
             
             NSDateFormatter *formatter1 = [[NSDateFormatter alloc] init];
-            [formatter1 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            [formatter1 setDateFormat:@"yyyy-MM-dd"];
             NSString *dateString1       = [formatter stringFromDate: date1];
             
             label1.text = [NSString stringWithFormat:@"%@/%@",dateString,dateString1];
