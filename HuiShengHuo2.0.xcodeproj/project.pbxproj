@@ -72,6 +72,7 @@
 		28280658219ADEE300B0DD7D /* TAPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 28280645219ADEE200B0DD7D /* TAPageControl.m */; };
 		2828065C219ADFA500B0DD7D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 2828065A219ADFA500B0DD7D /* MBProgressHUD.m */; };
 		2828065F219ADFAD00B0DD7D /* MBProgressHUD+TVAssistant.m in Sources */ = {isa = PBXBuildFile; fileRef = 2828065E219ADFAD00B0DD7D /* MBProgressHUD+TVAssistant.m */; };
+		282D61C92244A74C0079795F /* libstdc++.6.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 282D61C82244A74C0079795F /* libstdc++.6.tbd */; };
 		283120EE20C28DC300B5A5C2 /* newhomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283120ED20C28DC300B5A5C2 /* newhomeViewController.m */; };
 		2832103B213EB88D007EA72A /* newjiaofeiTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2832103A213EB88D007EA72A /* newjiaofeiTableViewCell.m */; };
 		2832103E213EB8B1007EA72A /* newjiaofeimodel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2832103D213EB8B1007EA72A /* newjiaofeimodel.m */; };
@@ -196,7 +197,6 @@
 		286147342010A0E000E2C7AA /* bestpay_error.html in Resources */ = {isa = PBXBuildFile; fileRef = 286147302010A0E000E2C7AA /* bestpay_error.html */; };
 		286147352010A0E000E2C7AA /* bestpay_nowifi.png in Resources */ = {isa = PBXBuildFile; fileRef = 286147312010A0E000E2C7AA /* bestpay_nowifi.png */; };
 		286147362010A0E000E2C7AA /* YZFPassGuardCtrlBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 286147322010A0E000E2C7AA /* YZFPassGuardCtrlBundle.bundle */; };
-		286147382010A18B00E2C7AA /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 286147372010A18B00E2C7AA /* libstdc++.6.0.9.tbd */; };
 		2861473A2010A1B100E2C7AA /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286147392010A1B100E2C7AA /* AudioToolbox.framework */; };
 		2865570B1FFCD723008E912D /* JKBannarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 286557081FFCD723008E912D /* JKBannarView.m */; };
 		2865570C1FFCD723008E912D /* JKBannerCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2865570A1FFCD723008E912D /* JKBannerCollectionViewCell.m */; };
@@ -742,6 +742,7 @@
 		2828065B219ADFA500B0DD7D /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		2828065D219ADFAD00B0DD7D /* MBProgressHUD+TVAssistant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD+TVAssistant.h"; sourceTree = "<group>"; };
 		2828065E219ADFAD00B0DD7D /* MBProgressHUD+TVAssistant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD+TVAssistant.m"; sourceTree = "<group>"; };
+		282D61C82244A74C0079795F /* libstdc++.6.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.text-based-dylib-definition"; path = "libstdc++.6.tbd"; sourceTree = "<group>"; };
 		283120EC20C28DC300B5A5C2 /* newhomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = newhomeViewController.h; sourceTree = "<group>"; };
 		283120ED20C28DC300B5A5C2 /* newhomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = newhomeViewController.m; sourceTree = "<group>"; };
 		28321039213EB88D007EA72A /* newjiaofeiTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = newjiaofeiTableViewCell.h; sourceTree = "<group>"; };
@@ -1761,6 +1762,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28B74A371FCC1B7D00EBFE82 /* libc++.tbd in Frameworks */,
 				285F4333212D8B0500D5C613 /* StoreKit.framework in Frameworks */,
 				28BCB79F2009E28000ADA953 /* WebKit.framework in Frameworks */,
 				28BCB79D2009E27300ADA953 /* Security.framework in Frameworks */,
@@ -1783,20 +1785,19 @@
 				28A7774A2054DF590010E806 /* CoreImage.framework in Frameworks */,
 				28888D4E204F854F00703BD8 /* AdSupport.framework in Frameworks */,
 				287F01AA204E927E00FA4F4B /* JavaScriptCore.framework in Frameworks */,
-				28B74A371FCC1B7D00EBFE82 /* libc++.tbd in Frameworks */,
 				287E571F206A3FFF00252463 /* libavdevice.a in Frameworks */,
 				285F432F212D8A8E00D5C613 /* LinkedME_iOS.framework in Frameworks */,
 				287E5720206A3FFF00252463 /* libavfilter.a in Frameworks */,
 				2898B04F2047D96F002A5F03 /* libsqlite3.tbd in Frameworks */,
 				28E1FFD41FF404A400E4AE5C /* QuartzCore.framework in Frameworks */,
 				28E1FFD61FF404C700E4AE5C /* CoreGraphics.framework in Frameworks */,
-				286147382010A18B00E2C7AA /* libstdc++.6.0.9.tbd in Frameworks */,
 				28E1FFDC1FF4050900E4AE5C /* CFNetwork.framework in Frameworks */,
 				28BCB7992009E21F00ADA953 /* CoreFoundation.framework in Frameworks */,
 				28B74A3A1FCC1BB800EBFE82 /* CoreTelephony.framework in Frameworks */,
 				28B77CF6204AA40800C1026C /* Bugly.framework in Frameworks */,
 				28E1FFDA1FF404F800E4AE5C /* Foundation.framework in Frameworks */,
 				286147332010A0E000E2C7AA /* libH5ContainerStaticLib.a in Frameworks */,
+				282D61C92244A74C0079795F /* libstdc++.6.tbd in Frameworks */,
 				28E1FFD81FF404E100E4AE5C /* UIKit.framework in Frameworks */,
 				287E5723206A3FFF00252463 /* libswresample.a in Frameworks */,
 				287E5721206A3FFF00252463 /* libavformat.a in Frameworks */,
@@ -2310,6 +2311,7 @@
 		2854D61F1FBEB90700B874D0 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				282D61C82244A74C0079795F /* libstdc++.6.tbd */,
 				28C1E50321BE6BDE00200CA4 /* SYMoreButtonView */,
 				2859125D21AD4AEA00498BBE /* kuodabuttondianjifanwei */,
 				2871A3A721AB812400CDCCE9 /* ZQScanTool */,
@@ -5226,7 +5228,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Others",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Category/WeiKefu",
 					"$(PROJECT_DIR)/Category/linedeme",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5249,11 +5250,11 @@
 					"$(PROJECT_DIR)/Others/Lib",
 					"$(PROJECT_DIR)/Others/BestPaySDK-V3.1.0/BestPayInclude",
 					"$(PROJECT_DIR)/Category",
-					"$(PROJECT_DIR)/Category/WeiKefu",
 					"$(PROJECT_DIR)/Others",
 					"$(PROJECT_DIR)/Category/ffmpeg",
 					"$(PROJECT_DIR)/Category/AJBTalk",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -5298,6 +5299,7 @@
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -5317,7 +5319,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Others",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Category/WeiKefu",
 					"$(PROJECT_DIR)/Category/linedeme",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5340,7 +5341,6 @@
 					"$(PROJECT_DIR)/Others/Lib",
 					"$(PROJECT_DIR)/Others/BestPaySDK-V3.1.0/BestPayInclude",
 					"$(PROJECT_DIR)/Category",
-					"$(PROJECT_DIR)/Category/WeiKefu",
 					"$(PROJECT_DIR)/Others",
 					"$(PROJECT_DIR)/Category/ffmpeg",
 					"$(PROJECT_DIR)/Category/AJBTalk",
@@ -5391,6 +5391,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=*]" = "";
 				TARGETED_DEVICE_FAMILY = 1;
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s";
 			};
 			name = Release;
 		};
