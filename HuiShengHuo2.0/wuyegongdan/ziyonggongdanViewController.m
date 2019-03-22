@@ -392,10 +392,14 @@
                     NSLog(@"%@==%@",responseObject, [responseObject objectForKey:@"msg"]);
                     NSString *status = [NSString stringWithFormat:@"%@",[responseObject objectForKey:@"status"]];
                     if ([status isEqualToString:@"1"]) {
-                        [self zhiFuAction:[[responseObject objectForKey:@"data"] objectForKey:@"id"]:[[responseObject objectForKey:@"data"] objectForKey:@"entry_fee"]];
+                       
                         NSString *entryfee = [[responseObject objectForKey:@"data"] objectForKey:@"entry_fee"];
                         if ([entryfee floatValue]==0) {
                             [self dingdantuisong:[[responseObject objectForKey:@"data"] objectForKey:@"id"]];
+                            mywuyegongdanViewController *wyVC = [[mywuyegongdanViewController alloc]init];
+                            [self.navigationController pushViewController:wyVC animated:YES];
+                        }else{
+                            [self zhiFuAction:[[responseObject objectForKey:@"data"] objectForKey:@"id"]:[[responseObject objectForKey:@"data"] objectForKey:@"entry_fee"]];
                         }
                     }else{
                         [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
