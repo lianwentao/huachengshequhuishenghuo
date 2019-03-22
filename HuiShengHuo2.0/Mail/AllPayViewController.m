@@ -405,7 +405,7 @@
     }
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     //,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]
-    NSDictionary *dict = @{@"id":_order_id,@"type":type,@"prepay":@"0",@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    NSDictionary *dict = @{@"id":_order_id,@"type":type,@"prepay":@"0",@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     NSLog(@"---dict%@",dict);
     
     NSString *urlstr = [API stringByAppendingString:@"userCenter/confirm_order_payment"];
@@ -495,7 +495,8 @@
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSDictionary *dict = @{@"id":_order_id};
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict = @{@"id":_order_id,@"hui_community_id":[user objectForKey:@"community_id"]};
     
     NSString *urlstr = [API stringByAppendingString:@"Jpush/service_order_toAmountWorker_push"];
     WBLog(@"%@-****-%@",dict,urlstr);
@@ -511,7 +512,8 @@
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSDictionary *dict = @{@"id":_order_id};
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict = @{@"id":_order_id,@"hui_community_id":[user objectForKey:@"community_id"]};
     
     NSString *urlstr = [API stringByAppendingString:@"site/merchant_push"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -525,7 +527,8 @@
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    NSDictionary *dict = @{@"oid":_order_id};
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSDictionary *dict = @{@"oid":_order_id,@"hui_community_id":[user objectForKey:@"community_id"]};
    
     NSString *urlstr = [API stringByAppendingString:@"Jpush/distribution_push"];
     [manager POST:urlstr parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -644,9 +647,9 @@
     NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
     NSDictionary *dict = [[NSDictionary alloc] init];
     if ([_prepay isEqualToString:@"1"]) {
-        dict = @{@"prepay":_prepay,@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        dict = @{@"prepay":_prepay,@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }else{
-        dict = @{@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        dict = @{@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }
     
     NSString *urlstr;
@@ -701,9 +704,9 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict;
     if ([_prepay isEqualToString:@"1"]) {
-        dict = @{@"prepay":_prepay,@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        dict = @{@"prepay":_prepay,@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }else{
-        dict = @{@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        dict = @{@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }
 //     = @{@"id":_order_id,@"apk_token":uid_username,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
     NSString *urlstr;
@@ -752,9 +755,9 @@
     NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
     NSDictionary *dict;
     if ([_prepay isEqualToString:@"1"]) {
-        dict = @{@"prepay":_prepay,@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        dict = @{@"prepay":_prepay,@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }else{
-        dict = @{@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"]};
+        dict = @{@"id":_order_id,@"token":[user objectForKey:@"token"],@"tokenSecret":[user objectForKey:@"tokenSecret"],@"hui_community_id":[user objectForKey:@"community_id"]};
     }
     
     NSString *urlstr;
