@@ -405,7 +405,7 @@
     }
     NSUserDefaults *userinfo = [NSUserDefaults standardUserDefaults];
     //,@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]
-    NSDictionary *dict = @{@"id":_order_id,@"type":type,@"prepay":@"0",@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"]};
+    NSDictionary *dict = @{@"id":_order_id,@"type":type,@"prepay":@"0",@"token":[userinfo objectForKey:@"token"],@"tokenSecret":[userinfo objectForKey:@"tokenSecret"],@"hui_community_id":[userinfo objectForKey:@"community_id"]};
     NSLog(@"---dict%@",dict);
     
     NSString *urlstr = [API stringByAppendingString:@"userCenter/confirm_order_payment"];
