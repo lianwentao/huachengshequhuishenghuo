@@ -286,8 +286,7 @@
     AFHTTPSessionManager *mgr = [AFHTTPSessionManager manager];
     [mgr.responseSerializer setAcceptableContentTypes: [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil]];
     
-//    NSString *url = [API stringByAppendingString:@"site/version_update"];
-    NSString *url = @"http://com.hui-shenghuo.cn/Api/Version/version_update";
+    NSString *url = [HTTPC stringByAppendingString:@"/Api/Version/version_update"];
    
     NSDictionary *dict = @{@"type":@"2",@"version":ver};
     //POST必须上传的字段

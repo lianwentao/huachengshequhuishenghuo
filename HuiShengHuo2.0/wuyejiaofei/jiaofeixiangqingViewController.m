@@ -50,7 +50,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    bill_string = @"";
+    
     dataArr = [NSMutableArray arrayWithCapacity:0];
     
     if ([_biaoshi isEqualToString:@"1"]) {
@@ -510,6 +510,7 @@
 {
     
     float j=0;
+    bill_string = @"";
     sender.selected = !sender.isSelected;
     for (int i=0; i<dataArr.count; i++) {
         UIButton *but = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -517,10 +518,11 @@
         if (but.isSelected) {
             float k = [but.titleLabel.text floatValue];
             j = j+k;
-            bill_string = [NSString stringWithFormat:@"%@%@",bill_string,[NSString stringWithFormat:@",%@",[NSString stringWithFormat:@"%ld",but.tag]]];
+            NSString *str = [NSString stringWithFormat:@",%@",[NSString stringWithFormat:@"%ld",but.tag]];
+            bill_string = [bill_string stringByAppendingString:str];
         }
     }
-    WBLog(@"j====%f--%ld--%@",j,_tmpBtn1.tag,dataArr);
+    WBLog(@"j====%f--%ld--%@",j,_tmpBtn1.tag,bill_string);
     
     amountlabel.text = [NSString stringWithFormat:@"总额:%.1f元",j];
 }
