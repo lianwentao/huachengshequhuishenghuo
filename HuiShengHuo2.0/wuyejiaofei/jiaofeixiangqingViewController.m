@@ -522,7 +522,7 @@
     }
     WBLog(@"j====%f--%ld--%@",j,_tmpBtn1.tag,dataArr);
     
-    amountlabel.text = [NSString stringWithFormat:@"%.1f元",j];
+    amountlabel.text = [NSString stringWithFormat:@"总额:%.1f元",j];
 }
 - (void)textFieldChanged:(UITextField*)textField{
     amountlabel.text = [NSString stringWithFormat:@"总额:%@元",shuitextfield.text];
