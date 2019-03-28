@@ -132,7 +132,7 @@
 - (void)sure
 {
     long i = [labelnum.text longLongValue];
-    WBLog(@"***--%@",labelnum.text);
+    WBLog(@"7788gogo***--%@",labelnum.text);
     __weak typeof(self) weakself = self;
     NSString *tagstrimg = [[_Dataarr objectAtIndex:_tmpBtn.tag] objectForKey:@"id"];
     if (weakself.returnValueBlock) {

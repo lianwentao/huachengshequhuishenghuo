@@ -430,7 +430,6 @@
                                       
                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"change" object:nil userInfo:nil];
                                       [self.navigationController popToRootViewControllerAnimated:YES];
-                                      
                                   }
                                   
                               } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -457,7 +456,6 @@
                           actionWithTitle:@"确定"
                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
                           {
-                              
                               AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
                               manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
                               NSString *url = [HTTPC stringByAppendingString:@"/Api/Config/config"];

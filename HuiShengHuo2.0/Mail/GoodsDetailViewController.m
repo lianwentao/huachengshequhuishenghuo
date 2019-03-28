@@ -1028,48 +1028,53 @@ static NSString * LINKEDME_SHORT_URL;
     }];
 }
 -(void)post1{
-    //1.创建会话管理者
-    NSLog(@"blocktagname--%@",blocktagname);
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
-    //2.封装参数
-    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-    NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
-    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    [dict setObject:uid_username forKey:@"apk_token"];
-    //
-    [dict setObject:[user objectForKey:@"token"] forKey:@"token"];
-    [dict setObject:[user objectForKey:@"tokenSecret"] forKey:@"tokenSecret"];
-    [dict setObject:blocktagname forKey:@"tagname"];
-    [dict setObject:blocknum forKey:@"number"];
-    [dict setObject:[jiarugouwuchedict objectForKey:@"p_id"] forKey:@"p_id"];
-    [dict setObject:[jiarugouwuchedict objectForKey:@"p_title"] forKey:@"p_title"];
-    [dict setObject:[jiarugouwuchedict objectForKey:@"p_title_img"] forKey:@"p_title_img"];
-    [dict setObject:blocktagid forKey:@"tagid"];
-    [dict setObject:wupinprice forKey:@"price"];
     
-    
-    //3.发送GET请求
-    /*
-     第一个参数:请求路径(NSString)+ 不需要加参数
-     第二个参数:发送给服务器的参数数据
-     第三个参数:progress 进度回调
-     第四个参数:success  成功之后的回调(此处的成功或者是失败指的是整个请求)
-     task:请求任务
-     responseObject:注意!!!响应体信息--->(json--->oc))
-     task.response: 响应头信息
-     第五个参数:failure 失败之后的回调
-     */
-   
-    NSString *strurl = [API stringByAppendingString:@"shop/add_shopping_cart"];
-    [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
-        NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"failure--%@",error);
-    }];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"jiarugouwuchedonghua" object:nil];
+    if ([blocktagname isEqualToString:@""]||blocktagname.length==0) {
+        [MBProgressHUD showToastToView:self.view withText:@"加入购物车失败"];
+    }else{
+        //1.创建会话管理者
+        NSLog(@"blocktagname--%@",blocktagname);
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+        //2.封装参数
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        NSString *uid_username = [MD5 MD5:[NSString stringWithFormat:@"%@%@",[user objectForKey:@"uid"],[user objectForKey:@"username"]]];
+        NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+        [dict setObject:uid_username forKey:@"apk_token"];
+        
+        [dict setObject:[user objectForKey:@"token"] forKey:@"token"];
+        [dict setObject:[user objectForKey:@"tokenSecret"] forKey:@"tokenSecret"];
+        [dict setObject:blocktagname forKey:@"tagname"];
+        [dict setObject:blocknum forKey:@"number"];
+        [dict setObject:[jiarugouwuchedict objectForKey:@"p_id"] forKey:@"p_id"];
+        [dict setObject:[jiarugouwuchedict objectForKey:@"p_title"] forKey:@"p_title"];
+        [dict setObject:[jiarugouwuchedict objectForKey:@"p_title_img"] forKey:@"p_title_img"];
+        [dict setObject:blocktagid forKey:@"tagid"];
+        [dict setObject:wupinprice forKey:@"price"];
+        
+        
+        //3.发送GET请求
+        /*
+         第一个参数:请求路径(NSString)+ 不需要加参数
+         第二个参数:发送给服务器的参数数据
+         第三个参数:progress 进度回调
+         第四个参数:success  成功之后的回调(此处的成功或者是失败指的是整个请求)
+         task:请求任务
+         responseObject:注意!!!响应体信息--->(json--->oc))
+         task.response: 响应头信息
+         第五个参数:failure 失败之后的回调
+         */
+        
+        NSString *strurl = [API stringByAppendingString:@"shop/add_shopping_cart"];
+        [manager POST:strurl parameters:dict progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [MBProgressHUD showToastToView:self.view withText:[responseObject objectForKey:@"msg"]];
+            NSLog(@"success--%@--%@",[responseObject objectForKey:@"msg"],responseObject);
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"failure--%@",error);
+        }];
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"jiarugouwuchedonghua" object:nil];
+    }
 }
 -(void)postcount
 {
