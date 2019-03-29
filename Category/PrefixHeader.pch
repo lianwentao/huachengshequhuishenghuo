@@ -9,11 +9,13 @@
 //#ifndef PrefixHeader_pch
 #define PrefixHeader_pch
 
-
+//正式
 #define API                (([[NSUserDefaults standardUserDefaults] objectForKey:@"API"]==nil) ? @"http://m.hui-shenghuo.cn/apk41/" : [[NSUserDefaults standardUserDefaults] objectForKey:@"API"])
 #define API_NOAPK          (([[NSUserDefaults standardUserDefaults] objectForKey:@"API_NOAPK"]==nil)? @"http://m.hui-shenghuo.cn" :[[NSUserDefaults standardUserDefaults] objectForKey:@"API_NOAPK"])
 
-
+//测试
+//#define API                (([[NSUserDefaults standardUserDefaults] objectForKey:@"API"]==nil) ? @"http://test.hui-shenghuo.cn/apk41/" : [[NSUserDefaults standardUserDefaults] objectForKey:@"API"])
+//#define API_NOAPK          (([[NSUserDefaults standardUserDefaults] objectForKey:@"API_NOAPK"]==nil)? @"http://test.hui-shenghuo.cn" :[[NSUserDefaults standardUserDefaults] objectForKey:@"API_NOAPK"])
 
 //正式域名
 #define HTTPC                @"http://common.hui-shenghuo.cn"
