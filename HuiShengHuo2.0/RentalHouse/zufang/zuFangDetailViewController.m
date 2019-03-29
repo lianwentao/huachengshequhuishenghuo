@@ -776,9 +776,16 @@
     }
 }
 -(void)ckxqAction{
+    NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+    NSString *str = [userdefaults objectForKey:@"token"];
+    if (str==nil) {
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self presentViewController:login animated:YES completion:nil];
+    }else{
+        sfHuoDongDetailViewController *hdDetailVC = [[sfHuoDongDetailViewController alloc]init];
+        [self.navigationController pushViewController:hdDetailVC animated:YES];
+    }
     
-    sfHuoDongDetailViewController *hdDetailVC = [[sfHuoDongDetailViewController alloc]init];
-    [self.navigationController pushViewController:hdDetailVC animated:YES];
 }
 - (int)navBarBottom
 {
