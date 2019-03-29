@@ -10,9 +10,8 @@
 #define PrefixHeader_pch
 
 
-
-#define API                [[NSUserDefaults standardUserDefaults] objectForKey:@"API"]
-#define API_NOAPK          [[NSUserDefaults standardUserDefaults] objectForKey:@"API_NOAPK"]
+#define API                (([[NSUserDefaults standardUserDefaults] objectForKey:@"API"]==nil) ? @"http://m.hui-shenghuo.cn/apk41/" : [[NSUserDefaults standardUserDefaults] objectForKey:@"API"])
+#define API_NOAPK          (([[NSUserDefaults standardUserDefaults] objectForKey:@"API_NOAPK"]==nil)? @"http://m.hui-shenghuo.cn" :[[NSUserDefaults standardUserDefaults] objectForKey:@"API_NOAPK"])
 
 
 

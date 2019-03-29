@@ -1721,7 +1721,7 @@
                 fenleiArr = [[responseObject objectForKey:@"data"] objectForKey:@"hot_cate_list"];
                 centerArr = [[responseObject objectForKey:@"data"] objectForKey:@"cate_list"];
                 shangpinArr = [[responseObject objectForKey:@"data"] objectForKey:@"ad_hc_shop_center"];
-                if ([[[responseObject objectForKey:@"data"] objectForKey:@"pro_discount_list"] isKindOfClass:[NSArray class]]) {
+                if ([[[[responseObject objectForKey:@"data"] objectForKey:@"pro_discount_list"] objectForKey:@"list"] isKindOfClass:[NSArray class]]) {
                     pro_discount_listArr = [[[responseObject objectForKey:@"data"] objectForKey:@"pro_discount_list"] objectForKey:@"list"];
                 }
                 
@@ -1800,7 +1800,7 @@
             fenleiArr = [[responseObject objectForKey:@"data"] objectForKey:@"hot_cate_list"];
             centerArr = [[responseObject objectForKey:@"data"] objectForKey:@"cate_list"];
             shangpinArr = [[responseObject objectForKey:@"data"] objectForKey:@"ad_hc_shop_center"];
-            if ([[[responseObject objectForKey:@"data"] objectForKey:@"pro_discount_list"] isKindOfClass:[NSArray class]]) {
+            if ([[[[responseObject objectForKey:@"data"] objectForKey:@"pro_discount_list"] objectForKey:@"list"] isKindOfClass:[NSArray class]]) {
                 pro_discount_listArr = [[[responseObject objectForKey:@"data"] objectForKey:@"pro_discount_list"] objectForKey:@"list"];
             }
             

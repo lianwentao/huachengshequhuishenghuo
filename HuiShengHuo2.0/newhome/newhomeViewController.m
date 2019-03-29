@@ -438,6 +438,7 @@
 }
 -(void)getData
 {
+    WBLog(@"8888899865212888%@-%@",API,API_NOAPK);
     //1.创建会话管理者
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
